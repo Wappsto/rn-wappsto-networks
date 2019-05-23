@@ -1,0 +1,7 @@
+{
+  "baseUrl": "https://qa.wappsto.com/services",
+  "stream": {
+    "name": "wappsto-native",
+    "subscription": ["/network"]
+  }
+}

@@ -1,0 +1,6 @@
+{
+  "no_response": "something went wrong, please verify that you are connected to internet",
+  "generic": "something went wrong, please try again.",
+  "status_503": "service unavailable",
+  "300084": "incorrect password"
+}
