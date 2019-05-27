@@ -20,6 +20,9 @@ import NetInfo from '@react-native-community/netinfo';
 import theme from '../theme/themeExport';
 
 function mapStateToProps(state, componentProps){
+  if(!config.stream || !config.stream.name){
+    return {};
+  }
   return {
     stream: getStream(state, config.stream.name)
   }

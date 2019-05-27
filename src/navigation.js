@@ -62,6 +62,8 @@ let components = {
       bindI18n: 'languageChanged'
     })(this.AppContainer);
   },
+
+  // helper function
   replace: function(key, val){
     this[key] = val;
     return this;

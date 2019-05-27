@@ -1,7 +1,6 @@
-import { createSwitchNavigator, createDrawerNavigator, createStackNavigator, createAppContainer } from 'react-navigation';
-import { useTheme, useConfig, replaceComponent } from './index';
-import theme from './theme/themeExport';
-import App from './navigation';
+import { createDrawerNavigator } from 'react-navigation';
+import { useTheme, useConfig, replaceComponent } from '../src/override';
+import theme from '../src/theme/themeExport';
 
 // overriding COMPONENTS
 import React, { Component } from 'react';
@@ -176,5 +175,3 @@ useTheme({
 useConfig({
   baseUrl: "https://qa.wappsto.com/services"
 });
-
-export default App;
