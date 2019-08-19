@@ -22,7 +22,7 @@
     "react-redux": "^7.0.3",
     "redux": "^4.0.1",
     "wappsto-components": "Wappsto/wappsto-components",
-    "wappsto-redux": "Wappsto/wappsto-redux"
+    "wappsto-redux": "^1.1.5"
   },
   "devDependencies": {
     "@babel/core": "^7.4.5",
