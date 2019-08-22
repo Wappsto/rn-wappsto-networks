@@ -20,7 +20,7 @@ react-redux
 
 **Note that some of these libs require manual installation.**
 
-For override examples, check [examples](https://developers.meethue.com/my-apps/) folder.
+For override examples, check [examples](https://github.com/Wappsto/RN_Wappsto_networks/tree/master/examples) folder.
 
 When you are overriding components or theme, make sure that your file is loaded before **App** component. **App** component is under **rn_wappsto_networks/index.js** or **rn_wappsto_networks/src/navigation**
 
