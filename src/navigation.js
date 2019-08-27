@@ -10,18 +10,14 @@ import theme from "./theme/themeExport";
 let components = {
   SlpashScreen: require('./views/SplashScreen').default,
   LoginScreen: require('./views/LoginScreen').default,
-  NetworksListScreen: require('./views/main/NetworksListScreen').default,
-  NetworkScreen: require('./views/main/NetworkScreen').default,
+  DevicesListScreen: require('./views/main/DevicesListScreen').default,
   DeviceScreen: require('./views/main/DeviceScreen').default,
-  ValueScreen: require('./views/main/ValueScreen').default,
   AccountScreen: require('./views/main/AccountScreen').default,
   DrawerMenu: require('./components/DrawerMenu').default,
   MainStackScreen: function(){
     return createStackNavigator({
-      NetworksListScreen: { screen: this.NetworksListScreen },
-      NetworkScreen: { screen: this.NetworkScreen },
-      DeviceScreen: { screen: this.DeviceScreen },
-      ValueScreen: { screen: this.ValueScreen }
+      DevicesListScreen: { screen: this.DevicesListScreen },
+      DeviceScreen: { screen: this.DeviceScreen }
     }, {
       defaultNavigationOptions: {
         headerTintColor: theme.variables.white,
@@ -41,7 +37,7 @@ let components = {
   },
   MainScreen: function(){
     return createDrawerNavigator({
-      Networks: { screen: this.MainStackScreen },
+      Home: { screen: this.MainStackScreen },
       Account: { screen: this.AccountStackScreen }
     }, {
       contentComponent: this.DrawerMenu

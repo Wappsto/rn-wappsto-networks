@@ -26,12 +26,10 @@ export default StyleSheet.create({
   },
   listItem:{
     flex:1,
-    flexDirection: 'row',
-    alignItems: 'center',
     justifyContent: 'space-between',
     marginVertical: 5,
     marginHorizontal: 10,
-    padding:8,
+    padding: 8,
     borderRadius: variables.borderRadiusBase,
     backgroundColor: color(variables.white).fade(0.1)
   },
@@ -118,5 +116,40 @@ export default StyleSheet.create({
     position: 'absolute',
     right: 0,
     padding: 17
+  },
+  itemPanel:{
+    flex:1,
+    justifyContent: 'space-between',
+    marginVertical: 5,
+    marginHorizontal: 10,
+    backgroundColor: color(variables.white).fade(0.1)
+  },
+  itemContent:{
+    flex:1,
+    marginVertical: 5,
+    marginHorizontal: 10,
+    padding:30,
+    borderRadius: variables.borderRadiusBase,
+  },
+  itemFooter:{
+    flexDirection: 'row',
+    alignItems: 'center',
+    padding: 8,
+    borderTopColor: variables.inputBorderColor,
+    borderTopWidth: variables.borderWidth
+  },
+  itemHeader:{
+    flexDirection: 'row',
+    alignItems: 'center',
+    padding: 8,
+    borderBottomColor: variables.inputBorderColor,
+    borderBottomWidth: variables.borderWidth
+  },
+  barItem:{
+    padding: 8
+  },
+  barItemSeparator: {
+    borderRightColor: variables.inputBorderColor,
+    borderRightWidth: variables.borderWidth
   }
 });

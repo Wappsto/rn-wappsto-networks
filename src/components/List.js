@@ -15,7 +15,6 @@ import Icon from 'react-native-vector-icons/Feather';
 import { List, connect }from 'wappsto-components/List';
 
 class ListComponent extends List {
-
   render() {
     let list = this.props.items;
     let request = this.props.request;
@@ -30,7 +29,7 @@ class ListComponent extends List {
               refreshing={request && request.status === 'pending' && (!request.options.query || !request.options.query.offset)}
               onRefresh={this.refresh}
               onEndReached={this.loadMore}
-              onEndReachedThreshold={2}
+              onEndReachedThreshold={0.01}
               ListFooterComponent={request && request.status === 'pending' && request.options.query.offset ? <ActivityIndicator size='large'/>: null}
             /> :
             <Fragment>

@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import React, { Component } from 'react';
 import {
+  Modal,
   View,
   Text,
   TouchableOpacity
@@ -10,8 +11,8 @@ import {
 
 import * as items from 'wappsto-redux/actions/items';
 
+import DeviceSettings from "./DeviceSettings";
 import theme from "../theme/themeExport";
-import Icon from 'react-native-vector-icons/Feather';
 
 function mapStateToProps(state){
   return {};
@@ -31,22 +32,23 @@ class ListRow extends Component {
     navigation: PropTypes.object.isRequired
   }
 
-  navigate(){
+  navigate = () => {
     this.props.setItem(this.props.selectedName, this.props.item.meta.id);
     this.props.navigation.navigate(this.props.navigateTo, { title: this.props.item.name });
   }
+
   render() {
-    let item = this.props.item;
+    const { item, childName } = this.props;
     return (
-      <View style={theme.common.listItem}>
-        <View style={theme.common.listItemTitleArea}>
-          <Text style={theme.common.listItemHeader}>{item.name}</Text>
-          <Text style={theme.common.listItemSubheader}>{item.meta.id}</Text>
+      <TouchableOpacity onPress={this.navigate}>
+        <View style={[theme.common.listItem, theme.common.row]}>
+          <View style={[theme.common.listItemTitleArea, theme.common.barItemSeparator]}>
+            <Text style={theme.common.listItemHeader}>{item.name}</Text>
+            <Text style={theme.common.listItemSubheader}>{item[childName].length} {childName}(s)</Text>
+          </View>
+          <DeviceSettings item={item} />
         </View>
-        <TouchableOpacity onPress={this.navigate.bind(this)}>
-          <Icon name="arrow-right" size={25} style={theme.common.listItemArrow} color={theme.variables.primary} />
-        </TouchableOpacity>
-      </View>
+      </TouchableOpacity>
     );
   }
 }

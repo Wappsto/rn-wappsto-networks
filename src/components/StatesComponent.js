@@ -12,7 +12,8 @@ import {
   RefreshControl
 } from 'react-native';
 
-import StateComponent from './StateComponent';
+import ControlState from './ControlState';
+import ReportState from './ReportState';
 import RequestError from "./RequestError";
 
 import * as items from 'wappsto-redux/actions/items';
@@ -55,7 +56,9 @@ class StatesComponent extends Component {
   componentDidMount(){
     if(!this.props.fetched){
       this.props.setItem(this.props.url + "_fetched", true);
-      this.refresh();
+      if(this.props.states.length !== this.props.value.state.length){
+        this.refresh();
+      }
     } else if(this.props.request.error){
       this.refresh();
     }
@@ -75,43 +78,32 @@ class StatesComponent extends Component {
     let reportState = states.find(s => s.type === "Report");
     let controlState = states.find(s => s.type === "Control");
     return (
-      <View style={theme.common.container}>
+      <View>
         {
-          states.length !== 0 ?
-          <ScrollView
-            refreshControl={
-              <RefreshControl
-                refreshing={request && request.status === "pending"}
-                onRefresh={this.refresh}
-              />
-            }
-          >
-            { reportState ? <StateComponent value={value} state={reportState} /> : null}
-            { controlState ? <StateComponent value={value} state={controlState} /> : null}
-          </ScrollView> :
-          request && request.status === "pending" ?
-          null :
+          states.length !== 0 &&
           <Fragment>
-            <TouchableOpacity style={[theme.common.button, theme.common.roundOutline, theme.common.row, {backgroundColor: "white", justifyContent: 'center'}]} onPress={this.refresh}>
-              <Icon name="rotate-cw" size={20} color={theme.variables.primary} style={{marginRight: 20}}/>
-              <Text>Refresh</Text>
-            </TouchableOpacity>
-            <Text>List is empty</Text>
+            <View style={theme.common.itemContent}>
+              { controlState ? <ControlState value={value} state={controlState} /> : null}
+              { reportState && !controlState ? <ReportState value={value} state={reportState} /> : null}
+            </View>
+            <View style={[theme.common.itemFooter]}>
+              { controlState && reportState && <Text style={[theme.common.barItem, theme.common.barItemSeparator]}>{reportState.data}</Text>}
+              {
+                reportState ?
+                <Text  style={theme.common.barItem}>Last updated: {(new Date(reportState.timestamp)).toLocaleString()}</Text> :
+                controlState && <Text  style={theme.common.barItem}>Last updated: {(new Date(controlState.timestamp)).toLocaleString()}</Text>
+              }
+            </View>
           </Fragment>
+        }
+        {
+          request && request.status === "pending" &&
+          <ActivityIndicator size='large'/>
         }
         <RequestError error={error} />
       </View>
     );
   }
 }
-
-const styles = StyleSheet.create({
-  box: {
-    backgroundColor: "white",
-    borderWidth: 1,
-    borderColor: "black",
-    margin: 2
-  }
-});
 
 export default connect(mapStateToProps, mapDispatchToProps)(StatesComponent);

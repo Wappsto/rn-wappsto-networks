@@ -8,7 +8,7 @@ import {
 } from 'react-native';
 import Screen from "../../components/Screen";
 import List from '../../components/List';
-import ListRow from '../../components/ListRow';
+import ValueComponent from '../../components/ValueComponent';
 
 import * as items from 'wappsto-redux/actions/items';
 import { getEntity } from 'wappsto-redux/selectors/entities';
@@ -42,32 +42,15 @@ class DeviceScreen extends Component {
     let device = this.props.selectedDevice;
     return (
       <Screen>
-        <ScrollView>
-          <View style={theme.common.infoPanel}>
-            <Text>{device.name}</Text>
-            <Text>UUID: {device.meta.id}</Text>
-            <Text>Communication: {device.communication}</Text>
-            <Text>Product: {device.product}</Text>
-            <Text>Protocol: {device.protocol}</Text>
-            <Text>Serial: {device.serial}</Text>
-            <Text>Version: {device.version}</Text>
-            <Text>Description: {device.description}</Text>
-            <Text>Device values</Text>
-          </View>
         <List
           id={device.meta.id}
           type="device"
           childType="value"
+          query={{ expand: 5 }}
           renderItem={({item}) =>
-            <ListRow
-              selectedName="selectedValue"
-              navigateTo="ValueScreen"
-              item={item}
-              navigation={this.props.navigation}
-            />
+            <ValueComponent item={item} />
           }
         />
-        </ScrollView>
       </Screen>
     );
   }

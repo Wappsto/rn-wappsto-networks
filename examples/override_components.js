@@ -23,11 +23,11 @@ class NewPage extends Component {
 replaceComponent((components) => {
   components.replace("MainScreen", () => {
     return createDrawerNavigator({
-      Networks: { screen: components.MainStackScreen },
-      Account: { screen: components.AccountStackScreen },
+      Home: { screen: this.MainStackScreen },
+      Account: { screen: this.AccountStackScreen },
       NewPage: { screen: NewPage}
     }, {
-      contentComponent: components.DrawerMenu
+      contentComponent: this.DrawerMenu
     });
   });
 
@@ -35,11 +35,11 @@ replaceComponent((components) => {
 
   components.MainScreen = () => {
     return createDrawerNavigator({
-      Networks: { screen: components.MainStackScreen },
-      Account: { screen: components.AccountStackScreen },
+      Home: { screen: this.MainStackScreen },
+      Account: { screen: this.AccountStackScreen },
       NewPage: { screen: NewPage}
     }, {
-      contentComponent: components.DrawerMenu
+      contentComponent: this.DrawerMenu
     });
   };
   return components;

@@ -15,10 +15,10 @@ import MenuButton from '../../components/MenuButton';
 import List from '../../components/List';
 import ListRow from '../../components/ListRow';
 
-class NetworksListScreen extends Component {
+class DevicesListScreen extends Component {
   static navigationOptions = ({ navigation }) => {
     return {
-      title: 'Networks',
+      title: 'Home',
       headerLeft: <MenuButton navigation={navigation} />
     };
   }
@@ -26,12 +26,13 @@ class NetworksListScreen extends Component {
     return (
       <Screen>
         <List
-          type="network"
+          type="device"
           renderItem={({item}) =>
             <ListRow
-              selectedName="selectedNetwork"
-              navigateTo="NetworkScreen"
+              selectedName="selectedDevice"
+              navigateTo="DeviceScreen"
               item={item}
+              childName="value"
               navigation={this.props.navigation}
             />
           }
@@ -41,4 +42,4 @@ class NetworksListScreen extends Component {
   }
 }
 
-export default NetworksListScreen;
+export default DevicesListScreen;

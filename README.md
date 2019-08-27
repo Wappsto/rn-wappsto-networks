@@ -9,13 +9,13 @@ You can either use this project and continue on top of it, or simply install it 
 In order for this project to work as a dependency, you should install all these react-native dependencies link them:
 
 ```
-@react-native-community/async-storage
-@react-native-community/netinfo
-react-native-gesture-handler
-react-native-vector-icons
-react-native-localize
-react-navigation
-react-redux
+@react-native-community/async-storage   ^1.2.1
+@react-native-community/netinfo          3.2.1
+react-native-gesture-handler             1.2.1
+react-native-vector-icons               ^6.4.2
+react-native-localize                   ^1.1.0
+react-navigation                        ^3.5.1
+react-redux                             ^7.0.3
 ```
 
 **Note that some of these libs require manual installation.**
