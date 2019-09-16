@@ -1,16 +1,16 @@
-import * as RNLocalize from "react-native-localize";
+import * as RNLocalize from 'react-native-localize';
 import i18next from 'i18next';
-import { initReactI18next } from 'react-i18next';
+import {initReactI18next} from 'react-i18next';
 
 const resources = {
   en: {
     translation: require('./en/translation'),
-    error: require('./en/error')
+    error: require('./en/error'),
   },
   da: {
     translation: require('./da/translation'),
-    error: require('./da/error')
-  }
+    error: require('./da/error'),
+  },
 };
 
 const languageDetector = {
@@ -31,24 +31,24 @@ i18next
     resources,
   });
 
-const handleLocalizationChange = (a) => {
+const handleLocalizationChange = a => {
   i18next.changeLanguage(RNLocalize.getLocales()[0].languageCode);
-}
+};
 
-RNLocalize.addEventListener("change", handleLocalizationChange);
+RNLocalize.addEventListener('change', handleLocalizationChange);
 
 export default i18next;
 
-export function CapitalizeFirst(str){
+export function CapitalizeFirst(str) {
   return str.charAt(0).toUpperCase() + str.slice(1);
 }
 
-export function CapitalizeEach(str){
-  return str.replace(/\w\S*/g, function(txt){
+export function CapitalizeEach(str) {
+  return str.replace(/\w\S*/g, function(txt) {
     return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();
   });
 }
 
-export function Uppercase(str){
+export function Uppercase(str) {
   return str.toUpperCase();
 }
