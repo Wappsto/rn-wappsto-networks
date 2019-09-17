@@ -17,6 +17,17 @@ export function generateStyles(c = {}) {
         paddingVertical: 5,
         backgroundColor: variables.containerBgColor,
       },
+      safeAreaView: {
+        flex: 1,
+        backgroundColor: variables.appBgColor,
+      },
+      warning: {
+        backgroundColor: variables.warning,
+        paddingHorizontal: 10,
+        paddingVertical: 20,
+        textAlign: 'center',
+        width: '100%',
+      },
       centeredContent: {
         flex: 1,
         flexDirection: 'column',
@@ -60,18 +71,15 @@ export function generateStyles(c = {}) {
         borderRadius: variables.borderRadiusBase,
         //  backgroundColor: variables.containerBgColor
       },
-      logoArea: {
+      header: {
         padding: 20,
-        marginVertical: 30,
         alignItems: 'center',
-        color: 'white',
-        marginHorizontal: 10,
+      },
+      footer: {
+        alignItems: 'center',
+        padding: 10,
       },
       formElements: {
-        flex: 1,
-        borderTopRightRadius: variables.borderRadiusLarge,
-        borderTopLeftRadius: variables.borderRadiusLarge,
-        backgroundColor: color(variables.primary).lighten(4),
         paddingHorizontal: 20,
         paddingTop: 20,
       },

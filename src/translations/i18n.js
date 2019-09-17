@@ -29,6 +29,9 @@ i18next
     debug: true,
     nsMode: 'translation',
     resources,
+    react: {
+      useSuspense: false,
+    },
   });
 
 const handleLocalizationChange = a => {

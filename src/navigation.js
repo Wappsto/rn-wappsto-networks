@@ -62,9 +62,7 @@ let components = {
     return createAppContainer(this.SwitchNavigator);
   },
   App: function() {
-    return withTranslation(['translation'], {
-      bindI18n: 'languageChanged',
-    })(this.AppContainer);
+    return this.AppContainer;
   },
 
   // helper function

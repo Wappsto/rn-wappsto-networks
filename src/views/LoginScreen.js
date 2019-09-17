@@ -44,7 +44,11 @@ class LoginScreen extends Login {
     return (
       <Screen style={theme.common.centeredContent}>
         <LoginScreen.Header />
-        <View>
+        <View
+          style={{
+            flex: 1,
+            justifyContent: 'space-between',
+          }}>
           <View style={theme.common.formElements}>
             <Text style={theme.common.label}>Email</Text>
             <TextInput
