@@ -1,50 +1,54 @@
-import color from "color";
-import { Platform, Dimensions, PixelRatio } from "react-native";
+import color from 'color';
+import {Platform, Dimensions, PixelRatio} from 'react-native';
 
-const deviceHeight = Dimensions.get("window").height;
-const deviceWidth = Dimensions.get("window").width;
+const deviceHeight = Dimensions.get('window').height;
+const deviceWidth = Dimensions.get('window').width;
 const platform = Platform.OS;
-const isIphoneX = platform === "ios" && deviceHeight === 812 && deviceWidth === 375;
+const isIphoneX =
+  platform === 'ios' && deviceHeight === 812 && deviceWidth === 375;
 
-export default {
+let variables = {};
+
+export function generateVariables(v = {}) {
+  Object.assign(variables, {
     // Color
-    primary: "hsla(215, 50%, 15%, 1)",
-    secondary: "hsla(358, 96%, 61%, 1)",
+    primary: 'hsla(215, 50%, 15%, 1)',
+    secondary: 'hsla(358, 96%, 61%, 1)',
     get dark() {
       return color(this.primary).darken(0.5);
     },
-    white: "#ffffff",
-    black: "#000",
-    disabled: "#bbbbbb",
-    inactive: "#fafafa",
-    success: "#5cb85c",
-    alert: "#c51165",
-    warning: "#f0ad4e",
+    white: '#ffffff',
+    black: '#000',
+    disabled: '#bbbbbb',
+    inactive: '#fafafa',
+    success: '#5cb85c',
+    alert: '#c51165',
+    warning: '#f0ad4e',
 
     get appBgColor() {
-      return "#fff"//color(this.primary).lighten(2);
+      return '#fff'; //color(this.primary).lighten(2);
     },
     get modalBgColor() {
       return this.primary;
     },
     // Font
     defaultFontSize: 14,
-    fontFamily: "System",
+    fontFamily: 'System',
     fontSizeBase: 12,
 
     // Title
     get titleFontfamily() {
-      return this.fontFamily
+      return this.fontFamily;
     },
-    titleFontSize: platform === "ios" ? 17 : 19,
-    subTitleFontSize: platform === "ios" ? 11 : 14,
+    titleFontSize: platform === 'ios' ? 17 : 19,
+    subTitleFontSize: platform === 'ios' ? 11 : 14,
 
     // Text
     get textColor() {
-      return this.black
+      return this.black;
     },
     get textSuccess() {
-      return this.success
+      return this.success;
     },
     get textWarning() {
       return this.warning;
@@ -59,9 +63,8 @@ export default {
       return this.alert;
     },
     get textSecondary() {
-      return "#777";
+      return '#777';
     },
-
 
     // Border
     borderRadiusBase: 5,
@@ -71,12 +74,14 @@ export default {
     borderWidth: 1 / PixelRatio.getPixelSizeForLayoutSize(0.3),
 
     // Button
-    get buttonBg(){
+    get buttonBg() {
       return this.primary;
     },
-    buttonColor: "white",
+    buttonColor: 'white',
     get buttonTextSize() {
-      return platform === "ios" ? this.fontSizeBase * 1.2 : this.fontSizeBase * 1.2;
+      return platform === 'ios'
+        ? this.fontSizeBase * 1.2
+        : this.fontSizeBase * 1.2;
     },
     get buttonDisabledBg() {
       return this.disabled;
@@ -89,7 +94,9 @@ export default {
 
     // Input
     get inputTextSize() {
-      return platform === "ios" ? this.fontSizeBase * 1.2 : this.fontSizeBase * 1.2;
+      return platform === 'ios'
+        ? this.fontSizeBase * 1.2
+        : this.fontSizeBase * 1.2;
     },
     get inputBorderColor() {
       return color(this.primary).darken(0.3);
@@ -101,7 +108,7 @@ export default {
       return this.alert;
     },
     inputHeight: 42,
-    inputBg: "rgba(255, 255, 255, 1)",
+    inputBg: 'rgba(255, 255, 255, 1)',
 
     // Progress Bar
     get defaultProgressColor() {
@@ -126,6 +133,13 @@ export default {
 
     // Container
     get containerBgColor() {
-      return  color(this.primary).lighten(4);
-    }
-};
+      return color(this.primary).lighten(4);
+    },
+    ...v,
+  });
+  return variables;
+}
+
+generateVariables();
+
+export default variables;

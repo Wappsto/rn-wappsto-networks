@@ -1,15 +1,14 @@
+import {generateStyles} from './common/main';
+import {generateVariables} from './variables/generic';
+
 let theme = {
-  variables: require("./variables/generic").default,
-  common: require("./common/main").default
-}
+  variables: require('./variables/generic').default,
+  common: require('./common/main').default,
+};
 
 export default theme;
 
-export function use(config){
-  if(config.variables){
-    theme.variables = config.variables;
-  }
-  if(config.common){
-    theme.common = config.common;
-  }
+export function use(config) {
+  generateVariables(config.variables);
+  generateStyles(config.common);
 }

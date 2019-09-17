@@ -134,12 +134,12 @@ class Screen extends Component {
     let stream = this.props.stream;
     let showStream = this.state.connected && stream && stream.status !== 2;
     return (
-      <SafeAreaView style={styles.safeAreaView}>
+      <SafeAreaView style={theme.common.safeAreaView}>
         {!this.state.connected && (
-          <Text style={styles.warning}> Internet connection is lost</Text>
+          <Text style={theme.common.warning}> Internet connection is lost</Text>
         )}
         {showStream && (
-          <View style={styles.warning}>
+          <View style={theme.common.warning}>
             <Text>{this.getStreamMessage(stream)}</Text>
             {stream.status === status.LOST && (
               <TouchableOpacity onPress={this.reconnectStream}>
@@ -153,20 +153,6 @@ class Screen extends Component {
     );
   }
 }
-
-const styles = StyleSheet.create({
-  safeAreaView: {
-    flex: 1,
-    backgroundColor: theme.variables.appBgColor,
-  },
-  warning: {
-    backgroundColor: theme.variables.warning,
-    paddingHorizontal: 10,
-    paddingVertical: 20,
-    textAlign: 'center',
-    width: '100%',
-  },
-});
 
 export default connect(
   mapStateToProps,
