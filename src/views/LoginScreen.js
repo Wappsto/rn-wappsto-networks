@@ -113,4 +113,12 @@ LoginScreen.Footer = () => (
   </View>
 );
 
+export function setHeader(comp){
+  LoginScreen.Header = comp;
+}
+
+export function setFooter(comp){
+  LoginScreen.Footer = comp;
+}
+
 export default connect(LoginScreen);

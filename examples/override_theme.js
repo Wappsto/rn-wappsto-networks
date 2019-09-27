@@ -1,4 +1,4 @@
-import {useTheme} from '../src/override';
+import {useTheme} from '../src/override/theme';
 import theme from '../src/theme/themeExport';
 
 // overriding theme

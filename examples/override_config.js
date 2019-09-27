@@ -1,4 +1,4 @@
-import { useConfig } from '../src/override';
+import { useConfig } from '../src/override/config';
 
 // overriding wappsto redux configuration
 useConfig({

@@ -1,5 +1,5 @@
 import { createDrawerNavigator } from 'react-navigation';
-import { replaceComponent } from '../src/override';
+import { replaceComponent } from '../src/override/components';
 import theme from '../src/theme/themeExport';
 
 // overriding COMPONENTS
