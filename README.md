@@ -27,7 +27,7 @@ When you are overriding components or theme, make sure that your file is loaded 
 All pages that are under **components** variable in **rn-wappsto-networks/src/navigation** can be replaced.
 
 ```
-SlpashScreen
+SplashScreen
 LoginScreen
 NetworksListScreen
 NetworkScreen

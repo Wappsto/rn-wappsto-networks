@@ -4,13 +4,12 @@ import {createSwitchNavigator, createAppContainer} from 'react-navigation';
 import {createDrawerNavigator} from 'react-navigation-drawer';
 import {createStackNavigator} from 'react-navigation-stack';
 import i18n from './translations/i18n';
-import {withTranslation} from 'react-i18next';
 
 import store from './configureWappstoRedux';
 import theme from './theme/themeExport';
 
 let components = {
-  SlpashScreen: require('./views/SplashScreen').default,
+  SplashScreen: require('./views/SplashScreen').default,
   LoginScreen: require('./views/LoginScreen').default,
   DevicesListScreen: require('./views/main/DevicesListScreen').default,
   DeviceScreen: require('./views/main/DeviceScreen').default,
@@ -53,7 +52,7 @@ let components = {
   },
   SwitchNavigator: function() {
     return createSwitchNavigator({
-      SplashScreen: {screen: this.SlpashScreen},
+      SplashScreen: {screen: this.SplashScreen},
       LoginScreen: {screen: this.LoginScreen},
       MainScreen: {screen: this.MainScreen},
     });
