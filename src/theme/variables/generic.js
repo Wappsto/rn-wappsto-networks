@@ -26,7 +26,7 @@ export function generateVariables(v = {}) {
     warning: '#f0ad4e',
 
     get appBgColor() {
-      return '#fff'; //color(this.primary).lighten(2);
+      return '#f5f5f4';
     },
     get modalBgColor() {
       return this.primary;
@@ -107,7 +107,7 @@ export function generateVariables(v = {}) {
     get inputErrorBorderColor() {
       return this.alert;
     },
-    inputHeight: 42,
+    inputHeight: 46,
     inputBg: 'rgba(255, 255, 255, 1)',
 
     // Progress Bar

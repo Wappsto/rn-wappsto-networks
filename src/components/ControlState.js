@@ -2,10 +2,9 @@ import React from 'react';
 import {
   View,
   TextInput,
-  Switch,
-  Slider
+  Switch
 } from 'react-native';
-
+import Slider from '@react-native-community/slider';
 import Timestamp from './Timestamp';
 import RequestError from './RequestError';
 
@@ -49,6 +48,7 @@ class ControlState extends State {
             value={parseFloat(this.state.input)}
             onSlidingComplete={this.updateState}
             disabled={disabled}
+            color={theme.variables.primary}
           />
         );
       } else {

@@ -67,10 +67,10 @@ class LoginScreen extends Login {
                 secureTextEntry={!this.state.showPassword}
               />
               <Icon
-                style={theme.common.eyeIcon}
+                style={theme.common.passwordVisibilityButton}
                 name={this.state.showPassword ? 'eye' : 'eye-slash'}
                 onPress={this.toggleShowPassword}
-                size={15}
+                size={14}
               />
             </View>
             <TouchableOpacity

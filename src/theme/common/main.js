@@ -17,6 +17,13 @@ export function generateStyles(c = {}) {
         paddingVertical: 5,
         backgroundColor: variables.containerBgColor,
       },
+      SplashScreenContainer: {
+        flex: 1,
+        alignItems: 'center',
+        flexDirection: 'column',
+        justifyContent: 'space-around',
+        backgroundColor: variables.modalBgColor
+      },
       safeAreaView: {
         flex: 1,
         backgroundColor: variables.appBgColor,
@@ -89,7 +96,7 @@ export function generateStyles(c = {}) {
       },
       input: {
         fontSize: variables.inputTextSize,
-        height: variables.inputHeightBase,
+        height: variables.inputHeight,
         backgroundColor: variables.inputBg,
         borderColor: variables.inputBorderColor,
         borderWidth: variables.borderWidth,
@@ -124,10 +131,10 @@ export function generateStyles(c = {}) {
         justifyContent: 'space-around',
         backgroundColor: variables.modalBgColor,
       },
-      eyeIcon: {
+      passwordVisibilityButton: {
         position: 'absolute',
         right: 0,
-        padding: 17,
+        padding: 18,
       },
       itemPanel: {
         flex: 1,
