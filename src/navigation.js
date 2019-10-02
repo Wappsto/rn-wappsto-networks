@@ -16,12 +16,10 @@ let components = {
   AccountScreen: require('./views/main/AccountScreen').default,
   DrawerMenu: require('./components/DrawerMenu').default,
   MainStackScreen: function() {
-    return createStackNavigator(
-      {
-        DevicesListScreen: {screen: this.DevicesListScreen},
-        DeviceScreen: {screen: this.DeviceScreen},
-      }
-    );
+    return createStackNavigator({
+      DevicesListScreen: {screen: this.DevicesListScreen},
+      DeviceScreen: {screen: this.DeviceScreen},
+    });
   },
   AccountStackScreen: function() {
     return createStackNavigator({

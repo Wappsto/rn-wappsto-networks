@@ -17,7 +17,7 @@ export function generateVariables(v = {}) {
     get dark() {
       return color(this.primary).darken(0.5);
     },
-    darkGray:'#777777',
+    darkGray: '#777777',
     lightGray: '#f1f1f1',
     white: '#ffffff',
     black: '#000',

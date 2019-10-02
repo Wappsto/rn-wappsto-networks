@@ -3,7 +3,7 @@ import color from 'color';
 import {StyleSheet} from 'react-native';
 import {Platform, Dimensions} from 'react-native';
 
-import { TextInput } from 'react-native';
+import {TextInput} from 'react-native';
 
 let variables = require('./../variables/generic').default;
 let styles = {};
@@ -17,73 +17,74 @@ export function generateStyles(c = {}) {
       container: {
         flex: 1,
         paddingVertical: 5,
-        backgroundColor: variables.containerBgColor
+        backgroundColor: variables.containerBgColor,
       },
       safeAreaView: {
         flex: 1,
-        backgroundColor: variables.appBgColor
+        backgroundColor: variables.appBgColor,
       },
-      infoText:{
+      infoText: {
         padding: 5,
         margin: 20,
-        textAlign:'center',
-        borderRadius: variables.borderRadiusBase
+        textAlign: 'center',
+        borderRadius: variables.borderRadiusBase,
       },
       error: {
-        backgroundColor: variables.alert
+        backgroundColor: variables.alert,
+        color: variables.textInverse,
       },
       warning: {
-        backgroundColor: variables.warning
+        backgroundColor: variables.warning,
       },
-      toastFullWidth:{
+      toastFullWidth: {
         paddingHorizontal: 10,
         paddingVertical: 20,
-        width: '100%'
+        width: '100%',
       },
       centeredContent: {
         flex: 1,
         flexDirection: 'column',
         justifyContent: 'center',
         alignItems: 'stretch',
-        backgroundColor: variables.white
+        backgroundColor: variables.white,
       },
       row: {
         flexDirection: 'row',
-        alignItems: 'center'
+        alignItems: 'center',
       },
-      H1:{
+      H1: {
         fontSize: variables.h1,
-        marginBottom: variables.h1 / 2
+        marginBottom: variables.h1 / 2,
       },
-      H2:{
+      H2: {
         fontSize: variables.h2,
-        marginBottom: variables.h2 / 2
+        marginBottom: variables.h2 / 2,
       },
-      H3:{
+      H3: {
         fontSize: variables.h3,
-        marginBottom: variables.h3 / 2
+        marginBottom: variables.h3 / 2,
       },
-      H4:{
+      H4: {
         fontSize: variables.h4,
-        marginBottom: variables.h4 / 2
+        marginBottom: variables.h4 / 2,
       },
-      H5:{
+      H5: {
         fontSize: variables.h5,
-        marginBottom: variables.h5 / 2
+        marginBottom: variables.h5 / 2,
       },
-      H6:{
+      H6: {
         fontSize: variables.h6,
         marginBottom: variables.h6 / 2,
-        fontWeight: 'bold'
+        fontWeight: 'bold',
       },
-      spaceAround:{
-        padding:15
+      spaceAround: {
+        padding: 15,
       },
-      spaceBottom:{
-        marginBottom:15
+      spaceBottom: {
+        marginBottom: 15,
       },
-      spaceTop:{
-        marginTop:15
+      spaceTop: {
+        marginTop: 15,
       },
       listItem: {
         flex: 1,
@@ -98,26 +99,27 @@ export function generateStyles(c = {}) {
       },
       listItemTitleArea: {
         flex: 1,
-        fontWeight: '400'
+        fontWeight: '600',
+        fontSize: variables.h4,
       },
       iconButton: {
-        padding: 12
+        padding: 12,
       },
       listItemHeader: {
         fontSize: variables.h4,
-        color: variables.primary
+        color: variables.primary,
       },
       listItemSubheader: {
         fontSize: variables.defaultFontSize - 1,
-        color: variables.textSecondary
+        color: variables.textSecondary,
       },
       header: {
         padding: 20,
-        alignItems: 'center'
+        alignItems: 'center',
       },
       footer: {
         alignItems: 'center',
-        padding: 10
+        padding: 10,
       },
       formElements: {
         paddingHorizontal: 20,
@@ -136,7 +138,7 @@ export function generateStyles(c = {}) {
         borderRadius: variables.borderRadiusBase,
         paddingHorizontal: 10,
         marginBottom: 12,
-        width: '100%'
+        width: '100%',
       },
       button: {
         backgroundColor: variables.buttonBg,
@@ -146,16 +148,16 @@ export function generateStyles(c = {}) {
         height: variables.inputHeightBase,
         padding: 15,
       },
-      ghost:{
-        backgroundColor: 'transparent'
+      ghost: {
+        backgroundColor: 'transparent',
       },
       btnText: {
         fontSize: variables.buttonTextSize,
         color: variables.buttonColor,
       },
-      actionText:{
+      actionText: {
         color: variables.primary,
-        textDecorationLine: 'underline'
+        textDecorationLine: 'underline',
       },
       disabled: {
         backgroundColor: variables.disabled,
@@ -171,20 +173,20 @@ export function generateStyles(c = {}) {
         flex: 1,
         alignItems: 'center',
         justifyContent: 'center',
-        backgroundColor: 'rgba(0, 0, 0, 0.4)'
+        backgroundColor: 'rgba(0, 0, 0, 0.4)',
       },
       popupContent: {
         backgroundColor: variables.modalBgColor,
         margin: 20,
-        padding: 30
+        padding: 30,
       },
       passwordVisibilityButton: {
         position: 'absolute',
         right: 0,
         padding: 18,
       },
-      seperator:{
-        marginVertical:20,
+      seperator: {
+        marginVertical: 20,
         borderBottomColor: variables.lightGray,
         borderBottomWidth: variables.borderWidth,
       },
@@ -194,10 +196,10 @@ export function generateStyles(c = {}) {
         marginVertical: 5,
         marginHorizontal: 10,
         backgroundColor: variables.panelBgColor,
-        borderRadius: variables.borderRadiusBase
+        borderRadius: variables.borderRadiusBase,
       },
       itemContent: {
-        padding: 15
+        padding: 15,
       },
       itemHeader: {
         flexDirection: 'row',
@@ -206,9 +208,9 @@ export function generateStyles(c = {}) {
         borderBottomColor: variables.lightGray,
         borderBottomWidth: variables.borderWidth,
       },
-      timestamp:{
+      timestamp: {
         color: variables.darkGray,
-        fontStyle: "italic"
+        fontStyle: 'italic',
       },
       ...c,
     }),

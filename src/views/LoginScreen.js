@@ -1,13 +1,13 @@
 import AsyncStorage from '@react-native-community/async-storage';
-import React, {Component} from 'react';
+import React from 'react';
 import {
   View,
   Text,
   TextInput,
-  CheckBox,
   TouchableOpacity,
-  Modal,
   ActivityIndicator,
+  Modal,
+  StyleSheet,
 } from 'react-native';
 
 import {config} from '../configureWappstoRedux';
@@ -22,9 +22,21 @@ import Icon from 'react-native-vector-icons/FontAwesome5';
 
 import {Login, connect} from 'wappsto-components/Login';
 
+const styles = StyleSheet.create({
+  viewStyle: {
+    flex: 1,
+    justifyContent: 'space-between',
+  },
+  footerText: {
+    fontSize: 30,
+    textAlign: 'center',
+  },
+});
+
 class LoginScreen extends Login {
   constructor(props) {
     super(props);
+    this.passwordInputRef = React.createRef();
     this.stream = config.stream;
   }
   saveSession(request) {
@@ -35,34 +47,62 @@ class LoginScreen extends Login {
   navigateToMain(request) {
     this.props.navigation.navigate('MainScreen');
   }
+  moveToPasswordField = () => {
+    const trimText = this.state.username.trim();
+    if (trimText !== this.state.username) {
+      this.setState({username: trimText});
+    }
+    this.passwordInputRef.current.focus();
+  };
+  handleTextChange = (text, type) => {
+    if (text.length - this.state[type].length === 1) {
+      this.setState({[type]: text});
+    } else {
+      this.setState({[type]: text.trim()});
+    }
+  };
+  checkAndSignIn = () => {
+    if (this.state.username && this.state.password) {
+      this.signIn();
+    }
+  };
   render() {
     const postRequest = this.props.postRequest;
     const verifyRequest = this.props.verifyRequest;
-    let request = postRequest || verifyRequest;
+    const loading = postRequest && postRequest.status === 'pending';
     return (
       <Screen style={theme.common.centeredContent}>
         <LoginScreen.Header />
-        <View
-          style={{
-            flex: 1,
-            justifyContent: 'space-between',
-          }}>
+        <View style={styles.viewStyle}>
           <View style={theme.common.formElements}>
             <Text style={theme.common.label}>Email</Text>
             <TextInput
               style={theme.common.input}
-              onChangeText={username => this.setState({username})}
+              onChangeText={username =>
+                this.handleTextChange(username, 'username')
+              }
               value={this.state.username}
               textContentType="emailAddress"
+              autoCapitalize="none"
+              onSubmitEditing={this.moveToPasswordField}
+              keyboardType="email-address"
+              returnKeyType="next"
+              disabled={loading}
             />
             <Text style={theme.common.label}>Password</Text>
             <View>
               <TextInput
+                ref={this.passwordInputRef}
                 style={theme.common.input}
-                onChangeText={password => this.setState({password})}
+                onChangeText={password =>
+                  this.handleTextChange(password, 'password')
+                }
                 value={this.state.password}
                 textContentType="password"
                 secureTextEntry={!this.state.showPassword}
+                autoCapitalize="none"
+                onSubmitEditing={this.checkAndSignIn}
+                disabled={loading}
               />
               <Icon
                 style={theme.common.passwordVisibilityButton}
@@ -71,16 +111,21 @@ class LoginScreen extends Login {
                 size={14}
               />
             </View>
+            {loading && (
+              <ActivityIndicator size="large" color={theme.variables.primary} />
+            )}
+            <RequestError error={postRequest} />
             <TouchableOpacity
               style={[
                 theme.common.button,
-                this.state.isSigninInProgress ||
-                (request && request.status === 'pending')
+                this.state.isSigninInProgress || loading
                   ? theme.common.disabled
                   : null,
               ]}
               onPress={this.signIn}>
-              <Text style={theme.common.btnText}>{CapitalizeFirst(i18n.t('signIn'))}</Text>
+              <Text style={theme.common.btnText}>
+                {CapitalizeFirst(i18n.t('signIn'))}
+              </Text>
             </TouchableOpacity>
           </View>
           <LoginScreen.Footer />
@@ -88,12 +133,13 @@ class LoginScreen extends Login {
         <Modal
           animationType="none"
           transparent={true}
-          visible={request && request.status === 'pending' ? true : false}>
+          visible={
+            verifyRequest && verifyRequest.status === 'pending' ? true : false
+          }>
           <View style={theme.common.modalBackground}>
-            <ActivityIndicator size="large" color={theme.variables.white} />
+            <ActivityIndicator size="large" color={theme.variables.primary} />
           </View>
         </Modal>
-        <RequestError error={postRequest} />
       </Screen>
     );
   }
@@ -101,7 +147,7 @@ class LoginScreen extends Login {
 
 LoginScreen.Header = () => (
   <View style={theme.common.header}>
-    <Text style={{fontSize: 30, textAlign: "center"}}>Welcome to Wappsto Networks</Text>
+    <Text style={styles.footerText}>Welcome to Wappsto Networks</Text>
   </View>
 );
 
@@ -111,11 +157,11 @@ LoginScreen.Footer = () => (
   </View>
 );
 
-export function setHeader(comp){
+export function setHeader(comp) {
   LoginScreen.Header = comp;
 }
 
-export function setFooter(comp){
+export function setFooter(comp) {
   LoginScreen.Footer = comp;
 }
 

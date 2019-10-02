@@ -1,7 +1,7 @@
 import {connect} from 'react-redux';
 import {bindActionCreators} from 'redux';
 import React, {Component} from 'react';
-import {Text, StyleSheet, View, TouchableOpacity} from 'react-native';
+import {Text, View, TouchableOpacity} from 'react-native';
 import SafeAreaView from 'react-native-safe-area-view';
 
 import {config} from '../configureWappstoRedux';
@@ -118,14 +118,18 @@ class Screen extends Component {
     return (
       <SafeAreaView style={theme.common.safeAreaView}>
         {!this.state.connected && (
-          <Text style={[theme.common.toastFullWidth, theme.common.warning]}>{CapitalizeFirst(i18n.t('error:internetConnectionLost'))}</Text>
+          <Text style={[theme.common.toastFullWidth, theme.common.warning]}>
+            {CapitalizeFirst(i18n.t('error:internetConnectionLost'))}
+          </Text>
         )}
         {showStream && (
           <View style={[theme.common.toastFullWidth, theme.common.warning]}>
             <Text>{this.getStreamMessage(stream)}</Text>
             {stream.status === status.LOST && (
               <TouchableOpacity onPress={this.reconnectStream}>
-                <Text style={theme.common.actionText}>{CapitalizeFirst(i18n.t('tryAgain'))}</Text>
+                <Text style={theme.common.actionText}>
+                  {CapitalizeFirst(i18n.t('tryAgain'))}
+                </Text>
               </TouchableOpacity>
             )}
           </View>

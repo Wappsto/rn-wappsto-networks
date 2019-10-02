@@ -1,36 +1,32 @@
 import AsyncStorage from '@react-native-community/async-storage';
-import React, { Component } from 'react';
-import {
-  View,
-  StyleSheet,
-  Text
-} from 'react-native';
+import React, {Component} from 'react';
+import {View, StyleSheet, Text} from 'react-native';
 
-import theme from "../theme/themeExport";
+import theme from '../theme/themeExport';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 
 export default class SplashScreen extends Component {
-  async checkSession(){
-    try{
-      let session = await AsyncStorage.getItem("session");
-      if(session !== null){
+  async checkSession() {
+    try {
+      let session = await AsyncStorage.getItem('session');
+      if (session !== null) {
         session = JSON.parse(session);
         this.session = session;
       }
       this.sessionRetrieved = true;
-      if(this.timeoutEnded){
-        this.props.navigation.navigate("LoginScreen", { session: session });
+      if (this.timeoutEnded) {
+        this.props.navigation.navigate('LoginScreen', {session: session});
       }
-    } catch(e){
-      this.props.navigation.navigate("LoginScreen");
+    } catch (e) {
+      this.props.navigation.navigate('LoginScreen');
     }
   }
-  componentDidMount(){
+  componentDidMount() {
     this.checkSession();
     setTimeout(() => {
       this.timeoutEnded = true;
-      if(this.sessionRetrieved){
-        this.props.navigation.navigate("LoginScreen", { session: this.session });
+      if (this.sessionRetrieved) {
+        this.props.navigation.navigate('LoginScreen', {session: this.session});
       }
     }, 500);
   }
@@ -49,6 +45,6 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     flexDirection: 'column',
     justifyContent: 'space-around',
-    backgroundColor: theme.variables.modalBgColor
-  }
+    backgroundColor: theme.variables.modalBgColor,
+  },
 });
