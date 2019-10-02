@@ -3,10 +3,12 @@ import color from 'color';
 import {StyleSheet} from 'react-native';
 import {Platform, Dimensions} from 'react-native';
 
-const deviceHeight = Dimensions.get('window').height;
-let variables = require('./../variables/generic').default;
+import { TextInput } from 'react-native';
 
+let variables = require('./../variables/generic').default;
 let styles = {};
+
+TextInput.defaultProps.selectionColor = variables.darkGray;
 
 export function generateStyles(c = {}) {
   Object.assign(
@@ -15,11 +17,11 @@ export function generateStyles(c = {}) {
       container: {
         flex: 1,
         paddingVertical: 5,
-        backgroundColor: variables.containerBgColor,
+        backgroundColor: variables.containerBgColor
       },
       safeAreaView: {
         flex: 1,
-        backgroundColor: variables.appBgColor,
+        backgroundColor: variables.appBgColor
       },
       infoText:{
         padding: 5,
@@ -36,18 +38,18 @@ export function generateStyles(c = {}) {
       toastFullWidth:{
         paddingHorizontal: 10,
         paddingVertical: 20,
-        width: '100%',
+        width: '100%'
       },
       centeredContent: {
         flex: 1,
         flexDirection: 'column',
         justifyContent: 'center',
         alignItems: 'stretch',
-        backgroundColor: variables.white,
+        backgroundColor: variables.white
       },
       row: {
         flexDirection: 'row',
-        alignItems: 'center',
+        alignItems: 'center'
       },
       H1:{
         fontSize: variables.h1,
@@ -96,6 +98,7 @@ export function generateStyles(c = {}) {
       },
       listItemTitleArea: {
         flex: 1,
+        fontWeight: '400'
       },
       iconButton: {
         padding: 12
@@ -110,11 +113,11 @@ export function generateStyles(c = {}) {
       },
       header: {
         padding: 20,
-        alignItems: 'center',
+        alignItems: 'center'
       },
       footer: {
         alignItems: 'center',
-        padding: 10,
+        padding: 10
       },
       formElements: {
         paddingHorizontal: 20,

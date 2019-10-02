@@ -2,10 +2,10 @@ import React from 'react';
 import {
   View,
   Text,
+  Slider,
   TextInput,
   Switch
 } from 'react-native';
-import Slider from '@react-native-community/slider';
 import Timestamp from './Timestamp';
 import RequestError from './RequestError';
 
@@ -46,10 +46,12 @@ class ControlState extends State {
             maximumValue={param.max}
             minimumValue={param.min}
             step={param.step}
+            style={{width: '100%'}}
             value={parseFloat(this.state.input)}
             onSlidingComplete={this.updateState}
             disabled={disabled}
-            color={theme.variables.primary}
+            thumbTintColor={theme.variables.primary}
+            minimumTrackTintColor={theme.variables.dark}
           />
         );
       } else {
