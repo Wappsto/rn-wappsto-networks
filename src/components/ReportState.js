@@ -10,6 +10,7 @@ import Timestamp from './Timestamp';
 import RequestError from './RequestError';
 
 import theme from '../theme/themeExport';
+import i18n, {CapitalizeFirst} from '../translations/i18n';
 
 class ReportState extends PureComponent {
   content = () => {
@@ -27,13 +28,14 @@ class ReportState extends PureComponent {
       }
     } else {
       return (
-        <Text>{state.data} {value.number && value.number.unit}</Text>
+        <Text style={{textAlign: 'center', marginBottom: 15}}><Text style={styles.data}>{state.data}</Text> <Text style={styles.unit}>{value.number && value.number.unit}</Text></Text>
       );
     }
   }
   render() {
     return (
-      <View style={{alignSelf: 'center'}}>
+      <View>
+        <Text style={theme.common.H6}>{CapitalizeFirst(i18n.t('currentState'))}</Text>
         {this.content()}
       </View>
     );
@@ -44,6 +46,13 @@ const styles = StyleSheet.create({
   image: {
     width: 200,
     height: 200
+  },
+  unit:{
+    color: theme.variables.darkGray
+  },
+  data:{
+    fontSize: theme.variables.h3,
+    fontWeight:'400'
   }
 });
 

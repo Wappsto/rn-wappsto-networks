@@ -20,18 +20,7 @@ let components = {
       {
         DevicesListScreen: {screen: this.DevicesListScreen},
         DeviceScreen: {screen: this.DeviceScreen},
-      },
-      {
-        defaultNavigationOptions: {
-          headerTintColor: theme.variables.white,
-          headerStyle: {
-            backgroundColor: theme.variables.primary,
-          },
-          headerTitleStyle: {
-            marginLeft: 0,
-          },
-        },
-      },
+      }
     );
   },
   AccountStackScreen: function() {

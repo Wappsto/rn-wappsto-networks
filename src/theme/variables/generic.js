@@ -17,6 +17,8 @@ export function generateVariables(v = {}) {
     get dark() {
       return color(this.primary).darken(0.5);
     },
+    darkGray:'#777777',
+    lightGray: '#f1f1f1',
     white: '#ffffff',
     black: '#000',
     disabled: '#bbbbbb',
@@ -26,15 +28,36 @@ export function generateVariables(v = {}) {
     warning: '#f0ad4e',
 
     get appBgColor() {
-      return '#f5f5f4';
+      return '#f4f4f3';
     },
     get modalBgColor() {
-      return this.primary;
+      return this.white;
     },
-    // Font
+    get panelBgColor() {
+      return this.white;
+    },
+    // Typography
     defaultFontSize: 14,
     fontFamily: 'System',
     fontSizeBase: 12,
+    get h1() {
+      return this.fontSizeBase + 22;
+    },
+    get h2() {
+      return this.fontSizeBase + 18;
+    },
+    get h3() {
+      return this.fontSizeBase + 14;
+    },
+    get h4() {
+      return this.fontSizeBase + 10;
+    },
+    get h5() {
+      return this.fontSizeBase + 6;
+    },
+    get h6() {
+      return this.fontSizeBase + 2;
+    },
 
     // Title
     get titleFontfamily() {
@@ -80,8 +103,8 @@ export function generateVariables(v = {}) {
     buttonColor: 'white',
     get buttonTextSize() {
       return platform === 'ios'
-        ? this.fontSizeBase * 1.2
-        : this.fontSizeBase * 1.2;
+        ? this.fontSizeBase * 1.4
+        : this.fontSizeBase * 1.4;
     },
     get buttonDisabledBg() {
       return this.disabled;
@@ -95,8 +118,8 @@ export function generateVariables(v = {}) {
     // Input
     get inputTextSize() {
       return platform === 'ios'
-        ? this.fontSizeBase * 1.2
-        : this.fontSizeBase * 1.2;
+        ? this.fontSizeBase * 1.4
+        : this.fontSizeBase * 1.4;
     },
     get inputBorderColor() {
       return color(this.primary).darken(0.3);
@@ -123,7 +146,7 @@ export function generateVariables(v = {}) {
       return this.dark;
     },
     get inverseSpinnerColor() {
-      return this.light;
+      return this.white;
     },
 
     // Header
@@ -133,7 +156,7 @@ export function generateVariables(v = {}) {
 
     // Container
     get containerBgColor() {
-      return color(this.primary).lighten(4);
+      return this.lightGray;
     },
     ...v,
   });

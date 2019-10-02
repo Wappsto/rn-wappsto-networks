@@ -12,9 +12,7 @@ import {
 
 import {config} from '../configureWappstoRedux';
 
-import i18n from '../translations/i18n';
-
-import {withTranslation} from 'react-i18next';
+import i18n, {CapitalizeFirst} from '../translations/i18n';
 
 import RequestError from '../components/RequestError';
 import Screen from '../components/Screen';
@@ -82,7 +80,7 @@ class LoginScreen extends Login {
                   : null,
               ]}
               onPress={this.signIn}>
-              <Text style={theme.common.btnText}>Log in</Text>
+              <Text style={theme.common.btnText}>{CapitalizeFirst(i18n.t('signIn'))}</Text>
             </TouchableOpacity>
           </View>
           <LoginScreen.Footer />
@@ -103,7 +101,7 @@ class LoginScreen extends Login {
 
 LoginScreen.Header = () => (
   <View style={theme.common.header}>
-    <Text>Wappsto</Text>
+    <Text style={{fontSize: 30, textAlign: "center"}}>Welcome to Wappsto Networks</Text>
   </View>
 );
 

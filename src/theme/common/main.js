@@ -17,22 +17,25 @@ export function generateStyles(c = {}) {
         paddingVertical: 5,
         backgroundColor: variables.containerBgColor,
       },
-      SplashScreenContainer: {
-        flex: 1,
-        alignItems: 'center',
-        flexDirection: 'column',
-        justifyContent: 'space-around',
-        backgroundColor: variables.modalBgColor
-      },
       safeAreaView: {
         flex: 1,
         backgroundColor: variables.appBgColor,
       },
+      infoText:{
+        padding: 5,
+        margin: 20,
+        textAlign:'center',
+        borderRadius: variables.borderRadiusBase
+      },
+      error: {
+        backgroundColor: variables.alert
+      },
       warning: {
-        backgroundColor: variables.warning,
+        backgroundColor: variables.warning
+      },
+      toastFullWidth:{
         paddingHorizontal: 10,
         paddingVertical: 20,
-        textAlign: 'center',
         width: '100%',
       },
       centeredContent: {
@@ -46,37 +49,64 @@ export function generateStyles(c = {}) {
         flexDirection: 'row',
         alignItems: 'center',
       },
+      H1:{
+        fontSize: variables.h1,
+        marginBottom: variables.h1 / 2
+      },
+      H2:{
+        fontSize: variables.h2,
+        marginBottom: variables.h2 / 2
+      },
+      H3:{
+        fontSize: variables.h3,
+        marginBottom: variables.h3 / 2
+      },
+      H4:{
+        fontSize: variables.h4,
+        marginBottom: variables.h4 / 2
+      },
+      H5:{
+        fontSize: variables.h5,
+        marginBottom: variables.h5 / 2
+      },
+      H6:{
+        fontSize: variables.h6,
+        marginBottom: variables.h6 / 2,
+        fontWeight: 'bold'
+      },
+      spaceAround:{
+        padding:15
+      },
+      spaceBottom:{
+        marginBottom:15
+      },
+      spaceTop:{
+        marginTop:15
+      },
       listItem: {
         flex: 1,
+        flexDirection: 'row',
+        alignItems: 'center',
         justifyContent: 'space-between',
         marginVertical: 5,
         marginHorizontal: 10,
         padding: 8,
         borderRadius: variables.borderRadiusBase,
-        backgroundColor: color(variables.white).fade(0.1),
+        backgroundColor: variables.white,
       },
       listItemTitleArea: {
         flex: 1,
       },
-      listItemArrow: {
-        padding: 15,
-        //backgroundColor:"yellow"
+      iconButton: {
+        padding: 12
       },
       listItemHeader: {
-        fontSize: variables.defaultFontSize + 4,
-        color: variables.primary,
+        fontSize: variables.h4,
+        color: variables.primary
       },
       listItemSubheader: {
         fontSize: variables.defaultFontSize - 1,
-        color: variables.textSecondary,
-      },
-      infoPanel: {
-        flex: 1,
-        marginVertical: 5,
-        marginHorizontal: 10,
-        padding: 8,
-        borderRadius: variables.borderRadiusBase,
-        //  backgroundColor: variables.containerBgColor
+        color: variables.textSecondary
       },
       header: {
         padding: 20,
@@ -103,6 +133,7 @@ export function generateStyles(c = {}) {
         borderRadius: variables.borderRadiusBase,
         paddingHorizontal: 10,
         marginBottom: 12,
+        width: '100%'
       },
       button: {
         backgroundColor: variables.buttonBg,
@@ -112,14 +143,16 @@ export function generateStyles(c = {}) {
         height: variables.inputHeightBase,
         padding: 15,
       },
-      roundOutline: {
-        padding: 10,
-        borderRadius: 50,
-        backgroundColor: color(variables.primary).lighten(4),
+      ghost:{
+        backgroundColor: 'transparent'
       },
       btnText: {
         fontSize: variables.buttonTextSize,
         color: variables.buttonColor,
+      },
+      actionText:{
+        color: variables.primary,
+        textDecorationLine: 'underline'
       },
       disabled: {
         backgroundColor: variables.disabled,
@@ -131,45 +164,48 @@ export function generateStyles(c = {}) {
         justifyContent: 'space-around',
         backgroundColor: variables.modalBgColor,
       },
+      popupOverlay: {
+        flex: 1,
+        alignItems: 'center',
+        justifyContent: 'center',
+        backgroundColor: 'rgba(0, 0, 0, 0.4)'
+      },
+      popupContent: {
+        backgroundColor: variables.modalBgColor,
+        margin: 20,
+        padding: 30
+      },
       passwordVisibilityButton: {
         position: 'absolute',
         right: 0,
         padding: 18,
+      },
+      seperator:{
+        marginVertical:20,
+        borderBottomColor: variables.lightGray,
+        borderBottomWidth: variables.borderWidth,
       },
       itemPanel: {
         flex: 1,
         justifyContent: 'space-between',
         marginVertical: 5,
         marginHorizontal: 10,
-        backgroundColor: color(variables.white).fade(0.1),
+        backgroundColor: variables.panelBgColor,
+        borderRadius: variables.borderRadiusBase
       },
       itemContent: {
-        flex: 1,
-        marginVertical: 5,
-        marginHorizontal: 10,
-        padding: 30,
-        borderRadius: variables.borderRadiusBase,
-      },
-      itemFooter: {
-        flexDirection: 'row',
-        alignItems: 'center',
-        padding: 8,
-        borderTopColor: variables.inputBorderColor,
-        borderTopWidth: variables.borderWidth,
+        padding: 15
       },
       itemHeader: {
         flexDirection: 'row',
         alignItems: 'center',
         padding: 8,
-        borderBottomColor: variables.inputBorderColor,
+        borderBottomColor: variables.lightGray,
         borderBottomWidth: variables.borderWidth,
       },
-      barItem: {
-        padding: 8,
-      },
-      barItemSeparator: {
-        borderRightColor: variables.inputBorderColor,
-        borderRightWidth: variables.borderWidth,
+      timestamp:{
+        color: variables.darkGray,
+        fontStyle: "italic"
       },
       ...c,
     }),

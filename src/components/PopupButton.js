@@ -24,7 +24,7 @@ export default class ValueSettings extends PureComponent {
   render() {
     return (
       <Fragment>
-        <TouchableOpacity onPress={this.showPopup}>
+        <TouchableOpacity onPress={this.showPopup} style={theme.common.iconButton}>
           <Icon name={this.props.icon} size={20} style={this.props.buttonStyle} color={theme.variables.primary}/>
         </TouchableOpacity>
         {this.props.children(this.state.modalVisible, this.hidePopup)}

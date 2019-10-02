@@ -11,6 +11,7 @@ import {
 
 import * as items from 'wappsto-redux/actions/items';
 
+import i18n, {CapitalizeFirst} from '../translations/i18n';
 import DeviceSettings from "./DeviceSettings";
 import theme from "../theme/themeExport";
 
@@ -41,10 +42,10 @@ class ListRow extends Component {
     const { item, childName } = this.props;
     return (
       <TouchableOpacity onPress={this.navigate}>
-        <View style={[theme.common.listItem, theme.common.row]}>
-          <View style={[theme.common.listItemTitleArea, theme.common.barItemSeparator]}>
+        <View style={[theme.common.listItem]}>
+          <View style={theme.common.listItemTitleArea}>
             <Text style={theme.common.listItemHeader}>{item.name}</Text>
-            <Text style={theme.common.listItemSubheader}>{item[childName].length} {childName}(s)</Text>
+            <Text style={theme.common.listItemSubheader}>{item[childName].length} {i18n.t(childName,  {count:item[childName].length})}</Text>
           </View>
           <DeviceSettings item={item} />
         </View>

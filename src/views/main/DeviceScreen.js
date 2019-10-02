@@ -6,18 +6,18 @@ import {
   Text,
   ScrollView
 } from 'react-native';
-import Screen from "../../components/Screen";
+import Screen from '../../components/Screen';
 import List from '../../components/List';
 import ValueComponent from '../../components/ValueComponent';
 
 import * as items from 'wappsto-redux/actions/items';
 import { getEntity } from 'wappsto-redux/selectors/entities';
 
-import theme from "../../theme/themeExport";
+import theme from '../../theme/themeExport';
 
 function mapStateToProps(state){
   return {
-    selectedDevice: getEntity(state, "device", state.items.selectedDevice)
+    selectedDevice: getEntity(state, 'device', state.items.selectedDevice)
   }
 }
 
@@ -30,12 +30,13 @@ function mapDispatchToProps(dispatch){
 class DeviceScreen extends Component {
   static navigationOptions = ({ navigation }) => {
     return {
+      ...theme.headerStyle,
       title: navigation.getParam('title', '')
     };
   }
 
   componentWillUnmout(){
-    this.props.removeItem("device");
+    this.props.removeItem('device');
   }
 
   render() {
@@ -44,8 +45,8 @@ class DeviceScreen extends Component {
       <Screen>
         <List
           id={device.meta.id}
-          type="device"
-          childType="value"
+          type='device'
+          childType='value'
           query={{ expand: 5 }}
           renderItem={({item}) =>
             <ValueComponent item={item} />

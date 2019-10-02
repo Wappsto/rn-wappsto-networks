@@ -85,8 +85,8 @@ class DrawerMenu extends Component {
                     ) : (
                       <Icon
                         name="user"
-                        style={theme.common.roundOutline}
-                        size={25}
+                        style={theme.common.spaceAround}
+                        size={20}
                         color={theme.variables.primary}
                       />
                     )}
@@ -97,11 +97,11 @@ class DrawerMenu extends Component {
                   </Text>
                 </View>
                 <TouchableOpacity
-                  style={theme.common.roundOutline}
+                  style={theme.common.spaceAround}
                   onPress={this.logout}>
                   <Icon
                     name="log-out"
-                    size={20}
+                    size={25}
                     color={theme.variables.primary}
                   />
                 </TouchableOpacity>
@@ -129,10 +129,11 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
   },
   userImage: {
-    width: 30,
-    height: 30,
+    width: 20,
+    height: 20,
     borderRadius: 15,
-  },
+    marginRight: 10
+  }
 });
 
 export default connect(

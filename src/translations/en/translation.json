@@ -1,3 +1,74 @@
 {
-  "sign_in": "SIGN IN"
+  "pageTitle":{
+    "main": "home",
+    "account": "account",
+    "settings": "settings"
+  },
+  "deviceDescription":{
+    "name":"name",
+    "uuid":"uuid",
+    "product":"product",
+    "serial":"serial",
+    "version":"version",
+    "manufacturer":"manufacturer",
+    "description":"description",
+    "included":"included"
+  },
+  "deviceInfoHeader": "device details",
+  "userDescription":{
+    "uuid":"uuid",
+    "firstName":"first name",
+    "lastName":"last name",
+    "nickname":"nickname",
+    "email":"email",
+    "phone":"phone"
+  },
+  "valueDescription":{
+    "name": "name",
+    "uuid": "uuid",
+    "type": "type",
+    "permission": "permission",
+    "status": "status",
+    "dataType": "data type",
+    "string": "string",
+    "blob": "blob",
+    "xsd": "xsd",
+    "min":"minimum",
+    "max":"maximum",
+    "maxLength":"maximum length",
+    "encoding":"encoding",
+    "stepSize":"step size",
+    "unit":"unit",
+    "namespace":"namespace",
+  },
+  "valueInfoHeader": "value details",
+  "infoMessage":{
+    "listIsEmpty": "list is empty"
+  },
+  "statusMessage":{
+    "openingConnection": "opening connection",
+    "streamOpen": "stream connection open",
+    "streamClosed": "stream connection closed",
+    "connecting": "connecting...",
+    "loading": "loading...",
+    "reconnecting": "reconnecting...",
+    "creatingStream": "creating stream...",
+    "gettingStream": "getting stream...",
+    "updatingStream": "updating stream..."
+  },
+  "device":"device",
+  "device_plural":"device",
+  "network":"network",
+  "network_plural":"network",
+  "currentState":"current state",
+  "desiredState":"desired state",
+  "state":"state",
+  "state_plural":"state",
+  "value":"value",
+  "value_plural":"values",
+  "loading": "loading",
+  "lastUpdated": "last updated",
+  "reload": "reload",
+  "signIn": "sign in",
+  "tryAgain": "try again"
 }

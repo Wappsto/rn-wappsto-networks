@@ -1,6 +1,7 @@
 import React from 'react';
 import {
   View,
+  Text,
   TextInput,
   Switch
 } from 'react-native';
@@ -9,7 +10,7 @@ import Timestamp from './Timestamp';
 import RequestError from './RequestError';
 
 import theme from '../theme/themeExport';
-
+import i18n, {CapitalizeFirst} from '../translations/i18n';
 import { State, connect } from 'wappsto-components/State';
 
 class ControlState extends State {
@@ -93,7 +94,10 @@ class ControlState extends State {
     const { state, value, request } = this.props;
     return (
       <View>
-        {this.getStateDataField(state, value)}
+        <Text style={theme.common.H6}>{CapitalizeFirst(i18n.t('desiredState'))}</Text>
+        <View style={{alignItems:'center', marginBottom: 15}}>
+          {this.getStateDataField(state, value)}
+        </View>
         <RequestError error={request} />
       </View>
     );

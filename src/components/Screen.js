@@ -12,6 +12,7 @@ import {openStream, status, steps} from 'wappsto-redux/actions/stream';
 
 import NetInfo from '@react-native-community/netinfo';
 
+import i18n, {CapitalizeFirst} from '../translations/i18n';
 import theme from '../theme/themeExport';
 
 function mapStateToProps(state, componentProps) {
@@ -72,55 +73,36 @@ class Screen extends Component {
       case status.RECONNECTING:
         mStatus =
           stream.status === status.CONNECTING
-            ? 'connecting...'
-            : 'reconnecting...';
+            ? CapitalizeFirst(i18n.t('statusMessage.connecting'))
+            : CapitalizeFirst(i18n.t('statusMessage.reconnecting'));
         switch (stream.step) {
           case steps.CONNECTING.GET_STREAM:
-            mStep = 'getting stream list...';
+            mStep = CapitalizeFirst(i18n.t('statusMessage.gettingStream'));
             break;
           case steps.CONNECTING.CREATE_STREAM:
-            mStep = 'creating stream...';
+            mStep = CapitalizeFirst(i18n.t('statusMessage.creatingStream'));
             break;
           case steps.CONNECTING.UPDATE_STREAM:
-            mStep = 'updating stream...';
+            mStep = CapitalizeFirst(i18n.t('statusMessage.updatingStream'));
             break;
           case steps.CONNECTING.OPENING_SOCKET:
           case steps.CONNECTING.WAITING:
-            mStep = 'opening connection...';
+            mStep = CapitalizeFirst(i18n.t('statusMessage.openingConnection'));
             break;
         }
         break;
       case status.OPEN:
-        mStatus = 'open';
+        mStatus = CapitalizeFirst(i18n.t('statusMessage.streamOpen'));
         break;
       case status.CLOSED:
-        mStatus = 'stream connection closed';
-        switch (stream.code) {
-          case 4000:
-            mStep = 'internal error';
-            break;
-          case 4001:
-            mStep = 'session not valid';
-            break;
-          case 4002:
-            mStep = 'forbidden';
-            break;
-          case 4003:
-            mStep = 'no subscriptions';
-            break;
-          case 4004:
-            mStep = 'stopped';
-            break;
-          case 4005:
-            mStep = 'impossible to open websocket';
-            break;
-        }
+        mStatus = CapitalizeFirst(i18n.t('statusMessage.streamClosed'));
+        mStep = CapitalizeFirst(i18n.t('error:stream.code.' + stream.code));
         break;
       case status.ERROR:
-        mStatus = 'error';
+        mStatus = CapitalizeFirst(i18n.t('error:generic'));
         break;
       case status.LOST:
-        mStatus = 'connection lost';
+        mStatus = CapitalizeFirst(i18n.t('error:stream.connectionLost'));
         break;
     }
     let result = mStatus + (mStep ? '\n' + mStep : '');
@@ -136,14 +118,14 @@ class Screen extends Component {
     return (
       <SafeAreaView style={theme.common.safeAreaView}>
         {!this.state.connected && (
-          <Text style={theme.common.warning}> Internet connection is lost</Text>
+          <Text style={[theme.common.toastFullWidth, theme.common.warning]}>{CapitalizeFirst(i18n.t('error:internetConnectionLost'))}</Text>
         )}
         {showStream && (
-          <View style={theme.common.warning}>
+          <View style={[theme.common.toastFullWidth, theme.common.warning]}>
             <Text>{this.getStreamMessage(stream)}</Text>
             {stream.status === status.LOST && (
               <TouchableOpacity onPress={this.reconnectStream}>
-                <Text style={{textDecorationLine: 'underline'}}>try again</Text>
+                <Text style={theme.common.actionText}>{CapitalizeFirst(i18n.t('tryAgain'))}</Text>
               </TouchableOpacity>
             )}
           </View>

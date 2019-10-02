@@ -8,7 +8,7 @@ import {
   TouchableOpacity,
   ActivityIndicator
 } from 'react-native';
-import Screen from "./Screen";
+import Screen from './Screen';
 import StatesComponent from './StatesComponent';
 import ValueSettings from './ValueSettings';
 
@@ -16,13 +16,13 @@ import * as request from 'wappsto-redux/actions/request';
 import { getEntity } from 'wappsto-redux/selectors/entities';
 import { getRequest } from 'wappsto-redux/selectors/request';
 
-import theme from "../theme/themeExport";
+import theme from '../theme/themeExport';
 import Icon from 'react-native-vector-icons/Feather';
 
 function mapStateToProps(state, componentProps){
   let valueId = componentProps.item.meta.id;
   return {
-    request: getRequest(state, "/value/" + valueId, "PATCH"),
+    request: getRequest(state, '/value/' + valueId, 'PATCH'),
   }
 }
 
@@ -40,7 +40,7 @@ class ValueComponent extends Component {
   }
 
   updateValueStatus = () => {
-    this.props.makeRequest("PATCH", "/value/" + this.props.item.meta.id, { status: "update" });
+    this.props.makeRequest('PATCH', '/value/' + this.props.item.meta.id, { status: 'update' });
   }
 
   render() {
@@ -49,14 +49,15 @@ class ValueComponent extends Component {
     return (
       <View style={theme.common.itemPanel}>
         <View style={theme.common.itemHeader}>
-          <Text style={[theme.common.listItemTitleArea, theme.common.barItem, theme.common.barItemSeparator]}>{value.name}</Text>
+          <Text style={[theme.common.listItemTitleArea]}>{value.name}</Text>
           <Fragment>
             {
-              request && request.status === "pending" ?
-              <ActivityIndicator size="small" color={theme.variables.black} style={[theme.common.barItem, theme.common.barItemSeparator]} /> :
-              <TouchableOpacity style={[theme.common.barItem, theme.common.barItemSeparator]} onPress={this.updateValueStatus}>
-                <Icon name="rotate-cw" size={20} color={theme.variables.primary} />
-              </TouchableOpacity>
+              request && request.status === 'pending' ?
+                <ActivityIndicator size='small' color={theme.variables.primary} style={theme.common.iconButton} />
+              :
+                <TouchableOpacity style={theme.common.iconButton} onPress={this.updateValueStatus}>
+                  <Icon name='rotate-cw' size={20} color={theme.variables.primary} />
+                </TouchableOpacity>
             }
             <ValueSettings item={value} />
           </Fragment>

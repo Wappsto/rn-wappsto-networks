@@ -1,8 +1,7 @@
 import React, { Component } from 'react';
 import {
   View,
-  Text,
-  StyleSheet,
+  Text
 } from 'react-native';
 
 import Screen from '../../components/Screen';
@@ -12,10 +11,14 @@ import MenuButton from '../../components/MenuButton';
 
 import { Account, connect } from 'wappsto-components/Account';
 
+import theme from "../../theme/themeExport";
+import i18n, {CapitalizeFirst, CapitalizeEach} from '../../translations/i18n';
+
 class AccountScreen extends Account {
   static navigationOptions = ({ navigation }) => {
     return {
-      title: 'Account',
+      ...theme.headerStyle,
+      title: CapitalizeEach(i18n.t('pageTitle.account')),
       headerLeft: <MenuButton navigation={navigation} />
     };
   }
@@ -27,16 +30,16 @@ class AccountScreen extends Account {
       <Screen>
         {
           user ?
-          <View>
-            <Text>UUID: {user.meta.id}</Text>
-            <Text>First name: {user.first_name}</Text>
-            <Text>Last name: {user.last_name}</Text>
-            <Text>Nickname: {user.nickname}</Text>
-            <Text>Email: {user.email}</Text>
-            <Text>Phone: {user.phone}</Text>
+          <View style={theme.common.spaceAround}>
+            <Text>{CapitalizeFirst(i18n.t('userDescription.uuid'))}: {user.meta.id}</Text>
+            <Text>{CapitalizeFirst(i18n.t('userDescription.firstName'))}: {user.first_name}</Text>
+            <Text>{CapitalizeFirst(i18n.t('userDescription.lastName'))}: {user.last_name}</Text>
+            <Text>{CapitalizeFirst(i18n.t('userDescription.nickname'))}: {user.nickname}</Text>
+            <Text>{CapitalizeFirst(i18n.t('userDescription.email'))}: {user.email}</Text>
+            <Text>{CapitalizeFirst(i18n.t('userDescription.phone'))}: {user.phone}</Text>
           </View> :
           request && request.status === 'pending' ?
-            <Text>loading user data</Text> :
+            <Text>{CapitalizeFirst(i18n.t('statusMessage.loading'))}</Text> :
             null
         }
         <RequestError error={request} />

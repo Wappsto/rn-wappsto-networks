@@ -11,7 +11,7 @@ import RequestError from './RequestError';
 
 import theme from '../theme/themeExport';
 import Icon from 'react-native-vector-icons/Feather';
-
+import i18n, {CapitalizeFirst} from '../translations/i18n';
 import { List, connect }from 'wappsto-components/List';
 
 class ListComponent extends List {
@@ -33,11 +33,10 @@ class ListComponent extends List {
               ListFooterComponent={request && request.status === 'pending' && request.options.query.offset ? <ActivityIndicator size='large'/>: null}
             /> :
             <Fragment>
-              <TouchableOpacity style={[theme.common.button, theme.common.roundOutline, theme.common.row, {backgroundColor: 'white', justifyContent: 'center'}]} onPress={this.refresh}>
-                <Icon name='rotate-cw' size={20} color={theme.variables.primary} style={{marginRight: 20}}/>
-                <Text>Refresh</Text>
+              <Text styles={theme.common.infoText}>{CapitalizeFirst(i18n.t('infoMessage.listIsEmpty'))}</Text>
+              <TouchableOpacity onPress={this.refresh} style={[theme.common.button, theme.common.ghost]}>
+                <Text >{CapitalizeFirst(i18n.t('refresh'))}</Text>
               </TouchableOpacity>
-              <Text>List is empty</Text>
             </Fragment>
         }
         <RequestError error={request}/>

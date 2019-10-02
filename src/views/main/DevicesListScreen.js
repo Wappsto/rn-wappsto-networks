@@ -15,10 +15,14 @@ import MenuButton from '../../components/MenuButton';
 import List from '../../components/List';
 import ListRow from '../../components/ListRow';
 
+import theme from "../../theme/themeExport";
+import i18n, {CapitalizeEach} from '../../translations/i18n';
+
 class DevicesListScreen extends Component {
   static navigationOptions = ({ navigation }) => {
     return {
-      title: 'Home',
+      ...theme.headerStyle,
+      title: CapitalizeEach(i18n.t('pageTitle.main')),
       headerLeft: <MenuButton navigation={navigation} />
     };
   }

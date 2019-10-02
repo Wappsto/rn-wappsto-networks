@@ -14,7 +14,7 @@ import {
 
 import ControlState from './ControlState';
 import ReportState from './ReportState';
-import RequestError from "./RequestError";
+import RequestError from './RequestError';
 
 import * as items from 'wappsto-redux/actions/items';
 import * as request from 'wappsto-redux/actions/request';
@@ -23,17 +23,18 @@ import { getRequestAndError } from 'wappsto-redux/selectors/request';
 import { getEntity, getEntities } from 'wappsto-redux/selectors/entities';
 import { getItem } from 'wappsto-redux/selectors/items';
 
-import theme from "../theme/themeExport";
+import theme from '../theme/themeExport';
 import Icon from 'react-native-vector-icons/Feather';
+import i18n, {CapitalizeFirst, CapitalizeEach} from '../translations/i18n';
 
 function mapStateToProps(state, componentProps){
   let id = componentProps.value.meta.id;
-  let url = "/value/" + id + "/state";
+  let url = '/value/' + id + '/state';
   return {
     url: url,
-    request: getRequestAndError(state, url, "GET"),
-    states: getEntities(state, "state", { parent: { type: "value", id: id} }),
-    fetched: getItem(state, url + "_fetched")
+    request: getRequestAndError(state, url, 'GET'),
+    states: getEntities(state, 'state', { parent: { type: 'value', id: id} }),
+    fetched: getItem(state, url + '_fetched')
   }
 }
 
@@ -55,7 +56,7 @@ class StatesComponent extends Component {
 
   componentDidMount(){
     if(!this.props.fetched){
-      this.props.setItem(this.props.url + "_fetched", true);
+      this.props.setItem(this.props.url + '_fetched', true);
       if(this.props.states.length !== this.props.value.state.length){
         this.refresh();
       }
@@ -66,8 +67,8 @@ class StatesComponent extends Component {
 
   refresh(){
     let { request } = this.props.request;
-    if(!request || request.status !== "pending"){
-      this.props.makeRequest("GET", this.props.url, null, { query: { expand: 0 }});
+    if(!request || request.status !== 'pending'){
+      this.props.makeRequest('GET', this.props.url, null, { query: { expand: 0 }});
     }
   }
 
@@ -75,29 +76,32 @@ class StatesComponent extends Component {
     let { request, error } = this.props.request;
     let value = this.props.value;
     let states = this.props.states;
-    let reportState = states.find(s => s.type === "Report");
-    let controlState = states.find(s => s.type === "Control");
+    let reportState = states.find(s => s.type === 'Report');
+    let controlState = states.find(s => s.type === 'Control');
     return (
       <View>
         {
           states.length !== 0 &&
           <Fragment>
             <View style={theme.common.itemContent}>
-              { controlState ? <ControlState value={value} state={controlState} /> : null}
-              { reportState && !controlState ? <ReportState value={value} state={reportState} /> : null}
-            </View>
-            <View style={[theme.common.itemFooter]}>
-              { controlState && reportState && <Text style={[theme.common.barItem, theme.common.barItemSeparator]}>{reportState.data}</Text>}
-              {
-                reportState ?
-                <Text  style={theme.common.barItem}>Last updated: {(new Date(reportState.timestamp)).toLocaleString()}</Text> :
-                controlState && <Text  style={theme.common.barItem}>Last updated: {(new Date(controlState.timestamp)).toLocaleString()}</Text>
-              }
+              { reportState ?
+                <View>
+                  <ReportState value={value} state={reportState} />
+                  <Text style={theme.common.timestamp}>{CapitalizeFirst(i18n.t('lastUpdated'))}: {(new Date(reportState.timestamp)).toLocaleString()}</Text>
+                </View>
+              : null}
+              { reportState && controlState ? <View style={theme.common.seperator}></View> : null}
+              { controlState ?
+                <View>
+                  <ControlState value={value} state={controlState} />
+                  <Text style={theme.common.timestamp}>{CapitalizeFirst(i18n.t('lastUpdated'))}: {(new Date(controlState.timestamp)).toLocaleString()}</Text>
+                </View>
+              : null}
             </View>
           </Fragment>
         }
         {
-          request && request.status === "pending" &&
+          request && request.status === 'pending' &&
           <ActivityIndicator size='large'/>
         }
         <RequestError error={error} />

@@ -6,6 +6,8 @@ import {
   TouchableWithoutFeedback
 } from 'react-native';
 
+import theme from '../theme/themeExport';
+
 export default class Popup extends Component {
   render() {
     return (
@@ -16,9 +18,9 @@ export default class Popup extends Component {
         onRequestClose={this.props.onRequestClose}
         >
         <TouchableWithoutFeedback onPress={this.props.hide}>
-          <View style={styles.container}>
+          <View style={theme.common.popupOverlay}>
             <TouchableWithoutFeedback>
-              <View style={this.props.contentStyle || styles.content}>
+              <View style={this.props.contentStyle || theme.common.popupContent}>
                 {this.props.children}
               </View>
             </TouchableWithoutFeedback>
@@ -28,17 +30,3 @@ export default class Popup extends Component {
     );
   }
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
-    backgroundColor: 'rgba(0, 0, 0, 0.4)'
-  },
-  content: {
-    backgroundColor: 'white',
-    margin: 40,
-    padding: 40
-  }
-});

@@ -1,6 +1,20 @@
 {
-  "no_response": "something went wrong, please verify that you are connected to internet",
-  "generic": "something went wrong, please try again.",
-  "status_503": "service unavailable",
-  "300084": "incorrect password"
+  "generic": "something went wrong, and we don't know what.",
+  "noResponse": "something went wrong, please verify that you are connected to internet",
+  "status":{
+    "503": "service unavailable"
+  },
+  "300084": "incorrect password",
+  "internetConnectionLost": "internet connection is lost",
+  "stream":{
+    "connectionLost": "stream connection is lost",
+    "code":{
+      "4000": "internal server error",
+      "4001": "session not valid",
+      "4002": "forbidden",
+      "4003": "missing subscription",
+      "4004": "stopped",
+      "4005": "failed to open websocket"
+    }
+  }
 }
