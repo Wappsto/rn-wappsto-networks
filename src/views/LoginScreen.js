@@ -7,7 +7,7 @@ import {
   TouchableOpacity,
   ActivityIndicator,
   Modal,
-  StyleSheet,
+  ScrollView
 } from 'react-native';
 
 import {config} from '../configureWappstoRedux';
@@ -21,17 +21,6 @@ import theme from '../theme/themeExport';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 
 import {Login, connect} from 'wappsto-components/Login';
-
-const styles = StyleSheet.create({
-  viewStyle: {
-    flex: 1,
-    justifyContent: 'space-between',
-  },
-  footerText: {
-    fontSize: 30,
-    textAlign: 'center',
-  },
-});
 
 class LoginScreen extends Login {
   constructor(props) {
@@ -73,10 +62,10 @@ class LoginScreen extends Login {
     const loading = postRequest && postRequest.status === 'pending';
     return (
       <Screen style={theme.common.centeredContent}>
-        <LoginScreen.Header />
-        <View style={styles.viewStyle}>
+        <ScrollView>
+          <LoginScreen.Header />
           <View style={theme.common.formElements}>
-            <Text style={theme.common.label}>Email</Text>
+            <Text style={theme.common.label}>{CapitalizeFirst(i18n.t('email'))}</Text>
             <TextInput
               style={theme.common.input}
               onChangeText={username =>
@@ -90,7 +79,7 @@ class LoginScreen extends Login {
               returnKeyType="next"
               disabled={loading}
             />
-            <Text style={theme.common.label}>Password</Text>
+            <Text style={theme.common.label}>{CapitalizeFirst(i18n.t('password'))}</Text>
             <View>
               <TextInput
                 ref={this.passwordInputRef}
@@ -130,7 +119,7 @@ class LoginScreen extends Login {
             </TouchableOpacity>
           </View>
           <LoginScreen.Footer />
-        </View>
+        </ScrollView>
         <Modal
           animationType="none"
           transparent={true}
@@ -148,7 +137,7 @@ class LoginScreen extends Login {
 
 LoginScreen.Header = () => (
   <View style={theme.common.header}>
-    <Text style={styles.footerText}>Welcome to Wappsto Networks</Text>
+    <Text style={{fontSize: 30,textAlign: 'center'}}>Welcome to Wappsto Networks</Text>
   </View>
 );
 

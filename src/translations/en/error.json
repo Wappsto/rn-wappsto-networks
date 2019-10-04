@@ -4,7 +4,7 @@
   "status":{
     "503": "service unavailable"
   },
-  "300084": "incorrect password",
+  "300084": "Username or password does not match",
   "internetConnectionLost": "internet connection is lost",
   "stream":{
     "connectionLost": "stream connection is lost",

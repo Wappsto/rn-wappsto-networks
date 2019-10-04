@@ -58,6 +58,7 @@
   },
   "device":"device",
   "device_plural":"device",
+  "email":"email",
   "network":"network",
   "network_plural":"network",
   "currentState":"current state",
@@ -68,6 +69,7 @@
   "value_plural":"values",
   "loading": "loading",
   "lastUpdated": "last updated",
+  "password": "password",
   "reload": "reload",
   "signIn": "sign in",
   "tryAgain": "try again"

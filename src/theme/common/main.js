@@ -28,13 +28,15 @@ export function generateStyles(c = {}) {
         margin: 20,
         textAlign: 'center',
         borderRadius: variables.borderRadiusBase,
+        borderWidth: variables.borderWidth
       },
       error: {
-        backgroundColor: variables.alert,
-        color: variables.textInverse,
+        borderColor: variables.alert,
+        color: variables.alert,
       },
       warning: {
-        backgroundColor: variables.warning,
+        borderColor: variables.warning,
+        color: variables.warning,
       },
       toastFullWidth: {
         paddingHorizontal: 10,

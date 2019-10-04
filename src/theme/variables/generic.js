@@ -13,7 +13,7 @@ export function generateVariables(v = {}) {
   Object.assign(variables, {
     // Color
     primary: 'hsla(215, 50%, 15%, 1)',
-    secondary: 'hsla(358, 96%, 61%, 1)',
+    secondary: 'hsla(205, 100%, 50%, 1)',
     get dark() {
       return color(this.primary).darken(0.5);
     },
