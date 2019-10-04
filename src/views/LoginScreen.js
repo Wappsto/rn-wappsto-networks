@@ -39,6 +39,7 @@ class LoginScreen extends Login {
     this.passwordInputRef = React.createRef();
     this.stream = config.stream;
   }
+  componentDidMount() {}
   saveSession(request) {
     if (this.state.remember_me === true) {
       AsyncStorage.setItem('session', JSON.stringify(request.json));

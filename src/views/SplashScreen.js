@@ -1,39 +1,41 @@
 import AsyncStorage from '@react-native-community/async-storage';
 import React, {Component} from 'react';
-import {View, StyleSheet, Text} from 'react-native';
+import {View, StyleSheet} from 'react-native';
+import SessionVerifier from './SessionVerifier';
 
 import theme from '../theme/themeExport';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 
 export default class SplashScreen extends Component {
-  async checkSession() {
+  state = {
+    status: 'pending',
+    session: null,
+  };
+  async getSession() {
     try {
       let session = await AsyncStorage.getItem('session');
       if (session !== null) {
         session = JSON.parse(session);
-        this.session = session;
-      }
-      this.sessionRetrieved = true;
-      if (this.timeoutEnded) {
-        this.props.navigation.navigate('LoginScreen', {session: session});
+        this.setState({session, status: 'success'});
+      } else {
+        this.setState({status: 'error'});
       }
     } catch (e) {
-      this.props.navigation.navigate('LoginScreen');
+      this.setState({status: 'error'});
     }
   }
   componentDidMount() {
-    this.checkSession();
-    setTimeout(() => {
-      this.timeoutEnded = true;
-      if (this.sessionRetrieved) {
-        this.props.navigation.navigate('LoginScreen', {session: this.session});
-      }
-    }, 500);
+    this.getSession();
   }
   render() {
     return (
       <View style={styles.container}>
-        <Icon name="kiwi-bird" size={100} color={theme.variables.white} />
+        <Icon name="kiwi-bird" size={100} color={theme.variables.primary} />
+        <SessionVerifier
+          status={this.state.status}
+          session={this.state.session}
+          navigate={this.props.navigation.navigate}
+        />
       </View>
     );
   }
