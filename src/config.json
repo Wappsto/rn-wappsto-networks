@@ -1,5 +1,5 @@
 {
-  "baseUrl": "https://wappsto.com/services",
+  "baseUrl": "https://dev.wappsto.com/services",
   "stream": {
     "name": "wappsto-native",
     "subscription": ["/network"]

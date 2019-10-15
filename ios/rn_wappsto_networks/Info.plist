@@ -72,5 +72,7 @@
 		<string>SimpleLineIcons.ttf</string>
 		<string>Zocial.ttf</string>
 	</array>
+	<key>NSCameraUsageDescription</key>
+	<string>We want to use your camera to scan the QR Code</string>
 </dict>
 </plist>

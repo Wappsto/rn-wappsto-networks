@@ -7,7 +7,7 @@ import {
   TouchableOpacity,
   ActivityIndicator,
   Modal,
-  ScrollView
+  ScrollView,
 } from 'react-native';
 
 import {config} from '../configureWappstoRedux';
@@ -65,7 +65,9 @@ class LoginScreen extends Login {
         <ScrollView>
           <LoginScreen.Header />
           <View style={theme.common.formElements}>
-            <Text style={theme.common.label}>{CapitalizeFirst(i18n.t('email'))}</Text>
+            <Text style={theme.common.label}>
+              {CapitalizeFirst(i18n.t('email'))}
+            </Text>
             <TextInput
               style={theme.common.input}
               onChangeText={username =>
@@ -79,7 +81,9 @@ class LoginScreen extends Login {
               returnKeyType="next"
               disabled={loading}
             />
-            <Text style={theme.common.label}>{CapitalizeFirst(i18n.t('password'))}</Text>
+            <Text style={theme.common.label}>
+              {CapitalizeFirst(i18n.t('password'))}
+            </Text>
             <View>
               <TextInput
                 ref={this.passwordInputRef}
@@ -137,7 +141,9 @@ class LoginScreen extends Login {
 
 LoginScreen.Header = () => (
   <View style={theme.common.header}>
-    <Text style={{fontSize: 30,textAlign: 'center'}}>Welcome to Wappsto Networks</Text>
+    <Text style={{fontSize: 30, textAlign: 'center'}}>
+      Welcome to Wappsto Networks
+    </Text>
   </View>
 );
 

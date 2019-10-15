@@ -1,0 +1,197 @@
+import React, {PureComponent} from 'react';
+import {
+  Text,
+  TextInput,
+  View,
+  ActivityIndicator,
+  TouchableOpacity,
+  StyleSheet,
+} from 'react-native';
+import {RNCamera} from 'react-native-camera';
+import BarcodeMask from 'react-native-barcode-mask';
+import RequestError from '../../../components/RequestError';
+import theme from '../../../theme/themeExport';
+import {connect} from 'react-redux';
+import {bindActionCreators} from 'redux';
+import {makeRequest} from 'wappsto-redux/actions/request';
+import {setItem} from 'wappsto-redux/actions/items';
+import {getRequest} from 'wappsto-redux/selectors/request';
+import {getItem} from 'wappsto-redux/selectors/items';
+import Icon from 'react-native-vector-icons/Feather';
+import i18n, {
+  CapitalizeFirst,
+  CapitalizeEach,
+} from '../../../translations/i18n';
+
+function mapStateToProps(state, componentProps) {
+  const addNetworkId = getItem(state, 'addNetworkId');
+  const postRequest =
+    addNetworkId && getRequest(state, '/network/' + addNetworkId, 'POST');
+  return {
+    postRequest,
+  };
+}
+
+function mapDispatchToProps(dispatch) {
+  return {
+    ...bindActionCreators({makeRequest, setItem}, dispatch),
+  };
+}
+
+class AddNetworkPopup extends PureComponent {
+  state = {
+    inputValue: '',
+    isScanning: false,
+    showTopBar: false,
+  };
+
+  componentDidUpdate() {
+    // hide popup when request is successfull
+    const postRequest = this.props.postRequest;
+    if (postRequest && postRequest.status === 'success') {
+      this.props.hide();
+      this.props.setItem('refreshList', val => (val ? val + 1 : 1));
+    }
+  }
+
+  onRead = event => {
+    this.setState(state => {
+      return {
+        inputValue: event.data.split('+')[0].split(':')[1] || '',
+        isScanning: false,
+      };
+    });
+  };
+
+  addNetwork = () => {
+    console.log('/network/' + this.state.inputValue);
+    this.props.setItem('addNetworkId', this.state.inputValue);
+    this.props.makeRequest({
+      method: 'POST',
+      url: '/network/' + this.state.inputValue,
+      body: {},
+    });
+  };
+
+  switchView = () => {
+    this.setState(state => ({
+      isScanning: !state.isScanning,
+      showTopBar: false,
+    }));
+  };
+
+  render() {
+    const postRequest = this.props.postRequest;
+    const loading = postRequest && postRequest.status === 'pending';
+    if (this.state.isScanning) {
+      return (
+        <>
+          {this.state.showTopBar && (
+            <View style={styles.topBar}>
+              <TouchableOpacity
+                onPress={this.switchView}
+                style={theme.common.iconButton}>
+                <Icon
+                  name="arrow-left"
+                  size={20}
+                  color={theme.variables.primary}
+                />
+              </TouchableOpacity>
+              <Text>
+                {CapitalizeFirst(i18n.t('addNetworkPopup.scanningQR'))}
+              </Text>
+            </View>
+          )}
+          <RNCamera
+            style={styles.camera}
+            barCodeTypes={[RNCamera.Constants.BarCodeType.qr]}
+            onBarCodeRead={this.onRead}
+            flashMode={RNCamera.Constants.FlashMode.torch}
+            onCameraReady={() => this.setState({showTopBar: true})}
+            notAuthorizedView={
+              <Text>
+                {CapitalizeFirst(
+                  i18n.t('addNetworkPopup.cameraPermission.denied'),
+                )}
+              </Text>
+            }
+            pendingAuthorizationView={
+              <Text>
+                {CapitalizeFirst(
+                  i18n.t('addNetworkPopup.cameraPermission.pending'),
+                )}
+              </Text>
+            }
+            androidCameraPermissionOptions={{
+              title: CapitalizeFirst(
+                i18n.t('addNetworkPopup.cameraPermission.title'),
+              ),
+              message: CapitalizeFirst(
+                i18n.t('addNetworkPopup.cameraPermission.message'),
+              ),
+            }}
+            captureAudio={false}>
+            <BarcodeMask
+              width={styles.camera.width - 20}
+              height={styles.camera.height - 30}
+              showAnimatedLine={false}
+            />
+          </RNCamera>
+        </>
+      );
+    }
+    return (
+      <>
+        <Text>{CapitalizeEach(i18n.t('addNetworkPopup.addNetworkText'))}</Text>
+        <TouchableOpacity style={theme.common.button} onPress={this.switchView}>
+          <Text style={theme.common.btnText}>
+            {CapitalizeFirst(i18n.t('addNetworkPopup.scanQRCode'))}
+          </Text>
+        </TouchableOpacity>
+        <TextInput
+          style={theme.common.input}
+          onChangeText={inputValue => this.setState({inputValue})}
+          value={this.state.inputValue}
+          textContentType="emailAddress"
+          autoCapitalize="none"
+          onSubmitEditing={this.moveToPasswordField}
+          keyboardType="email-address"
+          returnKeyType="next"
+          disabled={loading}
+        />
+        {loading && (
+          <ActivityIndicator size="large" color={theme.variables.primary} />
+        )}
+        <RequestError error={postRequest} />
+        <TouchableOpacity
+          style={[theme.common.button, loading ? theme.common.disabled : null]}
+          onPress={this.addNetwork}>
+          <Text style={theme.common.btnText}>
+            {CapitalizeFirst(i18n.t('add'))}
+          </Text>
+        </TouchableOpacity>
+      </>
+    );
+  }
+}
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps,
+)(AddNetworkPopup);
+
+const styles = StyleSheet.create({
+  camera: {
+    flex: 0,
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: 'transparent',
+    height: 250,
+    width: 200,
+  },
+  topBar: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginBottom: 20,
+  },
+});

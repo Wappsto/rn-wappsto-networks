@@ -4618,6 +4618,20 @@ react-is@^16.7.0, react-is@^16.8.1, react-is@^16.8.4, react-is@^16.8.6, react-is
   version "16.10.1"
   resolved "https://registry.yarnpkg.com/react-is/-/react-is-16.10.1.tgz#0612786bf19df406502d935494f0450b40b8294f"
 
+react-native-barcode-mask@^1.1.0:
+  version "1.1.0"
+  resolved "https://registry.yarnpkg.com/react-native-barcode-mask/-/react-native-barcode-mask-1.1.0.tgz#5ededfca152d35395a363939c574cd7cf1595151"
+  integrity sha512-j27TXc8iRMGhVxE4KXxcVZq2hrsVLC0QlsuPejfXPxqRLfoy3UXsx9+LLCYx4Wfyj6Ck1H/BnE8+MUTaHPrP1g==
+  dependencies:
+    prop-types "^15.6.2"
+
+react-native-camera@^3.7.2:
+  version "3.7.2"
+  resolved "https://registry.yarnpkg.com/react-native-camera/-/react-native-camera-3.7.2.tgz#4d20f4753468259749c49541331819637a4417d7"
+  integrity sha512-hAUQu0e4sK2oDjEmj4kLouZXznZo1k500x62vXlvyAO9g8DIc0lnI+EYu/sAOHvqvj7erfh3xRdadqD7Z933MQ==
+  dependencies:
+    prop-types "^15.6.2"
+
 react-native-gesture-handler@^1.4.1:
   version "1.4.1"
   resolved "https://registry.yarnpkg.com/react-native-gesture-handler/-/react-native-gesture-handler-1.4.1.tgz#c38d9e57637b95e221722a79f2bafac62e3aeb21"

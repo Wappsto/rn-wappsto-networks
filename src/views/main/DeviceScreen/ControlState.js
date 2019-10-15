@@ -1,9 +1,9 @@
 import React from 'react';
 import {View, Text, Slider, TextInput, Switch} from 'react-native';
-import RequestError from './RequestError';
+import RequestError from '../../../components/RequestError';
 
-import theme from '../theme/themeExport';
-import i18n, {CapitalizeFirst} from '../translations/i18n';
+import theme from '../../../theme/themeExport';
+import i18n, {CapitalizeFirst} from '../../../translations/i18n';
 import {State, connect} from 'wappsto-components/State';
 
 class ControlState extends State {
@@ -13,11 +13,14 @@ class ControlState extends State {
 
   updateSwitchState = boolValue => {
     const {value} = this.props;
+    let input;
     if (value.hasOwnProperty('number')) {
-      this.updateState(boolValue ? '1' : '0');
+      input = boolValue ? '1' : '0';
     } else {
-      this.updateState(boolValue);
+      input = boolValue;
     }
+    this.updateState(input);
+    this.setState({input});
   };
 
   getStateDataField(state, value) {
