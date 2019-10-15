@@ -13,11 +13,14 @@ class ControlState extends State {
 
   updateSwitchState = boolValue => {
     const {value} = this.props;
+    let input;
     if (value.hasOwnProperty('number')) {
-      this.updateState(boolValue ? '1' : '0');
+      input = boolValue ? '1' : '0';
     } else {
-      this.updateState(boolValue);
+      input = boolValue;
     }
+    this.updateState(input);
+    this.setState({input});
   };
 
   getStateDataField(state, value) {
