@@ -4,7 +4,7 @@ import {TouchableOpacity} from 'react-native';
 import theme from '../theme/themeExport';
 import Icon from 'react-native-vector-icons/Feather';
 
-export default class ValueSettings extends PureComponent {
+export default class PopupButton extends PureComponent {
   state = {
     modalVisible: false,
   };

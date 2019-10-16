@@ -1,5 +1,5 @@
 {
-  "generic": "something went wrong, and we don't know what.",
+  "generic": "something went wrong.",
   "noResponse": "something went wrong, please verify that you are connected to internet",
   "status":{
     "503": "service unavailable"

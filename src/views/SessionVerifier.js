@@ -29,6 +29,7 @@ export class SessionVerifier extends Component {
   componentDidMount() {
     this.addMinimumTimeout();
     this.addMaximumTimeout();
+    this.verify();
   }
   addMinimumTimeout() {
     setTimeout(() => {
@@ -56,6 +57,9 @@ export class SessionVerifier extends Component {
     }
   }
   componentDidUpdate() {
+    this.verify();
+  }
+  verify() {
     const {verifyRequest, session, status} = this.props;
     if (!this.done) {
       if (status === 'error') {

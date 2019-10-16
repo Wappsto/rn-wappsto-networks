@@ -53,8 +53,12 @@ class LoginScreen extends Login {
   };
   checkAndSignIn = () => {
     if (this.state.username && this.state.password) {
-      this.signIn();
+      this.updateAndSignIn();
     }
+  };
+  updateAndSignIn = () => {
+    this.stream = config.stream;
+    this.signIn();
   };
   render() {
     const postRequest = this.props.postRequest;
@@ -116,7 +120,7 @@ class LoginScreen extends Login {
                   ? theme.common.disabled
                   : null,
               ]}
-              onPress={this.signIn}>
+              onPress={this.updateAndSignIn}>
               <Text style={theme.common.btnText}>
                 {CapitalizeFirst(i18n.t('signIn'))}
               </Text>

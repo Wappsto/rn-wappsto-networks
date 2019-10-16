@@ -8,11 +8,12 @@ export default class RequestError extends Component {
   render() {
     let error = this.props.error;
     if (error && error.status === 'error') {
-      let message;
+      let message, extra;
       if (error.json && error.json.code) {
         message = i18n.t('error:' + error.json.code, error.json.data);
         if (message === error.json.code.toString()) {
           message = i18n.t('error:generic');
+          extra = error.json.code + ': ' + error.json.message;
         }
       } else if (error.responseStatus) {
         message = i18n.t('error:status.' + error.responseStatus);
@@ -21,7 +22,8 @@ export default class RequestError extends Component {
       }
       return (
         <Text style={[theme.common.error, theme.common.infoText]}>
-          {' ' + CapitalizeFirst(message) + ' '}
+          {CapitalizeFirst(message)}
+          {extra && '\n' + extra}
         </Text>
       );
     }

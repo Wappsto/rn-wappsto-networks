@@ -76,12 +76,11 @@
   "addNetworkPopup": {
     "addNetworkText": "add network",
     "scanQRCode": "scan QR Code",
-    "scanningQR": "scanning QR Code",
     "cameraPermission": {
       "title": "we need your permission",
       "message": "we need your permission to get access to the camera and scan the QR Code",
       "denied": "camera not authorized",
-      "pending": "waiting for camera permission"
+      "pending": "waiting for camera"
     }
   },
   "add": "add"
