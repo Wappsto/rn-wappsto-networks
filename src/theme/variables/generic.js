@@ -12,8 +12,8 @@ let variables = {};
 export function generateVariables(v = {}) {
   Object.assign(variables, {
     // Color
-    primary: 'hsla(215, 50%, 15%, 1)',
-    secondary: 'hsla(205, 100%, 50%, 1)',
+    primary: 'hsla(169, 90%, 35%, 1)',
+    secondary: 'hsla(17, 100%, 80%, 1)',
     get dark() {
       return color(this.primary).darken(0.5);
     },
@@ -122,7 +122,7 @@ export function generateVariables(v = {}) {
         : this.fontSizeBase * 1.4;
     },
     get inputBorderColor() {
-      return color(this.primary).darken(0.3);
+      return color(this.textColor);
     },
     get inputSuccessBorderColor() {
       return this.secondary;

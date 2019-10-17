@@ -4,7 +4,6 @@
   "status":{
     "503": "service unavailable"
   },
-  "300084": "Username or password does not match",
   "internetConnectionLost": "internet connection is lost",
   "stream":{
     "connectionLost": "stream connection is lost",
@@ -16,5 +15,7 @@
       "4004": "stopped",
       "4005": "failed to open websocket"
     }
-  }
+  },
+  "300084": "username or password does not match",
+  "9900032": "invalid action"
 }

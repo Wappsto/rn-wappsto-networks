@@ -38,7 +38,7 @@ function mapDispatchToProps(dispatch) {
   };
 }
 
-class AddNetworkPopup extends PureComponent {
+class addNetwork extends PureComponent {
   state = {
     inputValue: '',
     isScanning: false,
@@ -68,13 +68,15 @@ class AddNetworkPopup extends PureComponent {
   };
 
   addNetwork = () => {
-    console.log('/network/' + this.state.inputValue);
-    this.props.setItem('addNetworkId', this.state.inputValue);
-    this.props.makeRequest({
-      method: 'POST',
-      url: '/network/' + this.state.inputValue,
-      body: {},
-    });
+    if (this.state.inputValue) {
+      console.log('/network/' + this.state.inputValue);
+      this.props.setItem('addNetworkId', this.state.inputValue);
+      this.props.makeRequest({
+        method: 'POST',
+        url: '/network/' + this.state.inputValue,
+        body: {},
+      });
+    }
   };
 
   switchView = () => {
@@ -88,58 +90,65 @@ class AddNetworkPopup extends PureComponent {
     const loading = postRequest && postRequest.status === 'pending';
     return (
       <>
-        <Text style={theme.common.spaceBottom}>
-          {CapitalizeEach(i18n.t('addNetworkPopup.addNetworkText'))}
+        <Text style={theme.common.H3}>
+          {CapitalizeEach(i18n.t('addNetwork.addNetworkTitle'))}
         </Text>
-        <View style={theme.common.spaceBottom}>
+        <Text style={theme.common.p}>
+          {CapitalizeFirst(i18n.t('addNetwork.addNetworkInfo'))}
+        </Text>
+        <View style={styles.qrCodeScannerWrapper}>
           {this.state.isScanning ? (
             <RNCamera
-              style={[styles.box, styles.camera]}
               barCodeTypes={[RNCamera.Constants.BarCodeType.qr]}
+              style={styles.cameraPreview}
               onBarCodeRead={this.onRead}
               notAuthorizedView={
-                <View style={[styles.box, styles.buttonBoxBackground]}>
+                <View style={styles.cameraCapture}>
                   <Text>
                     {CapitalizeFirst(
-                      i18n.t('addNetworkPopup.cameraPermission.denied'),
+                      i18n.t('addNetwork.cameraPermission.denied'),
                     )}
                   </Text>
                 </View>
               }
               pendingAuthorizationView={
-                <View style={[styles.box, styles.buttonBoxBackground]}>
+                <View style={styles.cameraCapture}>
                   <Text>
                     {CapitalizeFirst(
-                      i18n.t('addNetworkPopup.cameraPermission.pending'),
+                      i18n.t('addNetwork.cameraPermission.pending'),
                     )}
                   </Text>
                 </View>
               }
               androidCameraPermissionOptions={{
                 title: CapitalizeFirst(
-                  i18n.t('addNetworkPopup.cameraPermission.title'),
+                  i18n.t('addNetwork.cameraPermission.title'),
                 ),
                 message: CapitalizeFirst(
-                  i18n.t('addNetworkPopup.cameraPermission.message'),
+                  i18n.t('addNetwork.cameraPermission.message'),
                 ),
               }}
               captureAudio={false}>
               <BarcodeMask
-                width={styles.box.width - 20}
-                height={styles.box.height - 30}
+                width={140}
+                height={140}
+                edgeColor={theme.variables.primary}
                 showAnimatedLine={false}
               />
             </RNCamera>
           ) : (
             <TouchableOpacity
-              style={[styles.box, styles.buttonBoxBackground]}
+              style={styles.cameraCapture}
               onPress={this.switchView}>
               <Text>
-                {CapitalizeFirst(i18n.t('addNetworkPopup.scanQRCode'))}
+                {CapitalizeFirst(i18n.t('addNetwork.scanQRCode'))}
               </Text>
             </TouchableOpacity>
           )}
         </View>
+        <Text style={theme.common.label}>
+          {CapitalizeFirst(i18n.t('addNetwork.uuid'))}
+        </Text>
         <TextInput
           style={theme.common.input}
           onChangeText={inputValue => this.setState({inputValue})}
@@ -170,24 +179,31 @@ class AddNetworkPopup extends PureComponent {
 export default connect(
   mapStateToProps,
   mapDispatchToProps,
-)(AddNetworkPopup);
+)(addNetwork);
 
 const styles = StyleSheet.create({
-  box: {
-    flex: 0,
-    alignItems: 'center',
-    justifyContent: 'center',
-    height: 250,
-    width: 200,
+
+  qrCodeScannerWrapper: {
+    flex:1,
+    height: 140,
+    width: '100%',
+    marginBottom:20,
+    overflow: 'hidden',
+    borderRadius: theme.variables.borderRadiusBase,
+    backgroundColor: 'rgba(0, 0, 0, 0.2)'
   },
-  camera: {
-    backgroundColor: 'transparent',
+  cameraPreview:{
+    flex: 1
   },
-  buttonBoxBackground: {
+  cameraCaptureWrapper: {
     borderWidth: 1,
     borderStyle: 'solid',
-    borderColor: 'black',
-    borderRadius: 10,
-    backgroundColor: '#f1f1f1',
+    borderColor: 'yellow'
   },
+  cameraCapture: {
+    height: 140,
+    alignItems: 'center',
+    justifyContent: 'center',
+    padding: 15
+  }
 });

@@ -104,7 +104,7 @@ class LoginScreen extends Login {
               />
               <Icon
                 style={theme.common.passwordVisibilityButton}
-                name={this.state.showPassword ? 'eye' : 'eye-slash'}
+                name={this.state.showPassword ? 'eye-slash' : 'eye-slash'}
                 onPress={this.toggleShowPassword}
                 size={14}
               />

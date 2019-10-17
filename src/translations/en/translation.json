@@ -73,12 +73,14 @@
   "reload": "reload",
   "signIn": "sign in",
   "tryAgain": "try again",
-  "addNetworkPopup": {
-    "addNetworkText": "add network",
-    "scanQRCode": "scan QR Code",
+  "addNetwork": {
+    "uuid":"UUID",
+    "addNetworkTitle": "add Network",
+    "addNetworkInfo": "To add devices to your list you need to provide a 36-character long unique identifier (UUID).\n\nUse QR-scanner to scan the code printed on your device (e.g. Porcupine) or enter it manually in the field below.",
+    "scanQRCode": "tap to scan QR code",
     "cameraPermission": {
-      "title": "we need your permission",
-      "message": "we need your permission to get access to the camera and scan the QR Code",
+      "title": "your permission to use phone camera is required in order to be able to scan QR code",
+      "message": "we need your permission to get access to the camera and scan the QR code",
       "denied": "camera not authorized",
       "pending": "waiting for camera"
     }

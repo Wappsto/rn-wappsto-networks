@@ -30,6 +30,10 @@ export function generateStyles(c = {}) {
         borderRadius: variables.borderRadiusBase,
         borderWidth: variables.borderWidth
       },
+      p: {
+        color: variables.textSecondary,
+        marginBottom: 20
+      },
       error: {
         borderColor: variables.alert,
         color: variables.alert,
@@ -129,7 +133,7 @@ export function generateStyles(c = {}) {
       },
       label: {
         fontSize: variables.inputTextSize - 2,
-        color: variables.inputBorderColor,
+        color: variables.textColor,
       },
       input: {
         fontSize: variables.inputTextSize,
@@ -180,7 +184,7 @@ export function generateStyles(c = {}) {
       popupContent: {
         backgroundColor: variables.modalBgColor,
         margin: 20,
-        padding: 30,
+        padding: 20,
       },
       passwordVisibilityButton: {
         position: 'absolute',
