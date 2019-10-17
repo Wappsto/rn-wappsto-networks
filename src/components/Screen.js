@@ -6,9 +6,9 @@ import SafeAreaView from 'react-native-safe-area-view';
 
 import {config} from '../configureWappstoRedux';
 
-import {getStream} from 'wappsto-redux/selectors/stream';
+import {getStream} from '../wappsto-redux/selectors/stream';
 
-import {openStream, status, steps} from 'wappsto-redux/actions/stream';
+import {openStream, status, steps} from '../wappsto-redux/actions/stream';
 
 import NetInfo from '@react-native-community/netinfo';
 
@@ -16,11 +16,11 @@ import i18n, {CapitalizeFirst} from '../translations/i18n';
 import theme from '../theme/themeExport';
 
 function mapStateToProps(state, componentProps) {
-  if (!config.stream || !config.stream.name) {
+  if (!config.stream || config.stream.length === 0) {
     return {};
   }
   return {
-    stream: getStream(state, config.stream.name),
+    stream: getStream(state, config.stream[0].name),
   };
 }
 

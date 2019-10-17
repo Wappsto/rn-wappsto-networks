@@ -2,11 +2,13 @@ import {connect} from 'react-redux';
 import {bindActionCreators} from 'redux';
 import {Component} from 'react';
 
-import {makeRequest, removeRequest} from 'wappsto-redux/actions/request';
-import {addSession} from 'wappsto-redux/actions/session';
-import {initializeStream} from 'wappsto-redux/actions/stream';
+import {makeRequest, removeRequest} from '../wappsto-redux/actions/request';
+import {addSession} from '../wappsto-redux/actions/session';
+import {initializeStream} from '../wappsto-redux/actions/stream';
 
-import {getRequest} from 'wappsto-redux/selectors/request';
+import {getRequest} from '../wappsto-redux/selectors/request';
+
+import {startStream} from '../utils';
 
 function mapStateToProps(state, componentProps) {
   const session = componentProps.session;
@@ -94,13 +96,7 @@ export class SessionVerifier extends Component {
     }
   }
   startStream(session) {
-    if (this.stream) {
-      this.props.initializeStream(this.stream, session.meta.id);
-    } else {
-      console.log(
-        'stream object not defined in login page, stream was not initialized',
-      );
-    }
+    startStream(session, this.props.initializeStream);
   }
   render() {
     return null;

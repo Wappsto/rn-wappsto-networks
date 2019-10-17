@@ -4,7 +4,7 @@ import RequestError from '../../../components/RequestError';
 
 import theme from '../../../theme/themeExport';
 import i18n, {CapitalizeFirst} from '../../../translations/i18n';
-import {State, connect} from 'wappsto-components/State';
+import {State, connect} from '../../../wappsto-components/State';
 
 class ControlState extends State {
   updateStateFromInput = ({nativeEvent: {text}}) => {

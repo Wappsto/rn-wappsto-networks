@@ -10,7 +10,7 @@ import {
   ScrollView,
 } from 'react-native';
 
-import {config} from '../configureWappstoRedux';
+import {startStream} from '../utils';
 
 import i18n, {CapitalizeFirst} from '../translations/i18n';
 
@@ -20,13 +20,12 @@ import Screen from '../components/Screen';
 import theme from '../theme/themeExport';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 
-import {Login, connect} from 'wappsto-components/Login';
+import {Login, connect} from '../wappsto-components/Login';
 
 class LoginScreen extends Login {
   constructor(props) {
     super(props);
     this.passwordInputRef = React.createRef();
-    this.stream = config.stream;
   }
   componentDidMount() {}
   saveSession(request) {
@@ -53,13 +52,12 @@ class LoginScreen extends Login {
   };
   checkAndSignIn = () => {
     if (this.state.username && this.state.password) {
-      this.updateAndSignIn();
+      this.signIn();
     }
   };
-  updateAndSignIn = () => {
-    this.stream = config.stream;
-    this.signIn();
-  };
+  startStream(session) {
+    startStream(session, this.props.initializeStream);
+  }
   render() {
     const postRequest = this.props.postRequest;
     const verifyRequest = this.props.verifyRequest;
@@ -104,7 +102,7 @@ class LoginScreen extends Login {
               />
               <Icon
                 style={theme.common.passwordVisibilityButton}
-                name={this.state.showPassword ? 'eye-slash' : 'eye-slash'}
+                name={this.state.showPassword ? 'eye-slash' : 'eye'}
                 onPress={this.toggleShowPassword}
                 size={14}
               />
@@ -120,7 +118,7 @@ class LoginScreen extends Login {
                   ? theme.common.disabled
                   : null,
               ]}
-              onPress={this.updateAndSignIn}>
+              onPress={this.signIn}>
               <Text style={theme.common.btnText}>
                 {CapitalizeFirst(i18n.t('signIn'))}
               </Text>

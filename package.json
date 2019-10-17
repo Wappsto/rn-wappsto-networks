@@ -12,7 +12,9 @@
     "@react-native-community/netinfo": "^4.2.1",
     "color": "^3.1.2",
     "i18next": "^17.0.15",
+    "normalizr": "^3.4.1",
     "prop-types": "^15.7.2",
+    "querystring": "^0.2.0",
     "react": "16.8.6",
     "react-i18next": "^10.12.5",
     "react-native": "0.60.5",
@@ -28,8 +30,7 @@
     "react-navigation-stack": "^1.7.3",
     "react-redux": "^7.1.1",
     "redux": "^4.0.4",
-    "wappsto-components": "Wappsto/wappsto-components",
-    "wappsto-redux": "^1.1.7"
+    "redux-thunk": "^2.3.0"
   },
   "devDependencies": {
     "@babel/core": "^7.6.0",

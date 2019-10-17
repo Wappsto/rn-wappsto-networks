@@ -1,13 +1,15 @@
-import { use as reduxUse, configureStore } from 'wappsto-redux';
+import {use as reduxUse, configureStore} from './wappsto-redux';
 let config = require('./config.json');
 
 reduxUse(config);
 
-export function use(conf){
+export function use(conf) {
   config = conf;
   reduxUse(config);
 }
 
-export { config };
+export {config};
 
-export default store = configureStore();
+const store = configureStore();
+
+export default store;

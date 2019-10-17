@@ -8,12 +8,12 @@ import ControlState from './ControlState';
 import ReportState from './ReportState';
 import RequestError from '../../../components/RequestError';
 
-import {setItem} from 'wappsto-redux/actions/items';
-import {makeRequest} from 'wappsto-redux/actions/request';
+import {setItem} from '../../../wappsto-redux/actions/items';
+import {makeRequest} from '../../../wappsto-redux/actions/request';
 
-import {getRequestAndError} from 'wappsto-redux/selectors/request';
-import {getEntities} from 'wappsto-redux/selectors/entities';
-import {getItem} from 'wappsto-redux/selectors/items';
+import {getRequestAndError} from '../../../wappsto-redux/selectors/request';
+import {getEntities} from '../../../wappsto-redux/selectors/entities';
+import {getItem} from '../../../wappsto-redux/selectors/items';
 
 import theme from '../../../theme/themeExport';
 import i18n, {CapitalizeFirst} from '../../../translations/i18n';

@@ -5,8 +5,8 @@ import Screen from '../../../components/Screen';
 import List from '../../../components/List';
 import Value from './Value';
 
-import * as items from 'wappsto-redux/actions/items';
-import {getEntity} from 'wappsto-redux/selectors/entities';
+import * as items from '../../../wappsto-redux/actions/items';
+import {getEntity} from '../../../wappsto-redux/selectors/entities';
 
 import theme from '../../../theme/themeExport';
 

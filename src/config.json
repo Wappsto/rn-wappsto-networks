@@ -1,7 +1,15 @@
 {
-  "baseUrl": "https://dev.wappsto.com/services/2.0",
-  "stream": {
-    "name": "wappsto-native",
+  "baseUrl": "https://dev.wappsto.com/services",
+  "serviceVersion": {
+    "default": "2.0",
+    "user": "",
+    "stream": ""
+  },
+  "stream": [{
+    "name": "wappsto-native-2.0",
     "subscription": ["/network"]
-  }
+  },{
+    "name": "wappsto-native-1.0",
+    "subscription": ["/network"]
+  }]
 }

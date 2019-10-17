@@ -5,8 +5,8 @@ import {View, Text, TouchableOpacity, ActivityIndicator} from 'react-native';
 import States from './States';
 import ValueSettings from './ValueSettings';
 
-import {makeRequest} from 'wappsto-redux/actions/request';
-import {getRequest} from 'wappsto-redux/selectors/request';
+import {makeRequest} from '../../../wappsto-redux/actions/request';
+import {getRequest} from '../../../wappsto-redux/selectors/request';
 
 import theme from '../../../theme/themeExport';
 import Icon from 'react-native-vector-icons/Feather';

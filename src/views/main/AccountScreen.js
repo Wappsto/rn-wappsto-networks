@@ -6,7 +6,7 @@ import Screen from '../../components/Screen';
 import RequestError from '../../components/RequestError';
 import MenuButton from '../../components/MenuButton';
 
-import {Account, connect} from 'wappsto-components/Account';
+import {Account, connect} from '../../wappsto-components/Account';
 
 import theme from '../../theme/themeExport';
 import i18n, {CapitalizeFirst, CapitalizeEach} from '../../translations/i18n';

@@ -4,7 +4,7 @@ import {bindActionCreators} from 'redux';
 import React, {Component} from 'react';
 import {View, Text, TouchableOpacity} from 'react-native';
 
-import * as items from 'wappsto-redux/actions/items';
+import * as items from '../../../wappsto-redux/actions/items';
 
 import i18n from '../../../translations/i18n';
 import DeviceSettings from './DeviceSettings';

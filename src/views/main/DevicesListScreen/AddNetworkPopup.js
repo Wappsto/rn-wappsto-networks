@@ -13,10 +13,10 @@ import RequestError from '../../../components/RequestError';
 import theme from '../../../theme/themeExport';
 import {connect} from 'react-redux';
 import {bindActionCreators} from 'redux';
-import {makeRequest} from 'wappsto-redux/actions/request';
-import {setItem} from 'wappsto-redux/actions/items';
-import {getRequest} from 'wappsto-redux/selectors/request';
-import {getItem} from 'wappsto-redux/selectors/items';
+import {makeRequest} from '../../../wappsto-redux/actions/request';
+import {setItem} from '../../../wappsto-redux/actions/items';
+import {getRequest} from '../../../wappsto-redux/selectors/request';
+import {getItem} from '../../../wappsto-redux/selectors/items';
 import i18n, {
   CapitalizeFirst,
   CapitalizeEach,
@@ -140,9 +140,7 @@ class addNetwork extends PureComponent {
             <TouchableOpacity
               style={styles.cameraCapture}
               onPress={this.switchView}>
-              <Text>
-                {CapitalizeFirst(i18n.t('addNetwork.scanQRCode'))}
-              </Text>
+              <Text>{CapitalizeFirst(i18n.t('addNetwork.scanQRCode'))}</Text>
             </TouchableOpacity>
           )}
         </View>
@@ -182,28 +180,27 @@ export default connect(
 )(addNetwork);
 
 const styles = StyleSheet.create({
-
   qrCodeScannerWrapper: {
-    flex:1,
+    flex: 1,
     height: 140,
     width: '100%',
-    marginBottom:20,
+    marginBottom: 20,
     overflow: 'hidden',
     borderRadius: theme.variables.borderRadiusBase,
-    backgroundColor: 'rgba(0, 0, 0, 0.2)'
+    backgroundColor: 'rgba(0, 0, 0, 0.2)',
   },
-  cameraPreview:{
-    flex: 1
+  cameraPreview: {
+    flex: 1,
   },
   cameraCaptureWrapper: {
     borderWidth: 1,
     borderStyle: 'solid',
-    borderColor: 'yellow'
+    borderColor: 'yellow',
   },
   cameraCapture: {
     height: 140,
     alignItems: 'center',
     justifyContent: 'center',
-    padding: 15
-  }
+    padding: 15,
+  },
 });

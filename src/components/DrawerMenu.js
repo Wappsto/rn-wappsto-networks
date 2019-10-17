@@ -16,16 +16,19 @@ import {
 
 import RequestError from './RequestError';
 
-import * as request from 'wappsto-redux/actions/request';
-import * as items from 'wappsto-redux/actions/items';
+import {makeRequest} from '../wappsto-redux/actions/request';
+import {setItem} from '../wappsto-redux/actions/items';
+import {closeStream} from '../wappsto-redux/actions/stream';
 
-import {getUserData} from 'wappsto-redux/selectors/entities';
-import {getRequest} from 'wappsto-redux/selectors/request';
-import {getSession} from 'wappsto-redux/selectors/session';
-import {getItem} from 'wappsto-redux/selectors/items';
+import {getUserData} from '../wappsto-redux/selectors/entities';
+import {getRequest} from '../wappsto-redux/selectors/request';
+import {getSession} from '../wappsto-redux/selectors/session';
+import {getItem} from '../wappsto-redux/selectors/items';
 
 import theme from '../theme/themeExport';
 import Icon from 'react-native-vector-icons/Feather';
+
+import {config} from '../configureWappstoRedux';
 
 function mapStateToProps(state) {
   return {
@@ -38,7 +41,7 @@ function mapStateToProps(state) {
 
 function mapDispatchToProps(dispatch) {
   return {
-    ...bindActionCreators({...request, ...items}, dispatch),
+    ...bindActionCreators({makeRequest, setItem, closeStream}, dispatch),
   };
 }
 
@@ -61,6 +64,7 @@ class DrawerMenu extends Component {
   }
 
   logout() {
+    this.props.closeStream(config.stream.name);
     this.props.makeRequest('DELETE', '/session/' + this.props.session.meta.id);
     AsyncStorage.removeItem('session');
     this.props.navigation.navigate('LoginScreen');
@@ -73,44 +77,46 @@ class DrawerMenu extends Component {
       <SafeAreaView forceInset={{top: 'always', horizontal: 'never'}}>
         <ScrollView>
           <View style={styles.userInfo}>
-            {user ? (
-              <Fragment>
-                <View style={theme.common.row}>
-                  <View>
-                    {user.provider[0] ? (
-                      <Image
-                        style={styles.userImage}
-                        source={{uri: user.provider[0].picture}}
-                      />
-                    ) : (
-                      <Icon
-                        name="user"
-                        style={theme.common.spaceAround}
-                        size={20}
-                        color={theme.variables.primary}
-                      />
-                    )}
-                  </View>
-                  <Text>
-                    {user.first_name ||
-                      (user.provider[0] && user.provider[0].name)}
-                  </Text>
+            <Fragment>
+              <View style={theme.common.row}>
+                <View>
+                  {user && user.provider[0] ? (
+                    <Image
+                      style={styles.userImage}
+                      source={{uri: user.provider[0].picture}}
+                    />
+                  ) : usersRequest &&
+                    usersRequest.method === 'GET' &&
+                    usersRequest.status === 'pending' ? (
+                    <ActivityIndicator
+                      size="large"
+                      color={theme.variables.primary}
+                    />
+                  ) : (
+                    <Icon
+                      name="user"
+                      style={theme.common.spaceAround}
+                      size={20}
+                      color={theme.variables.primary}
+                    />
+                  )}
                 </View>
-                <TouchableOpacity
-                  style={theme.common.spaceAround}
-                  onPress={this.logout}>
-                  <Icon
-                    name="log-out"
-                    size={25}
-                    color={theme.variables.primary}
-                  />
-                </TouchableOpacity>
-              </Fragment>
-            ) : usersRequest &&
-              usersRequest.method === 'GET' &&
-              usersRequest.status === 'pending' ? (
-              <ActivityIndicator size="large" color={theme.variables.primary} />
-            ) : null}
+                <Text>
+                  {user &&
+                    (user.first_name ||
+                      (user.provider[0] && user.provider[0].name))}
+                </Text>
+              </View>
+              <TouchableOpacity
+                style={theme.common.spaceAround}
+                onPress={this.logout}>
+                <Icon
+                  name="log-out"
+                  size={25}
+                  color={theme.variables.primary}
+                />
+              </TouchableOpacity>
+            </Fragment>
             <RequestError error={usersRequest} />
           </View>
           <DrawerNavigatorItems {...this.props} />
@@ -132,8 +138,8 @@ const styles = StyleSheet.create({
     width: 20,
     height: 20,
     borderRadius: 15,
-    marginRight: 10
-  }
+    marginRight: 10,
+  },
 });
 
 export default connect(

@@ -11,8 +11,8 @@ import RequestError from './RequestError';
 
 import theme from '../theme/themeExport';
 import i18n, {CapitalizeFirst} from '../translations/i18n';
-import {List, connect} from 'wappsto-components/List';
-import {getItem} from 'wappsto-redux/selectors/items';
+import {List, connect} from '../wappsto-components/List';
+import {getItem} from '../wappsto-redux/selectors/items';
 
 function mapStateToProps(state, componentProps) {
   const refreshItem =
