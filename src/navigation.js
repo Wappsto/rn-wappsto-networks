@@ -3,10 +3,8 @@ import {Provider} from 'react-redux';
 import {createSwitchNavigator, createAppContainer} from 'react-navigation';
 import {createDrawerNavigator} from 'react-navigation-drawer';
 import {createStackNavigator} from 'react-navigation-stack';
-import i18n from './translations/i18n';
 
 import store from './configureWappstoRedux';
-import theme from './theme/themeExport';
 
 let components = {
   SplashScreen: require('./views/SplashScreen').default,
