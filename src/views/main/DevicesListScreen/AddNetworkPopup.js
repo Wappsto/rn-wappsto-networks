@@ -99,6 +99,7 @@ class addNetwork extends PureComponent {
         <View style={styles.qrCodeScannerWrapper}>
           {this.state.isScanning ? (
             <RNCamera
+              captureAudio={false}
               barCodeTypes={[RNCamera.Constants.BarCodeType.qr]}
               style={styles.cameraPreview}
               onBarCodeRead={this.onRead}
@@ -127,8 +128,7 @@ class addNetwork extends PureComponent {
                 message: CapitalizeFirst(
                   i18n.t('addNetwork.cameraPermission.message'),
                 ),
-              }}
-              captureAudio={false}>
+              }}>
               <BarcodeMask
                 width={140}
                 height={140}
