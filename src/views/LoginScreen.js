@@ -8,6 +8,7 @@ import {
   ActivityIndicator,
   Modal,
   StatusBar,
+  SafeAreaView,
   ScrollView,
 } from 'react-native';
 
@@ -16,7 +17,6 @@ import {startStream} from '../utils';
 import i18n, {CapitalizeFirst} from '../translations/i18n';
 
 import RequestError from '../components/RequestError';
-import Screen from '../components/Screen';
 
 import theme from '../theme/themeExport';
 import Icon from 'react-native-vector-icons/FontAwesome5';
@@ -64,7 +64,7 @@ class LoginScreen extends Login {
     const verifyRequest = this.props.verifyRequest;
     const loading = postRequest && postRequest.status === 'pending';
     return (
-      <Screen style={theme.common.centeredContent}>
+      <SafeAreaView style={{flex:1}}>
         <StatusBar backgroundColor={theme.variables.white} barStyle="dark-content" />
         <ScrollView>
           <LoginScreen.Header />
@@ -138,7 +138,7 @@ class LoginScreen extends Login {
             <ActivityIndicator size="large" color={theme.variables.primary} />
           </View>
         </Modal>
-      </Screen>
+      </SafeAreaView>
     );
   }
 }

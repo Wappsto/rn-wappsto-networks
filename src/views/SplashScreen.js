@@ -1,6 +1,6 @@
 import AsyncStorage from '@react-native-community/async-storage';
 import React, {Component} from 'react';
-import {View, StyleSheet} from 'react-native';
+import {View, StyleSheet, StatusBar} from 'react-native';
 import SessionVerifier from './SessionVerifier';
 
 import theme from '../theme/themeExport';
@@ -30,6 +30,7 @@ export default class SplashScreen extends Component {
   render() {
     return (
       <View style={styles.container}>
+        <StatusBar backgroundColor={theme.variables.white} barStyle="dark-content" />
         <Icon name="kiwi-bird" size={100} color={theme.variables.primary} />
         <SessionVerifier
           status={this.state.status}

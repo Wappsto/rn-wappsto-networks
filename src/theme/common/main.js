@@ -42,6 +42,22 @@ export function generateStyles(c = {}) {
         borderColor: variables.warning,
         color: variables.warning,
       },
+      success: {
+        borderColor: variables.success,
+        color: variables.success,
+      },
+      errorPanel: {
+        backgroundColor: variables.alert,
+        color: variables.white,
+      },
+      warningPanel: {
+        backgroundColor: variables.warning,
+        color: variables.white,
+      },
+      successPanel: {
+        backgroundColor: variables.success,
+        color: variables.white,
+      },
       toastFullWidth: {
         paddingHorizontal: 10,
         paddingVertical: 20,
