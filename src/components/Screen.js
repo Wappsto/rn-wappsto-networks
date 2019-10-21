@@ -122,6 +122,7 @@ class Screen extends Component {
             {CapitalizeFirst(i18n.t('error:internetConnectionLost'))}
           </Text>
         )}
+        <StatusBar backgroundColor={theme.variables.primary} barStyle="light-content" />
         {showStream && (
           <View style={[theme.common.toastFullWidth, theme.common.warning]}>
             <Text>{this.getStreamMessage(stream)}</Text>

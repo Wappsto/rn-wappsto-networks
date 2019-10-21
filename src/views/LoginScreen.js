@@ -7,6 +7,7 @@ import {
   TouchableOpacity,
   ActivityIndicator,
   Modal,
+  StatusBar,
   ScrollView,
 } from 'react-native';
 
@@ -64,6 +65,7 @@ class LoginScreen extends Login {
     const loading = postRequest && postRequest.status === 'pending';
     return (
       <Screen style={theme.common.centeredContent}>
+        <StatusBar backgroundColor={theme.variables.white} barStyle="dark-content" />
         <ScrollView>
           <LoginScreen.Header />
           <View style={theme.common.formElements}>

@@ -12,6 +12,7 @@ import {
   Image,
   ActivityIndicator,
   TouchableOpacity,
+  StatusBar
 } from 'react-native';
 
 import RequestError from './RequestError';
@@ -75,6 +76,7 @@ class DrawerMenu extends Component {
     let user = this.props.user;
     return (
       <SafeAreaView forceInset={{top: 'always', horizontal: 'never'}}>
+        <StatusBar backgroundColor={theme.variables.white} barStyle="dark-content" />
         <ScrollView>
           <View style={styles.userInfo}>
             <Fragment>
