@@ -8,13 +8,14 @@ import {initializeStream} from '../wappsto-redux/actions/stream';
 
 import {getRequest} from '../wappsto-redux/selectors/request';
 
-import {startStream} from '../utils';
+import {startStream, getStreams} from '../utils';
 
 function mapStateToProps(state, componentProps) {
   const session = componentProps.session;
   return {
     verifyRequest:
       session && getRequest(state, '/session/' + session.meta.id, 'GET'),
+    currentStreams: getStreams(state),
   };
 }
 
@@ -34,7 +35,7 @@ export class SessionVerifier extends Component {
     this.verify();
   }
   addMinimumTimeout() {
-    setTimeout(() => {
+    this.minimumTimeout = setTimeout(() => {
       this.timeoutEnded = true;
       if (this.props.status !== 'pending') {
         if (this.sessionStatus === 'error') {
@@ -46,9 +47,13 @@ export class SessionVerifier extends Component {
     }, 500);
   }
   addMaximumTimeout() {
-    setTimeout(() => {
+    this.maximumTimeout = setTimeout(() => {
       this.navigateTo('LoginScreen');
     }, 10000);
+  }
+  clearTimeouts() {
+    clearTimeout(this.minimumTimeout);
+    clearTimeout(this.maximumTimeout);
   }
   checkSession() {
     if (this.props.session) {
@@ -76,7 +81,10 @@ export class SessionVerifier extends Component {
       if (verifyRequest) {
         this.sessionStatus = verifyRequest.status;
         if (verifyRequest.status === 'success') {
-          this.userLogged(verifyRequest, session);
+          if (this.timeoutEnded && !this.done) {
+            this.done = true;
+            this.userLogged(verifyRequest, session);
+          }
         } else if (verifyRequest.status === 'error') {
           this.navigateTo('LoginScreen');
         }
@@ -90,13 +98,12 @@ export class SessionVerifier extends Component {
     this.navigateTo('MainScreen');
   }
   navigateTo(page) {
-    if (this.timeoutEnded && !this.done) {
-      this.done = true;
-      this.props.navigate(page);
-    }
+    this.clearTimeouts();
+    this.props.navigate(page);
   }
   startStream(session) {
-    startStream(session, this.props.initializeStream);
+    const {initializeStream, currentStreams} = this.props;
+    startStream(currentStreams, session, initializeStream);
   }
   render() {
     return null;

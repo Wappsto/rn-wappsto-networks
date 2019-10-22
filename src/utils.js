@@ -1,18 +1,34 @@
 import {config} from './configureWappstoRedux';
+import {getStream} from './wappsto-redux/selectors/stream';
 
-export function startStream(session, initializeStream) {
+export function startStream(currentStreams, session, initializeStream) {
   if (config.stream) {
     config.stream.forEach(stream => {
-      let options = {};
-      if (stream.name.endsWith('2.0')) {
-        options.version = '2.0';
-        options.endPoint = 'websocket';
+      if (!currentStreams.find(exStream => exStream.name === stream.name)) {
+        let options = {};
+        if (stream.name.endsWith('2.0')) {
+          options.version = '2.0';
+          options.endPoint = 'websocket';
+        }
+        initializeStream(stream, session.meta.id, options);
       }
-      initializeStream(stream, session.meta.id, options);
     });
   } else {
     console.log(
-      'stream object not defined in login page, stream was not initialized',
+      'stream object not defined in config file, stream was not initialized',
     );
   }
+}
+
+export function getStreams(state) {
+  const streams = [];
+  if (config.stream) {
+    config.stream.forEach(streamJSON => {
+      const stream = getStream(state, streamJSON.name);
+      if (stream) {
+        streams.push(stream);
+      }
+    });
+  }
+  return streams;
 }

@@ -71,6 +71,7 @@
   "lastUpdated": "last updated",
   "password": "password",
   "reload": "reload",
+  "refresh": "refresh",
   "signIn": "sign in",
   "tryAgain": "try again",
   "addNetwork": {

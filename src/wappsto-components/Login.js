@@ -88,8 +88,25 @@ export class Login extends Component {
   }
 }
 
-export function connect(component) {
-  return reduxConnect(mapStateToProps, mapDispatchToProps)(component);
+function emptyFunc() {
+  return {};
+}
+
+export function connect(
+  component,
+  extraState = emptyFunc,
+  extraDispatch = emptyFunc,
+) {
+  return reduxConnect(
+    (state, componentProps) => ({
+      ...mapStateToProps(state, componentProps),
+      ...extraState(state, componentProps),
+    }),
+    dispatch => ({
+      ...mapDispatchToProps(dispatch),
+      ...extraDispatch(dispatch),
+    }),
+  )(component);
 }
 
 export default connect(Login);

@@ -12,7 +12,7 @@ import {
   ScrollView,
 } from 'react-native';
 
-import {startStream} from '../utils';
+import {startStream, getStreams} from '../utils';
 
 import i18n, {CapitalizeFirst} from '../translations/i18n';
 
@@ -22,6 +22,12 @@ import theme from '../theme/themeExport';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 
 import {Login, connect} from '../wappsto-components/Login';
+
+function mapStateToProps(state, componentProps) {
+  return {
+    currentStreams: getStreams(state),
+  };
+}
 
 class LoginScreen extends Login {
   constructor(props) {
@@ -57,15 +63,19 @@ class LoginScreen extends Login {
     }
   };
   startStream(session) {
-    startStream(session, this.props.initializeStream);
+    const {initializeStream, currentStreams} = this.props;
+    startStream(currentStreams, session, initializeStream);
   }
   render() {
     const postRequest = this.props.postRequest;
     const verifyRequest = this.props.verifyRequest;
     const loading = postRequest && postRequest.status === 'pending';
     return (
-      <SafeAreaView style={{flex:1}}>
-        <StatusBar backgroundColor={theme.variables.white} barStyle="dark-content" />
+      <SafeAreaView style={{flex: 1}}>
+        <StatusBar
+          backgroundColor={theme.variables.white}
+          barStyle="dark-content"
+        />
         <ScrollView>
           <LoginScreen.Header />
           <View style={theme.common.formElements}>
@@ -165,4 +175,7 @@ export function setFooter(comp) {
   LoginScreen.Footer = comp;
 }
 
-export default connect(LoginScreen);
+export default connect(
+  LoginScreen,
+  mapStateToProps,
+);
