@@ -189,6 +189,7 @@ export function makeRequest(method, url, data, options = {}) {
     }
     if (response.ok) {
       dispatchMethodAction(dispatch, method, url, response.json, options);
+      // console.log(response.json);
       dispatch(
         requestSuccess(method, url, response.status, response.json, options),
       );

@@ -14,6 +14,7 @@ const lostTimer = 1000 * 60;
 const retryTimer = 1000 * 5;
 
 let timeouts = {};
+let websockets = {};
 
 //add also connection lost and timer of 5 minutes of waiting in general
 export const status = {
@@ -62,23 +63,18 @@ export function openStream(streamJSON = {}, session, options) {
 
 export function closeStream(name) {
   return (dispatch, getState) => {
-    let state = getState();
-    if (state.stream && state.stream[name]) {
-      if (timeouts[name]) {
-        _clearStreamTimeouts(state.stream[name]);
-      }
-      if (state.stream[name].ws) {
-        state.stream[name].ws.close();
-        clearTimeout(state.stream[name].timeout);
-        dispatch(removeStream(name));
-      }
+    _clearStreamTimeouts({name});
+    if (websockets[name]) {
+      websockets[name].stop = true;
+      websockets[name].close();
     }
+    dispatch(removeStream(name));
   };
 }
 
 function removeStream(name) {
   return {
-    action: REMOVE_STREAM,
+    type: REMOVE_STREAM,
     name,
   };
 }
@@ -122,6 +118,8 @@ async function _createStream(streamJSON, session, dispatch, options) {
       streamJSON.name,
       status.CONNECTING,
       steps.CONNECTING.UPDATE_STREAM,
+      null,
+      streamJSON,
     ),
   );
   let response = await _request({
@@ -133,8 +131,7 @@ async function _createStream(streamJSON, session, dispatch, options) {
   if (!response.ok) {
     throw response;
   }
-  let json = response.json;
-  return json;
+  return response.json;
 }
 
 function _addChildren(message, state) {
@@ -155,9 +152,11 @@ function _addChildren(message, state) {
 }
 
 function _clearStreamTimeouts(stream) {
-  clearTimeout(timeouts[stream.name].retryTimeout);
-  clearTimeout(timeouts[stream.name].lostTimeout);
-  delete timeouts[stream.name];
+  if (stream && stream.name && timeouts[stream.name]) {
+    clearTimeout(timeouts[stream.name].retryTimeout);
+    clearTimeout(timeouts[stream.name].lostTimeout);
+    delete timeouts[stream.name];
+  }
 }
 
 function _startStream(
@@ -172,7 +171,7 @@ function _startStream(
   if (stream.meta.id) {
     url += '/' + stream.meta.id + '?x-session=' + session;
   } else {
-    url += '/?x-session=' + session + '&' + querystring.stringify(stream);
+    url += '/open?x-session=' + session + '&' + querystring.stringify(stream);
   }
   if (
     window &&
@@ -185,20 +184,21 @@ function _startStream(
   url = url.replace('http', 'ws');
   let ws = new WebSocket(url);
 
+  websockets[stream.name] = ws;
+
   dispatch(
     updateStream(
       stream.name,
       reconnecting ? status.RECONNECTING : status.CONNECTING,
       steps.CONNECTING.OPENING_SOCKET,
       ws,
+      stream,
     ),
   );
 
   ws.onopen = () => {
-    if (timeouts[stream.name]) {
-      _clearStreamTimeouts(stream);
-    }
-    dispatch(updateStream(stream.name, status.OPEN, null, ws));
+    _clearStreamTimeouts(stream);
+    dispatch(updateStream(stream.name, status.OPEN, null, ws, stream));
     console.log('Stream open: ' + url);
   };
 
@@ -206,6 +206,9 @@ function _startStream(
     // a message was received
     try {
       let data = JSON.parse(e.data);
+      if (data.constructor !== Array) {
+        data = [data];
+      }
       data.forEach(message => {
         let state = getState();
         switch (message.event) {
@@ -272,21 +275,19 @@ function _startStream(
             break;
         }
       });
-    } catch (e) {
-      console.log('stream catch', e);
+    } catch (error) {
+      console.log('stream catch', error);
     }
   };
 
   ws.onerror = e => {
-    console.log('Stream error: ' + url);
+    console.log('Stream error: ' + url, e.message);
   };
 
   ws.onclose = e => {
-    console.log('Stream close: ' + url);
-    if (e.code !== 4001) {
-      if (!timeouts[stream.name]) {
-        timeouts[stream.name] = {};
-      }
+    console.log('Stream close: ' + url, e.message);
+    if (!ws.stop && e.code !== 4001) {
+      timeouts[stream.name] = {};
       let retryTimeout = setTimeout(() => {
         _startStream(stream, session, getState, dispatch, options, true);
       }, retryTimer);
@@ -295,6 +296,10 @@ function _startStream(
         let lostTimeout = setTimeout(() => {
           _clearStreamTimeouts(stream);
           dispatch(updateStream(stream.name, status.LOST, null, null, stream));
+          if (websockets[stream.name]) {
+            websockets[stream.name].stop = true;
+            websockets[stream.name].close();
+          }
         }, lostTimer);
         timeouts[stream.name].lostTimeout = lostTimeout;
       }
@@ -304,7 +309,7 @@ function _startStream(
           status.RECONNECTING,
           steps.CONNECTING.WAITING,
           ws,
-          null,
+          stream,
           true,
         ),
       );
@@ -335,6 +340,8 @@ export function initializeStream(streamJSON = {}, session, options) {
           streamJSON.name,
           status.CONNECTING,
           steps.CONNECTING.GET_STREAM,
+          null,
+          streamJSON,
         ),
       );
       let headers = {'x-session': session};
@@ -363,6 +370,8 @@ export function initializeStream(streamJSON = {}, session, options) {
               streamJSON.name,
               status.CONNECTING,
               steps.CONNECTING.UPDATE_STREAM,
+              null,
+              newJSON,
             ),
           );
           let updateResponse = await _request({
@@ -393,7 +402,9 @@ export function initializeStream(streamJSON = {}, session, options) {
       }
     } catch (e) {
       console.log('initializeStream error', e);
-      dispatch(updateStream(streamJSON.name, status.ERROR));
+      dispatch(
+        updateStream(streamJSON.name, status.ERROR, null, null, streamJSON),
+      );
     }
   };
 }

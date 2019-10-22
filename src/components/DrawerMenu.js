@@ -12,7 +12,7 @@ import {
   Image,
   ActivityIndicator,
   TouchableOpacity,
-  StatusBar
+  StatusBar,
 } from 'react-native';
 
 import RequestError from './RequestError';
@@ -65,7 +65,11 @@ class DrawerMenu extends Component {
   }
 
   logout() {
-    this.props.closeStream(config.stream.name);
+    if (config.stream) {
+      config.stream.forEach(stream => {
+        this.props.closeStream(stream.name);
+      });
+    }
     this.props.makeRequest('DELETE', '/session/' + this.props.session.meta.id);
     AsyncStorage.removeItem('session');
     this.props.navigation.navigate('LoginScreen');
@@ -76,7 +80,10 @@ class DrawerMenu extends Component {
     let user = this.props.user;
     return (
       <SafeAreaView forceInset={{top: 'always', horizontal: 'never'}}>
-        <StatusBar backgroundColor={theme.variables.white} barStyle="dark-content" />
+        <StatusBar
+          backgroundColor={theme.variables.white}
+          barStyle="dark-content"
+        />
         <ScrollView>
           <View style={styles.userInfo}>
             <Fragment>
