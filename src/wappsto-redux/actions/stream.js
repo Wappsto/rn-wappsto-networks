@@ -219,6 +219,7 @@ function _startStream(
               if (
                 schemaTree.state &&
                 schemaTree.state.name &&
+                state.entities[schemaTree.state.name] &&
                 state.entities[schemaTree.state.name].hasOwnProperty(
                   message.meta_object.id,
                 )

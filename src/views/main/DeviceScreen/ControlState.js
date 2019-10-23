@@ -55,7 +55,7 @@ class ControlState extends State {
             minimumValue={param.min}
             step={param.step}
             style={{width: '100%'}}
-            value={parseFloat(this.state.input)}
+            value={parseFloat(this.state.input) || 0}
             onSlidingComplete={this.updateState}
             disabled={disabled}
             thumbTintColor={theme.variables.primary}
