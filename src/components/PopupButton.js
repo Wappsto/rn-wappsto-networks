@@ -30,7 +30,11 @@ export default class PopupButton extends PureComponent {
             color={this.props.color || theme.variables.primary}
           />
         </TouchableOpacity>
-        {this.props.children(this.state.modalVisible, this.hidePopup)}
+        {this.props.children(
+          this.state.modalVisible,
+          this.hidePopup,
+          this.showPopup,
+        )}
       </Fragment>
     );
   }

@@ -76,8 +76,29 @@ class DrawerMenu extends Component {
   }
 
   render() {
-    let usersRequest = this.props.usersRequest;
-    let user = this.props.user;
+    const usersRequest = this.props.usersRequest;
+    const user = this.props.user;
+    let name = '';
+    if (user) {
+      if (user.nickname) {
+        name = user.nickname;
+      } else {
+        if (user.first_name) {
+          name += user.first_name + ' ';
+        }
+        if (user.last_name) {
+          name += user.last_name;
+        }
+
+        if (!name) {
+          if (user.provider[0] && user.provider[0].name) {
+            name = user.provider[0].name;
+          } else {
+            name = user.email;
+          }
+        }
+      }
+    }
     return (
       <SafeAreaView forceInset={{top: 'always', horizontal: 'never'}}>
         <StatusBar
@@ -110,11 +131,7 @@ class DrawerMenu extends Component {
                     />
                   )}
                 </View>
-                <Text>
-                  {user &&
-                    (user.first_name ||
-                      (user.provider[0] && user.provider[0].name))}
-                </Text>
+                <Text>{name}</Text>
               </View>
               <TouchableOpacity
                 style={theme.common.spaceAround}

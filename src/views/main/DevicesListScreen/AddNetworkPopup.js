@@ -11,52 +11,16 @@ import {RNCamera} from 'react-native-camera';
 import BarcodeMask from 'react-native-barcode-mask';
 import RequestError from '../../../components/RequestError';
 import theme from '../../../theme/themeExport';
-import {connect} from 'react-redux';
-import {bindActionCreators} from 'redux';
-import {makeRequest} from '../../../wappsto-redux/actions/request';
-import {setItem} from '../../../wappsto-redux/actions/items';
-import {getRequest} from '../../../wappsto-redux/selectors/request';
-import {getItem} from '../../../wappsto-redux/selectors/items';
 import i18n, {
   CapitalizeFirst,
   CapitalizeEach,
 } from '../../../translations/i18n';
 
-function mapStateToProps(state, componentProps) {
-  const addNetworkId = getItem(state, 'addNetworkId');
-  const url = '/network/' + addNetworkId;
-  const postRequest = addNetworkId && getRequest(state, url, 'POST');
-  return {
-    postRequest,
-    url,
-  };
-}
-
-function mapDispatchToProps(dispatch) {
-  return {
-    ...bindActionCreators({makeRequest, setItem}, dispatch),
-  };
-}
-
-class addNetwork extends PureComponent {
+class AddNetwork extends PureComponent {
   state = {
     inputValue: '',
     isScanning: false,
   };
-
-  componentDidUpdate(prevProps) {
-    // hide popup when request is successfull
-    const postRequest = this.props.postRequest;
-    if (
-      prevProps.postRequest &&
-      prevProps.postRequest.status === 'pending' &&
-      postRequest &&
-      postRequest.status === 'success'
-    ) {
-      this.props.hide();
-      this.props.setItem('refreshList', val => (val ? val + 1 : 1));
-    }
-  }
 
   onRead = event => {
     this.setState(state => {
@@ -68,15 +32,7 @@ class addNetwork extends PureComponent {
   };
 
   addNetwork = () => {
-    if (this.state.inputValue) {
-      console.log('/network/' + this.state.inputValue);
-      this.props.setItem('addNetworkId', this.state.inputValue);
-      this.props.makeRequest({
-        method: 'POST',
-        url: '/network/' + this.state.inputValue,
-        body: {},
-      });
-    }
+    this.props.sendRequest(this.state.inputValue);
   };
 
   switchView = () => {
@@ -88,6 +44,10 @@ class addNetwork extends PureComponent {
   render() {
     const postRequest = this.props.postRequest;
     const loading = postRequest && postRequest.status === 'pending';
+    const manufacturerAsUserError =
+      postRequest &&
+      postRequest.status === 'error' &&
+      postRequest.json.code === 105000008;
     return (
       <>
         <Text style={theme.common.H3}>
@@ -161,7 +121,7 @@ class addNetwork extends PureComponent {
         {loading && (
           <ActivityIndicator size="large" color={theme.variables.primary} />
         )}
-        <RequestError error={postRequest} />
+        {!manufacturerAsUserError && <RequestError error={postRequest} />}
         <TouchableOpacity
           style={[theme.common.button, loading ? theme.common.disabled : null]}
           onPress={this.addNetwork}>
@@ -174,10 +134,7 @@ class addNetwork extends PureComponent {
   }
 }
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps,
-)(addNetwork);
+export default AddNetwork;
 
 const styles = StyleSheet.create({
   qrCodeScannerWrapper: {

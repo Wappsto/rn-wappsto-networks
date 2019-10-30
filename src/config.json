@@ -3,7 +3,8 @@
   "serviceVersion": {
     "default": "2.0",
     "user": "",
-    "stream": ""
+    "stream": "",
+    "session": ""
   },
   "stream": [{
     "name": "wappsto-native-2.0",
