@@ -28,11 +28,11 @@ export function generateStyles(c = {}) {
         margin: 20,
         textAlign: 'center',
         borderRadius: variables.borderRadiusBase,
-        borderWidth: variables.borderWidth
+        borderWidth: variables.borderWidth,
       },
       p: {
         color: variables.textSecondary,
-        marginBottom: 20
+        marginBottom: 20,
       },
       error: {
         borderColor: variables.alert,
@@ -45,6 +45,10 @@ export function generateStyles(c = {}) {
       success: {
         borderColor: variables.success,
         color: variables.success,
+      },
+      secondary: {
+        borderColor: variables.textSecondary,
+        color: variables.textSecondary,
       },
       errorPanel: {
         backgroundColor: variables.alert,
@@ -233,6 +237,11 @@ export function generateStyles(c = {}) {
       timestamp: {
         color: variables.darkGray,
         fontStyle: 'italic',
+      },
+      listHeader: {
+        color: variables.textSecondary,
+        paddingHorizontal: 10,
+        marginTop: 10,
       },
       ...c,
     }),

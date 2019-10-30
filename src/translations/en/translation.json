@@ -43,7 +43,8 @@
   },
   "valueInfoHeader": "value details",
   "infoMessage":{
-    "listIsEmpty": "list is empty"
+    "listIsEmpty": "list is empty",
+    "networkIsEmpty": "network is empty"
   },
   "statusMessage":{
     "openingConnection": "opening connection",
