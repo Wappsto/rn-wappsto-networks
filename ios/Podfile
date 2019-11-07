@@ -30,6 +30,10 @@ target 'rn_wappsto_networks' do
   pod 'react-native-camera', :path => '../node_modules/react-native-camera'
   pod 'RNVectorIcons', :path => '../node_modules/react-native-vector-icons'
 
+  pod 'RNFirebase', :path => '../node_modules/react-native-firebase'
+
+
+
   target 'rn_wappsto_networksTests' do
     inherit! :search_paths
     # Pods for testing

@@ -27,7 +27,7 @@ class AddNetworkWrapper extends PureComponent {
   componentDidUpdate(prevProps) {
     // hide popup when request is successfull
     const postRequest = this.props.postRequest;
-    const manufacturerAsUserError =
+    const manufacturerAsOwnerError =
       postRequest &&
       postRequest.status === 'error' &&
       postRequest.json.code === 105000008;
@@ -35,10 +35,10 @@ class AddNetworkWrapper extends PureComponent {
       prevProps.postRequest &&
       prevProps.postRequest.status === 'pending' &&
       postRequest &&
-      (postRequest.status === 'success' || manufacturerAsUserError)
+      (postRequest.status === 'success' || manufacturerAsOwnerError)
     ) {
-      this.props.hide(manufacturerAsUserError);
-      if (!manufacturerAsUserError) {
+      this.props.hide(manufacturerAsOwnerError);
+      if (!manufacturerAsOwnerError) {
         this.props.setItem('refreshList', val => (val ? val + 1 : 1));
       }
     }

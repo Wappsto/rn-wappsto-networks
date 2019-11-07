@@ -174,6 +174,11 @@ export function generateStyles(c = {}) {
         height: variables.inputHeightBase,
         padding: 15,
       },
+      gSignInButton: {
+        width: 192,
+        height: 48,
+        alignSelf: 'center',
+      },
       ghost: {
         backgroundColor: 'transparent',
       },

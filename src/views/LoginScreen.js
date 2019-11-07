@@ -11,6 +11,13 @@ import {
   SafeAreaView,
   ScrollView,
 } from 'react-native';
+import {
+  GoogleSignin,
+  GoogleSigninButton,
+  statusCodes,
+} from '@react-native-community/google-signin';
+import firebase from 'react-native-firebase';
+import config from '../config';
 
 import {startStream, getStreams} from '../utils';
 
@@ -32,7 +39,10 @@ function mapStateToProps(state, componentProps) {
 class LoginScreen extends Login {
   constructor(props) {
     super(props);
+    this.state.isSigninInProgress = false;
     this.passwordInputRef = React.createRef();
+    this.signIn = this.signIn.bind(this);
+    this.googleSignIn = this.googleSignIn.bind(this);
   }
   componentDidMount() {}
   saveSession(request) {
@@ -62,12 +72,60 @@ class LoginScreen extends Login {
       this.signIn();
     }
   };
+  signIn() {
+    this.fbSignInError = null;
+    super.signIn();
+  }
+  async googleSignIn() {
+    this.fbSignInError = null;
+    try {
+      this.setState({isSigninInProgress: true});
+      await GoogleSignin.configure({
+        webClientId: config.firebaseWebClientId,
+      });
+      const data = await GoogleSignin.signIn();
+      GoogleSignin.signOut();
+      const credential = firebase.auth.GoogleAuthProvider.credential(
+        data.idToken,
+        data.accessToken,
+      );
+      const firebaseUserCredential = await firebase
+        .auth()
+        .signInWithCredential(credential);
+      const token = await firebaseUserCredential.user.getIdToken();
+      this.props.makeRequest('POST', '/session', {
+        firebase_token: token,
+        remember_me: this.state.remember_me,
+      });
+    } catch (error) {
+      let code;
+      if (error.code !== statusCodes.SIGN_IN_CANCELLED) {
+        if (error.code === statusCodes.IN_PROGRESS) {
+          // operation (f.e. sign in) is in progress already
+          code = 'fbsi_in_progress';
+        } else if (error.code === statusCodes.PLAY_SERVICES_NOT_AVAILABLE) {
+          // play services not available or outdated
+          code = 'fbsi_psna';
+        } else {
+          // some other error happened
+          code = 'generic';
+        }
+        this.fbSignInError = {
+          status: 'error',
+          json: {
+            code,
+          },
+        };
+      }
+    }
+    this.setState({isSigninInProgress: false});
+  }
   startStream(session) {
     const {initializeStream, currentStreams} = this.props;
     startStream(currentStreams, session, initializeStream);
   }
   render() {
-    const postRequest = this.props.postRequest;
+    const postRequest = this.props.postRequest || this.fbSignInError;
     const verifyRequest = this.props.verifyRequest;
     const loading = postRequest && postRequest.status === 'pending';
     return (
@@ -135,6 +193,19 @@ class LoginScreen extends Login {
                 {CapitalizeFirst(i18n.t('signIn'))}
               </Text>
             </TouchableOpacity>
+            <GoogleSigninButton
+              style={theme.common.gSignInButton}
+              size={
+                theme.variables.googleSigninButtonSize ||
+                GoogleSigninButton.Size.Wide
+              }
+              color={
+                theme.variables.googleSigninButtonColor ||
+                GoogleSigninButton.Color.Dark
+              }
+              onPress={this.googleSignIn}
+              disabled={this.state.isSigninInProgress || loading}
+            />
           </View>
           <LoginScreen.Footer />
         </ScrollView>

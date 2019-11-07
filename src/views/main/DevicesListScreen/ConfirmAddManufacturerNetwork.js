@@ -21,7 +21,7 @@ class ConfirmAddManufacturerNetwork extends PureComponent {
           {CapitalizeEach(i18n.t('addNetwork.addManufacturerNetworkTitle'))}
         </Text>
         <Text style={theme.common.p}>
-          {CapitalizeFirst(i18n.t('addNetwork.manufacturerAsUserWarning'))}
+          {CapitalizeFirst(i18n.t('addNetwork.manufacturerAsOwnerWarning'))}
         </Text>
         {loading && (
           <ActivityIndicator size="large" color={theme.variables.primary} />

@@ -44,7 +44,7 @@ class AddNetwork extends PureComponent {
   render() {
     const postRequest = this.props.postRequest;
     const loading = postRequest && postRequest.status === 'pending';
-    const manufacturerAsUserError =
+    const manufacturerAsOwnerError =
       postRequest &&
       postRequest.status === 'error' &&
       postRequest.json.code === 105000008;
@@ -121,7 +121,7 @@ class AddNetwork extends PureComponent {
         {loading && (
           <ActivityIndicator size="large" color={theme.variables.primary} />
         )}
-        {!manufacturerAsUserError && <RequestError error={postRequest} />}
+        {!manufacturerAsOwnerError && <RequestError error={postRequest} />}
         <TouchableOpacity
           style={[theme.common.button, loading ? theme.common.disabled : null]}
           onPress={this.addNetwork}>

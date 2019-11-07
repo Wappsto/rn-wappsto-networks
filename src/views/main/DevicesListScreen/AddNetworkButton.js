@@ -8,17 +8,17 @@ import theme from '../../../theme/themeExport';
 
 export default class AddNetworkButton extends PureComponent {
   state = {
-    manufacturerAsUserError: false,
+    manufacturerAsOwnerError: false,
   };
 
   content = (visible, hide, show) => {
-    const customHide = manufacturerAsUserError => {
+    const customHide = manufacturerAsOwnerError => {
       hide();
-      if (manufacturerAsUserError) {
-        this.setState({manufacturerAsUserError}, show);
+      if (manufacturerAsOwnerError) {
+        this.setState({manufacturerAsOwnerError}, show);
       }
     };
-    if (this.state.manufacturerAsUserError) {
+    if (this.state.manufacturerAsOwnerError) {
       return (
         <Popup visible={visible} onRequestClose={hide} hide={hide}>
           <NetworkRequestWrapper hide={hide}>
