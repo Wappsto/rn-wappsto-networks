@@ -19,8 +19,6 @@ import {
 import firebase from 'react-native-firebase';
 import config from '../config';
 
-import {startStream, getStreams} from '../utils';
-
 import i18n, {CapitalizeFirst} from '../translations/i18n';
 
 import RequestError from '../components/RequestError';
@@ -29,12 +27,6 @@ import theme from '../theme/themeExport';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 
 import {Login, connect} from '../wappsto-components/Login';
-
-function mapStateToProps(state, componentProps) {
-  return {
-    currentStreams: getStreams(state),
-  };
-}
 
 class LoginScreen extends Login {
   constructor(props) {
@@ -120,10 +112,7 @@ class LoginScreen extends Login {
     }
     this.setState({isSigninInProgress: false});
   }
-  startStream(session) {
-    const {initializeStream, currentStreams} = this.props;
-    startStream(currentStreams, session, initializeStream);
-  }
+  startStream(session) {}
   render() {
     const postRequest = this.props.postRequest || this.fbSignInError;
     const verifyRequest = this.props.verifyRequest;
@@ -246,7 +235,4 @@ export function setFooter(comp) {
   LoginScreen.Footer = comp;
 }
 
-export default connect(
-  LoginScreen,
-  mapStateToProps,
-);
+export default connect(LoginScreen);

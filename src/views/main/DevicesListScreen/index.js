@@ -1,11 +1,15 @@
 import React, {Component} from 'react';
-
-import {Text} from 'react-native';
+import {AppState, Text} from 'react-native';
+import {connect} from 'react-redux';
+import {bindActionCreators} from 'redux';
 import Screen from '../../../components/Screen';
 import MenuButton from '../../../components/MenuButton';
 import List from '../../../components/List';
 import DeviceSection from './DeviceSection';
 import AddNetworkButton from './AddNetworkButton';
+import {startStream, getStreams} from '../../../utils';
+import {getSession} from '../../../wappsto-redux/selectors/session';
+import {initializeStream, closeStream} from '../../../wappsto-redux/actions/stream';
 
 import theme from '../../../theme/themeExport';
 import i18n, {
@@ -18,7 +22,30 @@ const query = {
   limit: 10,
 };
 
+function mapStateToProps(state, componentProps) {
+  return {
+    currentStreams: getStreams(state),
+    session: getSession(state)
+  };
+}
+
+function mapDispatchToProps(dispatch) {
+  return {
+    ...bindActionCreators(
+      {initializeStream, closeStream},
+      dispatch,
+    ),
+  };
+}
+
 class DevicesListScreen extends Component {
+  constructor(props){
+    super(props);
+    this.state = {
+      appState: AppState.currentState,
+    };
+    startStream(props.currentStreams, props.session, props.initializeStream, props.closeStream);
+  }
   static navigationOptions = ({navigation}) => {
     return {
       ...theme.headerStyle,
@@ -26,6 +53,23 @@ class DevicesListScreen extends Component {
       headerLeft: <MenuButton navigation={navigation} />,
       headerRight: <AddNetworkButton navigation={navigation} />,
     };
+  };
+  componentDidMount() {
+    AppState.addEventListener('change', this._handleAppStateChange);
+  }
+
+  componentWillUnmount() {
+    AppState.removeEventListener('change', this._handleAppStateChange);
+  }
+
+  _handleAppStateChange = (nextAppState) => {
+    if (
+      this.state.appState.match(/inactive|background/) &&
+      nextAppState === 'active'
+    ) {
+      startStream(props.currentStreams, props.session, props.initializeStream, props.closeStream);
+    }
+    this.setState({appState: nextAppState});
   };
   render() {
     return (
@@ -59,4 +103,4 @@ class DevicesListScreen extends Component {
   }
 }
 
-export default DevicesListScreen;
+export default connect(mapStateToProps, mapDispatchToProps)(DevicesListScreen);

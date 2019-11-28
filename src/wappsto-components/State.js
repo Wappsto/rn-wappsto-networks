@@ -7,10 +7,12 @@ import * as request from '../wappsto-redux/actions/request';
 import {getRequest} from '../wappsto-redux/selectors/request';
 
 function mapStateToProps(state, componentProps) {
+  const url = '/state/' + componentProps.state.meta.id;
   return {
+    url,
     request: getRequest(
       state,
-      '/state/' + componentProps.state.meta.id,
+      url,
       'PATCH',
     ),
   };
@@ -36,6 +38,10 @@ export class State extends Component {
     };
   }
 
+  componentWillUnmount() {
+    this.props.removeRequest(this.props.url, 'PATCH');
+  }
+
   static getDerivedStateFromProps(props, state) {
     if (props.state.type === 'Report') {
       return {
@@ -52,7 +58,7 @@ export class State extends Component {
     }
     if (!this.isUpdating()) {
       let timestamp = new Date().toISOString();
-      this.props.makeRequest('PATCH', '/state/' + this.props.state.meta.id, {
+      this.props.makeRequest('PATCH', this.props.url, {
         data,
         timestamp,
       });

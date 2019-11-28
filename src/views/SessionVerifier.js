@@ -8,14 +8,11 @@ import {initializeStream} from '../wappsto-redux/actions/stream';
 
 import {getRequest} from '../wappsto-redux/selectors/request';
 
-import {startStream, getStreams} from '../utils';
-
 function mapStateToProps(state, componentProps) {
   const session = componentProps.session;
   return {
     verifyRequest:
       session && getRequest(state, '/session/' + session.meta.id, 'GET'),
-    currentStreams: getStreams(state),
   };
 }
 
@@ -94,16 +91,11 @@ export class SessionVerifier extends Component {
   userLogged(request, session) {
     this.props.addSession(session.json);
     this.props.removeRequest(request.url);
-    this.startStream(request.json);
     this.navigateTo('MainScreen');
   }
   navigateTo(page) {
     this.clearTimeouts();
     this.props.navigate(page);
-  }
-  startStream(session) {
-    const {initializeStream, currentStreams} = this.props;
-    startStream(currentStreams, session, initializeStream);
   }
   render() {
     return null;

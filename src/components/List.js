@@ -33,7 +33,7 @@ class ListComponent extends List {
     const request = this.props.request;
     const data = [];
     this.props.items.forEach(item => {
-      data.push({title: item.name || item.meta.id, data: [item]});
+      data.push({title: item.name ? item.name + '-' + item.meta.id : item.meta.id, data: [item]});
     });
     return (
       <View style={this.props.style || theme.common.container}>

@@ -9,7 +9,7 @@ import ReportState from './ReportState';
 import RequestError from '../../../components/RequestError';
 
 import {setItem} from '../../../wappsto-redux/actions/items';
-import {makeRequest} from '../../../wappsto-redux/actions/request';
+import {makeRequest, removeRequest} from '../../../wappsto-redux/actions/request';
 
 import {getRequestAndError} from '../../../wappsto-redux/selectors/request';
 import {getEntities} from '../../../wappsto-redux/selectors/entities';
@@ -31,7 +31,7 @@ function mapStateToProps(state, componentProps) {
 
 function mapDispatchToProps(dispatch) {
   return {
-    ...bindActionCreators({makeRequest, setItem}, dispatch),
+    ...bindActionCreators({makeRequest, removeRequest, setItem}, dispatch),
   };
 }
 
@@ -43,6 +43,10 @@ class StatesComponent extends Component {
   constructor(props) {
     super(props);
     this.refresh = this.refresh.bind(this);
+  }
+
+  componentWillUnmount() {
+    this.props.removeRequest(this.props.url, 'GET');
   }
 
   componentDidMount() {
