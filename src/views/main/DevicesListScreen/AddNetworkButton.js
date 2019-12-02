@@ -18,10 +18,14 @@ export default class AddNetworkButton extends PureComponent {
         this.setState({manufacturerAsOwnerError}, show);
       }
     };
+    const confirmHide = () => {
+      hide();
+      this.setState({manufacturerAsOwnerError: false});
+    };
     if (this.state.manufacturerAsOwnerError) {
       return (
-        <Popup visible={visible} onRequestClose={hide} hide={hide}>
-          <NetworkRequestWrapper hide={hide}>
+        <Popup visible={visible} onRequestClose={confirmHide} hide={confirmHide}>
+          <NetworkRequestWrapper hide={confirmHide}>
             {(sendRequest, props) => (
               <ConfirmAddManufacturerNetwork
                 sendRequest={sendRequest}

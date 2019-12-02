@@ -9,7 +9,11 @@ import i18n, {
 
 class ConfirmAddManufacturerNetwork extends PureComponent {
   addNetwork = () => {
-    this.props.sendRequest(this.props.networkId, {manufacturer_as_owner: true});
+    this.props.sendRequest(this.props.networkId, {
+      meta: {
+        accept_manufacturer_as_owner: true
+      }
+    });
   };
 
   render() {
@@ -26,7 +30,7 @@ class ConfirmAddManufacturerNetwork extends PureComponent {
         {loading && (
           <ActivityIndicator size="large" color={theme.variables.primary} />
         )}
-        <RequestError error={postRequest} />
+        {postRequest && postRequest.json && postRequest.json.code !== 105000008 && <RequestError error={postRequest} />}
         <TouchableOpacity
           style={[theme.common.button, loading ? theme.common.disabled : null]}
           onPress={this.addNetwork}>

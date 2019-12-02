@@ -1,7 +1,7 @@
 import {config} from './configureWappstoRedux';
 import {getStream} from './wappsto-redux/selectors/stream';
 
-export function startStream(currentStreams, session, initializeStreamm, closeStream) {
+export function startStream(currentStreams, session, initializeStream, closeStream) {
   if (config.stream) {
     config.stream.forEach(stream => {
       if (!currentStreams.find(exStream => exStream.name === stream.name)) {

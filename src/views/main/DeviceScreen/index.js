@@ -36,6 +36,10 @@ class DeviceScreen extends Component {
 
   render() {
     const device = this.props.selectedDevice;
+    if(!device || !device.meta || !device.meta.id){
+      this.props.navigation.goBack();
+      return null;
+    }
     return (
       <Screen>
         <List

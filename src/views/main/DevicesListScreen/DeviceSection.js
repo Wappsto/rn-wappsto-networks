@@ -12,6 +12,9 @@ function mapStateToProps(state, componentProps) {
 class DeviceSection extends Component {
   render() {
     const {device, navigation} = this.props;
+    if(!device || !device.meta || !device.meta.id){
+      return null;
+    }
     return (
       <ListRow
         key={device.meta.id}

@@ -268,8 +268,8 @@ function _startStream(
             dispatch(
               removeEntities(message.meta_object.type, [
                 message.meta_object.id,
-              ]),
-              {parent},
+              ],
+              {parent})
             );
             break;
           default:

@@ -67,7 +67,7 @@ class DevicesListScreen extends Component {
       this.state.appState.match(/inactive|background/) &&
       nextAppState === 'active'
     ) {
-      startStream(props.currentStreams, props.session, props.initializeStream, props.closeStream);
+      startStream(this.props.currentStreams, this.props.session, this.props.initializeStream, this.props.closeStream);
     }
     this.setState({appState: nextAppState});
   };
@@ -78,9 +78,12 @@ class DevicesListScreen extends Component {
           refreshItem="refreshList"
           type="network"
           query={query}
-          renderSectionHeader={({section: {title}}) => (
-            <Text style={theme.common.listHeader}>{title}</Text>
-          )}
+          renderSectionHeader={({section: {title}}) => {
+            if(title.name){
+                return (<Text style={theme.common.listHeader}><Text style={{ fontWeight: "600" }}>{title.name}</Text> - {title.id}</Text>);
+            }
+            return (<Text style={theme.common.listHeader}>{title.id}</Text>);
+          }}
           renderItem={({item}) => {
             if (item.device.length === 0) {
               return (

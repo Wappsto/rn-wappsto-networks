@@ -86,8 +86,8 @@
       "denied": "camera not authorized",
       "pending": "waiting for camera"
     },
-    "addManufacturerNetworkTitle": "add manufacturer network",
-    "manufacturerAsOwnerWarning": "the manufacturer of the network can see all the data that is under it. Are you sure you want to proceed ?"
+    "addManufacturerNetworkTitle": "Warning",
+    "manufacturerAsOwnerWarning": "the manufacturer of this device has full access. Do you really want to add this device to your account ?"
   },
   "add": "add",
   "yes": "yes"

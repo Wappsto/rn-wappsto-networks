@@ -244,9 +244,10 @@ export function generateStyles(c = {}) {
         fontStyle: 'italic',
       },
       listHeader: {
+        backgroundColor: variables.containerBgColor,
         color: variables.textSecondary,
         paddingHorizontal: 10,
-        marginTop: 10,
+        paddingTop: 10,
       },
       ...c,
     }),
