@@ -17,7 +17,7 @@ import {
   statusCodes,
 } from '@react-native-community/google-signin';
 import firebase from 'react-native-firebase';
-import config from '../config';
+import config from '../wappsto-redux/config';
 
 import i18n, {CapitalizeFirst} from '../translations/i18n';
 
