@@ -1,9 +1,6 @@
 import AsyncStorage from '@react-native-community/async-storage';
-import {connect} from 'react-redux';
-import {bindActionCreators} from 'redux';
 import SafeAreaView from 'react-native-safe-area-view';
-import {DrawerNavigatorItems} from 'react-navigation-drawer';
-import React, {Component, Fragment} from 'react';
+import { DrawerNavigatorItems } from 'react-navigation-drawer';
 import {
   View,
   Text,
@@ -14,143 +11,19 @@ import {
   TouchableOpacity,
   StatusBar,
 } from 'react-native';
-
 import RequestError from './RequestError';
-
-import {makeRequest} from '../wappsto-redux/actions/request';
-import {setItem} from '../wappsto-redux/actions/items';
-import {closeStream} from '../wappsto-redux/actions/stream';
-
-import {getUserData} from '../wappsto-redux/selectors/entities';
-import {getRequest} from '../wappsto-redux/selectors/request';
-import {getSession} from '../wappsto-redux/selectors/session';
-import {getItem} from '../wappsto-redux/selectors/items';
-
+import React, { useEffect, useMemo, useCallback } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
+import { setItem } from 'wappsto-redux/actions/items';
+import { closeStream } from 'wappsto-redux/actions/stream';
+import { getUserData } from 'wappsto-redux/selectors/entities';
+import { getSession } from 'wappsto-redux/selectors/session';
+import { makeItemSelector } from 'wappsto-redux/selectors/items';
 import theme from '../theme/themeExport';
 import Icon from 'react-native-vector-icons/Feather';
-
-import {config} from '../configureWappstoRedux';
-
-function mapStateToProps(state) {
-  return {
-    userRequest: getRequest(state, '/user', 'GET'),
-    user: getUserData(state),
-    session: getSession(state),
-    fetched: getItem(state, 'user_fetched'),
-  };
-}
-
-function mapDispatchToProps(dispatch) {
-  return {
-    ...bindActionCreators({makeRequest, setItem, closeStream}, dispatch),
-  };
-}
-
-class DrawerMenu extends Component {
-  constructor(props) {
-    super(props);
-    this.logout = this.logout.bind(this);
-  }
-
-  componentDidMount() {
-    if (!this.props.fetched) {
-      this.props.setItem('user_fetched', true);
-      this.props.makeRequest('GET', '/user', null, {query: {expand: 0}});
-    } else if (
-      this.props.userRequest &&
-      this.props.userRequest.status === 'error'
-    ) {
-      this.props.makeRequest('GET', '/user', null, {query: {expand: 0}});
-    }
-  }
-
-  logout() {
-    if (config.stream) {
-      config.stream.forEach(stream => {
-        this.props.closeStream(stream.name);
-      });
-    }
-    this.props.makeRequest('DELETE', '/session/' + this.props.session.meta.id);
-    AsyncStorage.removeItem('session');
-    this.props.navigation.navigate('LoginScreen');
-  }
-
-  render() {
-    const usersRequest = this.props.usersRequest;
-    const user = this.props.user;
-    let name = '';
-    if (user) {
-      if (user.nickname) {
-        name = user.nickname;
-      } else {
-        if (user.first_name) {
-          name += user.first_name + ' ';
-        }
-        if (user.last_name) {
-          name += user.last_name;
-        }
-
-        if (!name) {
-          if (user.provider[0] && user.provider[0].name) {
-            name = user.provider[0].name;
-          } else {
-            name = user.email;
-          }
-        }
-      }
-    }
-    return (
-      <SafeAreaView forceInset={{top: 'always', horizontal: 'never'}}>
-        <StatusBar
-          backgroundColor={theme.variables.white}
-          barStyle="dark-content"
-        />
-        <ScrollView>
-          <View style={styles.userInfo}>
-            <Fragment>
-              <View style={theme.common.row}>
-                <View>
-                  {user && user.provider[0] ? (
-                    <Image
-                      style={styles.userImage}
-                      source={{uri: user.provider[0].picture}}
-                    />
-                  ) : usersRequest &&
-                    usersRequest.method === 'GET' &&
-                    usersRequest.status === 'pending' ? (
-                    <ActivityIndicator
-                      size="large"
-                      color={theme.variables.primary}
-                    />
-                  ) : (
-                    <Icon
-                      name="user"
-                      style={theme.common.spaceAround}
-                      size={20}
-                      color={theme.variables.primary}
-                    />
-                  )}
-                </View>
-                <Text>{name}</Text>
-              </View>
-              <TouchableOpacity
-                style={theme.common.spaceAround}
-                onPress={this.logout}>
-                <Icon
-                  name="log-out"
-                  size={25}
-                  color={theme.variables.primary}
-                />
-              </TouchableOpacity>
-            </Fragment>
-            <RequestError error={usersRequest} />
-          </View>
-          <DrawerNavigatorItems {...this.props} />
-        </ScrollView>
-      </SafeAreaView>
-    );
-  }
-}
+import useRequest from 'wappsto-blanket/hooks/useRequest';
+import { config } from '../configureWappstoRedux';
+import { userFetched } from '../util/params';
 
 const styles = StyleSheet.create({
   userInfo: {
@@ -168,7 +41,117 @@ const styles = StyleSheet.create({
   },
 });
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps,
-)(DrawerMenu);
+const DrawerMenu = React.memo((props) => {
+  const dispatch = useDispatch();
+  const session = useSelector(getSession);
+  const user = useSelector(getUserData);
+  const { request, send } = useRequest();
+  const { sendDelete } = useRequest();
+  const getItem = useMemo(makeItemSelector, []);
+  const fetched = useSelector(state => getItem(state, userFetched));
+
+  const getUser = useCallback(() => {
+    send({
+      method: 'GET',
+      url: '/user',
+      query: {
+        me: true,
+        expand: 0
+      }
+    });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  useEffect(() => {
+    if (!fetched) {
+      dispatch(setItem(userFetched, true));
+      getUser();
+    } else if (request && request.status === 'error') {
+      getUser();
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  const logout = () => {
+    if (config.stream) {
+      config.stream.forEach(stream => {
+        dispatch(closeStream(stream.name));
+      });
+    }
+    sendDelete({ method: 'DELETE', url: '/session/' + session.meta.id });
+    AsyncStorage.removeItem('session');
+    props.navigation.navigate('LoginScreen');
+  }
+
+  let name = '';
+  if (user) {
+    if (user.nickname) {
+      name = user.nickname;
+    } else {
+      if (user.first_name) {
+        name += user.first_name + ' ';
+      }
+      if (user.last_name) {
+        name += user.last_name;
+      }
+
+      if (!name) {
+        if (user.provider[0] && user.provider[0].name) {
+          name = user.provider[0].name;
+        } else {
+          name = user.email;
+        }
+      }
+    }
+  }
+  return (
+    <SafeAreaView forceInset={{top: 'always', horizontal: 'never'}}>
+      <StatusBar
+        backgroundColor={theme.variables.white}
+        barStyle="dark-content"
+      />
+      <ScrollView>
+        <View style={styles.userInfo}>
+          <View style={theme.common.row}>
+            <View>
+              {user && user.provider[0] ? (
+                <Image
+                  style={styles.userImage}
+                  source={{uri: user.provider[0].picture}}
+                />
+              ) : request &&
+                request.method === 'GET' &&
+                request.status === 'pending' ? (
+                <ActivityIndicator
+                  size="large"
+                  color={theme.variables.primary}
+                />
+              ) : (
+                <Icon
+                  name="user"
+                  style={theme.common.spaceAround}
+                  size={20}
+                  color={theme.variables.primary}
+                />
+              )}
+            </View>
+            <Text>{name}</Text>
+          </View>
+          <TouchableOpacity
+            style={theme.common.spaceAround}
+            onPress={logout}>
+            <Icon
+              name="log-out"
+              size={25}
+              color={theme.variables.primary}
+            />
+          </TouchableOpacity>
+          <RequestError request={request} />
+        </View>
+        <DrawerNavigatorItems {...props} />
+      </ScrollView>
+    </SafeAreaView>
+  );
+});
+
+export default DrawerMenu;

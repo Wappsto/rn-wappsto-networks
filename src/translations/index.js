@@ -1,6 +1,6 @@
 import * as RNLocalize from 'react-native-localize';
 import i18next from 'i18next';
-import {initReactI18next} from 'react-i18next';
+import { initReactI18next, useTranslation } from 'react-i18next';
 
 const resources = {
   en: {
@@ -55,3 +55,5 @@ export function CapitalizeEach(str) {
 export function Uppercase(str) {
   return str.toUpperCase();
 }
+
+export { useTranslation };

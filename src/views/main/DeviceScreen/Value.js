@@ -1,77 +1,59 @@
-import {connect} from 'react-redux';
-import {bindActionCreators} from 'redux';
-import React, {Component, Fragment} from 'react';
+import React, { useCallback } from 'react';
 import {View, Text, TouchableOpacity, ActivityIndicator} from 'react-native';
 import States from './States';
 import ValueSettings from './ValueSettings';
-
-import {makeRequest} from '../../../wappsto-redux/actions/request';
-import {getRequest} from '../../../wappsto-redux/selectors/request';
-
 import theme from '../../../theme/themeExport';
 import Icon from 'react-native-vector-icons/Feather';
+import useRequest from 'wappsto-blanket/hooks/useRequest';
 
-function mapStateToProps(state, componentProps) {
-  let valueId = componentProps.item.meta.id;
-  return {
-    request: getRequest(state, '/value/' + valueId, 'PATCH'),
-  };
-}
+const ValueComponent = React.memo(({ item, navigation }) => {
+  const { request, send } = useRequest();
 
-function mapDispatchToProps(dispatch) {
-  return {
-    ...bindActionCreators({makeRequest}, dispatch),
-  };
-}
-
-class ValueComponent extends Component {
-  static navigationOptions = ({navigation}) => {
-    return {
-      title: navigation.getParam('title', ''),
-    };
-  };
-
-  updateValueStatus = () => {
-    this.props.makeRequest('PATCH', '/value/' + this.props.item.meta.id, {
-      status: 'update',
+  const updateValueStatus = useCallback(() => {
+    send({
+      method: 'PATCH',
+      url: '/value/' + item.meta.id,
+      body: {
+        status: 'update',
+      }
     });
-  };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [item]);
 
-  render() {
-    const request = this.props.request;
-    const value = this.props.item;
-    return (
-      <View style={theme.common.itemPanel}>
-        <View style={theme.common.itemHeader}>
-          <Text style={[theme.common.listItemTitleArea]}>{value.name}</Text>
-          <Fragment>
-            {request && request.status === 'pending' ? (
-              <ActivityIndicator
-                size="small"
+  return (
+    <View style={theme.common.itemPanel}>
+      <View style={theme.common.itemHeader}>
+        <Text style={[theme.common.listItemTitleArea]}>{item.name}</Text>
+        <>
+          {request && request.status === 'pending' ? (
+            <ActivityIndicator
+              size='small'
+              color={theme.variables.primary}
+              style={theme.common.iconButton}
+            />
+          ) : (
+            <TouchableOpacity
+              style={theme.common.iconButton}
+              onPress={updateValueStatus}>
+              <Icon
+                name='rotate-cw'
+                size={20}
                 color={theme.variables.primary}
-                style={theme.common.iconButton}
               />
-            ) : (
-              <TouchableOpacity
-                style={theme.common.iconButton}
-                onPress={this.updateValueStatus}>
-                <Icon
-                  name="rotate-cw"
-                  size={20}
-                  color={theme.variables.primary}
-                />
-              </TouchableOpacity>
-            )}
-            <ValueSettings item={value} />
-          </Fragment>
-        </View>
-        <States value={value} />
+            </TouchableOpacity>
+          )}
+          <ValueSettings item={item} />
+        </>
       </View>
-    );
-  }
-}
+      <States value={item} />
+    </View>
+  );
+});
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps,
-)(ValueComponent);
+ValueComponent.navigationOptions = ({navigation}) => {
+  return {
+    title: navigation.getParam('title', ''),
+  };
+};
+
+export default ValueComponent;

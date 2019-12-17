@@ -1,81 +1,49 @@
-import {connect} from 'react-redux';
-import {bindActionCreators} from 'redux';
-import React, {Component} from 'react';
+import React, { useState, useMemo, useEffect, useCallback } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
 import {Text, View, TouchableOpacity, StatusBar} from 'react-native';
 import SafeAreaView from 'react-native-safe-area-view';
-
-import {config} from '../configureWappstoRedux';
-
-import {getStream} from '../wappsto-redux/selectors/stream';
-
-import {openStream, status, steps} from '../wappsto-redux/actions/stream';
-
+import { config } from '../configureWappstoRedux';
+import { makeStreamSelector } from 'wappsto-redux/selectors/stream';
+import { openStream, status, steps } from 'wappsto-redux/actions/stream';
 import NetInfo from '@react-native-community/netinfo';
-
-import i18n, {CapitalizeFirst} from '../translations/i18n';
+import i18n, { CapitalizeFirst } from '../translations';
 import theme from '../theme/themeExport';
 
-function mapStateToProps(state, componentProps) {
-  if (!config.stream || config.stream.length === 0) {
-    return {};
-  }
-  return {
-    stream: getStream(state, config.stream[0].name),
-  };
-}
+const emptyObject = {};
+const Screen = React.memo(({ style, children }) => {
+  const dispatch = useDispatch();
+  const [ connected, setConnected] = useState(true);
+  const getStream = useMemo(makeStreamSelector, []);
+  const stream = useSelector(state => {
+    if(!config.stream){
+      return emptyObject;
+    }
+    return getStream(state, config.stream.name);
+  });
 
-function mapDispatchToProps(dispatch) {
-  return {
-    ...bindActionCreators({openStream}, dispatch),
-  };
-}
+  useEffect(() => {
+    NetInfo.isConnected.removeEventListener('connectionChange', setConnected);
+    return () => {
+      NetInfo.isConnected.removeEventListener('connectionChange', setConnected);
+    }
+  }, []);
 
-class Screen extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      connected: true,
-    };
-    this.checkConnection = this.checkConnection.bind(this);
-    this.reconnectStream = this.reconnectStream.bind(this);
-  }
+  const reconnectStream = useCallback(() => {
+    dispatch(openStream(stream.json));
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [stream]);
 
-  componentDidMount() {
-    NetInfo.isConnected.fetch(this.checkConnection);
-    NetInfo.isConnected.addEventListener(
-      'connectionChange',
-      this.checkConnection,
-    );
-  }
-
-  componentWillUnmount() {
-    NetInfo.isConnected.removeEventListener(
-      'connectionChange',
-      this.checkConnection,
-    );
-  }
-
-  checkConnection(isConnected) {
-    this.setState({
-      connected: isConnected,
-    });
-  }
-
-  reconnectStream() {
-    this.props.openStream(this.props.stream.json);
-  }
-
-  getStreamMessage(stream = {}) {
+  const getStreamMessage = (mStream = {}) => {
     let mStatus = '',
       mStep;
-    switch (stream.status) {
+    switch (mStream.status) {
       case status.CONNECTING:
       case status.RECONNECTING:
         mStatus =
-          stream.status === status.CONNECTING
+          mStream.status === status.CONNECTING
             ? CapitalizeFirst(i18n.t('statusMessage.connecting'))
             : CapitalizeFirst(i18n.t('statusMessage.reconnecting'));
-        switch (stream.step) {
+        switch (mStream.step) {
           case steps.CONNECTING.GET_STREAM:
             mStep = CapitalizeFirst(i18n.t('statusMessage.gettingStream'));
             break;
@@ -96,7 +64,9 @@ class Screen extends Component {
         break;
       case status.CLOSED:
         mStatus = CapitalizeFirst(i18n.t('statusMessage.streamClosed'));
-        mStep = CapitalizeFirst(i18n.t('error:stream.code.' + stream.code));
+        if(mStream.code){
+          mStep = CapitalizeFirst(i18n.t('error:stream.code.' + mStream.code));
+        }
         break;
       case status.ERROR:
         mStatus = CapitalizeFirst(i18n.t('error:generic'));
@@ -112,36 +82,30 @@ class Screen extends Component {
     return undefined;
   }
 
-  render() {
-    let stream = this.props.stream;
-    let showStream = this.state.connected && stream && stream.status !== 2;
-    return (
-      <SafeAreaView style={theme.common.safeAreaView}>
-        {!this.state.connected && (
-          <Text style={[theme.common.toastFullWidth, theme.common.warningPanel]}>
-            {CapitalizeFirst(i18n.t('error:internetConnectionLost'))}
-          </Text>
-        )}
-        <StatusBar backgroundColor={theme.variables.primary} barStyle="light-content" />
-        {showStream && (
-          <View style={[theme.common.toastFullWidth, theme.common.warningPanel]}>
-            <Text>{this.getStreamMessage(stream)}</Text>
-            {stream.status === status.LOST && (
-              <TouchableOpacity onPress={this.reconnectStream}>
-                <Text style={theme.common.actionText}>
-                  {CapitalizeFirst(i18n.t('tryAgain'))}
-                </Text>
-              </TouchableOpacity>
-            )}
-          </View>
-        )}
-        <View style={this.props.style || {flex: 1}}>{this.props.children}</View>
-      </SafeAreaView>
-    );
-  }
-}
+  const showStream = connected && stream && stream.status !== 2;
+  return (
+    <SafeAreaView style={theme.common.safeAreaView}>
+      {!connected && (
+        <Text style={[theme.common.toastFullWidth, theme.common.warningPanel]}>
+          {CapitalizeFirst(i18n.t('error:internetConnectionLost'))}
+        </Text>
+      )}
+      <StatusBar backgroundColor={theme.variables.primary} barStyle='light-content' />
+      {showStream && (
+        <View style={[theme.common.toastFullWidth, theme.common.warningPanel]}>
+          <Text>{getStreamMessage(stream)}</Text>
+          {(stream.status === status.LOST || stream.status === status.CLOSED) && (
+            <TouchableOpacity onPress={reconnectStream}>
+              <Text style={theme.common.actionText}>
+                {CapitalizeFirst(i18n.t('tryAgain'))}
+              </Text>
+            </TouchableOpacity>
+          )}
+        </View>
+      )}
+      <View style={style || {flex: 1}}>{children}</View>
+    </SafeAreaView>
+  );
+});
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps,
-)(Screen);
+export default Screen;

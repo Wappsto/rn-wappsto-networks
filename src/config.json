@@ -6,12 +6,9 @@
     "stream": "",
     "session": ""
   },
-  "stream": [{
+  "stream": {
     "name": "wappsto-native-2.0",
     "subscription": ["/network"]
-  },{
-    "name": "wappsto-native-1.0",
-    "subscription": ["/network"]
-  }],
+  },
   "firebaseWebClientId": ""
 }

@@ -6,6 +6,8 @@ import {createStackNavigator} from 'react-navigation-stack';
 
 import store from './configureWappstoRedux';
 
+let dependencies = ['MainStackScreen', 'AccountStackScreen', 'MainScreen', 'SwitchNavigator', 'AppContainer', 'App'];
+
 let components = {
   SplashScreen: require('./views/SplashScreen').default,
   LoginScreen: require('./views/LoginScreen').default,
@@ -52,6 +54,10 @@ let components = {
   // helper function
   replace: function(key, val) {
     this[key] = val;
+    const index = dependencies.indexOf(key);
+    if(index !== -1){
+      dependencies.splice(index, 1);
+    }
     return this;
   },
 };
@@ -62,15 +68,11 @@ export function replaceComponent(func) {
 
 export default class App extends Component {
   render() {
-    for (let key in components) {
-      if (
-        key !== 'replace' &&
-        !(components[key].prototype instanceof Component) &&
-        components[key].constructor === Function
-      ) {
-        components[key] = components[key]();
+    dependencies.forEach(d => {
+      if(components[d] && components[d].constructor === Function){
+        components[d] = components[d]();
       }
-    }
+    });
     return (
       <Provider store={store}>
         <components.App useSuspense={false} />

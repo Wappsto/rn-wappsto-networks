@@ -1,60 +1,50 @@
-import {connect} from 'react-redux';
-import {bindActionCreators} from 'redux';
-import React, {Component} from 'react';
+import React, { useMemo, useEffect } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
 import Screen from '../../../components/Screen';
 import List from '../../../components/List';
 import Value from './Value';
-
-import * as items from '../../../wappsto-redux/actions/items';
-import {getEntity} from '../../../wappsto-redux/selectors/entities';
-
+import { removeItem } from 'wappsto-redux/actions/items';
+import { makeEntitySelector } from 'wappsto-redux/selectors/entities';
+import { makeItemSelector } from 'wappsto-redux/selectors/items';
 import theme from '../../../theme/themeExport';
+import { selectedDeviceName } from '../../../util/params';
 
-function mapStateToProps(state) {
-  return {
-    selectedDevice: getEntity(state, 'device', state.items.selectedDevice),
-  };
-}
+const query = {expand: 5};
+const DeviceScreen = React.memo(({ navigation }) => {
+  const dispatch = useDispatch();
+  const getItem = useMemo(makeItemSelector, []);
+  const selectedDevice = useSelector(state => getItem(state, selectedDeviceName));
+  const getEntity = useMemo(makeEntitySelector, []);
+  const device = useSelector(state => getEntity(state, 'device', selectedDevice));
 
-function mapDispatchToProps(dispatch) {
-  return {
-    ...bindActionCreators(items, dispatch),
-  };
-}
-
-class DeviceScreen extends Component {
-  static navigationOptions = ({navigation}) => {
-    return {
-      ...theme.headerStyle,
-      title: navigation.getParam('title', ''),
-    };
-  };
-
-  componentWillUnmout() {
-    this.props.removeItem('device');
-  }
-
-  render() {
-    const device = this.props.selectedDevice;
-    if(!device || !device.meta || !device.meta.id){
-      this.props.navigation.goBack();
-      return null;
+  useEffect(() => {
+    return () => {
+      dispatch(removeItem(selectedDeviceName));
     }
-    return (
-      <Screen>
-        <List
-          id={device.meta.id}
-          type="device"
-          childType="value"
-          query={{expand: 5}}
-          renderItem={({item}) => <Value item={item} />}
-        />
-      </Screen>
-    );
-  }
-}
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps,
-)(DeviceScreen);
+  if(!device || !device.meta || !device.meta.id){
+    navigation.goBack();
+    return null;
+  }
+  const url = '/device/' + device.meta.id + '/value';
+  return (
+    <Screen>
+      <List
+        url={url}
+        query={query}
+        renderItem={({item}) => <Value item={item} />}
+      />
+    </Screen>
+  );
+});
+
+DeviceScreen.navigationOptions = ({navigation}) => {
+  return {
+    ...theme.headerStyle,
+    title: navigation.getParam('title', ''),
+  };
+};
+
+export default DeviceScreen;

@@ -1,46 +1,10 @@
 import AsyncStorage from '@react-native-community/async-storage';
-import React, {Component} from 'react';
-import {View, StyleSheet, StatusBar} from 'react-native';
+import React, { useState, useEffect } from 'react';
+import { View, StyleSheet, StatusBar } from 'react-native';
 import SessionVerifier from './SessionVerifier';
 
 import theme from '../theme/themeExport';
 import Icon from 'react-native-vector-icons/FontAwesome5';
-
-export default class SplashScreen extends Component {
-  state = {
-    status: 'pending',
-    session: null,
-  };
-  async getSession() {
-    try {
-      let session = await AsyncStorage.getItem('session');
-      if (session !== null) {
-        session = JSON.parse(session);
-        this.setState({session, status: 'success'});
-      } else {
-        this.setState({status: 'error'});
-      }
-    } catch (e) {
-      this.setState({status: 'error'});
-    }
-  }
-  componentDidMount() {
-    this.getSession();
-  }
-  render() {
-    return (
-      <View style={styles.container}>
-        <StatusBar backgroundColor={theme.variables.white} barStyle="dark-content" />
-        <Icon name="kiwi-bird" size={100} color={theme.variables.primary} />
-        <SessionVerifier
-          status={this.state.status}
-          session={this.state.session}
-          navigate={this.props.navigation.navigate}
-        />
-      </View>
-    );
-  }
-}
 
 const styles = StyleSheet.create({
   container: {
@@ -51,3 +15,42 @@ const styles = StyleSheet.create({
     backgroundColor: theme.variables.modalBgColor,
   },
 });
+
+const SplashScreen = ({ navigation }) => {
+  const [ status, setStatus ] = useState('pending');
+  const [ session, setSession ] = useState();
+
+  // Get Session
+  const getSession = async () => {
+    try {
+      let storageSession = await AsyncStorage.getItem('session');
+      if (storageSession !== null) {
+        storageSession = JSON.parse(storageSession);
+        setSession(storageSession);
+        setStatus('success');
+      } else {
+        setStatus('error');
+      }
+    } catch (e) {
+      setStatus('error');
+    }
+  };
+
+  useEffect(() => {
+    getSession();
+  }, []);
+
+  return (
+    <View style={styles.container}>
+      <StatusBar backgroundColor={theme.variables.white} barStyle="dark-content" />
+      <Icon name="kiwi-bird" size={100} color={theme.variables.primary} />
+      <SessionVerifier
+        status={status}
+        session={session}
+        navigate={navigation.navigate}
+      />
+    </View>
+  );
+};
+
+export default SplashScreen;

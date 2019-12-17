@@ -4967,6 +4967,11 @@ require-main-filename@^2.0.0:
   version "2.0.0"
   resolved "https://registry.yarnpkg.com/require-main-filename/-/require-main-filename-2.0.0.tgz#d0b329ecc7cc0f61649f62215be69af54aa8989b"
 
+reselect@^4.0.0:
+  version "4.0.0"
+  resolved "https://registry.yarnpkg.com/reselect/-/reselect-4.0.0.tgz#f2529830e5d3d0e021408b246a206ef4ea4437f7"
+  integrity sha512-qUgANli03jjAyGlnbYVAV5vvnOmJnODyABz51RdBN7M4WaVu8mecZWgyQNkG8Yqe3KRGRt0l4K4B3XVEULC4CA==
+
 resolve-cwd@^2.0.0:
   version "2.0.0"
   resolved "https://registry.yarnpkg.com/resolve-cwd/-/resolve-cwd-2.0.0.tgz#00a9f7387556e27038eae232caa372a6a59b665a"
@@ -5782,6 +5787,21 @@ walker@^1.0.7, walker@~1.0.5:
   resolved "https://registry.yarnpkg.com/walker/-/walker-1.0.7.tgz#2f7f9b8fd10d677262b18a884e28d19618e028fb"
   dependencies:
     makeerror "1.0.x"
+
+wappsto-blanket@Wappsto/wappsto-blanket#v0.0.14:
+  version "0.0.0"
+  resolved "https://codeload.github.com/Wappsto/wappsto-blanket/tar.gz/4e912c209a1a17e45df5bedf9a4483d7e76cdd53"
+
+wappsto-redux@^3.0.5:
+  version "3.0.5"
+  resolved "https://registry.yarnpkg.com/wappsto-redux/-/wappsto-redux-3.0.5.tgz#92f8e70bdd1f62fadfb39f2a81ac2770752dfdeb"
+  integrity sha512-RPn5fzzlYhcHzM3lFcZbwDJMSNLazT/s4QXli5Aiw+tKEZ5DmaJpFZomEYB/yQSH4MZ9hyg/M7OHhV/kOm3fqA==
+  dependencies:
+    normalizr "^3.4.1"
+    querystring "^0.2.0"
+    redux "^4.0.4"
+    redux-thunk "^2.3.0"
+    reselect "^4.0.0"
 
 wcwidth@^1.0.1:
   version "1.0.1"

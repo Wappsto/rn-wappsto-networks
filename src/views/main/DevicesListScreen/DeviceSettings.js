@@ -1,17 +1,13 @@
-import React, {PureComponent} from 'react';
-import {Text} from 'react-native';
-
+import React, { useCallback } from 'react';
+import { Text } from 'react-native';
 import PopupButton from '../../../components/PopupButton';
 import Popup from '../../../components/Popup';
 import theme from '../../../theme/themeExport';
-import i18n, {
-  CapitalizeFirst,
-  CapitalizeEach,
-} from '../../../translations/i18n';
+import i18n, { CapitalizeFirst, CapitalizeEach } from '../../../translations';
 
-export default class ValueSettings extends PureComponent {
-  content = (visible, hide) => {
-    const {item} = this.props;
+const ValueSettings = React.memo(({ item }) => {
+
+  const content = useCallback((visible, hide) => {
     return (
       <Popup visible={visible} onRequestClose={hide} hide={hide}>
         <Text style={theme.common.H5}>
@@ -46,8 +42,9 @@ export default class ValueSettings extends PureComponent {
         </Text>
       </Popup>
     );
-  };
-  render() {
-    return <PopupButton icon="settings">{this.content}</PopupButton>;
-  }
-}
+  }, [item]);
+
+  return <PopupButton icon='settings'>{content}</PopupButton>;
+});
+
+export default ValueSettings;

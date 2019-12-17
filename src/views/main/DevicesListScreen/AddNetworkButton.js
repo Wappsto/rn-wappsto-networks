@@ -1,61 +1,92 @@
-import React, {PureComponent} from 'react';
+import React, { useState, useCallback, useEffect, useMemo } from 'react';
+import { useSelector } from 'react-redux';
 import PopupButton from '../../../components/PopupButton';
 import Popup from '../../../components/Popup';
-import NetworkRequestWrapper from './NetworkRequestWrapper';
 import AddNetworkPopup from './AddNetworkPopup';
 import ConfirmAddManufacturerNetwork from './ConfirmAddManufacturerNetwork';
 import theme from '../../../theme/themeExport';
+import useRequest from 'wappsto-blanket/hooks/useRequest';
+import { makeItemSelector } from 'wappsto-redux/selectors/items';
+import { manufacturerAsOwnerErrorCode, iotNetworkListAdd } from '../../../util/params';
 
-export default class AddNetworkButton extends PureComponent {
-  state = {
-    manufacturerAsOwnerError: false,
-  };
+const Content = React.memo(({ visible, hide, show }) => {
+  const { request, send } = useRequest();
+  const [ networkId, setNetworkId ] = useState();
+  const [ manufacturerAsOwnerError, setManufacturerAsOwnerError ] = useState(false);
+  const getItem = useMemo(makeItemSelector, []);
+  const addToList = useSelector(state => getItem(state, iotNetworkListAdd));
 
-  content = (visible, hide, show) => {
-    const customHide = manufacturerAsOwnerError => {
-      hide();
-      if (manufacturerAsOwnerError) {
-        this.setState({manufacturerAsOwnerError}, show);
+  const sendRequest = useCallback((id, body = {}) => {
+    setNetworkId(id);
+    send({
+      method: 'POST',
+      url: '/network/' + id,
+      body
+    });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  const acceptManufacturerAsOwner = useCallback(() => {
+    send({
+      method: 'POST',
+      url: '/network/' + networkId,
+      body: {
+        meta: {
+          accept_manufacturer_as_owner: true
+        }
       }
-    };
-    const confirmHide = () => {
-      hide();
-      this.setState({manufacturerAsOwnerError: false});
-    };
-    if (this.state.manufacturerAsOwnerError) {
-      return (
-        <Popup visible={visible} onRequestClose={confirmHide} hide={confirmHide}>
-          <NetworkRequestWrapper hide={confirmHide}>
-            {(sendRequest, props) => (
-              <ConfirmAddManufacturerNetwork
-                sendRequest={sendRequest}
-                postRequest={props.postRequest}
-                networkId={props.networkId}
-              />
-            )}
-          </NetworkRequestWrapper>
-        </Popup>
-      );
+    });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [networkId]);
+
+  useEffect(() => {
+    if(request){
+      if(request.status === 'error' && request.json.code === manufacturerAsOwnerErrorCode){
+        hide();
+        setManufacturerAsOwnerError(true);
+      } else if(request.status === 'success'){
+        hide();
+        setManufacturerAsOwnerError(false);
+        addToList(request.json && request.json.meta.id);
+      }
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [request]);
+
+  useEffect(() => {
+    if(manufacturerAsOwnerError){
+      show();
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [manufacturerAsOwnerError]);
+
+  if (manufacturerAsOwnerError) {
     return (
       <Popup visible={visible} onRequestClose={hide} hide={hide}>
-        <NetworkRequestWrapper hide={customHide}>
-          {(sendRequest, props) => (
-            <AddNetworkPopup
-              sendRequest={sendRequest}
-              postRequest={props.postRequest}
-              setItem={props.setItem}
-            />
-          )}
-        </NetworkRequestWrapper>
+        <ConfirmAddManufacturerNetwork
+          acceptManufacturerAsOwner={acceptManufacturerAsOwner}
+          postRequest={request}
+          networkId={networkId}
+        />
       </Popup>
     );
-  };
-  render() {
-    return (
-      <PopupButton icon="plus-circle" color={theme.variables.white}>
-        {this.content}
-      </PopupButton>
-    );
   }
-}
+  return (
+    <Popup visible={visible} onRequestClose={hide} hide={hide}>
+      <AddNetworkPopup
+        sendRequest={sendRequest}
+        postRequest={request}
+      />
+    </Popup>
+  );
+});
+
+const AddNetworkButton = React.memo(() => {
+  return (
+    <PopupButton icon='plus-circle' color={theme.variables.white}>
+      {(visible, hide, show) => <Content visible={visible} hide={hide} show={show} />}
+    </PopupButton>
+  );
+});
+
+export default AddNetworkButton;

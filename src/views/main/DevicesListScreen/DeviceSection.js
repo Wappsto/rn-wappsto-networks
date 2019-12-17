@@ -1,31 +1,25 @@
-import React, {Component} from 'react';
+import React, { useMemo } from 'react';
 import ListRow from './ListRow';
-import {connect} from 'react-redux';
-import {getEntity} from '../../../wappsto-redux/selectors/entities';
+import { useSelector } from 'react-redux';
+import { makeEntitySelector } from 'wappsto-redux/selectors/entities';
+import { selectedDeviceName } from '../../../util/params';
 
-function mapStateToProps(state, componentProps) {
-  return {
-    device: getEntity(state, 'device', componentProps.id),
-  };
-}
-
-class DeviceSection extends Component {
-  render() {
-    const {device, navigation} = this.props;
-    if(!device || !device.meta || !device.meta.id){
-      return null;
-    }
-    return (
-      <ListRow
-        key={device.meta.id}
-        selectedName="selectedDevice"
-        navigateTo="DeviceScreen"
-        item={device}
-        childName="value"
-        navigation={navigation}
-      />
-    );
+const DeviceSection = React.memo(({ navigation, id }) => {
+  const getEntity = useMemo(makeEntitySelector, []);
+  const device = useSelector(state => getEntity(state, 'device', id));
+  if(!device || !device.meta || !device.meta.id){
+    return null;
   }
-}
+  return (
+    <ListRow
+      key={device.meta.id}
+      selectedName={selectedDeviceName}
+      navigateTo='DeviceScreen'
+      item={device}
+      childName='value'
+      navigation={navigation}
+    />
+  );
+});
 
-export default connect(mapStateToProps)(DeviceSection);
+export default DeviceSection;

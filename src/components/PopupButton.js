@@ -1,41 +1,39 @@
-import React, {PureComponent, Fragment} from 'react';
+import React, { useState, useCallback } from 'react';
 import {TouchableOpacity} from 'react-native';
 
 import theme from '../theme/themeExport';
 import Icon from 'react-native-vector-icons/Feather';
 
-export default class PopupButton extends PureComponent {
-  state = {
-    modalVisible: false,
-  };
+const PopupButton = React.memo(({ icon, buttonStyle, color, children }) => {
+  const [ modalVisible, setModalVisible ] = useState(false);
 
-  showPopup = () => {
-    this.setState({modalVisible: true});
-  };
+  const showPopup = useCallback(() => {
+    setModalVisible(true);
+  }, []);
 
-  hidePopup = () => {
-    this.setState({modalVisible: false});
-  };
+  const hidePopup = useCallback(() => {
+    setModalVisible(false);
+  }, []);
 
-  render() {
-    return (
-      <Fragment>
-        <TouchableOpacity
-          onPress={this.showPopup}
-          style={theme.common.iconButton}>
-          <Icon
-            name={this.props.icon}
-            size={20}
-            style={this.props.buttonStyle}
-            color={this.props.color || theme.variables.primary}
-          />
-        </TouchableOpacity>
-        {this.props.children(
-          this.state.modalVisible,
-          this.hidePopup,
-          this.showPopup,
-        )}
-      </Fragment>
-    );
-  }
-}
+  return (
+    <>
+      <TouchableOpacity
+        onPress={showPopup}
+        style={theme.common.iconButton}>
+        <Icon
+          name={icon}
+          size={20}
+          style={buttonStyle}
+          color={color || theme.variables.primary}
+        />
+      </TouchableOpacity>
+      {children(
+        modalVisible,
+        hidePopup,
+        showPopup,
+      )}
+    </>
+  );
+});
+
+export default PopupButton;

@@ -1,117 +1,72 @@
-import PropTypes from 'prop-types';
-import {connect} from 'react-redux';
-import {bindActionCreators} from 'redux';
-import React, {Component, Fragment} from 'react';
+import React, { useMemo, useCallback } from 'react';
 import {View, Text, ActivityIndicator} from 'react-native';
-
+import { useSelector } from 'react-redux';
 import ControlState from './ControlState';
 import ReportState from './ReportState';
 import RequestError from '../../../components/RequestError';
-
-import {setItem} from '../../../wappsto-redux/actions/items';
-import {makeRequest, removeRequest} from '../../../wappsto-redux/actions/request';
-
-import {getRequestAndError} from '../../../wappsto-redux/selectors/request';
-import {getEntities} from '../../../wappsto-redux/selectors/entities';
-import {getItem} from '../../../wappsto-redux/selectors/items';
-
+import { makeEntitiesSelector } from 'wappsto-redux/selectors/entities';
 import theme from '../../../theme/themeExport';
-import i18n, {CapitalizeFirst} from '../../../translations/i18n';
+import i18n, { CapitalizeFirst } from '../../../translations';
+import useRequest from 'wappsto-blanket/hooks/useRequest';
 
-function mapStateToProps(state, componentProps) {
-  let id = componentProps.value.meta.id;
-  let url = '/value/' + id + '/state';
-  return {
-    url: url,
-    request: getRequestAndError(state, url, 'GET'),
-    states: getEntities(state, 'state', {parent: {type: 'value', id: id}}),
-    fetched: getItem(state, url + '_fetched'),
-  };
-}
+const StatesComponent = React.memo(({ value }) => {
+  const id = value.meta.id;
+  const url = '/value/' + id + '/state';
+  const { request, send } = useRequest();
+  const getEntities = useMemo(makeEntitiesSelector, []);
+  const states = useSelector(state => getEntities(state, 'state', {parent: {type: 'value', id: id}}));
 
-function mapDispatchToProps(dispatch) {
-  return {
-    ...bindActionCreators({makeRequest, removeRequest, setItem}, dispatch),
-  };
-}
-
-class StatesComponent extends Component {
-  static propTypes = {
-    value: PropTypes.object.isRequired,
-  };
-
-  constructor(props) {
-    super(props);
-    this.refresh = this.refresh.bind(this);
-  }
-
-  componentWillUnmount() {
-    this.props.removeRequest(this.props.url, 'GET');
-  }
-
-  componentDidMount() {
-    if (!this.props.fetched) {
-      this.props.setItem(this.props.url + '_fetched', true);
-      if (this.props.states.length !== this.props.value.state.length) {
-        this.refresh();
-      }
-    } else if (this.props.request.error) {
-      this.refresh();
-    }
-  }
-
-  refresh() {
-    let {request} = this.props.request;
+  const refresh = useCallback(() => {
     if (!request || request.status !== 'pending') {
-      this.props.makeRequest('GET', this.props.url, null, {query: {expand: 0}});
+      send({
+        method: 'GET',
+        url: url,
+        query: {
+          expand: 0
+        }
+      });
     }
-  }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [request, url]);
 
-  render() {
-    const {request, error} = this.props.request;
-    const value = this.props.value;
-    const states = this.props.states;
-    const reportState = states.find(s => s.type === 'Report');
-    const controlState = states.find(s => s.type === 'Control');
-    return (
-      <View>
-        {states.length !== 0 && (
-          <Fragment>
-            <View style={theme.common.itemContent}>
-              {reportState ? (
-                <View>
-                  <ReportState value={value} state={reportState} />
-                  <Text style={theme.common.timestamp}>
-                    {CapitalizeFirst(i18n.t('lastUpdated'))}:{' '}
-                    {new Date(reportState.timestamp).toLocaleString()}
-                  </Text>
-                </View>
-              ) : null}
-              {reportState && controlState ? (
-                <View style={theme.common.seperator} />
-              ) : null}
-              {controlState ? (
-                <View>
-                  <ControlState value={value} state={controlState} />
-                  <Text style={theme.common.timestamp}>
-                    {CapitalizeFirst(i18n.t('lastUpdated'))}:{' '}
-                    {new Date(controlState.timestamp).toLocaleString()}
-                  </Text>
-                </View>
-              ) : null}
-            </View>
-          </Fragment>
-        )}
-        {request && request.status === 'pending' && (
-          <ActivityIndicator size="large" />
-        )}
-        <RequestError error={error} />
-      </View>
-    );
-  }
-}
+  const reportState = states.find(s => s.type === 'Report');
+  const controlState = states.find(s => s.type === 'Control');
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps,
-)(StatesComponent);
+  return (
+    <View>
+      {states.length !== 0 && (
+        <>
+          <View style={theme.common.itemContent}>
+            {reportState ? (
+              <View>
+                <ReportState value={value} state={reportState} />
+                <Text style={theme.common.timestamp}>
+                  {CapitalizeFirst(i18n.t('lastUpdated'))}:{' '}
+                  {new Date(reportState.timestamp).toLocaleString()}
+                </Text>
+              </View>
+            ) : null}
+            {reportState && controlState ? (
+              <View style={theme.common.seperator} />
+            ) : null}
+            {controlState ? (
+              <View>
+                <ControlState value={value} state={controlState} />
+                <Text style={theme.common.timestamp}>
+                  {CapitalizeFirst(i18n.t('lastUpdated'))}:{' '}
+                  {new Date(controlState.timestamp).toLocaleString()}
+                </Text>
+              </View>
+            ) : null}
+          </View>
+        </>
+      )}
+      {request && request.status === 'pending' && (
+        <ActivityIndicator size='large' />
+      )}
+      <RequestError request={request} />
+    </View>
+  );
+});
+
+export default StatesComponent;

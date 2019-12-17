@@ -90,5 +90,13 @@
     "manufacturerAsOwnerWarning": "the manufacturer of this device has full access. Do you really want to add this device to your account ?"
   },
   "add": "add",
-  "yes": "yes"
+  "yes": "yes",
+  "timestamp":{
+    "secondsAgo": "",
+    "minutesAgo": "",
+    "hoursAgo": "",
+    "daysAgo": "",
+    "monthsAgo": "",
+    "yearsAgo": ""
+  }
 }

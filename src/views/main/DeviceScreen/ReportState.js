@@ -1,38 +1,7 @@
-import React, {PureComponent} from 'react';
-import {View, Text, StyleSheet, Image} from 'react-native';
-
+import React from 'react';
+import { View, Text, StyleSheet, Image } from 'react-native';
 import theme from '../../../theme/themeExport';
-import i18n, {CapitalizeFirst} from '../../../translations/i18n';
-
-class ReportState extends PureComponent {
-  content = () => {
-    const {state, value} = this.props;
-    if (value.hasOwnProperty('blob') && value.type === 'image') {
-      if (state.data && state.data.length > 0) {
-        return <Image style={styles.image} source={{uri: state.data}} />;
-      } else {
-        return null;
-      }
-    } else {
-      return (
-        <Text style={{textAlign: 'center', marginBottom: 15}}>
-          <Text style={styles.data}>{state.data}</Text>{' '}
-          <Text style={styles.unit}>{value.number && value.number.unit}</Text>
-        </Text>
-      );
-    }
-  };
-  render() {
-    return (
-      <View>
-        <Text style={theme.common.H6}>
-          {CapitalizeFirst(i18n.t('currentState'))}
-        </Text>
-        {this.content()}
-      </View>
-    );
-  }
-}
+import i18n, { CapitalizeFirst } from '../../../translations';
 
 const styles = StyleSheet.create({
   image: {
@@ -46,6 +15,34 @@ const styles = StyleSheet.create({
     fontSize: theme.variables.h3,
     fontWeight: '400',
   },
+});
+
+const content = (state, value) => {
+  if (value.hasOwnProperty('blob') && value.type === 'image') {
+    if (state.data && state.data.length > 0) {
+      return <Image style={styles.image} source={{uri: state.data}} />;
+    } else {
+      return null;
+    }
+  } else {
+    return (
+      <Text style={{textAlign: 'center', marginBottom: 15}}>
+        <Text style={styles.data}>{state.data}</Text>{' '}
+        <Text style={styles.unit}>{value.number && value.number.unit}</Text>
+      </Text>
+    );
+  }
+};
+
+const ReportState = React.memo(({ state, value }) => {
+  return (
+    <View>
+      <Text style={theme.common.H6}>
+        {CapitalizeFirst(i18n.t('currentState'))}
+      </Text>
+      {content(state, value)}
+    </View>
+  );
 });
 
 export default ReportState;
