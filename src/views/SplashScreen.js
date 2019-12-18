@@ -42,8 +42,8 @@ const SplashScreen = ({ navigation }) => {
 
   return (
     <View style={styles.container}>
-      <StatusBar backgroundColor={theme.variables.white} barStyle="dark-content" />
-      <Icon name="kiwi-bird" size={100} color={theme.variables.primary} />
+      <StatusBar backgroundColor={theme.variables.white} barStyle='dark-content' />
+      <Icon name='kiwi-bird' size={100} color={theme.variables.primary} />
       <SessionVerifier
         status={status}
         session={session}

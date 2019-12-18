@@ -145,12 +145,12 @@ const LoginScreen = React.memo(({ navigation }) => {
   }, [request]);
 
   const postRequest = fbSignInError.current || request;
-  const loading = postRequest && postRequest.status === 'pending';
+  const loading = postRequest && (postRequest.status === 'pending' || postRequest.status === 'success');
   return (
     <SafeAreaView style={{flex: 1}}>
       <StatusBar
         backgroundColor={theme.variables.white}
-        barStyle="dark-content"
+        barStyle='dark-content'
       />
       <ScrollView>
         <LoginScreen.Header />
@@ -164,11 +164,11 @@ const LoginScreen = React.memo(({ navigation }) => {
               handleTextChange(usernameText, 'username')
             }
             value={username}
-            textContentType="emailAddress"
-            autoCapitalize="none"
+            textContentType='emailAddress'
+            autoCapitalize='none'
             onSubmitEditing={moveToPasswordField}
-            keyboardType="email-address"
-            returnKeyType="next"
+            keyboardType='email-address'
+            returnKeyType='next'
             disabled={loading}
           />
           <Text style={theme.common.label}>
@@ -182,9 +182,9 @@ const LoginScreen = React.memo(({ navigation }) => {
                 handleTextChange(passwordText, 'password')
               }
               value={password}
-              textContentType="password"
+              textContentType='password'
               secureTextEntry={!showPassword}
-              autoCapitalize="none"
+              autoCapitalize='none'
               onSubmitEditing={checkAndSignIn}
               disabled={loading}
             />
@@ -196,7 +196,7 @@ const LoginScreen = React.memo(({ navigation }) => {
             />
           </View>
           {loading && (
-            <ActivityIndicator size="large" color={theme.variables.primary} />
+            <ActivityIndicator size='large' color={theme.variables.primary} />
           )}
           <RequestError request={postRequest} />
           <TouchableOpacity

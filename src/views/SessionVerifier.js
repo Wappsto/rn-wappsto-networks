@@ -53,6 +53,7 @@ const SessionVerifier = React.memo(({ status, session, navigate }) => {
 
   const addMaximumTimeout = () => {
     cache.current.maximumTimeout = setTimeout(() => {
+      cache.current.timeoutEnded = true;
       navigateTo('LoginScreen');
     }, 10000);
   }
@@ -85,13 +86,16 @@ const SessionVerifier = React.memo(({ status, session, navigate }) => {
   useEffect(() => {
     verify();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [session, request]);
+  }, [session, status, request]);
 
   useEffect(() => {
     addMinimumTimeout();
     addMaximumTimeout();
+    return () => {
+      clearTimeouts();
+    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [status]);
 
   return null;
 });

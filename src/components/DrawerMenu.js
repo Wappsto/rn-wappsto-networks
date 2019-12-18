@@ -1,16 +1,7 @@
 import AsyncStorage from '@react-native-community/async-storage';
 import SafeAreaView from 'react-native-safe-area-view';
 import { DrawerNavigatorItems } from 'react-navigation-drawer';
-import {
-  View,
-  Text,
-  StyleSheet,
-  ScrollView,
-  Image,
-  ActivityIndicator,
-  TouchableOpacity,
-  StatusBar,
-} from 'react-native';
+import { View, Text, StyleSheet, ScrollView, Image, ActivityIndicator, TouchableOpacity, StatusBar } from 'react-native';
 import RequestError from './RequestError';
 import React, { useEffect, useMemo, useCallback } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
@@ -46,7 +37,7 @@ const DrawerMenu = React.memo((props) => {
   const session = useSelector(getSession);
   const user = useSelector(getUserData);
   const { request, send } = useRequest();
-  const { sendDelete } = useRequest();
+  const { send: sendDelete } = useRequest();
   const getItem = useMemo(makeItemSelector, []);
   const fetched = useSelector(state => getItem(state, userFetched));
 
@@ -74,9 +65,7 @@ const DrawerMenu = React.memo((props) => {
 
   const logout = () => {
     if (config.stream) {
-      config.stream.forEach(stream => {
-        dispatch(closeStream(stream.name));
-      });
+      dispatch(closeStream(config.stream.name));
     }
     sendDelete({ method: 'DELETE', url: '/session/' + session.meta.id });
     AsyncStorage.removeItem('session');
