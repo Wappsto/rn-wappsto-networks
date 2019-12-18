@@ -8,13 +8,13 @@ import useRequest from 'wappsto-blanket/hooks/useRequest';
 
 const ControlState = React.memo(({ state, value }) => {
   const { request, send } = useRequest();
-  const [ input, setInput ] = useState(state.data);
+  const [ input, setInput ] = useState();
   const [ isFocused, setIsFocused ] = useState(false);
   const isUpdating = request && request.status === 'pending';
 
   useEffect(() => {
     if(!isFocused){
-      setInput(state.data);
+      setInput(value.hasOwnProperty('number') ? parseFloat(state.data) || 0 : state.data);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [state]);
@@ -79,16 +79,19 @@ const ControlState = React.memo(({ state, value }) => {
         />
       );
     } else if (param.max - param.min <= 300) {
+      const onSlidingComplete = (data) => {
+        setIsFocused(false);
+        updateState(data);
+      }
       stateDataField = (
         <Slider
           onSlidingStart={() => setIsFocused(true)}
-          onSlidingEnd={() => setIsFocused(false)}
+          onSlidingComplete={onSlidingComplete}
           maximumValue={param.max}
           minimumValue={param.min}
           step={param.step}
           style={{width: '100%'}}
           value={parseFloat(input) || 0}
-          onSlidingComplete={updateState}
           disabled={isUpdating}
           thumbTintColor={theme.variables.primary}
           minimumTrackTintColor={theme.variables.dark}

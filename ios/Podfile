@@ -35,6 +35,8 @@ target 'rn_wappsto_networks' do
   pod 'RNFirebase', :path => '../node_modules/react-native-firebase/ios'
 
 
+  pod 'react-native-slider', :path => '../node_modules/@react-native-community/slider'
+
   target 'rn_wappsto_networksTests' do
     inherit! :search_paths
     # Pods for testing

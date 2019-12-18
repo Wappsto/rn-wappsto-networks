@@ -11,8 +11,7 @@ import { selectedDeviceName } from '../../../util/params';
 
 const query = {
   expand: 3,
-  order_by: 'meta.created',
-  from_last: true
+  order_by: 'meta.created'
 };
 const DeviceScreen = React.memo(({ navigation }) => {
   const dispatch = useDispatch();
