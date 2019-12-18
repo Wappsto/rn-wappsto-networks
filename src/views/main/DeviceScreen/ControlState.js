@@ -73,8 +73,6 @@ const ControlState = React.memo(({ state, value }) => {
     ) {
       stateDataField = (
         <Switch
-          onFocus={() => setIsFocused(true)}
-          onBlur={() => setIsFocused(false)}
           value={!!parseFloat(input)}
           onValueChange={updateSwitchState}
           disabled={isUpdating}
