@@ -1,5 +1,6 @@
-import React, { useState } from 'react';
-import { View, Text, Slider, TextInput, Switch } from 'react-native';
+import React, { useState, useEffect } from 'react';
+import { View, Text, TextInput, Switch } from 'react-native';
+import Slider from '@react-native-community/slider';
 import RequestError from '../../../components/RequestError';
 import theme from '../../../theme/themeExport';
 import i18n, { CapitalizeFirst } from '../../../translations';
@@ -8,7 +9,15 @@ import useRequest from 'wappsto-blanket/hooks/useRequest';
 const ControlState = React.memo(({ state, value }) => {
   const { request, send } = useRequest();
   const [ input, setInput ] = useState(state.data);
+  const [ isFocused, setIsFocused ] = useState(false);
   const isUpdating = request && request.status === 'pending';
+
+  useEffect(() => {
+    if(!isFocused){
+      setInput(state.data);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [state]);
 
   const updateState = (data) => {
     data = data + '';
@@ -47,6 +56,8 @@ const ControlState = React.memo(({ state, value }) => {
   if (value.hasOwnProperty('string')) {
     stateDataField = (
       <TextInput
+        onFocus={() => setIsFocused(true)}
+        onBlur={() => setIsFocused(false)}
         style={theme.common.input}
         value={input}
         onSubmitEditing={updateStateFromInput}
@@ -62,6 +73,8 @@ const ControlState = React.memo(({ state, value }) => {
     ) {
       stateDataField = (
         <Switch
+          onFocus={() => setIsFocused(true)}
+          onBlur={() => setIsFocused(false)}
           value={!!parseFloat(input)}
           onValueChange={updateSwitchState}
           disabled={isUpdating}
@@ -70,6 +83,8 @@ const ControlState = React.memo(({ state, value }) => {
     } else if (param.max - param.min <= 300) {
       stateDataField = (
         <Slider
+          onSlidingStart={() => setIsFocused(true)}
+          onSlidingEnd={() => setIsFocused(false)}
           maximumValue={param.max}
           minimumValue={param.min}
           step={param.step}
@@ -84,6 +99,8 @@ const ControlState = React.memo(({ state, value }) => {
     } else {
       stateDataField = (
         <TextInput
+          onFocus={() => setIsFocused(true)}
+          onBlur={() => setIsFocused(false)}
           style={theme.common.input}
           value={input}
           onSubmitEditing={updateStateFromInput}
@@ -95,6 +112,8 @@ const ControlState = React.memo(({ state, value }) => {
   } else if (value.hasOwnProperty('blob')) {
     stateDataField = (
       <TextInput
+        onFocus={() => setIsFocused(true)}
+        onBlur={() => setIsFocused(false)}
         multiline={true}
         numberOfLines={10}
         style={theme.common.input}
@@ -107,6 +126,8 @@ const ControlState = React.memo(({ state, value }) => {
   } else if (value.hasOwnProperty('xml')) {
     stateDataField = (
       <TextInput
+        onFocus={() => setIsFocused(true)}
+        onBlur={() => setIsFocused(false)}
         multiline={true}
         numberOfLines={10}
         style={theme.common.input}
