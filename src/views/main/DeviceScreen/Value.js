@@ -14,7 +14,7 @@ const ValueComponent = React.memo(({ item, navigation }) => {
       method: 'PATCH',
       url: '/value/' + item.meta.id,
       body: {
-        status: 'update',
+        status: 'update'
       }
     });
     // eslint-disable-next-line react-hooks/exhaustive-deps

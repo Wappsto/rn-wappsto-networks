@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useMemo } from 'react';
+import React, { useEffect, useState, useMemo, useCallback } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { AppState, Text } from 'react-native';
 import Screen from '../../../components/Screen';
@@ -9,6 +9,7 @@ import AddNetworkButton from './AddNetworkButton';
 import { config } from '../../../configureWappstoRedux';
 import { makeStreamSelector } from 'wappsto-redux/selectors/stream';
 import { openStream, closeStream } from 'wappsto-redux/actions/stream';
+import { removeItem } from 'wappsto-redux/actions/items';
 import theme from '../../../theme/themeExport';
 import i18n, { CapitalizeEach, CapitalizeFirst } from '../../../translations';
 import { iotNetworkListAdd } from '../../../util/params';
@@ -16,6 +17,8 @@ import { iotNetworkListAdd } from '../../../util/params';
 const query = {
   expand: 1,
   limit: 10,
+  order_by: 'meta.created',
+  from_last: true
 };
 const DevicesListScreen = React.memo(({ navigation }) => {
   const dispatch = useDispatch();
@@ -58,12 +61,23 @@ const DevicesListScreen = React.memo(({ navigation }) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
+  const onRefresh = useCallback((items) => {
+    items.forEach(network => {
+      network.device.forEach(deviceId => {
+        dispatch(removeItem('/device/' + deviceId + '/value_ids'));
+        dispatch(removeItem('/device/' + deviceId + '/value_fetched'));
+      });
+    });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
   return (
     <Screen>
       <List
         url='/network'
         query={query}
         addItemName={iotNetworkListAdd}
+        onRefresh={onRefresh}
         renderSectionHeader={({section: {title}}) => {
           if(title.name){
               return (<Text style={theme.common.listHeader}><Text style={{ fontWeight: '600' }}>{title.name}</Text> - {title.id}</Text>);

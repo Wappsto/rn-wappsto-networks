@@ -9,7 +9,11 @@ import { makeItemSelector } from 'wappsto-redux/selectors/items';
 import theme from '../../../theme/themeExport';
 import { selectedDeviceName } from '../../../util/params';
 
-const query = {expand: 5};
+const query = {
+  expand: 3,
+  order_by: 'meta.created',
+  from_last: true
+};
 const DeviceScreen = React.memo(({ navigation }) => {
   const dispatch = useDispatch();
   const getItem = useMemo(makeItemSelector, []);
@@ -32,6 +36,7 @@ const DeviceScreen = React.memo(({ navigation }) => {
   return (
     <Screen>
       <List
+        name={url}
         url={url}
         query={query}
         renderItem={({item}) => <Value item={item} />}

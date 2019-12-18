@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useCallback } from 'react';
 import { useDispatch } from 'react-redux';
 import { View, Text, SectionList, TouchableOpacity, ActivityIndicator } from 'react-native';
 import RequestError from './RequestError';
@@ -7,9 +7,9 @@ import i18n, { CapitalizeFirst } from '../translations';
 import useList from 'wappsto-blanket/hooks/useList';
 import { setItem } from 'wappsto-redux/actions/items';
 
-const List = React.memo(({ url, query, style, renderSectionHeader, renderItem, addItemName }) => {
+const List = React.memo(({ name, url, query, style, renderSectionHeader, renderItem, addItemName, onRefresh }) => {
   const dispatch = useDispatch();
-  const { items, request, refresh, loadMore, canLoadMore, addItem } = useList({ url, query, resetOnEmpty: true });
+  const { items, request, refresh, loadMore, canLoadMore, addItem } = useList({ name, url, query, resetOnEmpty: true });
 
   useEffect(() => {
     if(addItemName){
@@ -28,6 +28,15 @@ const List = React.memo(({ url, query, style, renderSectionHeader, renderItem, a
       data: [item]
     });
   });
+
+  const refreshList = useCallback(() => {
+    if(onRefresh){
+      onRefresh(items);
+    }
+    refresh();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [items, onRefresh]);
+
   return (
     <View style={style || theme.common.container}>
       <SectionList
@@ -55,7 +64,7 @@ const List = React.memo(({ url, query, style, renderSectionHeader, renderItem, a
             (!request.options.query || !request.options.query.offset)) ||
           false
         }
-        onRefresh={refresh}
+        onRefresh={refreshList}
         onEndReached={canLoadMore && loadMore}
         onEndReachedThreshold={0.01}
         ListFooterComponent={
