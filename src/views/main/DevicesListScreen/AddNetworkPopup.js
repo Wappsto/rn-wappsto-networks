@@ -1,12 +1,5 @@
 import React, { useState } from 'react';
-import {
-  Text,
-  TextInput,
-  View,
-  ActivityIndicator,
-  TouchableOpacity,
-  StyleSheet,
-} from 'react-native';
+import { Text, TextInput, View, ActivityIndicator, TouchableOpacity, StyleSheet } from 'react-native';
 import { RNCamera } from 'react-native-camera';
 import BarcodeMask from 'react-native-barcode-mask';
 import RequestError from '../../../components/RequestError';
