@@ -4,7 +4,7 @@ import { AppState, Text } from 'react-native';
 import Screen from '../../../components/Screen';
 import MenuButton from '../../../components/MenuButton';
 import List from '../../../components/List';
-import DeviceSection from './DeviceSection';
+import DeviceItem from './DeviceItem';
 import AddNetworkButton from './AddNetworkButton';
 import { config } from '../../../configureWappstoRedux';
 import { makeStreamSelector } from 'wappsto-redux/selectors/stream';
@@ -18,7 +18,8 @@ const query = {
   expand: 1,
   limit: 10,
   order_by: 'meta.created',
-  from_last: true
+  from_last: true,
+  verbose: true
 };
 const DevicesListScreen = React.memo(({ navigation }) => {
   const dispatch = useDispatch();
@@ -78,22 +79,22 @@ const DevicesListScreen = React.memo(({ navigation }) => {
         query={query}
         addItemName={iotNetworkListAdd}
         onRefresh={onRefresh}
-        renderSectionHeader={({section: {title}}) => {
-          if(title.name){
-              return (<Text style={theme.common.listHeader}><Text style={{ fontWeight: '600' }}>{title.name}</Text> - {title.id}</Text>);
+        renderSectionHeader={({section: {title: network}}) => {
+          if(network.name){
+              return (<Text style={theme.common.listHeader}><Text style={{ fontWeight: '600' }}>{network.name}</Text> - {network.meta.id}</Text>);
           }
-          return (<Text style={theme.common.listHeader}>{title.id}</Text>);
+          return (<Text style={theme.common.listHeader}>{network.meta.id}</Text>);
         }}
-        renderItem={({item}) => {
-          if (item.device.length === 0) {
+        renderItem={({item: { device }}) => {
+          if (device.length === 0) {
             return (
               <Text style={[theme.common.infoText, theme.common.secondary]}>
                 {CapitalizeFirst(i18n.t('infoMessage.networkIsEmpty'))}
               </Text>
             );
           }
-          return item.device.map(id => (
-            <DeviceSection
+          return device.map(id => (
+            <DeviceItem
               key={id}
               id={id}
               navigation={navigation}

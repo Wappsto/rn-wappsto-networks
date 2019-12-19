@@ -21,10 +21,7 @@ const List = React.memo(({ name, url, query, style, renderSectionHeader, renderI
   const data = [];
   items.forEach(item => {
     data.push({
-      title: {
-        name: item.name,
-        id: item.meta.id
-      },
+      title: item,
       data: [item]
     });
   });
