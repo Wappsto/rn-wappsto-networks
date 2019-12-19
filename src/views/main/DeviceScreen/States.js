@@ -34,7 +34,7 @@ const StatesComponent = React.memo(({ value }) => {
 
   return (
     <View>
-      {states.length !== 0 && (
+      {states.length !== 0 ? (
         <>
           <View style={theme.common.itemContent}>
             {reportState ? (
@@ -60,6 +60,10 @@ const StatesComponent = React.memo(({ value }) => {
             ) : null}
           </View>
         </>
+      ) : (
+        <Text style={[theme.common.infoText, theme.common.secondary]}>
+          {CapitalizeFirst(i18n.t('infoMessage.valueIsEmpty'))}
+        </Text>
       )}
       {request && request.status === 'pending' && (
         <ActivityIndicator size='large' />

@@ -42,7 +42,7 @@ const List = React.memo(({ name, url, query, style, renderSectionHeader, renderI
         ListEmptyComponent={
           (!request || request.status !== 'pending') && (
             <>
-              <Text styles={theme.common.infoText}>
+              <Text style={theme.common.infoText}>
                 {CapitalizeFirst(i18n.t('infoMessage.listIsEmpty'))}
               </Text>
               <TouchableOpacity
