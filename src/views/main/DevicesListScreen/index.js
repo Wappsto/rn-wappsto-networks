@@ -7,6 +7,7 @@ import List from '../../../components/List';
 import DeviceItem from './DeviceItem';
 import AddNetworkButton from './AddNetworkButton';
 import { config } from '../../../configureWappstoRedux';
+import { makeItemSelector } from 'wappsto-redux/selectors/items';
 import { makeStreamSelector } from 'wappsto-redux/selectors/stream';
 import { openStream, closeStream } from 'wappsto-redux/actions/stream';
 import { removeItem } from 'wappsto-redux/actions/items';
@@ -26,6 +27,19 @@ const DevicesListScreen = React.memo(({ navigation }) => {
   const getStream = useMemo(makeStreamSelector, []);
   const stream = useSelector(state => getStream(state, config.stream && config.stream.name));
   const [ appState, setAppState ] = useState(AppState.currentState);
+  const getItem = useMemo(makeItemSelector, []);
+  const addToList = useSelector(state => getItem(state, iotNetworkListAdd));
+
+  const _handleNetworkAdd = (message) => {
+    try{
+      const json = JSON.parse(message.data);
+      if(json.data.meta.type === 'network' && json.event === 'create'){
+        addToList(json.data.meta.id);
+      }
+    } catch(e){
+
+    }
+  }
 
   const startStream = () => {
     if(config.stream){
@@ -46,6 +60,7 @@ const DevicesListScreen = React.memo(({ navigation }) => {
     setAppState(nextAppState);
   };
 
+  // handle app status change
   useEffect(() => {
     AppState.addEventListener('change', _handleAppStateChange);
     return () => {
@@ -54,6 +69,7 @@ const DevicesListScreen = React.memo(({ navigation }) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [stream]);
 
+  // subscribe to stream
   useEffect(() => {
     startStream();
     return () => {
@@ -61,6 +77,19 @@ const DevicesListScreen = React.memo(({ navigation }) => {
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
+  // add network from stream
+  useEffect(() => {
+    if(stream && stream.ws && addToList){
+      stream.ws.addEventListener('message', _handleNetworkAdd);
+    }
+    return () => {
+      if(stream && stream.ws && addToList){
+        stream.ws.removeEventListener('message', _handleNetworkAdd);
+      }
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [stream]);
 
   const onRefresh = useCallback((items) => {
     items.forEach(network => {
