@@ -7,6 +7,7 @@ import React, { useEffect, useMemo, useCallback } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { setItem } from 'wappsto-redux/actions/items';
 import { closeStream } from 'wappsto-redux/actions/stream';
+import { removeSession } from 'wappsto-redux/actions/session';
 import { getUserData } from 'wappsto-redux/selectors/entities';
 import { getSession } from 'wappsto-redux/selectors/session';
 import { makeItemSelector } from 'wappsto-redux/selectors/items';
@@ -68,6 +69,7 @@ const DrawerMenu = React.memo((props) => {
       dispatch(closeStream(config.stream.name));
     }
     sendDelete({ method: 'DELETE', url: '/session/' + session.meta.id });
+    dispatch(removeSession());
     AsyncStorage.removeItem('session');
     props.navigation.navigate('LoginScreen');
   }
@@ -97,7 +99,7 @@ const DrawerMenu = React.memo((props) => {
     <SafeAreaView forceInset={{top: 'always', horizontal: 'never'}}>
       <StatusBar
         backgroundColor={theme.variables.white}
-        barStyle="dark-content"
+        barStyle='dark-content'
       />
       <ScrollView>
         <View style={styles.userInfo}>
@@ -112,12 +114,12 @@ const DrawerMenu = React.memo((props) => {
                 request.method === 'GET' &&
                 request.status === 'pending' ? (
                 <ActivityIndicator
-                  size="large"
+                  size='large'
                   color={theme.variables.primary}
                 />
               ) : (
                 <Icon
-                  name="user"
+                  name='user'
                   style={theme.common.spaceAround}
                   size={20}
                   color={theme.variables.primary}
@@ -130,7 +132,7 @@ const DrawerMenu = React.memo((props) => {
             style={theme.common.spaceAround}
             onPress={logout}>
             <Icon
-              name="log-out"
+              name='log-out'
               size={25}
               color={theme.variables.primary}
             />
