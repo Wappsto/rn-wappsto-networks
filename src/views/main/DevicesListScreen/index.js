@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useMemo, useCallback } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { AppState, Text } from 'react-native';
+import { AppState, Text, View } from 'react-native';
 import Screen from '../../../components/Screen';
 import MenuButton from '../../../components/MenuButton';
 import List from '../../../components/List';
@@ -109,11 +109,20 @@ const DevicesListScreen = React.memo(({ navigation }) => {
         addItemName={iotNetworkListAdd}
         onRefresh={onRefresh}
         renderSectionHeader={({section: {title: network}}) => {
-          if(network.name){
-              return (<Text style={theme.common.listHeader}><Text style={{ fontWeight: '600' }}>{network.name}</Text> - {network.meta.id}</Text>);
-          }
-          return (<Text style={theme.common.listHeader}>{network.meta.id}</Text>);
+          return (
+            <Text style={theme.common.listHeader}>
+              { network.meta.iot ? <Text>({CapitalizeEach(i18n.t('prototype'))}) </Text> : null }
+              { network.name ?
+                <Text style={theme.common.H5}>{network.name} </Text>
+              :
+                <Text>{network.meta.id.slice(0, 4) + ' ... ' + network.meta.id.slice(-4)}</Text>
+              }
+            </Text>
+          );
         }}
+        renderSectionFooter={() => (
+          <View style={theme.common.listFooter} />
+        )}
         renderItem={({item: { device }}) => {
           if (device.length === 0) {
             return (

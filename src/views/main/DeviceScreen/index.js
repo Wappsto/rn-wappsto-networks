@@ -9,6 +9,8 @@ import { makeItemSelector } from 'wappsto-redux/selectors/items';
 import theme from '../../../theme/themeExport';
 import { selectedDeviceName } from '../../../util/params';
 
+import DeviceSettings from '../DevicesListScreen/DeviceSettings';
+
 const query = {
   expand: 3,
   order_by: 'meta.created'
@@ -18,7 +20,7 @@ const DeviceScreen = React.memo(({ navigation }) => {
   const getItem = useMemo(makeItemSelector, []);
   const selectedDevice = useSelector(state => getItem(state, selectedDeviceName));
   const getEntity = useMemo(makeEntitySelector, []);
-  const device = useSelector(state => getEntity(state, 'device', selectedDevice));
+  const device = useSelector(state => getEntity(state, 'device',selectedDevice));
 
   useEffect(() => {
     return () => {
@@ -45,9 +47,11 @@ const DeviceScreen = React.memo(({ navigation }) => {
 });
 
 DeviceScreen.navigationOptions = ({navigation}) => {
+
   return {
     ...theme.headerStyle,
     title: navigation.getParam('title', ''),
+    headerRight: <DeviceSettings navigation={navigation} />
   };
 };
 

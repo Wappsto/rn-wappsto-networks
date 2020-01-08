@@ -1,20 +1,10 @@
 import AsyncStorage from '@react-native-community/async-storage';
 import React, { useState, useEffect } from 'react';
-import { View, StyleSheet, StatusBar } from 'react-native';
+import { View, StatusBar } from 'react-native';
 import SessionVerifier from './SessionVerifier';
 
 import theme from '../theme/themeExport';
 import Icon from 'react-native-vector-icons/FontAwesome5';
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    alignItems: 'center',
-    flexDirection: 'column',
-    justifyContent: 'space-around',
-    backgroundColor: theme.variables.modalBgColor,
-  },
-});
 
 const SplashScreen = ({ navigation }) => {
   const [ status, setStatus ] = useState('pending');
@@ -41,7 +31,7 @@ const SplashScreen = ({ navigation }) => {
   }, []);
 
   return (
-    <View style={styles.container}>
+    <View style={theme.common.splashScreenContainer}>
       <StatusBar backgroundColor={theme.variables.white} barStyle='dark-content' />
       <Icon name='kiwi-bird' size={100} color={theme.variables.primary} />
       <SessionVerifier

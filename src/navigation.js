@@ -67,12 +67,16 @@ export function replaceComponent(func) {
 }
 
 export default class App extends Component {
+  rendered = false;
   render() {
-    dependencies.forEach(d => {
-      if(components[d] && components[d].constructor === Function){
-        components[d] = components[d]();
-      }
-    });
+    if(!this.rendered){
+      this.rendered = true;
+      dependencies.forEach(d => {
+        if(components[d] && components[d].constructor === Function){
+          components[d] = components[d]();
+        }
+      });
+    }
     return (
       <Provider store={store}>
         <components.App useSuspense={false} />

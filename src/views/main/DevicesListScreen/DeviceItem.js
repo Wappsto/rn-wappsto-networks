@@ -19,6 +19,7 @@ const DeviceSection = React.memo(({ navigation, id }) => {
     dispatch(setItem(selectedDeviceName, device.meta.id));
     navigation.navigate('DeviceScreen', {
       title: device.name,
+
     });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [device]);
@@ -28,7 +29,7 @@ const DeviceSection = React.memo(({ navigation, id }) => {
   }
   return (
     <TouchableOpacity onPress={navigate}>
-      <View style={[theme.common.listItem, device.meta.iot === true ? { backgroundColor: '#A1A1A1' } : {}]}>
+      <View style={[theme.common.listItem, device.meta.iot === true ? { backgroundColor: '#e5e5e5' } : {}]}>
         <View style={theme.common.listItemTitleArea}>
           <Text style={theme.common.listItemHeader}>{device.name}</Text>
           <Text style={theme.common.listItemSubheader}>
@@ -36,7 +37,6 @@ const DeviceSection = React.memo(({ navigation, id }) => {
             {i18n.t('value', {count: device.value.length})}
           </Text>
         </View>
-        <DeviceSettings item={device} />
       </View>
     </TouchableOpacity>
   );

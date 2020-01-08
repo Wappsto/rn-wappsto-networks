@@ -7,7 +7,7 @@ import i18n, { CapitalizeFirst } from '../translations';
 import useList from 'wappsto-blanket/hooks/useList';
 import { setItem } from 'wappsto-redux/actions/items';
 
-const List = React.memo(({ name, url, query, style, renderSectionHeader, renderItem, addItemName, onRefresh }) => {
+const List = React.memo(({ name, url, query, style, renderSectionHeader, renderSectionFooter, renderItem, addItemName, onRefresh }) => {
   const dispatch = useDispatch();
   const { items, request, refresh, loadMore, canLoadMore, addItem } = useList({ name, url, query, resetOnEmpty: true });
 
@@ -54,6 +54,7 @@ const List = React.memo(({ name, url, query, style, renderSectionHeader, renderI
           )
         }
         renderSectionHeader={renderSectionHeader}
+        renderSectionFooter={renderSectionFooter}
         renderItem={renderItem}
         refreshing={
           (request &&

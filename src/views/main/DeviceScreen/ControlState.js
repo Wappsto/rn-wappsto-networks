@@ -47,7 +47,7 @@ const ControlState = React.memo(({ state, value }) => {
   const [ input, setInput ] = useState();
   const [ isFocused, setIsFocused ] = useState(false);
   const isUpdating = request && request.status === 'pending';
-
+  
   useEffect(() => {
     if(!isFocused){
       setInput(value.hasOwnProperty('number') ? parseFloat(state.data) || 0 : state.data);
@@ -57,9 +57,6 @@ const ControlState = React.memo(({ state, value }) => {
 
   const updateState = (data) => {
     data = data + '';
-    if (data === state.data) {
-      return;
-    }
     if (!isUpdating) {
       let timestamp = new Date().toISOString();
       send({
@@ -114,7 +111,7 @@ const ControlState = React.memo(({ state, value }) => {
           disabled={isUpdating}
         />
       );
-    } else if (param.max - param.min <= 300) {
+    } else if ((param.max - param.min) / param.step <= 150) {
       const onSlidingComplete = (data) => {
         setIsFocused(false);
         updateState(getData(data, param.step));
@@ -139,7 +136,7 @@ const ControlState = React.memo(({ state, value }) => {
           onFocus={() => setIsFocused(true)}
           onBlur={() => setIsFocused(false)}
           style={theme.common.input}
-          value={input}
+          value={input + ''}
           onSubmitEditing={updateStateFromInput}
           onChangeText={text => setInput(text)}
           editable={!isUpdating}

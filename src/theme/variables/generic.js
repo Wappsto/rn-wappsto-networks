@@ -36,6 +36,10 @@ export function generateVariables(v = {}) {
     get panelBgColor() {
       return this.white;
     },
+    get splashScreenBgColor() {
+      return this.white;
+    },
+
     // Typography
     defaultFontSize: 14,
     fontFamily: 'System',

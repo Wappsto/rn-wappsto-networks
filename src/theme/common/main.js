@@ -19,6 +19,13 @@ export function generateStyles(c = {}) {
         paddingVertical: 5,
         backgroundColor: variables.containerBgColor,
       },
+      splashScreenContainer: {
+        flex: 1,
+        alignItems: 'center',
+        flexDirection: 'column',
+        justifyContent: 'space-around',
+        backgroundColor: variables.splashScreenBgColor,
+      },
       safeAreaView: {
         flex: 1,
         backgroundColor: variables.appBgColor,
@@ -32,7 +39,7 @@ export function generateStyles(c = {}) {
       },
       p: {
         color: variables.textSecondary,
-        marginBottom: 20,
+        marginBottom: 20
       },
       error: {
         borderColor: variables.alert,
@@ -117,7 +124,7 @@ export function generateStyles(c = {}) {
         flexDirection: 'row',
         alignItems: 'center',
         justifyContent: 'space-between',
-        marginVertical: 5,
+        marginBottom: 1,
         marginHorizontal: 10,
         padding: 8,
         borderRadius: variables.borderRadiusBase,
@@ -125,15 +132,14 @@ export function generateStyles(c = {}) {
       },
       listItemTitleArea: {
         flex: 1,
-        fontWeight: '600',
-        fontSize: variables.h4,
       },
       iconButton: {
         padding: 12,
       },
       listItemHeader: {
-        fontSize: variables.h4,
+        fontSize: variables.h5,
         color: variables.primary,
+        marginBottom: 0
       },
       listItemSubheader: {
         fontSize: variables.defaultFontSize - 1,
@@ -247,7 +253,12 @@ export function generateStyles(c = {}) {
         backgroundColor: variables.containerBgColor,
         color: variables.textSecondary,
         paddingHorizontal: 10,
-        paddingTop: 10,
+        paddingHorizontal: 10,
+        marginTop: 10,
+        marginBottom: 10
+      },
+      listFooter:{
+        marginBottom:20
       },
       ...c,
     }),

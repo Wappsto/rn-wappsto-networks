@@ -3,7 +3,8 @@
   "version": "0.0.1",
   "private": true,
   "scripts": {
-    "android": "react-native run-android",
+    "ran": "react-native run-android",
+    "lan": "react-native log-android",
     "ios": "react-native run-ios",
     "start": "react-native start",
     "test": "jest",
@@ -21,7 +22,7 @@
     "querystring": "^0.2.0",
     "react": "16.8.6",
     "react-i18next": "^10.12.5",
-    "react-native": "0.60.5",
+    "react-native": "0.61.5",
     "react-native-barcode-mask": "^1.1.0",
     "react-native-camera": "^3.7.2",
     "react-native-firebase": "^5.5.6",
