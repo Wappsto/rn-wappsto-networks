@@ -12,15 +12,20 @@ import {
   Buffer
 } from 'buffer';
 import BleManager from 'react-native-ble-manager';
+import BlufiCRC from './BlufiCRC';
+import InputStream from './InputStream';
 
 // workaround-------------------
-const BlufiCRC = {};
 //------------------------------
 
 const mEncrypted = false;
 const mChecksum = false;
 const mRequireAck = false;
 const mAck = [];
+
+const DEFAULT_PACKAGE_LENGTH = 20;
+const PACKAGE_HEADER_LENGTH = 4;
+const MIN_PACKAGE_LENGTH = 7;
 
 let connectedDevice = null;
 let mSendSequence = 0;
@@ -33,6 +38,10 @@ function generateSendSequence() {
   const prev = mSendSequence;
   mSendSequence++;
   return prev;
+}
+
+function gattWrite(data){
+  BleManager.write(connectedDevice.id, BlufiParameter.UUID_SERVICE, BlufiParameter.UUID_WRITE_CHARACTERISTIC, data);
 }
 
 function receiveAck(sequence) {
@@ -48,24 +57,21 @@ function getPostBytes(type, frameCtrl, sequence, dataLength, data) {
   let byteOS = Buffer.from([type, frameCtrl, sequence, dataLength]);
 
   let frameCtrlData = FrameCtrlData.setData(frameCtrl);
-  // byte[] checksumBytes = null;
-  let checksumBytes = null;
+  let checksumBytes;
   if (frameCtrlData.isChecksum()) {
     let willCheckBytes = Buffer.from([sequence, dataLength]);
     if (data != null) {
       // ByteArrayOutputStream os = new ByteArrayOutputStream(willCheckBytes.length + data.length);
       let os = Buffer.from(willCheckBytes.length + data.length);
+      console.log(os);
       os.write(willCheckBytes, 0, willCheckBytes.length);
       os.write(data, 0, data.length);
+      console.log(os);
       willCheckBytes = os.slice(0);
     }
     let checksum = BlufiCRC.calcCRC(0, willCheckBytes);
     let checksumByte1 = (checksum & 0xff);
     let checksumByte2 = ((checksum >> 8) & 0xff);
-    // checksumBytes = new byte[] {
-    //   checksumByte1,
-    //   checksumByte2
-    // };
     checksumBytes = Buffer.from(checksumByte1, checksumByte2);
   }
 
@@ -94,57 +100,53 @@ function postNonData(encrypt, checksum, requireAck, type) {
   const postBytes = getPostBytes(type, frameCtrl, sequence, dataLen, null);
   // gattWrite(postBytes);
 
-  BleManager.write(connectedDevice.id, BlufiParameter.UUID_SERVICE, BlufiParameter.UUID_WRITE_CHARACTERISTIC, postBytes);
+  gattWrite(postBytes);
   return !requireAck || receiveAck(sequence);
 }
 
 function postContainData(encrypt, checksum, requireAck, type, data) {
-  // ByteArrayInputStream dataIS = new ByteArrayInputStream(data);
-  // ByteArrayOutputStream postOS = new ByteArrayOutputStream();
-  // int pkgLengthLimit = mPackageLengthLimit > 0 ? mPackageLengthLimit :
-  //   (mBlufiMTU > 0 ? mBlufiMTU : DEFAULT_PACKAGE_LENGTH);
-  // int postDataLengthLimit = pkgLengthLimit - PACKAGE_HEADER_LENGTH;
-  // postDataLengthLimit -= 2; // if flag, two bytes total length in data
-  // if (checksum) {
-  //   postDataLengthLimit -= 2;
-  // }
-  // byte[] dateBuf = new byte[postDataLengthLimit];
-  // while (true) {
-  //   int read = dataIS.read(dateBuf, 0, dateBuf.length);
-  //   if (read == -1) {
-  //     break;
-  //   }
-  //
-  //   postOS.write(dateBuf, 0, read);
-  //   if (dataIS.available() == 2) {
-  //     postOS.write(dataIS.read());
-  //     postOS.write(dataIS.read());
-  //   }
-  //   boolean frag = dataIS.available() > 0;
-  //   int frameCtrl = FrameCtrlData.getFrameCTRLValue(encrypt, checksum, DIRECTION_OUTPUT, requireAck, frag);
-  //   int sequence = generateSendSequence();
-  //   if (frag) {
-  //     int totalLen = postOS.size() + dataIS.available();
-  //     byte[] tempData = postOS.toByteArray();
-  //     postOS.reset();
-  //     postOS.write(totalLen & 0xff);
-  //     postOS.write(totalLen >> 8 & 0xff);
-  //     postOS.write(tempData, 0, tempData.length);
-  //   }
-  //   byte[] postBytes = getPostBytes(type, frameCtrl, sequence, postOS.size(), postOS.toByteArray());
-  //   postOS.reset();
-  //   gattWrite(postBytes);
-  //   if (frag) {
-  //     if (requireAck && !receiveAck(sequence)) {
-  //       return false;
-  //     }
-  //     sleep(10 L);
-  //   } else {
-  //     return !requireAck || receiveAck(sequence);
-  //   }
-  // }
-  //
-  // return true;
+  let postOS = Buffer.from();
+  // let pkgLengthLimit = mPackageLengthLimit > 0 ? mPackageLengthLimit :
+  //   (mBlufiMTU > 0 ? mBlufiMTU : DEFAULT_PACKAGE_LENGTH); !!!!
+  let pkgLengthLimit = DEFAULT_PACKAGE_LENGTH;
+  let postDataLengthLimit = pkgLengthLimit - PACKAGE_HEADER_LENGTH;
+  postDataLengthLimit -= 2; // if flag, two bytes total length in data
+  if (checksum) {
+    postDataLengthLimit -= 2;
+  }
+  let dateBuf = Buffer.from([]);
+  while (true) {
+    let read = InputStream.read(dateBuf, 0, dateBuf.length);
+    if (read === -1) {
+      break;
+    }
+
+    postOS.write(dateBuf, 0, read);
+    if (InputStream.available() === 2) {
+      postOS.write(InputStream.read());
+      postOS.write(InputStream.read());
+    }
+    let frag = InputStream.available() > 0;
+    let frameCtrl = FrameCtrlData.getFrameCTRLValue(encrypt, checksum, BlufiParameter.DIRECTION_OUTPUT, requireAck, frag);
+    let sequence = generateSendSequence();
+    if (frag) {
+      let totalLen = postOS.size() + InputStream.available();
+      let tempData = postOS.slice(0);
+      postOS = Buffer.from([totalLen & 0xff, totalLen >> 8 & 0xff, tempData, 0, tempData.length]);
+    }
+    let postBytes = getPostBytes(type, frameCtrl, sequence, postOS.size(), postOS.slice(0));
+    postOS = Buffer.from();
+    gattWrite(postBytes);
+    if (frag) {
+      if (requireAck && !receiveAck(sequence)) {
+        return false;
+      }
+    } else {
+      return !requireAck || receiveAck(sequence);
+    }
+  }
+
+  return true;
 }
 
 function post(encrypt, checksum, requireAck, type, data) {
@@ -158,7 +160,7 @@ function post(encrypt, checksum, requireAck, type, data) {
 function postDeviceMode(deviceMode) {
   const type = getTypeValue(BlufiParameter.Type.Ctrl.PACKAGE_VALUE, BlufiParameter.Type.Ctrl.SUBTYPE_SET_OP_MODE);
   // byte[] data = {(byte) deviceMode}; !!!
-  let data = stringToBytes(deviceMode);
+  let data = stringToBytes(deviceMode + '');
 
   try {
     return post(mEncrypted, mChecksum, true, type, data);

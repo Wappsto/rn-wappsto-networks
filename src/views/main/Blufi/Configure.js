@@ -59,9 +59,10 @@ const Configure = ({ device, hide }) => {
       AsyncStorage.setItem(wifiPasswordStorageKey, password);
       await BleManager.connect(device.id);
       // SAMI: NegotiateSecurity
-      await Blufi.configure(ssid, password);
+      await Blufi.configure(device, ssid, password);
     } catch (e) {
       // SAMI: Handle configure error
+      console.log(e);
     }
   }
 
