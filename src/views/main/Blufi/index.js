@@ -1,6 +1,10 @@
-import React, { useEffect, useState, useRef } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Platform, PermissionsAndroid, NativeModules, NativeEventEmitter, Button, Text, FlatList, TouchableOpacity } from 'react-native';
 import BleManager from 'react-native-ble-manager';
+import { BlufiParameter } from './lib/util/params';
+import useVisible from 'wappsto-blanket/hooks/useVisible';
+import Popup from '../../../components/Popup';
+import Configure from './Configure';
 
 const BleManagerModule = NativeModules.BleManager;
 const bleManagerEmitter = new NativeEventEmitter(BleManagerModule);
@@ -10,9 +14,11 @@ const Blufi = () => {
   const [ scanning, setScanning ] = useState(false);
   const [ devices, setDevices ] = useState([]);
   const [ selectedDevice, setSelectedDevice ] = useState(null);
+  const [ visible, show, hide ] = useVisible(false);
 
   const selectDevice = (device) => {
     setSelectedDevice(device);
+    show();
   }
 
   const scan = async () => {
@@ -21,7 +27,7 @@ const Blufi = () => {
       setScanning(true);
       try{
         await BleManager.enableBluetooth();
-        BleManager.scan([], 5, false);
+        BleManager.scan([BlufiParameter.UUID_SERVICE], 5, false);
       } catch(e){
         // SAMI: Handle enable bluetooth error!!!
         setScanning(false);
@@ -55,9 +61,6 @@ const Blufi = () => {
     bleManagerEmitter.addListener(
       'BleManagerDiscoverPeripheral',
       (device) => {
-          // The id: args.id
-          // The name: args.name
-          console.log(device);
           const lowerName = device.name ? device.name.toLowerCase() : '';
           setDevices(devices => {
             if(!filter || filter.length === 0 || (filter.find(f => lowerName.includes(f.toLowerCase())) && !devices.find(d => d.id === device.id))){
@@ -85,6 +88,13 @@ const Blufi = () => {
 
   return (
     <>
+      <Popup
+        visible={visible}
+        hide={hide}
+        onRequestClose={hide}
+      >
+        <Configure device={selectedDevice} hide={hide}/>
+      </Popup>
       <Button onPress={scan} title='scan' />
       <FlatList
         onRefresh={scan}
