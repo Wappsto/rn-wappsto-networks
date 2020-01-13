@@ -1,14 +1,19 @@
 import React, { useEffect, useState, useRef } from 'react';
-import { Platform, PermissionsAndroid, NativeModules, NativeEventEmitter, Button, Text, Flatlist } from 'react-native';
+import { Platform, PermissionsAndroid, NativeModules, NativeEventEmitter, Button, Text, FlatList, TouchableOpacity } from 'react-native';
 import BleManager from 'react-native-ble-manager';
 
 const BleManagerModule = NativeModules.BleManager;
 const bleManagerEmitter = new NativeEventEmitter(BleManagerModule);
 
-const filter = [];
+const filter = ['ad'];
 const Blufi = () => {
   const [ scanning, setScanning ] = useState(false);
   const [ devices, setDevices ] = useState([]);
+  const [ selectedDevice, setSelectedDevice ] = useState(null);
+
+  const selectDevice = (device) => {
+    setSelectedDevice(device);
+  }
 
   const scan = async () => {
     if(!scanning){
@@ -16,14 +21,17 @@ const Blufi = () => {
       setScanning(true);
       try{
         await BleManager.enableBluetooth();
-        BleManager.start({showAlert: false});
+        BleManager.scan([], 5, false);
       } catch(e){
+        // SAMI: Handle enable bluetooth error!!!
         setScanning(false);
       }
     }
   }
 
   const init = () => {
+    BleManager.start({showAlert: false});
+
     if (Platform.OS === 'android' && Platform.Version >= 23) {
         PermissionsAndroid.check(PermissionsAndroid.PERMISSIONS.ACCESS_COARSE_LOCATION).then((result) => {
             if (result) {
@@ -33,7 +41,7 @@ const Blufi = () => {
                 if (result) {
                   scan();
                 } else {
-                  // SAMI: Handle reqject location permission, this is required by BLE
+                  // SAMI: Handle reqject location permission, this is required by BLE!!!
                   console.log('User refuse');
                 }
               });
@@ -42,30 +50,51 @@ const Blufi = () => {
     }
   }
 
-  useEffect(() => {
-    init();
+  const addDiscoveryListener = () => {
+    // Get discovered peripherals
     bleManagerEmitter.addListener(
       'BleManagerDiscoverPeripheral',
-      (args) => {
+      (device) => {
           // The id: args.id
           // The name: args.name
-          console.log(args);
+          console.log(device);
+          const lowerName = device.name ? device.name.toLowerCase() : '';
+          setDevices(devices => {
+            if(!filter || filter.length === 0 || (filter.find(f => lowerName.includes(f.toLowerCase())) && !devices.find(d => d.id === device.id))){
+              return [...devices, device];
+            }
+            return devices;
+          });
       }
     );
+
+    // Scan stopped
+    bleManagerEmitter.addListener(
+      'BleManagerStopScan',
+      () => {
+        setScanning(false);
+      }
+    );
+  }
+
+  useEffect(() => {
+    init();
+    addDiscoveryListener();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (
     <>
       <Button onPress={scan} title='scan' />
-      <Flatlist
+      <FlatList
         onRefresh={scan}
         refreshing={scanning}
         data={devices}
         renderItem={({ item }) => (
-          <>
-            <Text>item.name</Text>
-            <Text>item.id</Text>
-          </>
+          <TouchableOpacity onPress={() => selectDevice(item)} style={{ marginBottom: 10, backgroundColor: '#EFEFEF', padding: 10}}>
+            <Text>{item.name}</Text>
+            <Text>{item.id}</Text>
+          </TouchableOpacity>
         )}
       />
     </>
