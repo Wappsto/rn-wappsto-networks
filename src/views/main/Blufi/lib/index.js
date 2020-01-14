@@ -4,23 +4,28 @@ import { FrameCtrlData } from './FrameCtrlData';
 import { Buffer } from 'buffer';
 import BleManager from 'react-native-ble-manager';
 import BlufiCRC from './BlufiCRC';
+import BlufiAES from './BlufiAES';
 import ByteArrayInputStream from './ByteArrayInputStream';
 import LinkedBlockingQueue from './LinkedBlockingQueue';
+import Log from './Log';
 
 // workaround-------------------
 //------------------------------
-
+const TAG = 'BlufiClientImpl';
 const mEncrypted = false;
 const mChecksum = false;
 const mRequireAck = false;
 const mAck = new LinkedBlockingQueue();
+const mAESKey = null;
 
 const DEFAULT_PACKAGE_LENGTH = 20;
 const PACKAGE_HEADER_LENGTH = 4;
 const MIN_PACKAGE_LENGTH = 7;
+const AES_TRANSFORMATION = 'AES/CFB/NoPadding';
 
 let connectedDevice = null;
 let mSendSequence = 0;
+let mReadSequence = -1;
 
 function getTypeValue(type, subtype) {
   return (subtype << 2) | type;
@@ -32,7 +37,37 @@ function generateSendSequence() {
   return prev;
 }
 
-function gattWrite(data){
+function generateReadSequence() {
+  return mReadSequence++;
+}
+
+function generateAESIV(sequence) {
+  let result = Buffer.alloc(16);
+  // SAMI: MAYBE buffer.write !!!
+  result[0] = sequence;
+
+  return result;
+}
+
+function toInt(b) {
+  return b & 0xff;
+}
+
+function getPackageType(typeValue) {
+  return typeValue & 0b11;
+}
+
+function getSubType(typeValue) {
+  return ((typeValue & 0b11111100) >> 2);
+}
+
+//-----------------------------------------  HANDLE WRITE --------------------------------------------------
+//----------------------------------------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------
+
+function gattWrite(data) {
   BleManager.write(connectedDevice.id, BlufiParameter.UUID_SERVICE, BlufiParameter.UUID_WRITE_CHARACTERISTIC, data);
 }
 
@@ -66,10 +101,10 @@ function getPostBytes(type, frameCtrl, sequence, dataLength, data) {
   }
 
   // SAMI: HANDLE ENCRYPTION!!!
-  // if (frameCtrlData.isEncrypted() && data != null) {
-  //   BlufiAES aes = new BlufiAES(mAESKey, AES_TRANSFORMATION, generateAESIV(sequence));
-  //   data = aes.encrypt(data);
-  // }
+  if (frameCtrlData.isEncrypted() && data != null) {
+    const aes = new BlufiAES(mAESKey, AES_TRANSFORMATION, generateAESIV(sequence));
+    data = aes.encrypt(data);
+  }
   if (data != null) {
     byteOS.write(data, 0, data.length);
   }
@@ -96,6 +131,7 @@ async function postNonData(encrypt, checksum, requireAck, type) {
 async function postContainData(encrypt, checksum, requireAck, type, data) {
   let dataIS = new ByteArrayInputStream(data);
   let postOS = Buffer.from();
+  // SAMI: HANDLE THIS SOMEHOW !!!
   // let pkgLengthLimit = mPackageLengthLimit > 0 ? mPackageLengthLimit :
   //   (mBlufiMTU > 0 ? mBlufiMTU : DEFAULT_PACKAGE_LENGTH); !!!!
   let pkgLengthLimit = DEFAULT_PACKAGE_LENGTH;
@@ -180,12 +216,245 @@ async function postStaWifiInfo(ssid, password) {
   }
 }
 
-const Blufi = {
-  onConfigureResult() {
-    // SAMI: Handle this!!!
-    console.log.apply(this, arguments);
-  },
+//-------------------------------------- END HANDLE WRITE --------------------------------------------------
+//----------------------------------------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------
 
+//-------------------------------------- HANDLE NOTIFICATIONS ----------------------------------------------
+//----------------------------------------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------
+function parseVersion(data) {
+  if (data.length !== 2) {
+    onVersionResponse(BlufiCallback.CODE_INVALID_DATA, null);
+  }
+
+  onVersionResponse(BlufiCallback.STATUS_SUCCESS, toInt(data[0]) + '.' + toInt(data[1]));
+}
+
+function parseWifiState(data) {
+  // if (data.length < 3) {
+  //   onStatusResponse(BlufiCallback.CODE_INVALID_DATA, null);
+  //   return;
+  // }
+  //
+  // BlufiStatusResponse response = new BlufiStatusResponse();
+  //
+  // ByteArrayInputStream dataIS = new ByteArrayInputStream(data);
+  //
+  // int opMode = dataIS.read() & 0xff;
+  // response.setOpMode(opMode);
+  //
+  // int staConn = dataIS.read() & 0xff;
+  // response.setStaConnectionStatus(staConn);
+  //
+  // int softAPConn = dataIS.read() & 0xff;
+  // response.setSoftAPConnectionCount(softAPConn);
+  //
+  // while (dataIS.available() > 0) {
+  //   int infoType = dataIS.read() & 0xff;
+  //   int len = dataIS.read() & 0xff;
+  //   byte[] stateBytes = new byte[len];
+  //   for (int i = 0; i < len; i++) {
+  //     stateBytes[i] = (byte) dataIS.read();
+  //   }
+  //
+  //   parseWifiStateData(response, infoType, stateBytes);
+  // }
+  //
+  // onStatusResponse(BlufiCallback.STATUS_SUCCESS, response);
+}
+
+function parseWifiScanList(data) {
+  // List < BlufiScanResult > result = new LinkedList < > ();
+  //
+  // ByteArrayInputStream dataReader = new ByteArrayInputStream(data);
+  // while (dataReader.available() > 0) {
+  //   int length = dataReader.read() & 0xff;
+  //   byte rssi = (byte) dataReader.read();
+  //   byte[] ssidBytes = new byte[length - 1];
+  //   int ssidRead = dataReader.read(ssidBytes, 0, ssidBytes.length);
+  //   if (ssidRead != ssidBytes.length) {
+  //     Log.w(TAG, 'Parse WifiScan failed');
+  //     break;
+  //   }
+  //
+  //   BlufiScanResult sr = new BlufiScanResult();
+  //   sr.setType(BlufiScanResult.TYPE_WIFI);
+  //   sr.setRssi(rssi);
+  //   String ssid = new String(ssidBytes);
+  //   sr.setSsid(ssid);
+  //   result.add(sr);
+  // }
+  //
+  // onDeviceScanResult(BlufiCallback.STATUS_SUCCESS, result);
+}
+
+function parseDataData(subType, data) {
+  switch (subType) {
+    case BlufiParameter.Type.Data.SUBTYPE_NEG:
+      // SAMI: HANDLE THIS SOMEHOW !!!
+      // mSecurityCallback.onReceiveDevicePublicKey(data);
+      break;
+    case BlufiParameter.Type.Data.SUBTYPE_VERSION:
+      parseVersion(data);
+      break;
+    case BlufiParameter.Type.Data.SUBTYPE_WIFI_CONNECTION_STATE:
+      parseWifiState(data);
+      break;
+    case BlufiParameter.Type.Data.SUBTYPE_WIFI_LIST:
+      parseWifiScanList(data);
+      break;
+    case BlufiParameter.Type.Data.SUBTYPE_CUSTOM_DATA:
+      onReceiveCustomData(BlufiCallback.STATUS_SUCCESS, data);
+      break;
+    case BlufiParameter.Type.Data.SUBTYPE_ERROR:
+      const errCode = data.length > 0 ? (data[0] & 0xff) : 0xff;
+      onError(errCode);
+      break;
+  }
+}
+
+function parseAck(data) {
+  let ack = -1;
+  if (data.length > 0) {
+    ack = data[0] & 0xff;
+  }
+
+  mAck.add(ack);
+}
+
+function parseCtrlData(subType, data) {
+  if (subType === BlufiParameter.Type.Ctrl.SUBTYPE_ACK) {
+    parseAck(data);
+  }
+}
+
+function parseBlufiNotifyData(data) {
+  const pkgType = data.pkgType;
+  const subType = data.subType;
+
+  switch (pkgType) {
+    case BlufiParameter.Type.Ctrl.PACKAGE_VALUE:
+      parseCtrlData(subType, data.getDataArray());
+      break;
+    case BlufiParameter.Type.Data.PACKAGE_VALUE:
+      parseDataData(subType, data.getDataArray());
+      break;
+  }
+}
+
+function parseNotification(response, notification) {
+  if (response == null) {
+    Log.w(TAG, 'parseNotification null data');
+    return -1;
+  }
+
+  if (response.length < 4) {
+    Log.w(TAG, 'parseNotification data length less than 4');
+    return -2;
+  }
+
+  let sequence = toInt(response[2]);
+  if (sequence !== generateReadSequence()) {
+    Log.w(TAG, 'parseNotification read sequence wrong');
+    return -3;
+  }
+
+  let type = toInt(response[0]);
+  let pkgType = getPackageType(type);
+  let subType = getSubType(type);
+  notification.type = type;
+  notification.pkgType = pkgType;
+  notification.subType = subType;
+
+  let frameCtrl = toInt(response[1]);
+  notification.frameCtrl = frameCtrl;
+  let frameCtrlData = new FrameCtrlData(frameCtrl);
+
+  let dataLen = toInt(response[3]);
+  let dataBytes = new Buffer.alloc(dataLen);
+  let dataOffset = 4;
+  try {
+    // SAMI: CHECK THIS !!!
+    // public static void arraycopy(Object src, int srcPos, Object dest, int destPos, int length)
+    // System.arraycopy(response, dataOffset, dataBytes, 0, dataLen);
+    response.copy(dataBytes, 0, dataOffset, dataOffset + dataLen);
+  } catch (e) {
+    Log.w(TAG, e);
+    return -100;
+  }
+
+  // SAMI: HANDLE ENCRYPTION!!!
+  if (frameCtrlData.isEncrypted()) {
+    const aes = new BlufiAES(mAESKey, AES_TRANSFORMATION, generateAESIV(sequence));
+    dataBytes = aes.decrypt(dataBytes);
+  }
+
+  if (frameCtrlData.isChecksum()) {
+    console.log('IT IS CHECK SUMMMMMMMMMMMMMMMMM');
+    let respChecksum1 = toInt(response[response.length - 1]);
+    let respChecksum2 = toInt(response[response.length - 2]);
+
+    let checkByteOS = Buffer.from([sequence, dataLen]);
+    for (let b in dataBytes) {
+      checkByteOS.write(b);
+    }
+    let checksum = BlufiCRC.calcCRC(0, checkByteOS.slice(0));
+
+    let calcChecksum1 = (checksum >> 8) & 0xff;
+    let calcChecksum2 = checksum & 0xff;
+    if (respChecksum1 !== calcChecksum1 || respChecksum2 !== calcChecksum2) {
+      return -4;
+    }
+  }
+
+  if (frameCtrlData.hasFrag()) {
+    //            int totalLen = dataBytes[0] | (dataBytes[1] << 8);
+    dataOffset = 2;
+  } else {
+    dataOffset = 0;
+  }
+  // SAMI: HANDLE CHUNKS(make sure code below is working) !!!
+  // for (let i = dataOffset; i < dataBytes.length; i++) {
+  //   notification.addData(dataBytes[i]);
+  // }
+  notification.data = Buffer.from([notification.data || '', dataBytes.slice(dataOffset, dataBytes.length)]);
+
+  return frameCtrlData.hasFrag() ? 1 : 0;
+}
+
+//----------------------------------- END HANDLE NOTIFICATIONS ---------------------------------------------
+//----------------------------------------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------
+
+
+function onError(...args) {
+  console.log('onError: ', ...args);
+}
+
+function onVersionResponse(...args) {
+  console.log('onVersionResponse: ', ...args);
+}
+
+function onReceiveCustomData(...args) {
+  console.log('onReceiveCustomData: ', ...args);
+}
+
+function onStatusResponse(...args) {
+  console.log('onStatusResponse: ', ...args);
+}
+
+function onDeviceScanResult(...args) {
+  console.log('onDeviceScanResult: ', ...args);
+}
+
+const Blufi = {
   configure(device, ssid, password) {
     connectedDevice = device;
     return new Promise(async (resolve, reject) => {
@@ -199,34 +468,45 @@ const Blufi = {
       }
 
       resolve(BlufiCallback.STATUS_SUCCESS);
-    })
+    });
   },
 
-  // WIP
-  /*onCharacteristicChanged(data) {
-      // if (!characteristic.equals(mNotifyChar)) { !!!
-      //     return;
-      // }
-      //
-      // if (mNotifyData == null) {
-      //     mNotifyData = new BlufiNotifyData();
-      // }
-      //
-      // byte[] data = characteristic.getValue();
+  onCharacteristicChanged(data) {
+    // if (!characteristic.equals(mNotifyChar)) { !!!
+    //     return;
+    // }
+    //
+    // if (mNotifyData == null) {
+    //     mNotifyData = new BlufiNotifyData();
+    // }
+    //
+    // byte[] data = characteristic.getValue();
 
-      // lt 0 is error, eq 0 is complete, gt 0 is continue
-      const parse = parseNotification(data, mNotifyData);
-      if (parse < 0) {
-          onError(BlufiCallback.CODE_INVALID_NOTIFICATION);
-      } else if (parse == 0) {
-          parseBlufiNotifyData(mNotifyData);
-          mNotifyData = null;
-      }
+    // lt 0 is error, eq 0 is complete, gt 0 is continue
+    const notification = {};
+    const parse = parseNotification(data, notification);
+    if (parse < 0) {
+      onError(BlufiCallback.CODE_INVALID_NOTIFICATION);
+    } else if (parse === 0) {
+      parseBlufiNotifyData(notification);
+      // notification = {};
+    }
+  },
 
-      if (mUserGattCallback != null) {
-          mUserGattCallback.onCharacteristicChanged(gatt, characteristic);
-      }
-  }*/
+  requestDeviceVersion(){
+    const type = getTypeValue(BlufiParameter.Type.Ctrl.PACKAGE_VALUE, BlufiParameter.Type.Ctrl.SUBTYPE_GET_VERSION);
+    let request;
+    try {
+        request = post(mEncrypted, mChecksum, false, type, null);
+    } catch (e) {
+        Log.w(TAG, 'post requestDeviceVersion interrupted');
+        request = false;
+    }
+
+    if (!request) {
+        onVersionResponse(BlufiCallback.CODE_WRITE_DATA_FAILED, null);
+    }
+  }
 }
 
 export default Blufi;
