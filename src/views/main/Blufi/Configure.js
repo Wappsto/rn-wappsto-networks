@@ -87,6 +87,10 @@ const Configure = ({ device, hide }) => {
 
   useEffect(() => {
     init();
+    return () => {
+      BleManager.disconnect(device.id);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (
