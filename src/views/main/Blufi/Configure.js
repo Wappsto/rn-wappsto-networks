@@ -14,6 +14,7 @@ const bleManagerEmitter = new NativeEventEmitter(BleManagerModule);
 
 // translations:
 // ssid / configure
+// SAMI: Handle disconnect -> listening.current = false;
 const wifiSsidStorageKey = 'wifiSSID';
 const wifiPasswordStorageKey = 'wifiPassword';
 const Configure = ({ device, hide }) => {
@@ -23,6 +24,7 @@ const Configure = ({ device, hide }) => {
   const [ showPassword, setShowPassword ] = useState(false);
   const [ loading, setLoading ] = useState(false);
   const passwordInputRef = useRef();
+  const listening = useRef(false);
 
   const toggleShowPassword = () => {
     setShowPassword(sp => !sp);
@@ -61,13 +63,16 @@ const Configure = ({ device, hide }) => {
       await BleManager.connect(device.id);
       await BleManager.retrieveServices(device.id);
       await BleManager.startNotification(device.id, BlufiParameter.UUID_SERVICE, BlufiParameter.UUID_NOTIFICATION_CHARACTERISTIC);
-      bleManagerEmitter.addListener(
-        'BleManagerDidUpdateValueForCharacteristic',
-        ({ value, peripheral, characteristic, service }) => {
-            // Convert bytes array to string
-            Blufi.onCharacteristicChanged(value);
-        }
-      );
+      if(!listening.current){
+        listening.current = true;
+        bleManagerEmitter.addListener(
+          'BleManagerDidUpdateValueForCharacteristic',
+          ({ value, peripheral, characteristic, service }) => {
+              // Convert bytes array to string
+              Blufi.onCharacteristicChanged(value);
+          }
+        );
+      }
       // SAMI: NegotiateSecurity
       // await Blufi.configure(device, ssid, password);
       Blufi.requestDeviceVersion(device, ssid, password);

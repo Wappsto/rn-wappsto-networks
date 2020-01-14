@@ -31,13 +31,12 @@ function getTypeValue(type, subtype) {
 }
 
 function generateSendSequence() {
-  const prev = mSendSequence;
-  mSendSequence++;
-  return prev;
+  return mSendSequence++;
 }
 
 function generateReadSequence() {
-  return mReadSequence++;
+  mReadSequence++;
+  return mReadSequence;
 }
 
 function generateAESIV(sequence) {
@@ -80,7 +79,8 @@ async function receiveAck(sequence) {
 }
 
 function getPostBytes(type, frameCtrl, sequence, dataLength, data) {
-  let byteOS = Buffer.from(type + '' + frameCtrl + '' + sequence + '' + dataLength);
+  // let byteOS = Buffer.from(type + '' + frameCtrl + '' + sequence + '' + dataLength);
+  let byteOS = Buffer.from([type + '', frameCtrl + '', sequence + '', dataLength + '']);
 
   let frameCtrlData = new FrameCtrlData(frameCtrl);
   let checksumBytes = null;
@@ -93,7 +93,7 @@ function getPostBytes(type, frameCtrl, sequence, dataLength, data) {
       let os = Buffer.alloc(willCheckBytes.length + data.length);
       os.write(willCheckBytes, 0, willCheckBytes.length);
       os.write(data, 0, data.length);
-      willCheckBytes = os.slice(0);
+      willCheckBytes = Array.prototype.slice.call(os, 0);
     }
     let checksum = BlufiCRC.calcCRC(0, willCheckBytes);
     let checksumByte1 = (checksum & 0xff);
@@ -345,10 +345,10 @@ function parseBlufiNotifyData(data) {
 
   switch (pkgType) {
     case BlufiParameter.Type.Ctrl.PACKAGE_VALUE:
-      parseCtrlData(subType, data.getDataArray());
+      parseCtrlData(subType, data.data);
       break;
     case BlufiParameter.Type.Data.PACKAGE_VALUE:
-      parseDataData(subType, data.getDataArray());
+      parseDataData(subType, data.data);
       break;
   }
 }
@@ -358,6 +358,7 @@ function parseNotification(response, notification) {
     Log.w(TAG, 'parseNotification null data');
     return -1;
   }
+  response = Buffer.from(response);
 
   if (response.length < 4) {
     Log.w(TAG, 'parseNotification data length less than 4');
@@ -385,9 +386,6 @@ function parseNotification(response, notification) {
   let dataBytes = new Buffer.alloc(dataLen);
   let dataOffset = 4;
   try {
-    // SAMI: CHECK THIS !!!
-    // public static void arraycopy(Object src, int srcPos, Object dest, int destPos, int length)
-    // System.arraycopy(response, dataOffset, dataBytes, 0, dataLen);
     response.copy(dataBytes, 0, dataOffset, dataOffset + dataLen);
   } catch (e) {
     Log.w(TAG, e);
@@ -409,7 +407,7 @@ function parseNotification(response, notification) {
     for (let b in dataBytes) {
       checkByteOS.write(b);
     }
-    let checksum = BlufiCRC.calcCRC(0, checkByteOS.slice(0));
+    let checksum = BlufiCRC.calcCRC(0, Array.prototype.slice.call(checkByteOS, 0));
 
     let calcChecksum1 = (checksum >> 8) & 0xff;
     let calcChecksum2 = checksum & 0xff;
@@ -428,8 +426,12 @@ function parseNotification(response, notification) {
   // for (let i = dataOffset; i < dataBytes.length; i++) {
   //   notification.addData(dataBytes[i]);
   // }
-  notification.data = Buffer.from([notification.data || '', dataBytes.slice(dataOffset, dataBytes.length)]);
-
+  const arr = [];
+  if(notification.data){
+    arr.push(...Array.prototype.slice.call(notification.data, 0));
+  }
+  arr.push(...Array.prototype.slice.call(dataBytes, dataOffset, dataBytes.length));
+  notification.data = Buffer.from(arr);
   return frameCtrlData.hasFrag() ? 1 : 0;
 }
 
