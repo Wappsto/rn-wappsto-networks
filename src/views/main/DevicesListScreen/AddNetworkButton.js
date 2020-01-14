@@ -2,12 +2,16 @@ import React, { useState, useCallback, useEffect, useMemo } from 'react';
 import { useSelector } from 'react-redux';
 import PopupButton from '../../../components/PopupButton';
 import Popup from '../../../components/Popup';
+import { Modal, View, Text, ScrollView, TouchableOpacity, StatusBar } from 'react-native';
+import Icon from 'react-native-vector-icons/Feather';
+import { SafeAreaView} from 'react-native-safe-area-context';
 import AddNetworkPopup from './AddNetworkPopup';
 import ConfirmAddManufacturerNetwork from './ConfirmAddManufacturerNetwork';
 import theme from '../../../theme/themeExport';
 import useRequest from 'wappsto-blanket/hooks/useRequest';
 import { makeItemSelector } from 'wappsto-redux/selectors/items';
 import { manufacturerAsOwnerErrorCode, iotNetworkListAdd } from '../../../util/params';
+import i18n, { CapitalizeFirst } from '../../../translations';
 
 const Content = React.memo(({ visible, hide, show }) => {
   const { request, send } = useRequest();
@@ -72,12 +76,28 @@ const Content = React.memo(({ visible, hide, show }) => {
     );
   }
   return (
-    <Popup visible={visible} onRequestClose={hide} hide={hide}>
-      <AddNetworkPopup
-        sendRequest={sendRequest}
-        postRequest={request}
-      />
-    </Popup>
+    <Modal
+      visible={visible}
+      hide={hide}
+      onRequestClose={hide}>
+        <SafeAreaView style={{flex:1}}>
+          <StatusBar backgroundColor={theme.variables.white} barStyle='dark-content' />
+          <ScrollView style={{flex:1}}>
+            <AddNetworkPopup
+              sendRequest={sendRequest}
+              postRequest={request}
+            />
+          </ScrollView>
+          <View style={{flexDirection: 'row'}}>
+            <TouchableOpacity onPress={hide}  style={{flex: 1}}>
+              <Text style={theme.common.linkBtn}>
+                {CapitalizeFirst(i18n.t('cancel'))}
+              </Text>
+            </TouchableOpacity>
+            <View style={{flex: 2}}></View>
+          </View>
+        </SafeAreaView>
+    </Modal>
   );
 });
 

@@ -115,7 +115,7 @@ const DevicesListScreen = React.memo(({ navigation }) => {
               { network.name ?
                 <Text style={theme.common.H5}>{network.name} </Text>
               :
-                <Text>{network.meta.id.slice(0, 4) + ' ... ' + network.meta.id.slice(-4)}</Text>
+                <Text>{network.meta.id}</Text>
               }
             </Text>
           );

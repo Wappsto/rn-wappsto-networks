@@ -10,7 +10,7 @@
             "pending": "waiting for camera",
             "title": "your permission to use phone camera is required in order to be able to scan QR code"
         },
-        "manufacturerAsOwnerWarning": "the manufacturer of this device has full access. Do you really want to add this device to your account ?",
+        "manufacturerAsOwnerWarning": "the manufacturer of this device has full access. Do you really want to add this device to your account?",
         "scanQRCode": "tap to scan QR code",
         "uuid": "UUID"
     },
@@ -37,6 +37,7 @@
     },
     "lastUpdated": "last updated",
     "loading": "loading",
+    "logout": "logout",
     "network": "network",
     "network_plural": "network",
     "pageTitle": {

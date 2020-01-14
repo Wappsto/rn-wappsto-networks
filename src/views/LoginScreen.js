@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import AsyncStorage from '@react-native-community/async-storage';
-import { View, Text, TextInput, TouchableOpacity, ActivityIndicator, StatusBar, SafeAreaView, ScrollView } from 'react-native';
+import { View, Text, TextInput, TouchableOpacity, ActivityIndicator, StatusBar, ScrollView } from 'react-native';
 import { GoogleSignin, GoogleSigninButton, statusCodes } from '@react-native-community/google-signin';
 import firebase from 'react-native-firebase';
 import { useDispatch } from 'react-redux';
@@ -8,6 +8,7 @@ import config from 'wappsto-redux/config';
 import { removeRequest } from 'wappsto-redux/actions/request';
 import useRequest from 'wappsto-blanket/hooks/useRequest';
 
+import { SafeAreaView } from 'react-native-safe-area-context';
 import { useTranslation, CapitalizeFirst } from '../translations';
 
 import RequestError from '../components/RequestError';
@@ -147,12 +148,12 @@ const LoginScreen = React.memo(({ navigation }) => {
   const postRequest = fbSignInError.current || request;
   const loading = postRequest && (postRequest.status === 'pending' || postRequest.status === 'success');
   return (
-    <SafeAreaView style={{flex: 1}}>
-      <StatusBar
-        backgroundColor={theme.variables.white}
-        barStyle='dark-content'
-      />
+    <SafeAreaView>
       <ScrollView>
+        <StatusBar
+          backgroundColor={theme.variables.white}
+          barStyle='dark-content'
+        />
         <LoginScreen.Header />
         <View style={theme.common.formElements}>
           <Text style={theme.common.label}>
@@ -185,6 +186,7 @@ const LoginScreen = React.memo(({ navigation }) => {
               textContentType='password'
               secureTextEntry={!showPassword}
               autoCapitalize='none'
+              returnKeyType='done'
               onSubmitEditing={checkAndSignIn}
               disabled={loading}
             />

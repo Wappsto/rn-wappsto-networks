@@ -1,7 +1,7 @@
 import React, { useState, useMemo, useEffect, useCallback } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import {Text, View, TouchableOpacity, StatusBar} from 'react-native';
-import SafeAreaView from 'react-native-safe-area-view';
+import { useSafeArea} from 'react-native-safe-area-context';
 import { config } from '../configureWappstoRedux';
 import { makeStreamSelector } from 'wappsto-redux/selectors/stream';
 import { openStream, status, steps } from 'wappsto-redux/actions/stream';
@@ -20,6 +20,8 @@ const Screen = React.memo(({ style, children }) => {
     }
     return getStream(state, config.stream.name);
   });
+
+  StatusBar.setBarStyle( 'light-content',true);
 
   useEffect(() => {
     NetInfo.isConnected.removeEventListener('connectionChange', setConnected);
@@ -81,16 +83,16 @@ const Screen = React.memo(({ style, children }) => {
     }
     return undefined;
   }
+  const insets = useSafeArea();
 
   const showStream = connected && stream && stream.status !== 2;
   return (
-    <SafeAreaView style={theme.common.safeAreaView}>
+    <View style={{flex:1}}>
       {!connected && (
         <Text style={[theme.common.toastFullWidth, theme.common.warningPanel]}>
           {CapitalizeFirst(i18n.t('error:internetConnectionLost'))}
         </Text>
       )}
-      <StatusBar backgroundColor={theme.variables.primary} barStyle='light-content' />
       {showStream && (
         <View style={[theme.common.toastFullWidth, theme.common.warningPanel]}>
           <Text>{getStreamMessage(stream)}</Text>
@@ -103,8 +105,8 @@ const Screen = React.memo(({ style, children }) => {
           )}
         </View>
       )}
-      <View style={style || {flex: 1}}>{children}</View>
-    </SafeAreaView>
+      {children}
+    </View>
   );
 });
 

@@ -4,6 +4,8 @@ import {createSwitchNavigator, createAppContainer} from 'react-navigation';
 import {createDrawerNavigator} from 'react-navigation-drawer';
 import {createStackNavigator} from 'react-navigation-stack';
 
+import { SafeAreaProvider } from 'react-native-safe-area-context';
+import theme from './theme/themeExport';
 import store from './configureWappstoRedux';
 
 let dependencies = ['MainStackScreen', 'AccountStackScreen', 'MainScreen', 'SwitchNavigator', 'AppContainer', 'App'];
@@ -79,7 +81,9 @@ export default class App extends Component {
     }
     return (
       <Provider store={store}>
-        <components.App useSuspense={false} />
+        <SafeAreaProvider>
+          <components.App useSuspense={false} />
+        </SafeAreaProvider>
       </Provider>
     );
   }

@@ -1,5 +1,5 @@
 import AsyncStorage from '@react-native-community/async-storage';
-import SafeAreaView from 'react-native-safe-area-view';
+import { SafeAreaView } from 'react-native-safe-area-context';
 import { DrawerNavigatorItems } from 'react-navigation-drawer';
 import { View, Text, StyleSheet, ScrollView, Image, ActivityIndicator, TouchableOpacity, StatusBar } from 'react-native';
 import RequestError from './RequestError';
@@ -16,22 +16,7 @@ import Icon from 'react-native-vector-icons/Feather';
 import useRequest from 'wappsto-blanket/hooks/useRequest';
 import { config } from '../configureWappstoRedux';
 import { userFetched } from '../util/params';
-
-const styles = StyleSheet.create({
-  userInfo: {
-    padding: 10,
-    flex: 1,
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-  },
-  userImage: {
-    width: 20,
-    height: 20,
-    borderRadius: 15,
-    marginRight: 10,
-  },
-});
+import i18n, { CapitalizeFirst } from '../translations';
 
 const DrawerMenu = React.memo((props) => {
   const dispatch = useDispatch();
@@ -96,18 +81,14 @@ const DrawerMenu = React.memo((props) => {
     }
   }
   return (
-    <SafeAreaView forceInset={{top: 'always', horizontal: 'never'}}>
-      <StatusBar
-        backgroundColor={theme.variables.white}
-        barStyle='dark-content'
-      />
+    <SafeAreaView style={{flex:1}}>
       <ScrollView>
-        <View style={styles.userInfo}>
+        <View style={theme.common.userInfo}>
           <View style={theme.common.row}>
             <View>
               {user && user.provider[0] ? (
                 <Image
-                  style={styles.userImage}
+                  style={theme.common.userImage}
                   source={{uri: user.provider[0].picture}}
                 />
               ) : request &&
@@ -115,31 +96,29 @@ const DrawerMenu = React.memo((props) => {
                 request.status === 'pending' ? (
                 <ActivityIndicator
                   size='large'
-                  color={theme.variables.primary}
+                  color={theme.variables.textInverse}
                 />
               ) : (
                 <Icon
                   name='user'
                   style={theme.common.spaceAround}
                   size={20}
-                  color={theme.variables.primary}
                 />
               )}
             </View>
             <Text>{name}</Text>
           </View>
-          <TouchableOpacity
-            style={theme.common.spaceAround}
-            onPress={logout}>
-            <Icon
-              name='log-out'
-              size={25}
-              color={theme.variables.primary}
-            />
-          </TouchableOpacity>
           <RequestError request={request} />
         </View>
         <DrawerNavigatorItems {...props} />
+
+        <TouchableOpacity
+          style={theme.common.spaceAround}
+          onPress={logout}>
+          <Text style={theme.common.linkBtn}>
+            {CapitalizeFirst(i18n.t('logout'))}
+          </Text>
+        </TouchableOpacity>
       </ScrollView>
     </SafeAreaView>
   );

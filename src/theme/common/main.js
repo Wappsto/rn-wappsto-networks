@@ -16,8 +16,7 @@ export function generateStyles(c = {}) {
     StyleSheet.create({
       container: {
         flex: 1,
-        paddingVertical: 5,
-        backgroundColor: variables.containerBgColor,
+        backgroundColor: variables.containerBgColor
       },
       splashScreenContainer: {
         flex: 1,
@@ -26,16 +25,10 @@ export function generateStyles(c = {}) {
         justifyContent: 'space-around',
         backgroundColor: variables.splashScreenBgColor,
       },
-      safeAreaView: {
-        flex: 1,
-        backgroundColor: variables.appBgColor,
-      },
       infoText: {
-        padding: 5,
-        margin: 20,
-        textAlign: 'center',
-        borderRadius: variables.borderRadiusBase,
-        borderWidth: variables.borderWidth,
+        paddingTop: 5,
+        paddingBottom: 20,
+        textAlign: 'center'
       },
       p: {
         color: variables.textSecondary,
@@ -134,12 +127,12 @@ export function generateStyles(c = {}) {
         flex: 1,
       },
       iconButton: {
-        padding: 12,
+        paddingRight: 14,
+        paddingLeft: 14
       },
       listItemHeader: {
         fontSize: variables.h5,
-        color: variables.primary,
-        marginBottom: 0
+        color: variables.primary
       },
       listItemSubheader: {
         fontSize: variables.defaultFontSize - 1,
@@ -217,6 +210,9 @@ export function generateStyles(c = {}) {
         margin: 20,
         padding: 20,
       },
+      fullScreenModalContent: {
+        padding: 20
+      },
       passwordVisibilityButton: {
         position: 'absolute',
         right: 0,
@@ -259,6 +255,25 @@ export function generateStyles(c = {}) {
       },
       listFooter:{
         marginBottom:20
+      },
+      userInfo: {
+        flex: 1,
+        flexDirection: 'row',
+        alignItems: 'center',
+        justifyContent: 'space-between',
+        borderBottomColor: variables.lightGray,
+        borderBottomWidth: variables.borderWidth
+      },
+      userImage: {
+        width: 20,
+        height: 20,
+        borderRadius: 15,
+        marginRight: 10,
+      },
+      linkBtn: {
+        color: variables.primary,
+        fontWeight: "600",
+        padding: 20
       },
       ...c,
     }),

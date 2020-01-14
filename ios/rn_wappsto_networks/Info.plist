@@ -52,8 +52,6 @@
 	<string>We want to use your camera to scan the QR code</string>
 	<key>NSLocationWhenInUseUsageDescription</key>
 	<string></string>
-	<key>NSMicrophoneUsageDescription</key>
-	<string>We need it to scan the QR code</string>
 	<key>UIAppFonts</key>
 	<array>
 		<string>AntDesign.ttf</string>

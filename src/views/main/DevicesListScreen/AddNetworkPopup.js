@@ -54,7 +54,7 @@ const AddNetwork = React.memo(({ postRequest, sendRequest }) => {
 
   const loading = postRequest && postRequest.status === 'pending';
   return (
-    <>
+    <View style={theme.common.fullScreenModalContent}>
       <Text style={theme.common.H3}>
         {CapitalizeEach(i18n.t('addNetwork.addNetworkTitle'))}
       </Text>
@@ -116,11 +116,9 @@ const AddNetwork = React.memo(({ postRequest, sendRequest }) => {
         style={theme.common.input}
         onChangeText={text => setInputValue(text)}
         value={inputValue}
-        textContentType='emailAddress'
         autoCapitalize='none'
         onSubmitEditing={addNetwork}
-        keyboardType='email-address'
-        returnKeyType='next'
+        returnKeyType='done'
         disabled={loading}
       />
       {loading && (
@@ -134,7 +132,7 @@ const AddNetwork = React.memo(({ postRequest, sendRequest }) => {
           {CapitalizeFirst(i18n.t('add'))}
         </Text>
       </TouchableOpacity>
-    </>
+    </View>
   );
 });
 
