@@ -27,7 +27,7 @@ const Blufi = () => {
       setScanning(true);
       try{
         await BleManager.enableBluetooth();
-        BleManager.scan([BlufiParameter.UUID_SERVICE], 5, false);
+        BleManager.scan([BlufiParameter.UUID_SERVICE], 2, false);
       } catch(e){
         // SAMI: Handle enable bluetooth error!!!
         setScanning(false);

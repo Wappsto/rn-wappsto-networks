@@ -7,6 +7,7 @@ import Icon from 'react-native-vector-icons/FontAwesome5';
 import {NetworkInfo} from 'react-native-network-info';
 import BleManager from 'react-native-ble-manager';
 import Blufi from './lib';
+import { BlufiParameter } from './lib/util/params';
 
 const BleManagerModule = NativeModules.BleManager;
 const bleManagerEmitter = new NativeEventEmitter(BleManagerModule);
@@ -58,8 +59,18 @@ const Configure = ({ device, hide }) => {
       AsyncStorage.setItem(wifiSsidStorageKey, ssid);
       AsyncStorage.setItem(wifiPasswordStorageKey, password);
       await BleManager.connect(device.id);
+      await BleManager.retrieveServices(device.id);
+      await BleManager.startNotification(device.id, BlufiParameter.UUID_SERVICE, BlufiParameter.UUID_NOTIFICATION_CHARACTERISTIC);
+      bleManagerEmitter.addListener(
+        'BleManagerDidUpdateValueForCharacteristic',
+        ({ value, peripheral, characteristic, service }) => {
+            // Convert bytes array to string
+            Blufi.onCharacteristicChanged(value);
+        }
+      );
       // SAMI: NegotiateSecurity
-      await Blufi.configure(device, ssid, password);
+      // await Blufi.configure(device, ssid, password);
+      Blufi.requestDeviceVersion(device, ssid, password);
     } catch (e) {
       // SAMI: Handle configure error
       console.log(e);

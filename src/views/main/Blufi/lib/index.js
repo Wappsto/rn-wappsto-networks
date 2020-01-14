@@ -1,14 +1,13 @@
 import { BlufiParameter, BlufiCallback } from './util/params';
 import { stringToBytes } from 'convert-string';
-import { FrameCtrlData } from './FrameCtrlData';
-import { Buffer } from 'buffer';
+import FrameCtrlData from './FrameCtrlData';
 import BleManager from 'react-native-ble-manager';
 import BlufiCRC from './BlufiCRC';
 import BlufiAES from './BlufiAES';
 import ByteArrayInputStream from './ByteArrayInputStream';
 import LinkedBlockingQueue from './LinkedBlockingQueue';
 import Log from './Log';
-
+const Buffer = require('buffer/').Buffer;
 // workaround-------------------
 //------------------------------
 const TAG = 'BlufiClientImpl';
@@ -81,15 +80,17 @@ async function receiveAck(sequence) {
 }
 
 function getPostBytes(type, frameCtrl, sequence, dataLength, data) {
-  let byteOS = Buffer.from([type, frameCtrl, sequence, dataLength]);
+  let byteOS = Buffer.from(type + '' + frameCtrl + '' + sequence + '' + dataLength);
 
-  let frameCtrlData = FrameCtrlData.setData(frameCtrl);
-  let checksumBytes;
+  let frameCtrlData = new FrameCtrlData(frameCtrl);
+  let checksumBytes = null;
   if (frameCtrlData.isChecksum()) {
+    debugger;
     let willCheckBytes = Buffer.from([sequence, dataLength]);
     if (data != null) {
+      // SAMI: CHECK THIS!!!
       // ByteArrayOutputStream os = new ByteArrayOutputStream(willCheckBytes.length + data.length);
-      let os = Buffer.from(willCheckBytes.length + data.length);
+      let os = Buffer.alloc(willCheckBytes.length + data.length);
       os.write(willCheckBytes, 0, willCheckBytes.length);
       os.write(data, 0, data.length);
       willCheckBytes = os.slice(0);
@@ -101,27 +102,32 @@ function getPostBytes(type, frameCtrl, sequence, dataLength, data) {
   }
 
   // SAMI: HANDLE ENCRYPTION!!!
-  if (frameCtrlData.isEncrypted() && data != null) {
+  if (frameCtrlData.isEncrypted() && data !== null) {
+    debugger;
     const aes = new BlufiAES(mAESKey, AES_TRANSFORMATION, generateAESIV(sequence));
     data = aes.encrypt(data);
   }
-  if (data != null) {
-    byteOS.write(data, 0, data.length);
+  if (data !== null) {
+    debugger;
+    // byteOS.write(data, 0, data.length);
+    byteOS = Buffer.from([data, byteOS]);
   }
 
-  if (checksumBytes != null) {
-    byteOS.write(checksumBytes[0]);
-    byteOS.write(checksumBytes[1]);
+  if (checksumBytes !== null) {
+    debugger;
+    // byteOS.write(checksumBytes[0]);
+    // byteOS.write(checksumBytes[1]);
+    byteOS = Buffer.from([byteOS, checksumBytes[0], checksumBytes[1]]);
   }
 
-  return byteOS.slice(0);
+  // return byteOS.slice(0);
+  return Array.prototype.slice.call(byteOS, 0);
 }
 
 async function postNonData(encrypt, checksum, requireAck, type) {
   const frameCtrl = FrameCtrlData.getFrameCTRLValue(encrypt, checksum, BlufiParameter.DIRECTION_OUTPUT, requireAck, false);
   const sequence = generateSendSequence();
   const dataLen = 0;
-
   const postBytes = getPostBytes(type, frameCtrl, sequence, dataLen, null);
   gattWrite(postBytes);
 
@@ -130,7 +136,7 @@ async function postNonData(encrypt, checksum, requireAck, type) {
 
 async function postContainData(encrypt, checksum, requireAck, type, data) {
   let dataIS = new ByteArrayInputStream(data);
-  let postOS = Buffer.from();
+  let postOS = Buffer.from([]);
   // SAMI: HANDLE THIS SOMEHOW !!!
   // let pkgLengthLimit = mPackageLengthLimit > 0 ? mPackageLengthLimit :
   //   (mBlufiMTU > 0 ? mBlufiMTU : DEFAULT_PACKAGE_LENGTH); !!!!
@@ -155,12 +161,12 @@ async function postContainData(encrypt, checksum, requireAck, type, data) {
     let frag = dataIS.available() > 0;
     let frameCtrl = FrameCtrlData.getFrameCTRLValue(encrypt, checksum, BlufiParameter.DIRECTION_OUTPUT, requireAck, frag);
     let sequence = generateSendSequence();
+    let tempData = Array.prototype.slice.call(postOS, 0);
     if (frag) {
-      let totalLen = postOS.size() + dataIS.available();
-      let tempData = postOS.slice(0);
+      let totalLen = postOS.length + dataIS.available();
       postOS = Buffer.from([totalLen & 0xff, totalLen >> 8 & 0xff, tempData, 0, tempData.length]);
     }
-    let postBytes = getPostBytes(type, frameCtrl, sequence, postOS.size(), postOS.slice(0));
+    let postBytes = getPostBytes(type, frameCtrl, sequence, postOS.length, tempData);
     postOS = Buffer.from();
     gattWrite(postBytes);
     if (frag) {
@@ -176,7 +182,7 @@ async function postContainData(encrypt, checksum, requireAck, type, data) {
 }
 
 async function post(encrypt, checksum, requireAck, type, data) {
-  if (data == null || data.length === 0) {
+  if (data === null || data.length === 0) {
     return await postNonData(encrypt, checksum, requireAck, type);
   } else {
     return await postContainData(encrypt, checksum, requireAck, type, data);
@@ -348,7 +354,7 @@ function parseBlufiNotifyData(data) {
 }
 
 function parseNotification(response, notification) {
-  if (response == null) {
+  if (response === null) {
     Log.w(TAG, 'parseNotification null data');
     return -1;
   }
@@ -493,7 +499,8 @@ const Blufi = {
     }
   },
 
-  requestDeviceVersion(){
+  requestDeviceVersion(device){
+    connectedDevice = device;
     const type = getTypeValue(BlufiParameter.Type.Ctrl.PACKAGE_VALUE, BlufiParameter.Type.Ctrl.SUBTYPE_GET_VERSION);
     let request;
     try {
