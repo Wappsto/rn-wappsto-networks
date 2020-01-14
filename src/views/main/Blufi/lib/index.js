@@ -1,5 +1,5 @@
 import { BlufiParameter, BlufiCallback } from './util/params';
-import { stringToBytes } from 'convert-string';
+// import { stringToBytes } from 'convert-string';
 import FrameCtrlData from './FrameCtrlData';
 import BleManager from 'react-native-ble-manager';
 import BlufiCRC from './BlufiCRC';
@@ -74,6 +74,7 @@ async function receiveAck(sequence) {
     const ack = await mAck.take();
     return ack === sequence;
   } catch (e) {
+    console.log('receiveAck: ', e);
     return false;
   }
 }
@@ -85,7 +86,6 @@ function getPostBytes(type, frameCtrl, sequence, dataLength, data) {
   let frameCtrlData = new FrameCtrlData(frameCtrl);
   let checksumBytes = null;
   if (frameCtrlData.isChecksum()) {
-    debugger;
     let willCheckBytes = Buffer.from([sequence, dataLength]);
     if (data != null) {
       // SAMI: CHECK THIS!!!
@@ -103,21 +103,17 @@ function getPostBytes(type, frameCtrl, sequence, dataLength, data) {
 
   // SAMI: HANDLE ENCRYPTION!!!
   if (frameCtrlData.isEncrypted() && data !== null) {
-    debugger;
     const aes = new BlufiAES(mAESKey, AES_TRANSFORMATION, generateAESIV(sequence));
     data = aes.encrypt(data);
   }
   if (data !== null) {
-    debugger;
-    // byteOS.write(data, 0, data.length);
-    byteOS = Buffer.from([data, byteOS]);
+    byteOS = Buffer.from([...byteOS, ...data]);
   }
 
   if (checksumBytes !== null) {
-    debugger;
     // byteOS.write(checksumBytes[0]);
     // byteOS.write(checksumBytes[1]);
-    byteOS = Buffer.from([byteOS, checksumBytes[0], checksumBytes[1]]);
+    byteOS = Buffer.from([...byteOS, checksumBytes[0], checksumBytes[1]]);
   }
 
   // return byteOS.slice(0);
@@ -153,10 +149,11 @@ async function postContainData(encrypt, checksum, requireAck, type, data) {
       break;
     }
 
-    postOS.write(dateBuf, 0, read);
+    postOS = Buffer.from([...postOS, ...Array.prototype.slice.call(dateBuf, 0, read)]);
     if (dataIS.available() === 2) {
-      postOS.write(dataIS.read());
-      postOS.write(dataIS.read());
+      // postOS.write(dataIS.read());
+      // postOS.write(dataIS.read());
+      postOS = Buffer.from([...postOS, dataIS.read(), dataIS.read()]);
     }
     let frag = dataIS.available() > 0;
     let frameCtrl = FrameCtrlData.getFrameCTRLValue(encrypt, checksum, BlufiParameter.DIRECTION_OUTPUT, requireAck, frag);
@@ -167,14 +164,15 @@ async function postContainData(encrypt, checksum, requireAck, type, data) {
       postOS = Buffer.from([totalLen & 0xff, totalLen >> 8 & 0xff, tempData, 0, tempData.length]);
     }
     let postBytes = getPostBytes(type, frameCtrl, sequence, postOS.length, tempData);
-    postOS = Buffer.from();
+    postOS = Buffer.from([]);
     gattWrite(postBytes);
     if (frag) {
       if (requireAck && !await receiveAck(sequence)) {
         return false;
       }
     } else {
-      return !requireAck || receiveAck(sequence);
+      const result = !requireAck || await receiveAck(sequence);
+      return result;
     }
   }
 
@@ -192,25 +190,28 @@ async function post(encrypt, checksum, requireAck, type, data) {
 async function postDeviceMode(deviceMode) {
   const type = getTypeValue(BlufiParameter.Type.Ctrl.PACKAGE_VALUE, BlufiParameter.Type.Ctrl.SUBTYPE_SET_OP_MODE);
   // byte[] data = {(byte) deviceMode}; !!!
-  let data = stringToBytes(deviceMode + '');
+  let data = Buffer.from(deviceMode + '');
 
   try {
-    return await post(mEncrypted, mChecksum, true, type, data);
+    const result = await post(mEncrypted, mChecksum, true, type, data);
+    return result;
   } catch (e) {
+    console.log('postDeviceMode: ', e);
     return false;
   }
 }
 
 async function postStaWifiInfo(ssid, password) {
+  debugger;
   try {
     let ssidType = getTypeValue(BlufiParameter.Type.Data.PACKAGE_VALUE, BlufiParameter.Type.Data.SUBTYPE_STA_WIFI_SSID);
-    if (!await post(mEncrypted, mChecksum, mRequireAck, ssidType, stringToBytes(ssid))) {
+    if (!await post(mEncrypted, mChecksum, mRequireAck, ssidType, Buffer.from(ssid))) {
       return false;
     }
     // sleep(10);
 
     let pwdType = getTypeValue(BlufiParameter.Type.Data.PACKAGE_VALUE, BlufiParameter.Type.Data.SUBTYPE_STA_WIFI_PASSWORD);
-    if (!await post(mEncrypted, mChecksum, mRequireAck, pwdType, stringToBytes(password))) {
+    if (!await post(mEncrypted, mChecksum, mRequireAck, pwdType, Buffer.from(password))) {
       return false;
     }
     // sleep(10);
@@ -399,7 +400,6 @@ function parseNotification(response, notification) {
   }
 
   if (frameCtrlData.isChecksum()) {
-    console.log('IT IS CHECK SUMMMMMMMMMMMMMMMMM');
     let respChecksum1 = toInt(response[response.length - 1]);
     let respChecksum2 = toInt(response[response.length - 2]);
 
@@ -422,10 +422,6 @@ function parseNotification(response, notification) {
   } else {
     dataOffset = 0;
   }
-  // SAMI: HANDLE CHUNKS(make sure code below is working) !!!
-  // for (let i = dataOffset; i < dataBytes.length; i++) {
-  //   notification.addData(dataBytes[i]);
-  // }
   const arr = [];
   if(notification.data){
     arr.push(...Array.prototype.slice.call(notification.data, 0));
@@ -480,24 +476,12 @@ const Blufi = {
   },
 
   onCharacteristicChanged(data) {
-    // if (!characteristic.equals(mNotifyChar)) { !!!
-    //     return;
-    // }
-    //
-    // if (mNotifyData == null) {
-    //     mNotifyData = new BlufiNotifyData();
-    // }
-    //
-    // byte[] data = characteristic.getValue();
-
-    // lt 0 is error, eq 0 is complete, gt 0 is continue
     const notification = {};
     const parse = parseNotification(data, notification);
     if (parse < 0) {
       onError(BlufiCallback.CODE_INVALID_NOTIFICATION);
     } else if (parse === 0) {
       parseBlufiNotifyData(notification);
-      // notification = {};
     }
   },
 

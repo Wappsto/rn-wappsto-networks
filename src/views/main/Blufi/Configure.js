@@ -74,8 +74,9 @@ const Configure = ({ device, hide }) => {
         );
       }
       // SAMI: NegotiateSecurity
-      // await Blufi.configure(device, ssid, password);
-      Blufi.requestDeviceVersion(device, ssid, password);
+      const result = await Blufi.configure(device, ssid, password);
+      console.log(result);
+      // Blufi.requestDeviceVersion(device, ssid, password);
     } catch (e) {
       // SAMI: Handle configure error
       console.log(e);
