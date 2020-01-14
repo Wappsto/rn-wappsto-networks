@@ -214,15 +214,9 @@ const LoginScreen = React.memo(({ navigation }) => {
             </Text>
           </TouchableOpacity>
           <GoogleSigninButton
-            style={theme.common.gSignInButton}
-            size={
-              theme.variables.googleSigninButtonSize ||
-              GoogleSigninButton.Size.Wide
-            }
-            color={
-              theme.variables.googleSigninButtonColor ||
-              GoogleSigninButton.Color.Dark
-            }
+            style={theme.common.GoogleSigninButtonStyle}
+            size={GoogleSigninButton.Size.Wide}
+            color={GoogleSigninButton.Color.Light}
             onPress={googleSignIn}
             disabled={isSigninInProgress || loading}
           />

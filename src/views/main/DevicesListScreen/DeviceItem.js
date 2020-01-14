@@ -6,7 +6,6 @@ import { selectedDeviceName } from '../../../util/params';
 import { useDispatch } from 'react-redux';
 import { setItem } from 'wappsto-redux/actions/items';
 import theme from '../../../theme/themeExport';
-import DeviceSettings from './DeviceSettings';
 import i18n from '../../../translations';
 
 const DeviceSection = React.memo(({ navigation, id }) => {

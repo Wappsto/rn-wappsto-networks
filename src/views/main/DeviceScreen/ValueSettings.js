@@ -116,7 +116,7 @@ const ValueSettings = React.memo(({ item }) => {
       </Popup>
     );
   }, [item]);
-  return <PopupButton icon='more-vertical'>{content}</PopupButton>;
+  return <PopupButton icon='info'>{content}</PopupButton>;
 });
 
 export default ValueSettings;

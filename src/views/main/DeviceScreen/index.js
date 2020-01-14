@@ -9,7 +9,7 @@ import { makeItemSelector } from 'wappsto-redux/selectors/items';
 import theme from '../../../theme/themeExport';
 import { selectedDeviceName } from '../../../util/params';
 
-import DeviceSettings from '../DevicesListScreen/DeviceSettings';
+import DeviceDetails from './DeviceDetails';
 
 const query = {
   expand: 3,
@@ -51,7 +51,7 @@ DeviceScreen.navigationOptions = ({navigation}) => {
   return {
     ...theme.headerStyle,
     title: navigation.getParam('title', ''),
-    headerRight: <DeviceSettings navigation={navigation} />
+    headerRight: <DeviceDetails navigation={navigation} />
   };
 };
 

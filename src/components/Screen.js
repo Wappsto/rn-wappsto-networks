@@ -88,6 +88,7 @@ const Screen = React.memo(({ style, children }) => {
   const showStream = connected && stream && stream.status !== 2;
   return (
     <View style={{flex:1}}>
+      <StatusBar backgroundColor={theme.variables.primary} barStyle='light-content' />
       {!connected && (
         <Text style={[theme.common.toastFullWidth, theme.common.warningPanel]}>
           {CapitalizeFirst(i18n.t('error:internetConnectionLost'))}

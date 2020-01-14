@@ -52,7 +52,7 @@ const ValueSettings = React.memo(() => {
     );
   }, [device]);
 
-  return <PopupButton icon='settings' color={theme.variables.white}>{content}</PopupButton>;
+  return <PopupButton icon='info' color={theme.variables.white}>{content}</PopupButton>;
 });
 
 export default ValueSettings;

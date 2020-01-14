@@ -272,8 +272,12 @@ export function generateStyles(c = {}) {
       },
       linkBtn: {
         color: variables.primary,
-        fontWeight: "600",
+        fontWeight: '600',
         padding: 20
+      },
+      GoogleSigninButtonStyle: {
+         width: 230,
+         alignSelf: 'center'
       },
       ...c,
     }),
