@@ -84,42 +84,38 @@ const DrawerMenu = React.memo((props) => {
     <SafeAreaView style={{flex:1}}>
       <ScrollView>
         <View style={theme.common.userInfo}>
-          <View style={theme.common.row}>
-            <View>
-              {user && user.provider[0] ? (
-                <Image
-                  style={theme.common.userImage}
-                  source={{uri: user.provider[0].picture}}
-                />
-              ) : request &&
-                request.method === 'GET' &&
-                request.status === 'pending' ? (
-                <ActivityIndicator
-                  size='large'
-                  color={theme.variables.textInverse}
-                />
-              ) : (
-                <Icon
-                  name='user'
-                  style={theme.common.spaceAround}
-                  size={20}
-                />
-              )}
-            </View>
+            {user && user.provider[0] ? (
+              <Image
+                style={theme.common.userImage}
+                source={{uri: user.provider[0].picture}}
+              />
+            ) : request &&
+              request.method === 'GET' &&
+              request.status === 'pending' ? (
+              <ActivityIndicator
+                size='large'
+                color={theme.variables.textInverse}
+              />
+            ) : (
+              <Icon
+                name='user'
+                style={theme.common.spaceAround}
+                size={20}
+              />
+            )}
             <Text>{name}</Text>
-          </View>
           <RequestError request={request} />
         </View>
         <DrawerNavigatorItems {...props} />
 
-        <TouchableOpacity
-          style={theme.common.spaceAround}
-          onPress={logout}>
-          <Text style={theme.common.linkBtn}>
-            {CapitalizeFirst(i18n.t('logout'))}
-          </Text>
-        </TouchableOpacity>
       </ScrollView>
+      <TouchableOpacity
+        style={theme.common.spaceAround}
+        onPress={logout}>
+        <Text style={theme.common.linkBtn}>
+          {CapitalizeFirst(i18n.t('logout'))}
+        </Text>
+      </TouchableOpacity>
     </SafeAreaView>
   );
 });

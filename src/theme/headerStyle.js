@@ -13,7 +13,8 @@ export function generateHeaderStyles(c = {}) {
         backgroundColor: variables.primary
       },
       headerTitleStyle: {
-        marginLeft: 0
+        marginLeft: 0,
+        fontFamily: variables.fontFamily // has to be set for onplus devices
       },
       ...c
     }

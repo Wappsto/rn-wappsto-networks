@@ -36,6 +36,12 @@ let components = {
       },
       {
         contentComponent: this.DrawerMenu,
+        contentOptions: {
+          activeTintColor: theme.variables.primary,
+          labelStyle: {
+            fontFamily: theme.variables.fontFamily
+          },
+        }
       },
     );
   },

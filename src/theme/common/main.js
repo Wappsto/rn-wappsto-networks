@@ -260,7 +260,6 @@ export function generateStyles(c = {}) {
         flex: 1,
         flexDirection: 'row',
         alignItems: 'center',
-        justifyContent: 'space-between',
         borderBottomColor: variables.lightGray,
         borderBottomWidth: variables.borderWidth
       },
