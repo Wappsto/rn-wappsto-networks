@@ -6,6 +6,7 @@ import RequestError from '../../../components/RequestError';
 import theme from '../../../theme/themeExport';
 import i18n, { CapitalizeFirst, CapitalizeEach } from '../../../translations';
 import { manufacturerAsOwnerErrorCode } from '../../../util/params';
+import { isUUID } from 'wappsto-redux/util/helpers';
 
 const styles = StyleSheet.create({
   qrCodeScannerWrapper: {
@@ -126,7 +127,8 @@ const AddNetwork = React.memo(({ postRequest, sendRequest }) => {
       )}
       <RequestError request={postRequest} skipCodes={skipCodes} />
       <TouchableOpacity
-        style={[theme.common.button, loading ? theme.common.disabled : null]}
+        disabled={!isUUID(inputValue) || loading}
+        style={[theme.common.button, !isUUID(inputValue) || loading ? theme.common.disabled : null]}
         onPress={addNetwork}>
         <Text style={theme.common.btnText}>
           {CapitalizeFirst(i18n.t('add'))}
