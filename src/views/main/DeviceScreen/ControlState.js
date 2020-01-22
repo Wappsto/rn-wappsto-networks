@@ -6,6 +6,7 @@ import theme from '../../../theme/themeExport';
 import i18n, { CapitalizeFirst } from '../../../translations';
 import useRequest from 'wappsto-blanket/hooks/useRequest';
 import Timestamp from './Timestamp';
+import { cannotAccessState } from '../../../util/helpers';
 
 const toNumber = (x) => {
   if (Math.abs(x) < 1.0) {
@@ -86,7 +87,7 @@ const ControlState = React.memo(({ state, value }) => {
     setInput(data);
   };
 
-  if(state.status_payment === 'not_shared' || state.status_payment === 'not_paid'){
+  if(cannotAccessState(state)){
     return(
       <Text>
         {CapitalizeFirst(i18n.t('cannotWrite'))}

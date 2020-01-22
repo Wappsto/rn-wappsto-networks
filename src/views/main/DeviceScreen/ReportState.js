@@ -3,6 +3,7 @@ import { View, Text, StyleSheet, Image } from 'react-native';
 import theme from '../../../theme/themeExport';
 import i18n, { CapitalizeFirst } from '../../../translations';
 import Timestamp from './Timestamp';
+import { cannotAccessState } from '../../../util/helpers';
 
 const styles = StyleSheet.create({
   image: {
@@ -36,7 +37,7 @@ const content = (state, value) => {
 };
 
 const ReportState = React.memo(({ state, value }) => {
-  if(state.status_payment === 'not_shared' || state.status_payment === 'not_paid'){
+  if(cannotAccessState(state)){
     return(
       <Text>
         {CapitalizeFirst(i18n.t('cannotRead'))}
