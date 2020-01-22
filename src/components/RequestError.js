@@ -13,7 +13,7 @@ const RequestError = React.memo(({ request, skipCodes = [] }) => {
     if(visible){
       t = setTimeout(() => {
         setVisible(false);
-      }, 10000);
+      }, 30000);
     }
     return () => {
       clearTimeout(t);

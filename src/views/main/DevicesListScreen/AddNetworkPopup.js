@@ -38,11 +38,13 @@ const skipCodes = [manufacturerAsOwnerErrorCode];
 const AddNetwork = React.memo(({ postRequest, sendRequest }) => {
   const [ inputValue, setInputValue ] = useState('');
   const [ isScanning, setIsScanning ] = useState(false);
+  const [ didScan, setDidScan ] = useState(false);
 
   const onRead = event => {
     const qrText = (event.data.split('+')[0] || '').trim();
     setInputValue(qrText);
     setIsScanning(false);
+    setDidScan(true);
   };
 
   const addNetwork = () => {
@@ -112,7 +114,7 @@ const AddNetwork = React.memo(({ postRequest, sendRequest }) => {
           <TouchableOpacity
             style={styles.cameraCapture}
             onPress={switchView}>
-            <Text>{CapitalizeFirst(i18n.t('addNetwork.scanQRCode'))}</Text>
+            <Text>{CapitalizeFirst(i18n.t(didScan ? 'addNetwork.rescanQRCode' : 'addNetwork.scanQRCode'))}</Text>
           </TouchableOpacity>
         )}
       </View>

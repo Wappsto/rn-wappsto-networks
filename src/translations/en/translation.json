@@ -12,6 +12,7 @@
         },
         "manufacturerAsOwnerWarning": "the manufacturer of this device has full access. Do you really want to add this device to your account?",
         "scanQRCode": "tap to scan QR code",
+        "rescanQRCode": "QR code scanned, tap to scan again",
         "uuid": "UUID"
     },
     "currentState": "current state",
@@ -106,5 +107,6 @@
     "cannotAccess": {
       "not_shared": "You do not have permission to access the data",
       "not_paid": "You do not have enough money to access the data"
-    }
+    },
+    "cancel": "cancel"
 }
