@@ -14,6 +14,7 @@ import { removeItem } from 'wappsto-redux/actions/items';
 import theme from '../../../theme/themeExport';
 import i18n, { CapitalizeEach, CapitalizeFirst } from '../../../translations';
 import { iotNetworkListAdd } from '../../../util/params';
+import { isPrototype } from '../../../util/helpers';
 
 const query = {
   expand: 1,
@@ -111,7 +112,7 @@ const DevicesListScreen = React.memo(({ navigation }) => {
         renderSectionHeader={({section: {title: network}}) => {
           return (
             <Text style={theme.common.listHeader}>
-              { network.meta.iot ? <Text>({CapitalizeEach(i18n.t('prototype'))}) </Text> : null }
+              { isPrototype(network) ? <Text>({CapitalizeEach(i18n.t('prototype'))}) </Text> : null }
               { network.name ?
                 <Text style={theme.common.H5}>{network.name} </Text>
               :

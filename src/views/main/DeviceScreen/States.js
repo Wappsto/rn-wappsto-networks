@@ -37,27 +37,9 @@ const StatesComponent = React.memo(({ value }) => {
       {states.length !== 0 ? (
         <>
           <View style={theme.common.itemContent}>
-            {reportState ? (
-              <View>
-                <ReportState value={value} state={reportState} />
-                <Text style={theme.common.timestamp}>
-                  {CapitalizeFirst(i18n.t('lastUpdated'))}:{' '}
-                  {new Date(reportState.timestamp).toLocaleString()}
-                </Text>
-              </View>
-            ) : null}
-            {reportState && controlState ? (
-              <View style={theme.common.seperator} />
-            ) : null}
-            {controlState ? (
-              <View>
-                <ControlState value={value} state={controlState} />
-                <Text style={theme.common.timestamp}>
-                  {CapitalizeFirst(i18n.t('lastUpdated'))}:{' '}
-                  {new Date(controlState.timestamp).toLocaleString()}
-                </Text>
-              </View>
-            ) : null}
+            {reportState && <ReportState value={value} state={reportState} />}
+            {reportState && controlState && <View style={theme.common.seperator} />}
+            {controlState && <ControlState value={value} state={controlState} />}
           </View>
         </>
       ) : (

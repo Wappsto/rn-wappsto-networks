@@ -2,6 +2,7 @@ import React from 'react';
 import { View, Text, StyleSheet, Image } from 'react-native';
 import theme from '../../../theme/themeExport';
 import i18n, { CapitalizeFirst } from '../../../translations';
+import Timestamp from './Timestamp';
 
 const styles = StyleSheet.create({
   image: {
@@ -35,12 +36,20 @@ const content = (state, value) => {
 };
 
 const ReportState = React.memo(({ state, value }) => {
+  if(state.status_payment === 'not_shared' || state.status_payment === 'not_paid'){
+    return(
+      <Text>
+        {CapitalizeFirst(i18n.t('cannotRead'))}
+      </Text>
+    );
+  }
   return (
     <View>
       <Text style={theme.common.H6}>
         {CapitalizeFirst(i18n.t('currentState'))}
       </Text>
       {content(state, value)}
+      <Timestamp timestamp={state.timestamp}/>
     </View>
   );
 });

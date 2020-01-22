@@ -39,7 +39,7 @@ const AddNetwork = React.memo(({ postRequest, sendRequest }) => {
   const [ isScanning, setIsScanning ] = useState(false);
 
   const onRead = event => {
-    const qrText = (event.data.split('+')[0].split(':')[1] || '').trim();
+    const qrText = (event.data.split('+')[0] || '').trim();
     setInputValue(qrText);
     setIsScanning(false);
   };

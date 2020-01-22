@@ -5,6 +5,7 @@ import RequestError from '../../../components/RequestError';
 import theme from '../../../theme/themeExport';
 import i18n, { CapitalizeFirst } from '../../../translations';
 import useRequest from 'wappsto-blanket/hooks/useRequest';
+import Timestamp from './Timestamp';
 
 const toNumber = (x) => {
   if (Math.abs(x) < 1.0) {
@@ -47,7 +48,7 @@ const ControlState = React.memo(({ state, value }) => {
   const [ input, setInput ] = useState();
   const [ isFocused, setIsFocused ] = useState(false);
   const isUpdating = request && request.status === 'pending';
-  
+
   useEffect(() => {
     if(!isFocused){
       setInput(value.hasOwnProperty('number') ? parseFloat(state.data) || 0 : state.data);
@@ -84,6 +85,14 @@ const ControlState = React.memo(({ state, value }) => {
     updateState(data);
     setInput(data);
   };
+
+  if(state.status_payment === 'not_shared' || state.status_payment === 'not_paid'){
+    return(
+      <Text>
+        {CapitalizeFirst(i18n.t('cannotWrite'))}
+      </Text>
+    )
+  }
 
   let stateDataField = null;
   if (value.hasOwnProperty('string')) {
@@ -182,6 +191,7 @@ const ControlState = React.memo(({ state, value }) => {
         {stateDataField}
       </View>
       <RequestError request={request} />
+      <Timestamp timestamp={state.timestamp}/>
     </View>
   );
 });
