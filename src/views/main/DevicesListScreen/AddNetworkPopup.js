@@ -53,6 +53,12 @@ const AddNetwork = React.memo(({ postRequest, sendRequest }) => {
     setIsScanning(v => !v);
   };
 
+  const onSubmitEditing = () => {
+    if(isUUID(inputValue)){
+      addNetwork();
+    }
+  }
+
   const loading = postRequest && postRequest.status === 'pending';
   return (
     <View style={theme.common.fullScreenModalContent}>
@@ -118,7 +124,7 @@ const AddNetwork = React.memo(({ postRequest, sendRequest }) => {
         onChangeText={text => setInputValue(text)}
         value={inputValue}
         autoCapitalize='none'
-        onSubmitEditing={addNetwork}
+        onSubmitEditing={onSubmitEditing}
         returnKeyType='done'
         disabled={loading}
       />
