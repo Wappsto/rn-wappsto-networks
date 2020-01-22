@@ -29,8 +29,14 @@ const DeviceScreen = React.memo(({ navigation }) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
+  useEffect(() => {
+    if(!device || !device.meta || !device.meta.id){
+      navigation.goBack();
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [device]);
+
   if(!device || !device.meta || !device.meta.id){
-    navigation.goBack();
     return null;
   }
   const url = '/device/' + device.meta.id + '/value';

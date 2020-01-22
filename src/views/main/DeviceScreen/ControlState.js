@@ -87,14 +87,6 @@ const ControlState = React.memo(({ state, value }) => {
     setInput(data);
   };
 
-  if(cannotAccessState(state)){
-    return(
-      <Text>
-        {CapitalizeFirst(i18n.t('cannotWrite'))}
-      </Text>
-    )
-  }
-
   let stateDataField = null;
   if (value.hasOwnProperty('string')) {
     stateDataField = (
@@ -188,11 +180,22 @@ const ControlState = React.memo(({ state, value }) => {
       <Text style={theme.common.H6}>
         {CapitalizeFirst(i18n.t('desiredState'))}
       </Text>
-      <View style={{alignItems: 'center', marginBottom: 15}}>
-        {stateDataField}
-      </View>
-      <RequestError request={request} />
-      <Timestamp timestamp={state.timestamp}/>
+      {
+        cannotAccessState(state) ?
+        (
+          <Text>
+            {CapitalizeFirst(i18n.t('cannotAccess.' + state.status_payment))}
+          </Text>
+        ) : (
+          <>
+            <View style={{alignItems: 'center', marginBottom: 15}}>
+              {stateDataField}
+            </View>
+            <RequestError request={request} />
+            <Timestamp timestamp={state.timestamp}/>
+          </>
+        )
+      }
     </View>
   );
 });

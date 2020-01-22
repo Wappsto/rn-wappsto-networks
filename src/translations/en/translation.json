@@ -103,6 +103,8 @@
     },
     "valueInfoHeader": "value details",
     "yes": "yes",
-    "cannotRead": "You are not allowed to read the current value of the state",
-    "cannotWrite": "You are not allowed to change the current value of the state"
+    "cannotAccess": {
+      "not_shared": "You do not have permission to access the data",
+      "not_paid": "You do not have enough money to access the data"
+    }
 }

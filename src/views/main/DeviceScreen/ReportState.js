@@ -37,20 +37,24 @@ const content = (state, value) => {
 };
 
 const ReportState = React.memo(({ state, value }) => {
-  if(cannotAccessState(state)){
-    return(
-      <Text>
-        {CapitalizeFirst(i18n.t('cannotRead'))}
-      </Text>
-    );
-  }
   return (
     <View>
       <Text style={theme.common.H6}>
         {CapitalizeFirst(i18n.t('currentState'))}
       </Text>
-      {content(state, value)}
-      <Timestamp timestamp={state.timestamp}/>
+      {
+        cannotAccessState(state) ? (
+          <Text>
+            {CapitalizeFirst(i18n.t('cannotAccess.' + state.status_payment))}
+          </Text>
+        ) : (
+          <>
+            {content(state, value)}
+            <Timestamp timestamp={state.timestamp}/>
+          </>
+        )
+      }
+
     </View>
   );
 });

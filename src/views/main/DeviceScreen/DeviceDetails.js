@@ -1,4 +1,4 @@
-import React, { useCallback, useMemo } from 'react';
+import React, { useMemo } from 'react';
 import { Text } from 'react-native';
 import PopupButton from '../../../components/PopupButton';
 import Popup from '../../../components/Popup';
@@ -15,7 +15,10 @@ const ValueSettings = React.memo(() => {
   const getEntity = useMemo(makeEntitySelector, []);
   const device = useSelector(state => getEntity(state, 'device', selectedDevice));
 
-  const content = useCallback((visible, hide) => {
+  const content = (visible, hide) => {
+    if(!device || !device.meta || !device.meta.id){
+      return null;
+    }
     return (
       <Popup visible={visible} onRequestClose={hide} hide={hide}>
         <Text style={theme.common.H5}>
@@ -50,7 +53,7 @@ const ValueSettings = React.memo(() => {
         </Text>
       </Popup>
     );
-  }, [device]);
+  };
 
   return <PopupButton icon='info' color={theme.variables.white}>{content}</PopupButton>;
 });
