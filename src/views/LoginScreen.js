@@ -16,6 +16,10 @@ import RequestError from '../components/RequestError';
 import theme from '../theme/themeExport';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 
+const isEmail = (str) => {
+  return str.match(/\w+([-+.']\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*/);
+}
+
 const LoginScreen = React.memo(({ navigation }) => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
@@ -78,7 +82,7 @@ const LoginScreen = React.memo(({ navigation }) => {
   }
 
   const checkAndSignIn = () => {
-    if (username && password) {
+    if (isEmail(username) && password) {
       signIn();
     }
   }
@@ -204,7 +208,7 @@ const LoginScreen = React.memo(({ navigation }) => {
           <TouchableOpacity
             style={[
               theme.common.button,
-              isSigninInProgress || loading
+              isSigninInProgress || loading || !isEmail(username) || !password
                 ? theme.common.disabled
                 : null,
             ]}
