@@ -31,12 +31,17 @@ const DevicesListScreen = React.memo(({ navigation }) => {
   const getItem = useMemo(makeItemSelector, []);
   const addToList = useSelector(state => getItem(state, iotNetworkListAdd));
 
-  const _handleNetworkAdd = (message) => {
+  const _handleNetworkAdd = (event) => {
     try{
-      const json = JSON.parse(message.data);
-      if(json.data.meta.type === 'network' && json.event === 'create'){
-        addToList(json.data.meta.id);
+      let data = JSON.parse(event.data);
+      if (data.constructor !== Array) {
+        data = [data];
       }
+      data.forEach(message => {
+        if(message.data.meta.type === 'network' && message.event === 'create'){
+          addToList(message.data.meta.id);
+        }
+      })
     } catch(e){
 
     }
@@ -47,7 +52,7 @@ const DevicesListScreen = React.memo(({ navigation }) => {
       const streamJSON = { ...config.stream };
       delete streamJSON.version;
       delete streamJSON.endPoint;
-      dispatch(openStream(streamJSON, null, { endPoint: config.stream.endPoint || 'websocket', version: config.stream.version || '2.1' }));
+      dispatch(openStream(streamJSON, null, { endPoint: config.stream.endPoint || 'websocket', version: config.stream.version || '2.0' }));
     }
   }
 
