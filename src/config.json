@@ -8,7 +8,8 @@
   },
   "stream": {
     "name": "wappsto-native-2.0",
-    "subscription": ["/network"]
+    "subscription": ["/network"],
+    "version": "2.0"
   },
   "firebaseWebClientId": ""
 }
