@@ -44,7 +44,10 @@ const DevicesListScreen = React.memo(({ navigation }) => {
 
   const startStream = () => {
     if(config.stream){
-      dispatch(openStream(config.stream, null, { endPoint: 'websocket', version: '2.1' }));
+      const streamJSON = { ...config.stream };
+      delete streamJSON.version;
+      delete streamJSON.endPoint;
+      dispatch(openStream(streamJSON, null, { endPoint: config.stream.endPoint || 'websocket', version: config.stream.version || '2.1' }));
     }
   }
 
