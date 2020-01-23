@@ -38,8 +38,8 @@ const DevicesListScreen = React.memo(({ navigation }) => {
         data = [data];
       }
       data.forEach(message => {
-        if(message.data.meta.type === 'network' && message.event === 'create'){
-          addToList(message.data.meta.id);
+        if(message.meta_object.type === 'network' && message.event === 'create'){
+          addToList(message.meta_object.id);
         }
       })
     } catch(e){
