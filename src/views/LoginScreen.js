@@ -151,6 +151,7 @@ const LoginScreen = React.memo(({ navigation }) => {
 
   const postRequest = fbSignInError.current || request;
   const loading = postRequest && (postRequest.status === 'pending' || postRequest.status === 'success');
+  const canSignIn = !isSigninInProgress && !loading && isEmail(username) && password;
   return (
     <SafeAreaView>
       <ScrollView>
@@ -206,9 +207,10 @@ const LoginScreen = React.memo(({ navigation }) => {
           )}
           <RequestError request={postRequest} />
           <TouchableOpacity
+            disabled={!canSignIn}
             style={[
               theme.common.button,
-              isSigninInProgress || loading || !isEmail(username) || !password
+              !canSignIn
                 ? theme.common.disabled
                 : null,
             ]}

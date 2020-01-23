@@ -264,10 +264,10 @@ export function generateStyles(c = {}) {
         borderBottomWidth: variables.borderWidth
       },
       userImage: {
-        width: 20,
-        height: 20,
-        borderRadius: 15,
-        marginRight: 10,
+        width: 35,
+        height: 35,
+        borderRadius: 20,
+        margin: 8,
       },
       linkBtn: {
         color: variables.primary,
