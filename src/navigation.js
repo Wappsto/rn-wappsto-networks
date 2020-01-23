@@ -74,11 +74,11 @@ export function replaceComponent(func) {
   components = func(components);
 }
 
+let rendered = false;
 export default class App extends Component {
-  rendered = false;
   render() {
-    if(!this.rendered){
-      this.rendered = true;
+    if(!rendered){
+      rendered = true;
       dependencies.forEach(d => {
         if(components[d] && components[d].constructor === Function){
           components[d] = components[d]();
