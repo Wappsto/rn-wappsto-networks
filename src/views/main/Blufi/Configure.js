@@ -72,13 +72,23 @@ const Configure = ({ device, hide }) => {
               Blufi.onCharacteristicChanged(value);
           }
         );
+
+        bleManagerEmitter.addListener(
+          'BleManagerDisconnectPeripheral',
+          ({ value, peripheral, characteristic, service }) => {
+              // Convert bytes array to string
+              Blufi.reset();
+          }
+        );
       }
       // SAMI: NegotiateSecurity
+      await Blufi.negotiateSecurity(device);
       const result = await Blufi.configure(device, ssid, password);
       console.log(result);
       // Blufi.requestDeviceVersion(device, ssid, password);
     } catch (e) {
       // SAMI: Handle configure error
+      debugger;
       console.log(e);
     }
   }

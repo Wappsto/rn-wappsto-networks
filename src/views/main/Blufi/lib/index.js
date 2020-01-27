@@ -288,7 +288,7 @@ async function postNegotiateSecurity() {
     let g;
     let k;
     do {
-        espDH = new BlufiDH(dhP, dhG, dhLength);
+        espDH = new BlufiDH(dhP.value + '', dhG.value + '', dhLength);
         p = espDH.getP().toString(radix);
         g = espDH.getG().toString(radix);
         k = getPublicValue(espDH);
@@ -308,14 +308,10 @@ async function postNegotiateSecurity() {
     // dataOS.write((byte) pgkLen1);
     // dataOS.write((byte) pgkLen2);
     dataOS = Buffer.from([BlufiParameter.NEG_SET_SEC_TOTAL_LEN, pgkLen1, pgkLen2]);
-    try {
-        // SAMI: dataOS.toBytesArray()
-        const postLength = await post(false, false, mRequireAck, type, dataOS);
-        if (!postLength) {
-            return null;
-        }
-    } catch (e) {
-        Log.w(TAG, 'postNegotiateSecurity: pgk length interrupted');
+
+    // SAMI: dataOS.toBytesArray()
+    const postLength = await post(false, false, mRequireAck, type, dataOS);
+    if (!postLength) {
         return null;
     }
 
@@ -351,15 +347,9 @@ async function postNegotiateSecurity() {
       kLen1, kLen2, ...kBytes.slice(0, kLength)
     ]);
 
-
-    try {
-        // SAMI: dataOS.toBytesArray()
-        const postPGK = await post(false, false, mRequireAck, type, dataOS);
-        if (!postPGK) {
-            return null;
-        }
-    } catch (e) {
-        Log.w(TAG, 'postNegotiateSecurity: PGK interrupted');
+    // SAMI: dataOS.toBytesArray()
+    const postPGK = await post(false, false, mRequireAck, type, dataOS);
+    if (!postPGK) {
         return null;
     }
 
@@ -370,52 +360,32 @@ async function _negotiateSecurity() {
     const espDH = await postNegotiateSecurity();
     if (espDH === null) {
         Log.w(TAG, 'negotiateSecurity postNegotiateSecurity failed');
-        onNegotiateSecurityResult(BlufiCallback.CODE_NEG_POST_FAILED);
-        return;
+        throw new Error(BlufiCallback.CODE_NEG_POST_FAILED);
     }
 
-    let devicePublicKey;
-    try {
-        devicePublicKey = await mDevicePublicKeyQueue.take();
-        if (devicePublicKey.length === 0) {
-            onNegotiateSecurityResult(BlufiCallback.CODE_NEG_ERR_DEV_KEY);
-            return;
-        }
-    } catch (e) {
-        Log.w(TAG, 'Take device public key interrupted');
-        return;
+    let devicePublicKey = await mDevicePublicKeyQueue.take();
+    if (devicePublicKey.length === 0) {
+        throw new Error(BlufiCallback.CODE_NEG_ERR_DEV_KEY);
     }
 
-    try {
-        espDH.generateSecretKey(devicePublicKey);
-        if (espDH.getPrivateKey() === null) {
-            onNegotiateSecurityResult(BlufiCallback.CODE_NEG_ERR_SECURITY);
-            return;
-        }
-
-        mAESKey = BlufiMD5.getMD5Bytes(espDH.getPrivateKey());
-    } catch (e) {
-        console.log(e);
-        onNegotiateSecurityResult(BlufiCallback.CODE_NEG_ERR_SECURITY);
-        return;
+    espDH.generateSecretKey(devicePublicKey);
+    if (espDH.getPrivateKey() === null) {
+        throw new Error(BlufiCallback.CODE_NEG_ERR_SECURITY);
     }
 
-    let setSecurity = false;
-    try {
-        setSecurity = await postSetSecurity(false, false, true, true);
-    } catch (e) {
-      console.log(e);
-    }
+    mAESKey = BlufiMD5.getMD5Bytes(espDH.getPrivateKey());
 
-    if (setSecurity) {
-        mEncrypted = true;
-        mChecksum = true;
-        onNegotiateSecurityResult(BlufiCallback.STATUS_SUCCESS);
-    } else {
+    const setSecurity = await postSetSecurity(false, false, true, true);
+
+    if (!setSecurity) {
         mEncrypted = false;
         mChecksum = false;
-        onNegotiateSecurityResult(BlufiCallback.CODE_NEG_ERR_SET_SECURITY);
+        throw new Error(BlufiCallback.CODE_NEG_ERR_SET_SECURITY);
     }
+
+    mEncrypted = true;
+    mChecksum = true;
+    return true;
 }
 
 //-------------------------------------- END HANDLE WRITE --------------------------------------------------
@@ -500,6 +470,7 @@ function parseDataData(subType, data) {
     case BlufiParameter.Type.Data.SUBTYPE_NEG:
       // SAMI: HANDLE THIS SOMEHOW !!!
       // mSecurityCallback.onReceiveDevicePublicKey(data);
+      onReceiveDevicePublicKey(data);
       break;
     case BlufiParameter.Type.Data.SUBTYPE_VERSION:
       parseVersion(data);
@@ -712,7 +683,7 @@ const Blufi = {
 
   negotiateSecurity(device){
     connectedDevice = device;
-    _negotiateSecurity();
+    return _negotiateSecurity();
   },
 
   reset(){

@@ -58,14 +58,10 @@ class BlufiDH {
     }
 
     generateKeys(p, g, length) {
-        try {
-            // Use the values to generate a key pair
-            const Dh = Crypto.createDiffieHellman(p, g);
-            return [Dh.getPrivate(), Dh.getPublic()];
-        } catch (e) {
-            console.log(e);
-            return null;
-        }
+        // Use the values to generate a key pair
+        const Dh = Crypto.createDiffieHellman(p, g);
+        const keys = Dh.generateKeys();
+        return [Dh.getPrivateKey(), Dh.getPublicKey()];
     }
 }
 
