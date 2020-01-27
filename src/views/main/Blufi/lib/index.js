@@ -3,30 +3,33 @@ import { sleep } from './util/helpers';
 // import { stringToBytes } from 'convert-string';
 import FrameCtrlData from './FrameCtrlData';
 import BleManager from 'react-native-ble-manager';
-import BlufiCRC from './BlufiCRC';
-import BlufiAES from './BlufiAES';
+import BigInteger from 'big-integer';
 import ByteArrayInputStream from './ByteArrayInputStream';
 import LinkedBlockingQueue from './LinkedBlockingQueue';
+import BlufiCRC from './security/BlufiCRC';
+import BlufiAES from './security/BlufiAES';
+import BlufiDH from './security/BlufiDH';
+import BlufiMD5 from './security/BlufiMD5';
 import Log from './Log';
 const Buffer = require('buffer/').Buffer;
 // workaround-------------------
-let debug = false;
-function log(){
-  if(debug){
-    console.log.apply(this, arguments);
-  }
-}
 //------------------------------
 const TAG = 'BlufiClientImpl';
-const mEncrypted = false;
-const mChecksum = false;
+let mEncrypted = false;
+let mChecksum = false;
+let mAESKey = null;
 const mRequireAck = false;
 const mAck = new LinkedBlockingQueue();
-const mAESKey = null;
+const mDevicePublicKeyQueue = new LinkedBlockingQueue();
 
 const DEFAULT_PACKAGE_LENGTH = 20;
 const PACKAGE_HEADER_LENGTH = 4;
 const MIN_PACKAGE_LENGTH = 7;
+const DH_P = 'cf5cf5c38419a724957ff5dd323b9c45c3cdd261eb740f69aa94b8bb1a5c9640' +
+            '9153bd76b24222d03274e4725a5406092e9e82e9135c643cae98132b0d95f7d6' +
+            '5347c68afc1e677da90e51bbab5f5cf429c291b4ba39c6b2dc5e8c7231e46aa7' +
+            '728e87664532cdf547be20c9a3fa8342be6e34371a27c06f7dc0edddd2f86373';
+const DH_G = '2';
 const AES_TRANSFORMATION = 'AES/CFB/NoPadding';
 
 let connectedDevice = null;
@@ -49,8 +52,9 @@ function generateReadSequence() {
 function generateAESIV(sequence) {
   let result = Buffer.alloc(16);
   // SAMI: MAYBE buffer.write !!!
+  debugger;
   result[0] = sequence;
-
+  debugger;
   return result;
 }
 
@@ -66,6 +70,22 @@ function getSubType(typeValue) {
   return ((typeValue & 0b11111100) >> 2);
 }
 
+function toBytes(hex) {
+  if (hex.length % 2 !== 0) {
+      hex = '0' + hex;
+  }
+  const result = Buffer.alloc(hex.length / 2);
+  for (let i = 0; i < hex.length; i += 2) {
+      result[i / 2] = parseInt(hex.substring(i, i + 2), 16);
+  }
+  return result;
+}
+
+function toHex(byteArray) {
+  return Array.from(byteArray, function(byte) {
+    return ('0' + (byte & 0xFF).toString(16)).slice(-2);
+  }).join('');
+}
 //-----------------------------------------  HANDLE WRITE --------------------------------------------------
 //----------------------------------------------------------------------------------------------------------
 //----------------------------------------------------------------------------------------------------------
@@ -87,7 +107,6 @@ async function receiveAck(sequence) {
 }
 
 function getPostBytes(type, frameCtrl, sequence, dataLength, data) {
-  // let byteOS = Buffer.from(type + '' + frameCtrl + '' + sequence + '' + dataLength);
   let byteOS = Buffer.from([type + '', frameCtrl + '', sequence + '', dataLength + '']);
 
   let frameCtrlData = new FrameCtrlData(frameCtrl);
@@ -95,8 +114,6 @@ function getPostBytes(type, frameCtrl, sequence, dataLength, data) {
   if (frameCtrlData.isChecksum()) {
     let willCheckBytes = Buffer.from([sequence, dataLength]);
     if (data !== null) {
-      // SAMI: CHECK THIS!!!
-      // ByteArrayOutputStream os = new ByteArrayOutputStream(willCheckBytes.length + data.length);
       let os = Buffer.from([...willCheckBytes, ...data]);
       willCheckBytes = Array.prototype.slice.call(os, 0);
     }
@@ -116,12 +133,9 @@ function getPostBytes(type, frameCtrl, sequence, dataLength, data) {
   }
 
   if (checksumBytes !== null) {
-    // byteOS.write(checksumBytes[0]);
-    // byteOS.write(checksumBytes[1]);
     byteOS = Buffer.from([...byteOS, checksumBytes[0], checksumBytes[1]]);
   }
 
-  // return byteOS.slice(0);
   return Array.prototype.slice.call(byteOS, 0);
 }
 
@@ -138,7 +152,6 @@ async function postNonData(encrypt, checksum, requireAck, type) {
 async function postContainData(encrypt, checksum, requireAck, type, data) {
   let dataIS = new ByteArrayInputStream(data);
   let postOS = Buffer.from([]);
-  // SAMI: HANDLE THIS SOMEHOW !!!
   // let pkgLengthLimit = mPackageLengthLimit > 0 ? mPackageLengthLimit :
   //   (mBlufiMTU > 0 ? mBlufiMTU : DEFAULT_PACKAGE_LENGTH); !!!!
   let pkgLengthLimit = DEFAULT_PACKAGE_LENGTH;
@@ -156,8 +169,6 @@ async function postContainData(encrypt, checksum, requireAck, type, data) {
 
     postOS = Buffer.from([...postOS, ...Array.prototype.slice.call(dateBuf, 0, read)]);
     if (dataIS.available() === 2) {
-      // postOS.write(dataIS.read());
-      // postOS.write(dataIS.read());
       postOS = Buffer.from([...postOS, dataIS.read(), dataIS.read()]);
     }
     let frag = dataIS.available() > 0;
@@ -193,7 +204,6 @@ async function post(encrypt, checksum, requireAck, type, data) {
 
 async function postDeviceMode(deviceMode) {
   const type = getTypeValue(BlufiParameter.Type.Ctrl.PACKAGE_VALUE, BlufiParameter.Type.Ctrl.SUBTYPE_SET_OP_MODE);
-  // byte[] data = {(byte) deviceMode}; !!!
   const data = Buffer.from(deviceMode + '');
 
   try {
@@ -224,6 +234,188 @@ async function postStaWifiInfo(ssid, password) {
   } catch (e) {
     return false;
   }
+}
+
+function getPublicValue(espDH) {
+  // SAMI : SOMEHOW CHANGE THIS
+  const publicKey = espDH.getPublicKey('hex');
+  if (publicKey) {
+      let keySB = publicKey;
+      while (keySB.length < 256) {
+          keySB  = '0' + keySB;
+      }
+      return keySB;
+  }
+
+  return null;
+}
+
+async function postSetSecurity(ctrlEncrypted, ctrlChecksum, dataEncrypted, dataChecksum) {
+  const type = getTypeValue(BlufiParameter.Type.Ctrl.PACKAGE_VALUE, BlufiParameter.Type.Ctrl.SUBTYPE_SET_SEC_MODE);
+  let data = 0;
+  if (dataChecksum) {
+      data |= 1;
+  }
+  if (dataEncrypted) {
+      data |= 0b10;
+  }
+  if (ctrlChecksum) {
+      data |= 0b10000;
+  }
+  if (ctrlEncrypted) {
+      data |= 0b100000;
+  }
+
+  const postData = Buffer.from(data);
+
+  try {
+      return await post(false, true, mRequireAck, type, postData);
+  } catch (e) {
+      Log.w(TAG, 'postSetSecurity interrupted');
+      return false;
+  }
+}
+
+async function postNegotiateSecurity() {
+    const type = getTypeValue(BlufiParameter.Type.Data.PACKAGE_VALUE, BlufiParameter.Type.Data.SUBTYPE_NEG);
+
+    const radix = 16;
+    const dhLength = 1024;
+    const dhP = BigInteger(DH_P, radix);
+    const dhG = BigInteger(DH_G);
+    let espDH;
+    let p;
+    let g;
+    let k;
+    do {
+        espDH = new BlufiDH(dhP, dhG, dhLength);
+        p = espDH.getP().toString(radix);
+        g = espDH.getG().toString(radix);
+        k = getPublicValue(espDH);
+    } while (k === null);
+
+    const pBytes = toBytes(p);
+    const gBytes = toBytes(g);
+    const kBytes = toBytes(k);
+
+    let dataOS = Buffer.from([]);
+
+    const pgkLength = pBytes.length + gBytes.length + kBytes.length + 6;
+    const pgkLen1 = (pgkLength >> 8) & 0xff;
+    const pgkLen2 = pgkLength & 0xff;
+
+    // dataOS.write(NEG_SET_SEC_TOTAL_LEN);
+    // dataOS.write((byte) pgkLen1);
+    // dataOS.write((byte) pgkLen2);
+    dataOS = Buffer.from([BlufiParameter.NEG_SET_SEC_TOTAL_LEN, pgkLen1, pgkLen2]);
+    try {
+        // SAMI: dataOS.toBytesArray()
+        const postLength = await post(false, false, mRequireAck, type, dataOS);
+        if (!postLength) {
+            return null;
+        }
+    } catch (e) {
+        Log.w(TAG, 'postNegotiateSecurity: pgk length interrupted');
+        return null;
+    }
+
+    // sleep(10);
+
+    // dataOS.reset();
+    // dataOS.write(NEG_SET_SEC_ALL_DATA);
+
+    const pLength = pBytes.length;
+    const pLen1 = (pLength >> 8) & 0xff;
+    const pLen2 = pLength & 0xff;
+    // dataOS.write(pLen1);
+    // dataOS.write(pLen2);
+    // dataOS.write(pBytes, 0, pLength);
+
+    const gLength = gBytes.length;
+    const gLen1 = (gLength >> 8) & 0xff;
+    const gLen2 = gLength & 0xff;
+    // dataOS.write(gLen1);
+    // dataOS.write(gLen2);
+    // dataOS.write(gBytes, 0, gLength);
+
+    const kLength = kBytes.length;
+    const kLen1 = (kLength >> 8) & 0xff;
+    const kLen2 = kLength & 0xff;
+    // dataOS.write(kLen1);
+    // dataOS.write(kLen2);
+    // dataOS.write(kBytes, 0, kLength);
+    dataOS = Buffer.from([
+      BlufiParameter.NEG_SET_SEC_ALL_DATA,
+      pLen1, pLen2, ...pBytes.slice(0, pLength),
+      gLen1, gLen2, ...gBytes.slice(0, gLength),
+      kLen1, kLen2, ...kBytes.slice(0, kLength)
+    ]);
+
+
+    try {
+        // SAMI: dataOS.toBytesArray()
+        const postPGK = await post(false, false, mRequireAck, type, dataOS);
+        if (!postPGK) {
+            return null;
+        }
+    } catch (e) {
+        Log.w(TAG, 'postNegotiateSecurity: PGK interrupted');
+        return null;
+    }
+
+    return espDH;
+}
+
+async function _negotiateSecurity() {
+    const espDH = await postNegotiateSecurity();
+    if (espDH === null) {
+        Log.w(TAG, 'negotiateSecurity postNegotiateSecurity failed');
+        onNegotiateSecurityResult(BlufiCallback.CODE_NEG_POST_FAILED);
+        return;
+    }
+
+    let devicePublicKey;
+    try {
+        devicePublicKey = await mDevicePublicKeyQueue.take();
+        if (devicePublicKey.length === 0) {
+            onNegotiateSecurityResult(BlufiCallback.CODE_NEG_ERR_DEV_KEY);
+            return;
+        }
+    } catch (e) {
+        Log.w(TAG, 'Take device public key interrupted');
+        return;
+    }
+
+    try {
+        espDH.generateSecretKey(devicePublicKey);
+        if (espDH.getPrivateKey() === null) {
+            onNegotiateSecurityResult(BlufiCallback.CODE_NEG_ERR_SECURITY);
+            return;
+        }
+
+        mAESKey = BlufiMD5.getMD5Bytes(espDH.getPrivateKey());
+    } catch (e) {
+        console.log(e);
+        onNegotiateSecurityResult(BlufiCallback.CODE_NEG_ERR_SECURITY);
+        return;
+    }
+
+    let setSecurity = false;
+    try {
+        setSecurity = await postSetSecurity(false, false, true, true);
+    } catch (e) {
+      console.log(e);
+    }
+
+    if (setSecurity) {
+        mEncrypted = true;
+        mChecksum = true;
+        onNegotiateSecurityResult(BlufiCallback.STATUS_SUCCESS);
+    } else {
+        mEncrypted = false;
+        mChecksum = false;
+        onNegotiateSecurityResult(BlufiCallback.CODE_NEG_ERR_SET_SECURITY);
+    }
 }
 
 //-------------------------------------- END HANDLE WRITE --------------------------------------------------
@@ -406,10 +598,10 @@ function parseNotification(response, notification) {
     let respChecksum1 = toInt(response[response.length - 1]);
     let respChecksum2 = toInt(response[response.length - 2]);
 
-    let checkByteOS = Buffer.from([sequence, dataLen]);
-    for (let b in dataBytes) {
-      checkByteOS.write(b);
-    }
+    let checkByteOS = Buffer.from([sequence, dataLen, ...dataBytes]);
+    // for (let b in dataBytes) {
+    //   checkByteOS.write(b);
+    // }
     let checksum = BlufiCRC.calcCRC(0, Array.prototype.slice.call(checkByteOS, 0));
 
     let calcChecksum1 = (checksum >> 8) & 0xff;
@@ -420,7 +612,6 @@ function parseNotification(response, notification) {
   }
 
   if (frameCtrlData.hasFrag()) {
-    //            int totalLen = dataBytes[0] | (dataBytes[1] << 8);
     dataOffset = 2;
   } else {
     dataOffset = 0;
@@ -459,6 +650,21 @@ function onStatusResponse(...args) {
 
 function onDeviceScanResult(...args) {
   console.log('onDeviceScanResult: ', ...args);
+}
+
+function onNegotiateSecurityResult(...args) {
+  console.log('onNegotiateSecurityResult: ', ...args);
+}
+
+function onReceiveDevicePublicKey(keyData) {
+  const keyStr = toHex(keyData);
+  try {
+      const devicePublicValue = new BigInteger(keyStr, 16);
+      mDevicePublicKeyQueue.add(devicePublicValue);
+  } catch (e) {
+      Log.w(TAG, 'onReceiveDevicePublicKey: NumberFormatException -> ' + keyStr);
+      mDevicePublicKeyQueue.add(new BigInteger('0'));
+  }
 }
 
 const Blufi = {
@@ -502,6 +708,19 @@ const Blufi = {
     if (!request) {
         onVersionResponse(BlufiCallback.CODE_WRITE_DATA_FAILED, null);
     }
+  },
+
+  negotiateSecurity(device){
+    connectedDevice = device;
+    _negotiateSecurity();
+  },
+
+  reset(){
+    connectedDevice = null;
+    mSendSequence = 0;
+    mReadSequence = -1;
+    mAck.clear();
+    mDevicePublicKeyQueue.clear();
   }
 }
 
