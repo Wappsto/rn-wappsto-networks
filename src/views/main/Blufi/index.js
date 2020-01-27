@@ -27,7 +27,7 @@ const Blufi = () => {
       setScanning(true);
       try{
         await BleManager.enableBluetooth();
-        BleManager.scan([BlufiParameter.UUID_SERVICE], 2, false);
+        BleManager.scan([BlufiParameter.UUID_SERVICE], 4, false);
       } catch(e){
         // SAMI: Handle enable bluetooth error!!!
         setScanning(false);
@@ -43,7 +43,7 @@ const Blufi = () => {
             if (result) {
               scan();
             } else {
-              PermissionsAndroid.requestPermission(PermissionsAndroid.PERMISSIONS.ACCESS_COARSE_LOCATION).then((result) => {
+              PermissionsAndroid.request(PermissionsAndroid.PERMISSIONS.ACCESS_COARSE_LOCATION).then((result) => {
                 if (result) {
                   scan();
                 } else {
@@ -61,13 +61,13 @@ const Blufi = () => {
     bleManagerEmitter.addListener(
       'BleManagerDiscoverPeripheral',
       (device) => {
-          const lowerName = device.name ? device.name.toLowerCase() : '';
-          setDevices(devices => {
-            if(!filter || filter.length === 0 || (filter.find(f => lowerName.includes(f.toLowerCase())) && !devices.find(d => d.id === device.id))){
-              return [...devices, device];
-            }
-            return devices;
-          });
+        const lowerName = device.name ? device.name.toLowerCase() : '';
+        setDevices(devices => {
+          if(!filter || filter.length === 0 || (filter.find(f => lowerName.includes(f.toLowerCase())) && !devices.find(d => d.id === device.id))){
+            return [...devices, device];
+          }
+          return devices;
+        });
       }
     );
 

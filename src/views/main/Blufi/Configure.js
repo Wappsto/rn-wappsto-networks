@@ -41,7 +41,7 @@ const Configure = ({ device, hide }) => {
   const handleTextChange = (text, type) => {
     let currentText;
     let set;
-    if(type === 'username'){
+    if(type === 'ssid'){
       currentText = ssid;
       set = setSsid;
     } else {

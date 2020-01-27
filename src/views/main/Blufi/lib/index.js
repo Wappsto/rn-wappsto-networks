@@ -1,4 +1,5 @@
 import { BlufiParameter, BlufiCallback } from './util/params';
+import { sleep } from './util/helpers';
 // import { stringToBytes } from 'convert-string';
 import FrameCtrlData from './FrameCtrlData';
 import BleManager from 'react-native-ble-manager';
@@ -9,6 +10,12 @@ import LinkedBlockingQueue from './LinkedBlockingQueue';
 import Log from './Log';
 const Buffer = require('buffer/').Buffer;
 // workaround-------------------
+let debug = false;
+function log(){
+  if(debug){
+    console.log.apply(this, arguments);
+  }
+}
 //------------------------------
 const TAG = 'BlufiClientImpl';
 const mEncrypted = false;
@@ -65,8 +72,8 @@ function getSubType(typeValue) {
 //----------------------------------------------------------------------------------------------------------
 //----------------------------------------------------------------------------------------------------------
 
-function gattWrite(data) {
-  BleManager.write(connectedDevice.id, BlufiParameter.UUID_SERVICE, BlufiParameter.UUID_WRITE_CHARACTERISTIC, data);
+async function gattWrite(data) {
+  await BleManager.write(connectedDevice.id, BlufiParameter.UUID_SERVICE, BlufiParameter.UUID_WRITE_CHARACTERISTIC, data);
 }
 
 async function receiveAck(sequence) {
@@ -87,12 +94,10 @@ function getPostBytes(type, frameCtrl, sequence, dataLength, data) {
   let checksumBytes = null;
   if (frameCtrlData.isChecksum()) {
     let willCheckBytes = Buffer.from([sequence, dataLength]);
-    if (data != null) {
+    if (data !== null) {
       // SAMI: CHECK THIS!!!
       // ByteArrayOutputStream os = new ByteArrayOutputStream(willCheckBytes.length + data.length);
-      let os = Buffer.alloc(willCheckBytes.length + data.length);
-      os.write(willCheckBytes, 0, willCheckBytes.length);
-      os.write(data, 0, data.length);
+      let os = Buffer.from([...willCheckBytes, ...data]);
       willCheckBytes = Array.prototype.slice.call(os, 0);
     }
     let checksum = BlufiCRC.calcCRC(0, willCheckBytes);
@@ -125,7 +130,7 @@ async function postNonData(encrypt, checksum, requireAck, type) {
   const sequence = generateSendSequence();
   const dataLen = 0;
   const postBytes = getPostBytes(type, frameCtrl, sequence, dataLen, null);
-  gattWrite(postBytes);
+  await gattWrite(postBytes);
 
   return !requireAck || await receiveAck(sequence);
 }
@@ -158,14 +163,13 @@ async function postContainData(encrypt, checksum, requireAck, type, data) {
     let frag = dataIS.available() > 0;
     let frameCtrl = FrameCtrlData.getFrameCTRLValue(encrypt, checksum, BlufiParameter.DIRECTION_OUTPUT, requireAck, frag);
     let sequence = generateSendSequence();
-    let tempData = Array.prototype.slice.call(postOS, 0);
     if (frag) {
       let totalLen = postOS.length + dataIS.available();
-      postOS = Buffer.from([totalLen & 0xff, totalLen >> 8 & 0xff, tempData, 0, tempData.length]);
+      postOS = Buffer.from([totalLen & 0xff, totalLen >> 8 & 0xff, ...Array.prototype.slice.call(postOS, 0)]);
     }
-    let postBytes = getPostBytes(type, frameCtrl, sequence, postOS.length, tempData);
+    let postBytes = getPostBytes(type, frameCtrl, sequence, postOS.length, Array.prototype.slice.call(postOS, 0));
     postOS = Buffer.from([]);
-    gattWrite(postBytes);
+    await gattWrite(postBytes);
     if (frag) {
       if (requireAck && !await receiveAck(sequence)) {
         return false;
@@ -190,7 +194,7 @@ async function post(encrypt, checksum, requireAck, type, data) {
 async function postDeviceMode(deviceMode) {
   const type = getTypeValue(BlufiParameter.Type.Ctrl.PACKAGE_VALUE, BlufiParameter.Type.Ctrl.SUBTYPE_SET_OP_MODE);
   // byte[] data = {(byte) deviceMode}; !!!
-  let data = Buffer.from(deviceMode + '');
+  const data = Buffer.from(deviceMode + '');
 
   try {
     const result = await post(mEncrypted, mChecksum, true, type, data);
@@ -202,19 +206,18 @@ async function postDeviceMode(deviceMode) {
 }
 
 async function postStaWifiInfo(ssid, password) {
-  debugger;
   try {
     let ssidType = getTypeValue(BlufiParameter.Type.Data.PACKAGE_VALUE, BlufiParameter.Type.Data.SUBTYPE_STA_WIFI_SSID);
     if (!await post(mEncrypted, mChecksum, mRequireAck, ssidType, Buffer.from(ssid))) {
       return false;
     }
-    // sleep(10);
+    // await sleep(10);
 
     let pwdType = getTypeValue(BlufiParameter.Type.Data.PACKAGE_VALUE, BlufiParameter.Type.Data.SUBTYPE_STA_WIFI_PASSWORD);
     if (!await post(mEncrypted, mChecksum, mRequireAck, pwdType, Buffer.from(password))) {
       return false;
     }
-    // sleep(10);
+    // await sleep(10);
 
     let comfirmType = getTypeValue(BlufiParameter.Type.Ctrl.PACKAGE_VALUE, BlufiParameter.Type.Ctrl.SUBTYPE_CONNECT_WIFI);
     return await post(false, false, mRequireAck, comfirmType, null);
