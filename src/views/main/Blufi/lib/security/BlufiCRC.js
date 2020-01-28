@@ -20,6 +20,7 @@ const BlufiCRC = {
 
     calcCRC(crc, pByte) {
         crc = (~crc) & 0xffff;
+        debugger;
         for (let aPByte in pByte) {
             crc = this.CRC_TB[(crc >> 8) ^ (aPByte & 0xff)] ^ (crc << 8);
             crc &= 0xffff;

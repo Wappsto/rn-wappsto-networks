@@ -1,5 +1,5 @@
 import { BlufiParameter, BlufiCallback } from './util/params';
-import { sleep } from './util/helpers';
+import { sleep, longToByteArray } from './util/helpers';
 // import { stringToBytes } from 'convert-string';
 import FrameCtrlData from './FrameCtrlData';
 import BleManager from 'react-native-ble-manager';
@@ -112,6 +112,7 @@ function getPostBytes(type, frameCtrl, sequence, dataLength, data) {
   let frameCtrlData = new FrameCtrlData(frameCtrl);
   let checksumBytes = null;
   if (frameCtrlData.isChecksum()) {
+    debugger;
     let willCheckBytes = Buffer.from([sequence, dataLength]);
     if (data !== null) {
       let os = Buffer.from([...willCheckBytes, ...data]);
@@ -120,12 +121,13 @@ function getPostBytes(type, frameCtrl, sequence, dataLength, data) {
     let checksum = BlufiCRC.calcCRC(0, willCheckBytes);
     let checksumByte1 = (checksum & 0xff);
     let checksumByte2 = ((checksum >> 8) & 0xff);
-    checksumBytes = Buffer.from(checksumByte1, checksumByte2);
+    checksumBytes = Buffer.from([checksumByte1, checksumByte2]);
   }
 
   // SAMI: HANDLE ENCRYPTION!!!
   if (frameCtrlData.isEncrypted() && data !== null) {
-    const aes = new BlufiAES(mAESKey, AES_TRANSFORMATION, generateAESIV(sequence));
+    debugger;
+    const aes = new BlufiAES(mAESKey, generateAESIV(sequence));
     data = aes.encrypt(data);
   }
   if (data !== null) {
@@ -133,6 +135,7 @@ function getPostBytes(type, frameCtrl, sequence, dataLength, data) {
   }
 
   if (checksumBytes !== null) {
+    debugger;
     byteOS = Buffer.from([...byteOS, checksumBytes[0], checksumBytes[1]]);
   }
 
@@ -237,8 +240,7 @@ async function postStaWifiInfo(ssid, password) {
 }
 
 function getPublicValue(espDH) {
-  // SAMI : SOMEHOW CHANGE THIS
-  const publicKey = espDH.getPublicKey('hex');
+  const publicKey = espDH.getPublicKey().toString('hex');
   if (publicKey) {
       let keySB = publicKey;
       while (keySB.length < 256) {
@@ -266,14 +268,9 @@ async function postSetSecurity(ctrlEncrypted, ctrlChecksum, dataEncrypted, dataC
       data |= 0b100000;
   }
 
-  const postData = Buffer.from(data);
+  const postData = Buffer.from([data]);
 
-  try {
-      return await post(false, true, mRequireAck, type, postData);
-  } catch (e) {
-      Log.w(TAG, 'postSetSecurity interrupted');
-      return false;
-  }
+  return await post(false, true, mRequireAck, type, postData);
 }
 
 async function postNegotiateSecurity() {
@@ -281,14 +278,14 @@ async function postNegotiateSecurity() {
 
     const radix = 16;
     const dhLength = 1024;
-    const dhP = BigInteger(DH_P, radix);
-    const dhG = BigInteger(DH_G);
+    const dhP = DH_P;
+    const dhG = DH_G;
     let espDH;
     let p;
     let g;
     let k;
     do {
-        espDH = new BlufiDH(dhP.value + '', dhG.value + '', dhLength);
+        espDH = new BlufiDH(dhP, dhG, dhLength);
         p = espDH.getP().toString(radix);
         g = espDH.getG().toString(radix);
         k = getPublicValue(espDH);
@@ -298,61 +295,42 @@ async function postNegotiateSecurity() {
     const gBytes = toBytes(g);
     const kBytes = toBytes(k);
 
-    let dataOS = Buffer.from([]);
+    let dataOS;
 
     const pgkLength = pBytes.length + gBytes.length + kBytes.length + 6;
     const pgkLen1 = (pgkLength >> 8) & 0xff;
     const pgkLen2 = pgkLength & 0xff;
 
-    // dataOS.write(NEG_SET_SEC_TOTAL_LEN);
-    // dataOS.write((byte) pgkLen1);
-    // dataOS.write((byte) pgkLen2);
     dataOS = Buffer.from([BlufiParameter.NEG_SET_SEC_TOTAL_LEN, pgkLen1, pgkLen2]);
 
-    // SAMI: dataOS.toBytesArray()
     const postLength = await post(false, false, mRequireAck, type, dataOS);
     if (!postLength) {
-        return null;
+      return null;
     }
-
-    // sleep(10);
-
-    // dataOS.reset();
-    // dataOS.write(NEG_SET_SEC_ALL_DATA);
+    // await sleep(10);
 
     const pLength = pBytes.length;
     const pLen1 = (pLength >> 8) & 0xff;
     const pLen2 = pLength & 0xff;
-    // dataOS.write(pLen1);
-    // dataOS.write(pLen2);
-    // dataOS.write(pBytes, 0, pLength);
 
     const gLength = gBytes.length;
     const gLen1 = (gLength >> 8) & 0xff;
     const gLen2 = gLength & 0xff;
-    // dataOS.write(gLen1);
-    // dataOS.write(gLen2);
-    // dataOS.write(gBytes, 0, gLength);
 
     const kLength = kBytes.length;
     const kLen1 = (kLength >> 8) & 0xff;
     const kLen2 = kLength & 0xff;
-    // dataOS.write(kLen1);
-    // dataOS.write(kLen2);
-    // dataOS.write(kBytes, 0, kLength);
     dataOS = Buffer.from([
       BlufiParameter.NEG_SET_SEC_ALL_DATA,
-      pLen1, pLen2, ...pBytes.slice(0, pLength),
-      gLen1, gLen2, ...gBytes.slice(0, gLength),
-      kLen1, kLen2, ...kBytes.slice(0, kLength)
+      pLen1, pLen2, ...pBytes,
+      gLen1, gLen2, ...gBytes,
+      kLen1, kLen2, ...kBytes
     ]);
 
-    // SAMI: dataOS.toBytesArray()
     const postPGK = await post(false, false, mRequireAck, type, dataOS);
     if (!postPGK) {
-        return null;
+      return null;
     }
-
     return espDH;
 }
 
@@ -362,7 +340,6 @@ async function _negotiateSecurity() {
         Log.w(TAG, 'negotiateSecurity postNegotiateSecurity failed');
         throw new Error(BlufiCallback.CODE_NEG_POST_FAILED);
     }
-
     let devicePublicKey = await mDevicePublicKeyQueue.take();
     if (devicePublicKey.length === 0) {
         throw new Error(BlufiCallback.CODE_NEG_ERR_DEV_KEY);
@@ -561,7 +538,7 @@ function parseNotification(response, notification) {
 
   // SAMI: HANDLE ENCRYPTION!!!
   if (frameCtrlData.isEncrypted()) {
-    const aes = new BlufiAES(mAESKey, AES_TRANSFORMATION, generateAESIV(sequence));
+    const aes = new BlufiAES(mAESKey, generateAESIV(sequence));
     dataBytes = aes.decrypt(dataBytes);
   }
 
@@ -569,10 +546,10 @@ function parseNotification(response, notification) {
     let respChecksum1 = toInt(response[response.length - 1]);
     let respChecksum2 = toInt(response[response.length - 2]);
 
-    let checkByteOS = Buffer.from([sequence, dataLen, ...dataBytes]);
     // for (let b in dataBytes) {
     //   checkByteOS.write(b);
     // }
+    let checkByteOS = Buffer.from([sequence, dataLen, ...dataBytes]);
     let checksum = BlufiCRC.calcCRC(0, Array.prototype.slice.call(checkByteOS, 0));
 
     let calcChecksum1 = (checksum >> 8) & 0xff;
@@ -628,14 +605,7 @@ function onNegotiateSecurityResult(...args) {
 }
 
 function onReceiveDevicePublicKey(keyData) {
-  const keyStr = toHex(keyData);
-  try {
-      const devicePublicValue = new BigInteger(keyStr, 16);
-      mDevicePublicKeyQueue.add(devicePublicValue);
-  } catch (e) {
-      Log.w(TAG, 'onReceiveDevicePublicKey: NumberFormatException -> ' + keyStr);
-      mDevicePublicKeyQueue.add(new BigInteger('0'));
-  }
+  mDevicePublicKeyQueue.add(keyData);
 }
 
 const Blufi = {

@@ -88,8 +88,8 @@ const Configure = ({ device, hide }) => {
       // Blufi.requestDeviceVersion(device, ssid, password);
     } catch (e) {
       // SAMI: Handle configure error
-      debugger;
-      console.log(e);
+      // debugger;
+      console.log('ERROR: ', e);
     }
   }
 
