@@ -3,7 +3,6 @@ import { sleep, longToByteArray } from './util/helpers';
 // import { stringToBytes } from 'convert-string';
 import FrameCtrlData from './FrameCtrlData';
 import BleManager from 'react-native-ble-manager';
-import BigInteger from 'big-integer';
 import ByteArrayInputStream from './ByteArrayInputStream';
 import LinkedBlockingQueue from './LinkedBlockingQueue';
 import BlufiCRC from './security/BlufiCRC';
@@ -13,6 +12,7 @@ import BlufiMD5 from './security/BlufiMD5';
 import Log from './Log';
 const Buffer = require('buffer/').Buffer;
 // workaround-------------------
+let stop = false;
 //------------------------------
 const TAG = 'BlufiClientImpl';
 let mEncrypted = false;
@@ -21,6 +21,7 @@ let mAESKey = null;
 const mRequireAck = false;
 const mAck = new LinkedBlockingQueue();
 const mDevicePublicKeyQueue = new LinkedBlockingQueue();
+let notification = {};
 
 const DEFAULT_PACKAGE_LENGTH = 20;
 const PACKAGE_HEADER_LENGTH = 4;
@@ -50,11 +51,8 @@ function generateReadSequence() {
 }
 
 function generateAESIV(sequence) {
-  let result = Buffer.alloc(16);
-  // SAMI: MAYBE buffer.write !!!
-  debugger;
+  const result = Buffer.alloc(16);
   result[0] = sequence;
-  debugger;
   return result;
 }
 
@@ -82,9 +80,19 @@ function toBytes(hex) {
 }
 
 function toHex(byteArray) {
-  return Array.from(byteArray, function(byte) {
-    return ('0' + (byte & 0xFF).toString(16)).slice(-2);
-  }).join('');
+  // return Array.from(byteArray, function(byte) {
+  //   return ('0' + (byte & 0xFF).toString(16)).slice(-2);
+  // }).join('');
+  let result = '';
+  byteArray.forEach(b => {
+    const number = b & 0xff;
+    const str = number.toString(16);
+    if (str.length === 1) {
+        result += '0';
+    }
+    result += str;
+  });
+  return result;
 }
 //-----------------------------------------  HANDLE WRITE --------------------------------------------------
 //----------------------------------------------------------------------------------------------------------
@@ -107,6 +115,9 @@ async function receiveAck(sequence) {
 }
 
 function getPostBytes(type, frameCtrl, sequence, dataLength, data) {
+  if(stop){
+    debugger;
+  }
   let byteOS = Buffer.from([type + '', frameCtrl + '', sequence + '', dataLength + '']);
 
   const frameCtrlData = new FrameCtrlData(frameCtrl);
@@ -126,7 +137,7 @@ function getPostBytes(type, frameCtrl, sequence, dataLength, data) {
   // SAMI: HANDLE ENCRYPTION!!!
   if (frameCtrlData.isEncrypted() && data !== null) {
     const aes = new BlufiAES(mAESKey, generateAESIV(sequence));
-    data = aes.encrypt(data);
+    data = aes.encrypt(Buffer.from(data));
   }
   if (data !== null) {
     byteOS = Buffer.from([...byteOS, ...data]);
@@ -204,7 +215,7 @@ async function post(encrypt, checksum, requireAck, type, data) {
 
 async function postDeviceMode(deviceMode) {
   const type = getTypeValue(BlufiParameter.Type.Ctrl.PACKAGE_VALUE, BlufiParameter.Type.Ctrl.SUBTYPE_SET_OP_MODE);
-  const data = Buffer.from(deviceMode + '');
+  const data = Buffer.from([deviceMode]);
 
   try {
     const result = await post(mEncrypted, mChecksum, true, type, data);
@@ -343,11 +354,11 @@ async function _negotiateSecurity() {
     }
 
     espDH.generateSecretKey(devicePublicKey);
-    if (espDH.getPrivateKey() === null) {
+    if (espDH.getSecretKey() === null) {
         throw new Error(BlufiCallback.CODE_NEG_ERR_SECURITY);
     }
 
-    mAESKey = BlufiMD5.getMD5Bytes(espDH.getPrivateKey());
+    mAESKey = BlufiMD5.getMD5Bytes(espDH.getSecretKey());
 
     const setSecurity = await postSetSecurity(false, false, true, true);
 
@@ -535,11 +546,13 @@ function parseNotification(response, notification) {
 
   // SAMI: HANDLE ENCRYPTION!!!
   if (frameCtrlData.isEncrypted()) {
+    debugger;
     const aes = new BlufiAES(mAESKey, generateAESIV(sequence));
     dataBytes = aes.decrypt(dataBytes);
   }
 
   if (frameCtrlData.isChecksum()) {
+    debugger;
     let respChecksum1 = toInt(response[response.length - 1]);
     let respChecksum2 = toInt(response[response.length - 2]);
 
@@ -547,11 +560,13 @@ function parseNotification(response, notification) {
     //   checkByteOS.write(b);
     // }
     let checkByteOS = Buffer.from([sequence, dataLen, ...dataBytes]);
-    let checksum = BlufiCRC.calcCRC(0, Array.prototype.slice.call(checkByteOS, 0));
+    let checksum = BlufiCRC.calcCRC(0, checkByteOS);
 
     let calcChecksum1 = (checksum >> 8) & 0xff;
     let calcChecksum2 = checksum & 0xff;
     if (respChecksum1 !== calcChecksum1 || respChecksum2 !== calcChecksum2) {
+      var BlufiCRCX = BlufiCRC;
+      debugger;
       return -4;
     }
   }
@@ -561,12 +576,13 @@ function parseNotification(response, notification) {
   } else {
     dataOffset = 0;
   }
-  const arr = [];
-  if(notification.data){
-    arr.push(...Array.prototype.slice.call(notification.data, 0));
-  }
-  arr.push(...Array.prototype.slice.call(dataBytes, dataOffset, dataBytes.length));
-  notification.data = Buffer.from(arr);
+  // const arr = [];
+  // if(notification.data){
+  //   arr.push(...Array.prototype.slice.call(notification.data, 0));
+  // }
+  // arr.push(...Array.prototype.slice.call(dataBytes, dataOffset, dataBytes.length));
+  // notification.data = Buffer.from(arr);
+  notification.data = Buffer.from([...(notification.data || []), ...dataBytes.slice(dataOffset)]);
   return frameCtrlData.hasFrag() ? 1 : 0;
 }
 
@@ -608,6 +624,7 @@ function onReceiveDevicePublicKey(keyData) {
 const Blufi = {
   configure(device, ssid, password) {
     connectedDevice = device;
+    stop = true;
     return new Promise(async (resolve, reject) => {
       if (!await postDeviceMode(BlufiParameter.OP_MODE_STA)) {
         reject(BlufiCallback.CODE_CONF_ERR_SET_OPMODE);
@@ -623,17 +640,21 @@ const Blufi = {
   },
 
   onCharacteristicChanged(data) {
-    const notification = {};
+    if(stop){
+      debugger;
+    }
     const parse = parseNotification(data, notification);
     if (parse < 0) {
       onError(BlufiCallback.CODE_INVALID_NOTIFICATION);
     } else if (parse === 0) {
       parseBlufiNotifyData(notification);
+      notification = {};
     }
   },
 
   requestDeviceVersion(device){
     connectedDevice = device;
+    stop = true;
     const type = getTypeValue(BlufiParameter.Type.Ctrl.PACKAGE_VALUE, BlufiParameter.Type.Ctrl.SUBTYPE_GET_VERSION);
     let request;
     try {

@@ -6,7 +6,9 @@ export default {
         // MessageDigest digest = MessageDigest.getInstance("md5");
         // digest.update(data);
         // return digest.digest();
-        return Crypto.createHash('md5').update(data).digest();
+        const digest = Crypto.createHash('md5');
+        digest.update(data);
+        return digest.digest();
     } catch (e) {
         console.log(e);
     }
