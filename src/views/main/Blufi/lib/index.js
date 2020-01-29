@@ -109,13 +109,12 @@ async function receiveAck(sequence) {
 function getPostBytes(type, frameCtrl, sequence, dataLength, data) {
   let byteOS = Buffer.from([type + '', frameCtrl + '', sequence + '', dataLength + '']);
 
-  let frameCtrlData = new FrameCtrlData(frameCtrl);
+  const frameCtrlData = new FrameCtrlData(frameCtrl);
   let checksumBytes = null;
   if (frameCtrlData.isChecksum()) {
-    debugger;
     let willCheckBytes = Buffer.from([sequence, dataLength]);
     if (data !== null) {
-      let os = Buffer.from([...willCheckBytes, ...data]);
+      const os = Buffer.from([...willCheckBytes, ...data]);
       willCheckBytes = Array.prototype.slice.call(os, 0);
     }
     let checksum = BlufiCRC.calcCRC(0, willCheckBytes);
@@ -126,7 +125,6 @@ function getPostBytes(type, frameCtrl, sequence, dataLength, data) {
 
   // SAMI: HANDLE ENCRYPTION!!!
   if (frameCtrlData.isEncrypted() && data !== null) {
-    debugger;
     const aes = new BlufiAES(mAESKey, generateAESIV(sequence));
     data = aes.encrypt(data);
   }
@@ -135,7 +133,6 @@ function getPostBytes(type, frameCtrl, sequence, dataLength, data) {
   }
 
   if (checksumBytes !== null) {
-    debugger;
     byteOS = Buffer.from([...byteOS, checksumBytes[0], checksumBytes[1]]);
   }
 
@@ -340,7 +337,7 @@ async function _negotiateSecurity() {
         Log.w(TAG, 'negotiateSecurity postNegotiateSecurity failed');
         throw new Error(BlufiCallback.CODE_NEG_POST_FAILED);
     }
-    let devicePublicKey = await mDevicePublicKeyQueue.take();
+    const devicePublicKey = await mDevicePublicKeyQueue.take();
     if (devicePublicKey.length === 0) {
         throw new Error(BlufiCallback.CODE_NEG_ERR_DEV_KEY);
     }
