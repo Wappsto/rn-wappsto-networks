@@ -1,6 +1,7 @@
 import { BlufiParameter, BlufiCallback } from './util/params';
 import { sleep, longToByteArray } from './util/helpers';
 // import { stringToBytes } from 'convert-string';
+import BigInteger from 'big-integer';
 import FrameCtrlData from './FrameCtrlData';
 import BleManager from 'react-native-ble-manager';
 import ByteArrayInputStream from './ByteArrayInputStream';
@@ -12,7 +13,6 @@ import BlufiMD5 from './security/BlufiMD5';
 import Log from './Log';
 const Buffer = require('buffer/').Buffer;
 // workaround-------------------
-let stop = false;
 //------------------------------
 const TAG = 'BlufiClientImpl';
 let mEncrypted = false;
@@ -51,7 +51,7 @@ function generateReadSequence() {
 }
 
 function generateAESIV(sequence) {
-  const result = Buffer.alloc(16);
+  const result = Buffer.alloc(16, 0);
   result[0] = sequence;
   return result;
 }
@@ -115,10 +115,7 @@ async function receiveAck(sequence) {
 }
 
 function getPostBytes(type, frameCtrl, sequence, dataLength, data) {
-  if(stop){
-    debugger;
-  }
-  let byteOS = Buffer.from([type + '', frameCtrl + '', sequence + '', dataLength + '']);
+  let byteOS = Buffer.from([type, frameCtrl, sequence, dataLength]);
 
   const frameCtrlData = new FrameCtrlData(frameCtrl);
   let checksumBytes = null;
@@ -289,19 +286,11 @@ async function postNegotiateSecurity() {
     const dhP = DH_P;
     const dhG = DH_G;
     let espDH;
-    let p;
-    let g;
-    let k;
-    do {
-        espDH = new BlufiDH(dhP, dhG, dhLength);
-        p = espDH.getP().toString(radix);
-        g = espDH.getG().toString(radix);
-        k = getPublicValue(espDH);
-    } while (k === null);
 
-    const pBytes = toBytes(p);
-    const gBytes = toBytes(g);
-    const kBytes = toBytes(k);
+    espDH = new BlufiDH(dhP, dhG, dhLength);
+    const pBytes = espDH.mDh.getPrime();
+    const gBytes = espDH.mDh.getGenerator();
+    const kBytes = espDH.mDh.getPublicKey();
 
     let dataOS;
 
@@ -505,7 +494,7 @@ function parseBlufiNotifyData(data) {
   }
 }
 
-function parseNotification(response, notification) {
+function parseNotification(response) {
   if (response === null) {
     Log.w(TAG, 'parseNotification null data');
     return -1;
@@ -546,13 +535,11 @@ function parseNotification(response, notification) {
 
   // SAMI: HANDLE ENCRYPTION!!!
   if (frameCtrlData.isEncrypted()) {
-    debugger;
     const aes = new BlufiAES(mAESKey, generateAESIV(sequence));
     dataBytes = aes.decrypt(dataBytes);
   }
 
   if (frameCtrlData.isChecksum()) {
-    debugger;
     let respChecksum1 = toInt(response[response.length - 1]);
     let respChecksum2 = toInt(response[response.length - 2]);
 
@@ -565,8 +552,6 @@ function parseNotification(response, notification) {
     let calcChecksum1 = (checksum >> 8) & 0xff;
     let calcChecksum2 = checksum & 0xff;
     if (respChecksum1 !== calcChecksum1 || respChecksum2 !== calcChecksum2) {
-      var BlufiCRCX = BlufiCRC;
-      debugger;
       return -4;
     }
   }
@@ -576,12 +561,6 @@ function parseNotification(response, notification) {
   } else {
     dataOffset = 0;
   }
-  // const arr = [];
-  // if(notification.data){
-  //   arr.push(...Array.prototype.slice.call(notification.data, 0));
-  // }
-  // arr.push(...Array.prototype.slice.call(dataBytes, dataOffset, dataBytes.length));
-  // notification.data = Buffer.from(arr);
   notification.data = Buffer.from([...(notification.data || []), ...dataBytes.slice(dataOffset)]);
   return frameCtrlData.hasFrag() ? 1 : 0;
 }
@@ -618,13 +597,13 @@ function onNegotiateSecurityResult(...args) {
 }
 
 function onReceiveDevicePublicKey(keyData) {
-  mDevicePublicKeyQueue.add(keyData);
+  const keyStr = toHex(keyData);
+  mDevicePublicKeyQueue.add(Buffer.from(keyStr, 'hex'));
 }
 
 const Blufi = {
   configure(device, ssid, password) {
     connectedDevice = device;
-    stop = true;
     return new Promise(async (resolve, reject) => {
       if (!await postDeviceMode(BlufiParameter.OP_MODE_STA)) {
         reject(BlufiCallback.CODE_CONF_ERR_SET_OPMODE);
@@ -640,10 +619,7 @@ const Blufi = {
   },
 
   onCharacteristicChanged(data) {
-    if(stop){
-      debugger;
-    }
-    const parse = parseNotification(data, notification);
+    const parse = parseNotification(data);
     if (parse < 0) {
       onError(BlufiCallback.CODE_INVALID_NOTIFICATION);
     } else if (parse === 0) {
@@ -654,7 +630,6 @@ const Blufi = {
 
   requestDeviceVersion(device){
     connectedDevice = device;
-    stop = true;
     const type = getTypeValue(BlufiParameter.Type.Ctrl.PACKAGE_VALUE, BlufiParameter.Type.Ctrl.SUBTYPE_GET_VERSION);
     let request;
     try {

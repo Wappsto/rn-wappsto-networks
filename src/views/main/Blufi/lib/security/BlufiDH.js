@@ -15,7 +15,7 @@ class BlufiDH {
     constructor(p, g, length) {
         this.mP = p;
         this.mG = g;
-        this.mDh = Crypto.createDiffieHellman(p, 'hex', g);
+        this.mDh = Crypto.createDiffieHellman(p, 'hex', g, 'binary');
         this.mDh.generateKeys();
         this.mPrivateKey = this.mDh.getPrivateKey();
         this.mPublicKey = this.mDh.getPublicKey();
