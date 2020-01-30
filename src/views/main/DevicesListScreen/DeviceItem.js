@@ -7,9 +7,8 @@ import { useDispatch } from 'react-redux';
 import { setItem } from 'wappsto-redux/actions/items';
 import theme from '../../../theme/themeExport';
 import i18n from '../../../translations';
-import { isPrototype } from '../../../util/helpers';
 
-const DeviceSection = React.memo(({ navigation, id }) => {
+const DeviceSection = React.memo(({ navigation, id, isPrototype }) => {
   const getEntity = useMemo(makeEntitySelector, []);
   const device = useSelector(state => getEntity(state, 'device', id));
 
@@ -29,7 +28,7 @@ const DeviceSection = React.memo(({ navigation, id }) => {
   }
   return (
     <TouchableOpacity onPress={navigate}>
-      <View style={[theme.common.listItem, isPrototype(device) ? { backgroundColor: '#e5e5e5' } : {}]}>
+      <View style={[theme.common.listItem, isPrototype ? { backgroundColor: '#e5e5e5' } : {}]}>
         <View style={theme.common.listItemTitleArea}>
           <Text style={theme.common.listItemHeader}>{device.name}</Text>
           <Text style={theme.common.listItemSubheader}>

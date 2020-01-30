@@ -116,19 +116,20 @@ const DevicesListScreen = React.memo(({ navigation }) => {
         renderSectionFooter={() => (
           <View style={theme.common.listFooter} />
         )}
-        renderItem={({item: { device }}) => {
-          if (device.length === 0) {
+        renderItem={({ item }) => {
+          if (item.device.length === 0) {
             return (
               <Text style={[theme.common.infoText, theme.common.secondary]}>
                 {CapitalizeFirst(i18n.t('infoMessage.networkIsEmpty'))}
               </Text>
             );
           }
-          return device.map(id => (
+          return item.device.map(id => (
             <DeviceItem
               key={id}
               id={id}
               navigation={navigation}
+              isPrototype={isPrototype(item)}
             />
           ));
         }}
