@@ -4,10 +4,11 @@ import {Text, View, TouchableOpacity, StatusBar} from 'react-native';
 import { useSafeArea} from 'react-native-safe-area-context';
 import { config } from '../configureWappstoRedux';
 import { makeStreamSelector } from 'wappsto-redux/selectors/stream';
-import { openStream, status, steps } from 'wappsto-redux/actions/stream';
+import { status, steps } from 'wappsto-redux/actions/stream';
 import NetInfo from '@react-native-community/netinfo';
 import i18n, { CapitalizeFirst } from '../translations';
 import theme from '../theme/themeExport';
+import { startStream } from '../theme/themeExport';
 
 const emptyObject = {};
 const Screen = React.memo(({ style, children }) => {
@@ -31,7 +32,7 @@ const Screen = React.memo(({ style, children }) => {
   }, []);
 
   const reconnectStream = useCallback(() => {
-    dispatch(openStream(stream.json));
+    startStream(dispatch);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [stream]);
 

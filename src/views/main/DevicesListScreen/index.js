@@ -9,12 +9,11 @@ import AddNetworkButton from './AddNetworkButton';
 import { config } from '../../../configureWappstoRedux';
 import { makeItemSelector } from 'wappsto-redux/selectors/items';
 import { makeStreamSelector } from 'wappsto-redux/selectors/stream';
-import { openStream, closeStream } from 'wappsto-redux/actions/stream';
 import { removeItem } from 'wappsto-redux/actions/items';
 import theme from '../../../theme/themeExport';
 import i18n, { CapitalizeEach, CapitalizeFirst } from '../../../translations';
 import { iotNetworkListAdd } from '../../../util/params';
-import { isPrototype } from '../../../util/helpers';
+import { isPrototype, startStream, endStream } from '../../../util/helpers';
 
 const query = {
   expand: 1,
@@ -47,24 +46,9 @@ const DevicesListScreen = React.memo(({ navigation }) => {
     }
   }
 
-  const startStream = () => {
-    if(config.stream){
-      const streamJSON = { ...config.stream };
-      delete streamJSON.version;
-      delete streamJSON.endPoint;
-      dispatch(openStream(streamJSON, null, { endPoint: config.stream.endPoint || 'websocket', version: config.stream.version || '2.0' }));
-    }
-  }
-
-  const endStream = () => {
-    if(config.stream){
-      dispatch(closeStream(config.stream.name));
-    }
-  }
-
   const _handleAppStateChange = (nextAppState) => {
     if (appState.match(/inactive|background/) && nextAppState === 'active' && stream && stream.ws && stream.ws.readyState === stream.ws.CLOSED) {
-      startStream();
+      startStream(dispatch);
     }
     setAppState(nextAppState);
   };
@@ -80,9 +64,9 @@ const DevicesListScreen = React.memo(({ navigation }) => {
 
   // subscribe to stream
   useEffect(() => {
-    startStream();
+    startStream(dispatch);
     return () => {
-      endStream();
+      endStream(dispatch);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
