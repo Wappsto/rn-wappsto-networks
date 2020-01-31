@@ -8,7 +8,7 @@ import { status, steps } from 'wappsto-redux/actions/stream';
 import NetInfo from '@react-native-community/netinfo';
 import i18n, { CapitalizeFirst } from '../translations';
 import theme from '../theme/themeExport';
-import { startStream } from '../theme/themeExport';
+import { startStream } from '../util/helpers';
 
 const emptyObject = {};
 const Screen = React.memo(({ style, children }) => {

@@ -82,7 +82,7 @@ const DevicesListScreen = React.memo(({ navigation }) => {
       }
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [stream]);
+  }, [stream, addToList]);
 
   const onRefresh = useCallback((items) => {
     items.forEach(network => {
@@ -104,9 +104,12 @@ const DevicesListScreen = React.memo(({ navigation }) => {
         renderSectionHeader={({section: {title: network}}) => {
           return (
             <Text style={theme.common.listHeader}>
-              { isPrototype(network) ? <Text>({CapitalizeEach(i18n.t('prototype'))}) </Text> : null }
+              { isPrototype(network) && <Text>({CapitalizeEach(i18n.t('prototype'))}) </Text> }
               { network.name ?
-                <Text style={theme.common.H5}>{network.name} </Text>
+                <>
+                  <Text style={theme.common.H5}>{network.name}</Text>{'\n'}
+                  <Text>{network.meta.id}</Text>
+                </>
               :
                 <Text>{network.meta.id}</Text>
               }

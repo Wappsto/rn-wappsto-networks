@@ -21,7 +21,7 @@ const List = React.memo(({ name, url, query, style, renderSectionHeader, renderS
       dispatch(setItem(addItemName, () => addItem));
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [addItemName]);
+  }, [addItemName, addItem]);
 
   const data = [];
   items.forEach(item => {

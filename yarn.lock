@@ -4123,8 +4123,9 @@ normalize-path@^2.1.1:
     remove-trailing-separator "^1.0.1"
 
 normalizr@^3.4.1:
-  version "3.4.1"
-  resolved "https://registry.yarnpkg.com/normalizr/-/normalizr-3.4.1.tgz#cf4f8ac7a4a0dd7fe504b77cbe9dd533cb3e45b5"
+  version "3.5.0"
+  resolved "https://registry.yarnpkg.com/normalizr/-/normalizr-3.5.0.tgz#c2227644cdb31bcc501b25e3f88a8032bae8d730"
+  integrity sha512-wMQ0jvJM5y3mGYipiXdpVgtOeR57AUkg6zEXDDWeQczIc9sdY1Za78qVPDEPL8dCBkTmEzgYGkVrI23NcMfy7Q==
 
 npm-bundled@^1.0.1:
   version "1.0.6"
@@ -4594,6 +4595,7 @@ query-string@^6.4.2:
 querystring@^0.2.0:
   version "0.2.0"
   resolved "https://registry.yarnpkg.com/querystring/-/querystring-0.2.0.tgz#b209849203bb25df820da756e747005878521620"
+  integrity sha1-sgmEkgO7Jd+CDadW50cAWHhSFiA=
 
 range-parser@~1.2.1:
   version "1.2.1"
@@ -4844,6 +4846,7 @@ realpath-native@^1.1.0:
 redux-thunk@^2.3.0:
   version "2.3.0"
   resolved "https://registry.yarnpkg.com/redux-thunk/-/redux-thunk-2.3.0.tgz#51c2c19a185ed5187aaa9a2d08b666d0d6467622"
+  integrity sha512-km6dclyFnmcvxhAcrQV2AkZmPQjzPDjgVlQtR0EQjxZPyJ0BnMf3in1ryuR8A2qU0HldVRfxYXbFSKlI3N7Slw==
 
 redux@^4.0.4:
   version "4.0.4"
@@ -4970,6 +4973,7 @@ require-main-filename@^2.0.0:
 reselect@^4.0.0:
   version "4.0.0"
   resolved "https://registry.yarnpkg.com/reselect/-/reselect-4.0.0.tgz#f2529830e5d3d0e021408b246a206ef4ea4437f7"
+  integrity sha512-qUgANli03jjAyGlnbYVAV5vvnOmJnODyABz51RdBN7M4WaVu8mecZWgyQNkG8Yqe3KRGRt0l4K4B3XVEULC4CA==
 
 resolve-cwd@^2.0.0:
   version "2.0.0"
@@ -5787,13 +5791,14 @@ walker@^1.0.7, walker@~1.0.5:
   dependencies:
     makeerror "1.0.x"
 
-wappsto-blanket@Wappsto/wappsto-blanket#v0.0.15:
+wappsto-blanket@Wappsto/wappsto-blanket#v0.0.18:
   version "0.0.0"
-  resolved "https://codeload.github.com/Wappsto/wappsto-blanket/tar.gz/97e22f8b5b9ee8bece1af76f87f8281564e0e140"
+  resolved "https://codeload.github.com/Wappsto/wappsto-blanket/tar.gz/c3263b5aa3348f7806933f03c58afe20fcd29828"
 
-wappsto-redux@^3.0.5:
-  version "3.0.5"
-  resolved "https://registry.yarnpkg.com/wappsto-redux/-/wappsto-redux-3.0.5.tgz#92f8e70bdd1f62fadfb39f2a81ac2770752dfdeb"
+wappsto-redux@^3.0.7:
+  version "3.0.7"
+  resolved "https://registry.yarnpkg.com/wappsto-redux/-/wappsto-redux-3.0.7.tgz#2f634b37261c20b6ec123a15386ea83e4d699c4e"
+  integrity sha512-zMSxeYc85WqsnwK9x/XnUzccH51tkNfjBKqqaMNYwdO/ZQDAqkTOVZKZPPQpPcUOPeimml0kLMwFDbc6oewvmA==
   dependencies:
     normalizr "^3.4.1"
     querystring "^0.2.0"
