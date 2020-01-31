@@ -1,14 +1,19 @@
-import React, { useEffect, useCallback } from 'react';
-import { useDispatch } from 'react-redux';
-import { View, Text, SectionList, TouchableOpacity, ActivityIndicator } from 'react-native';
+import React, { useState, useEffect, useCallback, useMemo } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { View, Text, SectionList, TouchableOpacity, ActivityIndicator, AppState } from 'react-native';
 import RequestError from './RequestError';
 import theme from '../theme/themeExport';
 import i18n, { CapitalizeFirst } from '../translations';
 import useList from 'wappsto-blanket/hooks/useList';
 import { setItem } from 'wappsto-redux/actions/items';
+import { makeStreamSelector } from 'wappsto-redux/selectors/stream';
+import { config } from '../configureWappstoRedux';
 
 const List = React.memo(({ name, url, query, style, renderSectionHeader, renderSectionFooter, renderItem, addItemName, onRefresh }) => {
   const dispatch = useDispatch();
+  const getStream = useMemo(makeStreamSelector, []);
+  const stream = useSelector(state => getStream(state, config.stream && config.stream.name));
+  const [ appState, setAppState ] = useState(AppState.currentState);
   const { items, request, refresh, loadMore, canLoadMore, addItem } = useList({ name, url, query, resetOnEmpty: true });
 
   useEffect(() => {
@@ -33,6 +38,22 @@ const List = React.memo(({ name, url, query, style, renderSectionHeader, renderS
     refresh();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [items, onRefresh]);
+
+  const _handleAppStateChange = (nextAppState) => {
+    if (appState.match(/inactive|background/) && nextAppState === 'active' && stream && stream.ws && stream.ws.readyState === stream.ws.CLOSED) {
+      refresh();
+    }
+    setAppState(nextAppState);
+  };
+
+  // handle app status change
+  useEffect(() => {
+    AppState.addEventListener('change', _handleAppStateChange);
+    return () => {
+      AppState.removeEventListener('change', _handleAppStateChange);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [stream]);
 
   return (
     <View style={style || theme.common.container}>
