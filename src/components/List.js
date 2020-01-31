@@ -53,7 +53,7 @@ const List = React.memo(({ name, url, query, style, renderSectionHeader, renderS
       AppState.removeEventListener('change', _handleAppStateChange);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [stream]);
+  }, [appState, stream]);
 
   return (
     <View style={style || theme.common.container}>

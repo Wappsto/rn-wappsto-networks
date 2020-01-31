@@ -60,7 +60,7 @@ const DevicesListScreen = React.memo(({ navigation }) => {
       AppState.removeEventListener('change', _handleAppStateChange);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [stream]);
+  }, [appState, stream]);
 
   // subscribe to stream
   useEffect(() => {
