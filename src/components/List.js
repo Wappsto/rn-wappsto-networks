@@ -8,13 +8,17 @@ import useList from 'wappsto-blanket/hooks/useList';
 import { setItem } from 'wappsto-redux/actions/items';
 import { makeStreamSelector } from 'wappsto-redux/selectors/stream';
 import { config } from '../configureWappstoRedux';
+import { makeItemSelector } from 'wappsto-redux/selectors/items';
+import { currentPage } from '../util/params';
 
-const List = React.memo(({ name, url, query, style, renderSectionHeader, renderSectionFooter, renderItem, addItemName, onRefresh }) => {
+const List = React.memo(({ name, url, query, style, renderSectionHeader, renderSectionFooter, renderItem, addItemName, onRefresh, page }) => {
   const dispatch = useDispatch();
   const getStream = useMemo(makeStreamSelector, []);
   const stream = useSelector(state => getStream(state, config.stream && config.stream.name));
   const [ appState, setAppState ] = useState(AppState.currentState);
   const { items, request, refresh, loadMore, canLoadMore, addItem } = useList({ name, url, query, resetOnEmpty: true });
+  const getItem = useMemo(makeItemSelector, []);
+  const currPage = useSelector(state => getItem(state, currentPage));
 
   useEffect(() => {
     if(addItemName){
@@ -41,7 +45,7 @@ const List = React.memo(({ name, url, query, style, renderSectionHeader, renderS
 
   const _handleAppStateChange = (nextAppState) => {
     if (appState.match(/inactive|background/) && nextAppState === 'active' && stream && stream.ws && stream.ws.readyState === stream.ws.CLOSED) {
-      refresh();
+      refresh(currPage === page);
     }
     setAppState(nextAppState);
   };
@@ -53,7 +57,7 @@ const List = React.memo(({ name, url, query, style, renderSectionHeader, renderS
       AppState.removeEventListener('change', _handleAppStateChange);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [appState, stream]);
+  }, [appState, stream, currPage]);
 
   return (
     <View style={style || theme.common.container}>

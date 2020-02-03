@@ -101,6 +101,7 @@ const DevicesListScreen = React.memo(({ navigation }) => {
         query={query}
         addItemName={iotNetworkListAdd}
         onRefresh={onRefresh}
+        page={navigation.state.routeName}
         renderSectionHeader={({section: {title: network}}) => {
           return (
             <Text style={theme.common.listHeader}>

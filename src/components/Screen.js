@@ -1,4 +1,4 @@
-import React, { useState, useMemo, useEffect, useCallback } from 'react';
+import React, { useState, useMemo, useEffect, useCallback, useContext } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import {Text, View, TouchableOpacity, StatusBar} from 'react-native';
 import { useSafeArea} from 'react-native-safe-area-context';
@@ -9,10 +9,14 @@ import NetInfo from '@react-native-community/netinfo';
 import i18n, { CapitalizeFirst } from '../translations';
 import theme from '../theme/themeExport';
 import { startStream } from '../util/helpers';
+import { NavigationContext } from 'react-navigation';
+import { setItem } from 'wappsto-redux/actions/items';
+import { currentPage } from '../util/params';
 
 const emptyObject = {};
 const Screen = React.memo(({ style, children }) => {
   const dispatch = useDispatch();
+  const navigation = useContext(NavigationContext);
   const [ connected, setConnected] = useState(true);
   const getStream = useMemo(makeStreamSelector, []);
   const stream = useSelector(state => {
@@ -29,6 +33,17 @@ const Screen = React.memo(({ style, children }) => {
     return () => {
       NetInfo.isConnected.removeEventListener('connectionChange', setConnected);
     }
+  }, []);
+
+  useEffect(() => {
+    dispatch(setItem(currentPage, navigation.state.routeName));
+    const didFocus = navigation.addListener('didFocus', () => {
+      dispatch(setItem(currentPage, navigation.state.routeName));
+    });
+    return () => {
+      didFocus.remove();
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const reconnectStream = useCallback(() => {
