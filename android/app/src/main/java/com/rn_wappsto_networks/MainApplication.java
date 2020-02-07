@@ -8,6 +8,8 @@ import com.facebook.hermes.reactexecutor.HermesExecutorFactory;
 import com.facebook.react.bridge.JavaScriptExecutorFactory;
 import com.facebook.react.ReactApplication;
 import com.th3rdwave.safeareacontext.SafeAreaContextPackage;
+import com.pusherman.networkinfo.RNNetworkInfoPackage;
+import it.innove.BleManagerPackage;
 import com.reactnativecommunity.slider.ReactSliderPackage;
 import io.invertase.firebase.RNFirebasePackage;
 import com.oblador.vectoricons.VectorIconsPackage;

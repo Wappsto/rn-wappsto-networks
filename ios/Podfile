@@ -39,6 +39,9 @@ target 'rn_wappsto_networks' do
 
   pod 'react-native-safe-area-context', :path => '../node_modules/react-native-safe-area-context'
 
+  pod 'react-native-ble-manager', :path => '../node_modules/react-native-ble-manager'
+  pod 'react-native-network-info', :path => '../node_modules/react-native-network-info'
+
   target 'rn_wappsto_networksTests' do
     inherit! :search_paths
     # Pods for testing

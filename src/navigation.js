@@ -12,7 +12,7 @@ let dependencies = ['MainStackScreen', 'AccountStackScreen', 'MainScreen', 'Swit
 
 let components = {
   SplashScreen: require('./views/SplashScreen').default,
-  LoginScreen: require('./views/LoginScreen').default,
+  LoginScreen: require('./views/main/Blufi').default,
   DevicesListScreen: require('./views/main/DevicesListScreen').default,
   DeviceScreen: require('./views/main/DeviceScreen').default,
   AccountScreen: require('./views/main/AccountScreen').default,

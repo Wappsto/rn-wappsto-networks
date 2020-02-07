@@ -8,5 +8,7 @@ module.exports = {
     'semi': 0,
     'comma-dangle': 0,
     'jsx-quotes': ['warn', 'prefer-single'],
+    'no-shadow': 0,
+    'no-bitwise': 0
   }
 };
