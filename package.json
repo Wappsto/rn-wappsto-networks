@@ -15,7 +15,7 @@
   },
   "dependencies": {
     "@react-native-community/async-storage": "^1.6.1",
-    "@react-native-community/google-signin": "^3.0.3",
+    "@react-native-community/google-signin": "^3.0.4",
     "@react-native-community/netinfo": "^4.2.1",
     "@react-native-community/slider": "^2.0.8",
     "buffer": "^5.4.3",

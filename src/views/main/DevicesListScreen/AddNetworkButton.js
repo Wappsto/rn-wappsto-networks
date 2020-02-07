@@ -3,7 +3,6 @@ import { useSelector } from 'react-redux';
 import PopupButton from '../../../components/PopupButton';
 import Popup from '../../../components/Popup';
 import { Modal, View, Text, ScrollView, TouchableOpacity, StatusBar } from 'react-native';
-import Icon from 'react-native-vector-icons/Feather';
 import { SafeAreaView} from 'react-native-safe-area-context';
 import AddNetworkPopup from './AddNetworkPopup';
 import ConfirmAddManufacturerNetwork from './ConfirmAddManufacturerNetwork';
