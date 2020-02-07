@@ -77,10 +77,11 @@ const Content = React.memo(({ visible, hide, show }) => {
   }
   return (
     <Modal
+      transparent={true}
       visible={visible}
       hide={hide}
       onRequestClose={hide}>
-        <SafeAreaView style={{flex:1}}>
+        <SafeAreaView style={{flex: 1, backgroundColor: theme.variables.white}}>
           <StatusBar backgroundColor={theme.variables.white} barStyle='dark-content' />
           <ScrollView style={{flex:1}}>
             <AddNetworkPopup
