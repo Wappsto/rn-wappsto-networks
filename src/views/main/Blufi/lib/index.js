@@ -1,7 +1,5 @@
 import { BlufiParameter, BlufiCallback } from './util/params';
 import { sleep, longToByteArray } from './util/helpers';
-// import { stringToBytes } from 'convert-string';
-import BigInteger from 'big-integer';
 import FrameCtrlData from './FrameCtrlData';
 import BleManager from 'react-native-ble-manager';
 import ByteArrayInputStream from './ByteArrayInputStream';
@@ -31,7 +29,6 @@ const DH_P = 'cf5cf5c38419a724957ff5dd323b9c45c3cdd261eb740f69aa94b8bb1a5c9640' 
             '5347c68afc1e677da90e51bbab5f5cf429c291b4ba39c6b2dc5e8c7231e46aa7' +
             '728e87664532cdf547be20c9a3fa8342be6e34371a27c06f7dc0edddd2f86373';
 const DH_G = '2';
-const AES_TRANSFORMATION = 'AES/CFB/NoPadding';
 
 let connectedDevice = null;
 let mSendSequence = 0;
@@ -70,19 +67,16 @@ function getSubType(typeValue) {
 
 function toBytes(hex) {
   if (hex.length % 2 !== 0) {
-      hex = '0' + hex;
+    hex = '0' + hex;
   }
   const result = Buffer.alloc(hex.length / 2);
   for (let i = 0; i < hex.length; i += 2) {
-      result[i / 2] = parseInt(hex.substring(i, i + 2), 16);
+    result[i / 2] = parseInt(hex.substring(i, i + 2), 16);
   }
   return result;
 }
 
 function toHex(byteArray) {
-  // return Array.from(byteArray, function(byte) {
-  //   return ('0' + (byte & 0xFF).toString(16)).slice(-2);
-  // }).join('');
   let result = '';
   byteArray.forEach(b => {
     const number = b & 0xff;
@@ -109,7 +103,6 @@ async function receiveAck(sequence) {
     const ack = await mAck.take();
     return ack === sequence;
   } catch (e) {
-    console.log('receiveAck: ', e);
     return false;
   }
 }
@@ -218,7 +211,6 @@ async function postDeviceMode(deviceMode) {
     const result = await post(mEncrypted, mChecksum, true, type, data);
     return result;
   } catch (e) {
-    console.log('postDeviceMode: ', e);
     return false;
   }
 }
@@ -442,8 +434,6 @@ function parseWifiScanList(data) {
 function parseDataData(subType, data) {
   switch (subType) {
     case BlufiParameter.Type.Data.SUBTYPE_NEG:
-      // SAMI: HANDLE THIS SOMEHOW !!!
-      // mSecurityCallback.onReceiveDevicePublicKey(data);
       onReceiveDevicePublicKey(data);
       break;
     case BlufiParameter.Type.Data.SUBTYPE_VERSION:
@@ -533,7 +523,6 @@ function parseNotification(response) {
     return -100;
   }
 
-  // SAMI: HANDLE ENCRYPTION!!!
   if (frameCtrlData.isEncrypted()) {
     const aes = new BlufiAES(mAESKey, generateAESIV(sequence));
     dataBytes = aes.decrypt(dataBytes);
@@ -543,9 +532,6 @@ function parseNotification(response) {
     let respChecksum1 = toInt(response[response.length - 1]);
     let respChecksum2 = toInt(response[response.length - 2]);
 
-    // for (let b in dataBytes) {
-    //   checkByteOS.write(b);
-    // }
     let checkByteOS = Buffer.from([sequence, dataLen, ...dataBytes]);
     let checksum = BlufiCRC.calcCRC(0, checkByteOS);
 

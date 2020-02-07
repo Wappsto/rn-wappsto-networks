@@ -30,12 +30,10 @@ class BlufiAESCrypto {
 
   encrypt(content) {
     return this.mEncryptCipher.update(content);
-    // return this.mEncryptCipher.final();
   }
 
   decrypt(content) {
     return this.mDecryptCipher.update(content);
-    // return this.mDecryptCipher.final();
   }
 }
 

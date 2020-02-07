@@ -1341,11 +1341,6 @@ bcrypt-pbkdf@^1.0.0:
   dependencies:
     tweetnacl "^0.14.3"
 
-big-integer@^1.6.48:
-  version "1.6.48"
-  resolved "https://registry.yarnpkg.com/big-integer/-/big-integer-1.6.48.tgz#8fd88bd1632cba4a1c8c3e3d7159f08bb95b4b9e"
-  integrity sha512-j51egjPa7/i+RdiRuJbPdJ2FIUYYPhvYLjzoYbcMMm62ooO6F94fETG4MTs46zPAF9Brs04OajboA/qTGuz78w==
-
 big-integer@^1.6.7:
   version "1.6.46"
   resolved "https://registry.yarnpkg.com/big-integer/-/big-integer-1.6.46.tgz#e18a75f0515be0f3ad10c0d110e37fa882b3f223"
@@ -1753,11 +1748,6 @@ convert-source-map@^1.1.0, convert-source-map@^1.4.0:
   resolved "https://registry.yarnpkg.com/convert-source-map/-/convert-source-map-1.6.0.tgz#51b537a8c43e0f04dec1993bffcdd504e758ac20"
   dependencies:
     safe-buffer "~5.1.1"
-
-convert-string@^0.1.0:
-  version "0.1.0"
-  resolved "https://registry.yarnpkg.com/convert-string/-/convert-string-0.1.0.tgz#79ce41a9bb0d03bcf72cdc6a8f3c56fbbc64410a"
-  integrity sha1-ec5BqbsNA7z3LNxqjzxW+7xkQQo=
 
 copy-descriptor@^0.1.0:
   version "0.1.1"
@@ -5036,14 +5026,16 @@ react-native-barcode-mask@^1.1.0:
   dependencies:
     prop-types "^15.6.2"
 
-react-native-camera@^3.8.0:
-  version "3.15.1"
-  resolved "https://registry.yarnpkg.com/react-native-camera/-/react-native-camera-3.15.1.tgz#8e4eb67cb6687b5250f849b348f0d19a01649105"
-
 react-native-ble-manager@^6.7.0:
   version "6.7.0"
   resolved "https://registry.yarnpkg.com/react-native-ble-manager/-/react-native-ble-manager-6.7.0.tgz#74e1288ae061be7d267389509ed3f7fcd67d9a6f"
   integrity sha512-hJuij3nWKBp4Ba7GaT8CzTGOp5i33czvU53Emvf6kBxCXNc2tBR55NogTtTC4DbTfrxNQHjr6Ppws7pDcH088w==
+
+react-native-camera@^3.8.0:
+  version "3.15.1"
+  resolved "https://registry.yarnpkg.com/react-native-camera/-/react-native-camera-3.15.1.tgz#8e4eb67cb6687b5250f849b348f0d19a01649105"
+  dependencies:
+    prop-types "^15.6.2"
 
 react-native-crypto@^2.2.0:
   version "2.2.0"

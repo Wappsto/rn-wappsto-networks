@@ -1,5 +1,4 @@
 import Crypto from 'crypto';
-// import Assert from 'assert';
 
 class BlufiDH {
     mP = null;
@@ -19,8 +18,6 @@ class BlufiDH {
         this.mDh.generateKeys();
         this.mPrivateKey = this.mDh.getPrivateKey();
         this.mPublicKey = this.mDh.getPublicKey();
-        // Assert.notEqual(this.mPrivateKey, null);
-        // Assert.notEqual(this.mPublicKey, null);
     }
 
     getP() {
