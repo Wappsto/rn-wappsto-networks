@@ -3,7 +3,7 @@ import React, { useState, useEffect } from 'react';
 import { View, StatusBar } from 'react-native';
 import SessionVerifier from './SessionVerifier';
 
-import theme from '../theme/themeExport';
+import theme from '@/theme/themeExport';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 
 const SplashScreen = ({ navigation }) => {

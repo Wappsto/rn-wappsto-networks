@@ -2,11 +2,11 @@ import React, { useMemo, useCallback } from 'react';
 import { View, Text, TouchableOpacity } from 'react-native';
 import { useSelector } from 'react-redux';
 import { makeEntitySelector } from 'wappsto-redux/selectors/entities';
-import { selectedDeviceName } from '../../../util/params';
+import { selectedDeviceName } from '@/util/params';
 import { useDispatch } from 'react-redux';
 import { setItem } from 'wappsto-redux/actions/items';
-import theme from '../../../theme/themeExport';
-import i18n from '../../../translations';
+import theme from '@/theme/themeExport';
+import i18n from '@/translations';
 
 const DeviceSection = React.memo(({ navigation, id, isPrototype }) => {
   const getEntity = useMemo(makeEntitySelector, []);

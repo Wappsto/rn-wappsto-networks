@@ -1,15 +1,15 @@
 import React, { useMemo } from 'react';
 import { View, Text } from 'react-native';
-import Screen from '../../components/Screen';
-import RequestError from '../../components/RequestError';
-import theme from '../../theme/themeExport';
-import MenuButton from '../../components/MenuButton';
-import i18n, { CapitalizeFirst, CapitalizeEach } from '../../translations';
+import Screen from '@/components/Screen';
+import RequestError from '@/components/RequestError';
+import theme from '@/theme/themeExport';
+import MenuButton from '@/components/MenuButton';
+import i18n, { CapitalizeFirst, CapitalizeEach } from '@/translations';
 import { useSelector } from 'react-redux';
 import { makeItemSelector } from 'wappsto-redux/selectors/items';
 import { getUserData } from 'wappsto-redux/selectors/entities';
 import { makeRequestSelector } from 'wappsto-redux/selectors/request';
-import { userGetRequest } from '../../util/params';
+import { userGetRequest } from '@/util/params';
 
 const AccountScreen = React.memo(() => {
   const getRequest = useMemo(makeRequestSelector, []);

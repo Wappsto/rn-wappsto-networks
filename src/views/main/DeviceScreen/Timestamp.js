@@ -1,7 +1,7 @@
 import React from 'react';
 import {Text} from 'react-native';
-import i18n, { CapitalizeFirst } from '../../../translations';
-import theme from '../../../theme/themeExport';
+import i18n, { CapitalizeFirst } from '@/translations';
+import theme from '@/theme/themeExport';
 
 const Timestamp = React.memo(({ timestamp }) => {
   return (

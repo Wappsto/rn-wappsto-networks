@@ -20,7 +20,7 @@ class LinkedBlockingQueue {
     }
     return new Promise((resolve, reject) => {
       const timeout = setTimeout(() => {
-        reject('timeout LinkedBlockingQueue');
+        resolve('');
       }, 10000);
       this.waiting.push({ resolve, reject, timeout });
 

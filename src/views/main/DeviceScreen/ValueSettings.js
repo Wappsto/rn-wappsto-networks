@@ -1,9 +1,9 @@
 import React, { useCallback } from 'react';
 import { View, Text } from 'react-native';
-import PopupButton from '../../../components/PopupButton';
-import Popup from '../../../components/Popup';
-import theme from '../../../theme/themeExport';
-import i18n, { CapitalizeFirst, CapitalizeEach } from '../../../translations';
+import PopupButton from '@/components/PopupButton';
+import Popup from '@/components/Popup';
+import theme from '@/theme/themeExport';
+import i18n, { CapitalizeFirst, CapitalizeEach } from '@/translations';
 
 const  getValueType = (value) => {
   if (value) {

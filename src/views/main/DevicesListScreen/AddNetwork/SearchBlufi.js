@@ -1,37 +1,33 @@
-import React, { useEffect, useState } from 'react';
-import { Platform, PermissionsAndroid, NativeModules, NativeEventEmitter, Button, Text, FlatList, TouchableOpacity } from 'react-native';
+import React, { useEffect, useState, useCallback } from 'react';
+import { Platform, PermissionsAndroid, NativeModules, NativeEventEmitter, Text, FlatList, TouchableOpacity, ActivityIndicator } from 'react-native';
 import BleManager from 'react-native-ble-manager';
-import { BlufiParameter } from './lib/util/params';
-import useVisible from 'wappsto-blanket/hooks/useVisible';
-import Popup from '../../../components/Popup';
-import Configure from './Configure';
+import { BlufiParameter } from '@/BlufiLib/util/params';
+import i18n, { CapitalizeFirst } from '@/translations';
 
 const BleManagerModule = NativeModules.BleManager;
 const bleManagerEmitter = new NativeEventEmitter(BleManagerModule);
 
 const filter = ['ad'];
-const Blufi = () => {
-  const [ scanning, setScanning ] = useState(false);
+const Blufi = ({ next, previous, hide, setSelectedDevice }) => {
+  const [ error, setError ] = useState(false);
+  const [ scanning, setScanning ] = useState(true);
   const [ devices, setDevices ] = useState([]);
-  const [ selectedDevice, setSelectedDevice ] = useState(null);
-  const [ visible, show, hide ] = useVisible(false);
 
-  const selectDevice = (device) => {
-    setSelectedDevice(device);
-    show();
-  }
+  const handleDevicePress = useCallback((item) => {
+    setSelectedDevice(item);
+    next();
+  }, [next, setSelectedDevice]);
 
   const scan = async () => {
-    if(!scanning){
-      setDevices([]);
-      setScanning(true);
-      try{
-        await BleManager.enableBluetooth();
-        BleManager.scan([BlufiParameter.UUID_SERVICE], 4, false);
-      } catch(e){
-        // SAMI: Handle enable bluetooth error!!!
-        setScanning(false);
-      }
+    setDevices([]);
+    setScanning(true);
+    try{
+      await BleManager.enableBluetooth();
+      BleManager.scan([BlufiParameter.UUID_SERVICE], 5, false);
+    } catch(e){
+      // SAMI: Handle enable bluetooth error!!!
+      setScanning(false);
+      setError(true);
     }
   }
 
@@ -88,25 +84,23 @@ const Blufi = () => {
 
   return (
     <>
-      <Popup
-        visible={visible}
-        hide={hide}
-        onRequestClose={hide}
-      >
-        <Configure device={selectedDevice} hide={hide}/>
-      </Popup>
-      <Button onPress={scan} title='scan' />
+      <Text>{CapitalizeFirst(i18n.t(devices.length === 0 ? 'blufi.lookingForDevices' : 'blufi.foundDevices'))}</Text>
+      {scanning && <ActivityIndicator size='large'/>}
+      {!scanning &&
+        <TouchableOpacity onPress={scan} style={{ marginBottom: 10, backgroundColor: '#EFEFEF', padding: 10}}>
+          <Text>{CapitalizeFirst(i18n.t('blufi.scanAgain'))}</Text>
+        </TouchableOpacity>
+      }
       <FlatList
-        onRefresh={scan}
-        refreshing={scanning}
         data={devices}
         renderItem={({ item }) => (
-          <TouchableOpacity onPress={() => selectDevice(item)} style={{ marginBottom: 10, backgroundColor: '#EFEFEF', padding: 10}}>
+          <TouchableOpacity onPress={() => handleDevicePress(item)} style={{ marginBottom: 10, backgroundColor: '#EFEFEF', padding: 10}}>
             <Text>{item.name}</Text>
             <Text>{item.id}</Text>
           </TouchableOpacity>
         )}
       />
+      {error && <Text>{CapitalizeFirst(i18n.t('blufi.scanError'))}</Text>}
     </>
   )
 }

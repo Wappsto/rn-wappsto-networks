@@ -1,16 +1,16 @@
 import React, { useState, useCallback, useEffect, useMemo } from 'react';
 import { useSelector } from 'react-redux';
-import PopupButton from '../../../components/PopupButton';
-import Popup from '../../../components/Popup';
+import PopupButton from '@/components/PopupButton';
+import Popup from '@/components/Popup';
 import { Modal, View, Text, ScrollView, TouchableOpacity, StatusBar } from 'react-native';
 import { SafeAreaView} from 'react-native-safe-area-context';
 import AddNetworkPopup from './AddNetworkPopup';
 import ConfirmAddManufacturerNetwork from './ConfirmAddManufacturerNetwork';
-import theme from '../../../theme/themeExport';
+import theme from '@/theme/themeExport';
 import useRequest from 'wappsto-blanket/hooks/useRequest';
 import { makeItemSelector } from 'wappsto-redux/selectors/items';
-import { manufacturerAsOwnerErrorCode, iotNetworkListAdd } from '../../../util/params';
-import i18n, { CapitalizeFirst } from '../../../translations';
+import { manufacturerAsOwnerErrorCode, iotNetworkListAdd } from '@/util/params';
+import i18n, { CapitalizeFirst } from '@/translations';
 
 const Content = React.memo(({ visible, hide, show }) => {
   const { request, send } = useRequest();

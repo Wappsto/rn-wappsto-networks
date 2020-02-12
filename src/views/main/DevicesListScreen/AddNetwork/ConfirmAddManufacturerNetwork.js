@@ -1,8 +1,8 @@
 import React from 'react';
 import { Text, ActivityIndicator, TouchableOpacity } from 'react-native';
-import RequestError from '../../../components/RequestError';
-import theme from '../../../theme/themeExport';
-import i18n, { CapitalizeFirst, CapitalizeEach } from '../../../translations';
+import RequestError from '@/components/RequestError';
+import theme from '@/theme/themeExport';
+import i18n, { CapitalizeFirst, CapitalizeEach } from '@/translations';
 
 const ConfirmAddManufacturerNetwork = React.memo(({ acceptManufacturerAsOwner, postRequest }) => {
   const loading = postRequest && postRequest.status === 'pending';

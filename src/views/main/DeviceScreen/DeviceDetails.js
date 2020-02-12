@@ -1,12 +1,12 @@
 import React, { useMemo } from 'react';
 import { Text } from 'react-native';
-import PopupButton from '../../../components/PopupButton';
-import Popup from '../../../components/Popup';
-import theme from '../../../theme/themeExport';
-import i18n, { CapitalizeFirst, CapitalizeEach } from '../../../translations';
+import PopupButton from '@/components/PopupButton';
+import Popup from '@/components/Popup';
+import theme from '@/theme/themeExport';
+import i18n, { CapitalizeFirst, CapitalizeEach } from '@/translations';
 import { makeEntitySelector } from 'wappsto-redux/selectors/entities';
 import { makeItemSelector } from 'wappsto-redux/selectors/items';
-import { selectedDeviceName } from '../../../util/params';
+import { selectedDeviceName } from '@/util/params';
 import { useSelector } from 'react-redux';
 
 const ValueSettings = React.memo(() => {

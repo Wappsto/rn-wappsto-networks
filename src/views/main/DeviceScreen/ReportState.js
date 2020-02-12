@@ -1,9 +1,9 @@
 import React from 'react';
 import { View, Text, StyleSheet, Image } from 'react-native';
-import theme from '../../../theme/themeExport';
-import i18n, { CapitalizeFirst } from '../../../translations';
+import theme from '@/theme/themeExport';
+import i18n, { CapitalizeFirst } from '@/translations';
 import Timestamp from './Timestamp';
-import { cannotAccessState } from '../../../util/helpers';
+import { cannotAccessState } from '@/util/helpers';
 
 const styles = StyleSheet.create({
   image: {

@@ -1,12 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import { View, Text, TextInput, Switch } from 'react-native';
 import Slider from '@react-native-community/slider';
-import RequestError from '../../../components/RequestError';
-import theme from '../../../theme/themeExport';
-import i18n, { CapitalizeFirst } from '../../../translations';
+import RequestError from '@/components/RequestError';
+import theme from '@/theme/themeExport';
+import i18n, { CapitalizeFirst } from '@/translations';
 import useRequest from 'wappsto-blanket/hooks/useRequest';
 import Timestamp from './Timestamp';
-import { cannotAccessState } from '../../../util/helpers';
+import { cannotAccessState } from '@/util/helpers';
 
 const toNumber = (x) => {
   if (Math.abs(x) < 1.0) {

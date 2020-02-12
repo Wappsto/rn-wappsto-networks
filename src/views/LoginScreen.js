@@ -11,9 +11,9 @@ import useRequest from 'wappsto-blanket/hooks/useRequest';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useTranslation, CapitalizeFirst } from '../translations';
 
-import RequestError from '../components/RequestError';
+import RequestError from '@/components/RequestError';
 
-import theme from '../theme/themeExport';
+import theme from '@/theme/themeExport';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 
 const isEmail = (str) => {

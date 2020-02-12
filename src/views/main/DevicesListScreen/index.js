@@ -1,27 +1,21 @@
 import React, { useEffect, useState, useMemo, useCallback } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { AppState, Text, View } from 'react-native';
-import Screen from '../../../components/Screen';
-import MenuButton from '../../../components/MenuButton';
-import List from '../../../components/List';
+import Screen from '@/components/Screen';
+import MenuButton from '@/components/MenuButton';
+import List from '@/components/List';
 import DeviceItem from './DeviceItem';
-import AddNetworkButton from './AddNetworkButton';
-import { config } from '../../../configureWappstoRedux';
+import AddNetwork from './AddNetwork';
+import { config } from '@/configureWappstoRedux';
 import { makeItemSelector } from 'wappsto-redux/selectors/items';
 import { makeStreamSelector } from 'wappsto-redux/selectors/stream';
 import { removeItem } from 'wappsto-redux/actions/items';
-import theme from '../../../theme/themeExport';
-import i18n, { CapitalizeEach, CapitalizeFirst } from '../../../translations';
-import { iotNetworkListAdd } from '../../../util/params';
-import { isPrototype, startStream, endStream } from '../../../util/helpers';
+import theme from '@/theme/themeExport';
+import i18n, { CapitalizeEach, CapitalizeFirst } from '@/translations';
+import { iotNetworkListAdd } from '@/util/params';
+import { isPrototype, startStream, endStream } from '@/util/helpers';
+import { getServiceVersion } from 'wappsto-redux/util/helpers';
 
-const query = {
-  expand: 1,
-  limit: 10,
-  order_by: 'meta.created',
-  from_last: true,
-  verbose: true
-};
 const DevicesListScreen = React.memo(({ navigation }) => {
   const dispatch = useDispatch();
   const getStream = useMemo(makeStreamSelector, []);
@@ -29,6 +23,13 @@ const DevicesListScreen = React.memo(({ navigation }) => {
   const [ appState, setAppState ] = useState(AppState.currentState);
   const getItem = useMemo(makeItemSelector, []);
   const addToList = useSelector(state => getItem(state, iotNetworkListAdd));
+  const query = useMemo(() => ({
+    expand: 1,
+    limit: 10,
+    order_by: getServiceVersion('network') === '' ? 'created' : 'meta.created',
+    from_last: true,
+    verbose: true
+  }), []);
 
   const _handleNetworkAdd = (event) => {
     try{
@@ -147,7 +148,7 @@ DevicesListScreen.navigationOptions = ({ navigation }) => {
     ...theme.headerStyle,
     title: CapitalizeEach(i18n.t('pageTitle.main')),
     headerLeft: <MenuButton navigation={navigation} />,
-    headerRight: <AddNetworkButton navigation={navigation} />,
+    headerRight: <AddNetwork navigation={navigation} />,
   };
 };
 
