@@ -5791,9 +5791,10 @@ walker@^1.0.7, walker@~1.0.5:
   dependencies:
     makeerror "1.0.x"
 
-wappsto-blanket@Wappsto/wappsto-blanket#v0.0.18:
-  version "0.0.0"
-  resolved "https://codeload.github.com/Wappsto/wappsto-blanket/tar.gz/c3263b5aa3348f7806933f03c58afe20fcd29828"
+wappsto-blanket@^0.0.20:
+  version "0.0.20"
+  resolved "https://registry.yarnpkg.com/wappsto-blanket/-/wappsto-blanket-0.0.20.tgz#a1fa1517a940e25d9a7349d84e8f7d4b9527a318"
+  integrity sha512-PQya8Vq91/AkIXHCcgRQzPU9HHmL+r57w+cwHE8BSofaolJvktrIBr6DIdeTvOIsUb7cQtrQRXrGzPAFD2WyeQ==
 
 wappsto-redux@^3.0.7:
   version "3.0.7"

@@ -14,14 +14,8 @@ import theme from '../../../theme/themeExport';
 import i18n, { CapitalizeEach, CapitalizeFirst } from '../../../translations';
 import { iotNetworkListAdd } from '../../../util/params';
 import { isPrototype, startStream, endStream } from '../../../util/helpers';
+import { getServiceVersion } from 'wappsto-redux/util/helpers';
 
-const query = {
-  expand: 1,
-  limit: 10,
-  order_by: 'meta.created',
-  from_last: true,
-  verbose: true
-};
 const DevicesListScreen = React.memo(({ navigation }) => {
   const dispatch = useDispatch();
   const getStream = useMemo(makeStreamSelector, []);
@@ -29,6 +23,13 @@ const DevicesListScreen = React.memo(({ navigation }) => {
   const [ appState, setAppState ] = useState(AppState.currentState);
   const getItem = useMemo(makeItemSelector, []);
   const addToList = useSelector(state => getItem(state, iotNetworkListAdd));
+  const query = useMemo(() => ({
+    expand: 1,
+    limit: 10,
+    order_by: getServiceVersion('network') === '' ? 'created' : 'meta.created',
+    from_last: true,
+    verbose: true
+  }), []);
 
   const _handleNetworkAdd = (event) => {
     try{
