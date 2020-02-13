@@ -88,7 +88,10 @@ const LoginScreen = React.memo(({ navigation }) => {
   }
 
   const googleSignIn = async() => {
-    fbSignInError.current = null;
+    fbSignInError.current = {
+      id: 'fbSignInError',
+      status: 'pending'
+    };
     try {
       setIsSigninInProgress(true);
       await GoogleSignin.configure({
@@ -104,6 +107,7 @@ const LoginScreen = React.memo(({ navigation }) => {
         .auth()
         .signInWithCredential(credential);
       const token = await firebaseUserCredential.user.getIdToken();
+      fbSignInError.current = null;
       send({
         method: 'POST',
         url: '/session',
@@ -126,6 +130,7 @@ const LoginScreen = React.memo(({ navigation }) => {
           code = 'generic';
         }
         fbSignInError.current = {
+          id: 'fbSignInError',
           status: 'error',
           json: {
             code,
