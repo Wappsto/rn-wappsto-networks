@@ -48,8 +48,8 @@
     "redux-thunk": "^2.3.0",
     "stream-browserify": "^1.0.0",
     "vm-browserify": "0.0.4",
-    "wappsto-blanket": "Wappsto/wappsto-blanket#v0.0.18",
-    "wappsto-redux": "^3.0.7"
+    "wappsto-blanket": "^0.0.21",
+    "wappsto-redux": "^3.0.8"
   },
   "devDependencies": {
     "@babel/core": "^7.6.2",

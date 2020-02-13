@@ -6939,14 +6939,15 @@ walker@^1.0.7, walker@~1.0.5:
   dependencies:
     makeerror "1.0.x"
 
-wappsto-blanket@Wappsto/wappsto-blanket#v0.0.18:
-  version "0.0.0"
-  resolved "https://codeload.github.com/Wappsto/wappsto-blanket/tar.gz/c3263b5aa3348f7806933f03c58afe20fcd29828"
+wappsto-blanket@^0.0.21:
+  version "0.0.21"
+  resolved "https://registry.yarnpkg.com/wappsto-blanket/-/wappsto-blanket-0.0.21.tgz#6d7d82d600bef526b55e767e8c99d1831137c6a5"
+  integrity sha512-eEuu98lAHQRMTf1P855DfHicD5Wv2jdYIrybLanhBTBRxARKWY04dkvijpJ/xVGL5ukYDgjcWuQuUK94yo3F/A==
 
-wappsto-redux@^3.0.7:
-  version "3.0.7"
-  resolved "https://registry.yarnpkg.com/wappsto-redux/-/wappsto-redux-3.0.7.tgz#2f634b37261c20b6ec123a15386ea83e4d699c4e"
-  integrity sha512-zMSxeYc85WqsnwK9x/XnUzccH51tkNfjBKqqaMNYwdO/ZQDAqkTOVZKZPPQpPcUOPeimml0kLMwFDbc6oewvmA==
+wappsto-redux@^3.0.8:
+  version "3.0.8"
+  resolved "https://registry.yarnpkg.com/wappsto-redux/-/wappsto-redux-3.0.8.tgz#3af5ff05dcb9faf06d04f9e378ec3a66ccb14c88"
+  integrity sha512-cGULTAOjYhdFYvWlJheSauPWhYe5u8FvbyOlVB66LcJBO25BlSakmOLm4am67WMxDBKz7U6RR4ZqOU7h0nNqbA==
   dependencies:
     normalizr "^3.4.1"
     querystring "^0.2.0"
