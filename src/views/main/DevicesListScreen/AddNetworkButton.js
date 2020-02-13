@@ -25,6 +25,9 @@ const Content = React.memo(({ visible, hide, show }) => {
     send({
       method: 'POST',
       url: '/network/' + id,
+      query: {
+        verbose: true
+      },
       body
     });
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -34,6 +37,9 @@ const Content = React.memo(({ visible, hide, show }) => {
     send({
       method: 'POST',
       url: '/network/' + networkId,
+      query: {
+        verbose: true
+      },
       body: {
         meta: {
           accept_manufacturer_as_owner: true
