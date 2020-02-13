@@ -12,7 +12,7 @@ import { makeStreamSelector } from 'wappsto-redux/selectors/stream';
 import { removeItem } from 'wappsto-redux/actions/items';
 import theme from '@/theme/themeExport';
 import i18n, { CapitalizeEach, CapitalizeFirst } from '@/translations';
-import { iotNetworkListAdd } from '@/util/params';
+import { iotNetworkListAdd, iotNetworkListRemove } from '@/util/params';
 import { isPrototype, startStream, endStream } from '@/util/helpers';
 import { getServiceVersion } from 'wappsto-redux/util/helpers';
 
@@ -23,6 +23,7 @@ const DevicesListScreen = React.memo(({ navigation }) => {
   const [ appState, setAppState ] = useState(AppState.currentState);
   const getItem = useMemo(makeItemSelector, []);
   const addToList = useSelector(state => getItem(state, iotNetworkListAdd));
+  const removeFromList = useSelector(state => getItem(state, iotNetworkListRemove));
   const query = useMemo(() => ({
     expand: 1,
     limit: 10,
@@ -38,8 +39,12 @@ const DevicesListScreen = React.memo(({ navigation }) => {
         data = [data];
       }
       data.forEach(message => {
-        if(message.meta_object.type === 'network' && message.event === 'create'){
-          addToList(message.meta_object.id);
+        if(message.meta_object.type === 'network'){
+          if(message.event === 'create'){
+            addToList(message.meta_object.id);
+          } else if(message.event === 'delete'){
+            removeFromList(message.meta_object.id);
+          }
         }
       })
     } catch(e){
@@ -101,6 +106,7 @@ const DevicesListScreen = React.memo(({ navigation }) => {
         url='/network'
         query={query}
         addItemName={iotNetworkListAdd}
+        removeItemName={iotNetworkListRemove}
         onRefresh={onRefresh}
         page={navigation.state.routeName}
         renderSectionHeader={({section: {title: network}}) => {

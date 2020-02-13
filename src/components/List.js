@@ -11,12 +11,12 @@ import { config } from '../configureWappstoRedux';
 import { makeItemSelector } from 'wappsto-redux/selectors/items';
 import { currentPage } from '../util/params';
 
-const List = React.memo(({ name, url, query, style, renderSectionHeader, renderSectionFooter, renderItem, addItemName, onRefresh, page }) => {
+const List = React.memo(({ name, url, query, style, renderSectionHeader, renderSectionFooter, renderItem, addItemName, removeItemName, onRefresh, page }) => {
   const dispatch = useDispatch();
   const getStream = useMemo(makeStreamSelector, []);
   const stream = useSelector(state => getStream(state, config.stream && config.stream.name));
   const [ appState, setAppState ] = useState(AppState.currentState);
-  const { items, request, refresh, loadMore, canLoadMore, addItem } = useList({ name, url, query, resetOnEmpty: true });
+  const { items, request, refresh, loadMore, canLoadMore, addItem, removeItem } = useList({ name, url, query, resetOnEmpty: true });
   const getItem = useMemo(makeItemSelector, []);
   const currPage = useSelector(state => getItem(state, currentPage));
 
@@ -26,6 +26,13 @@ const List = React.memo(({ name, url, query, style, renderSectionHeader, renderS
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [addItemName, addItem]);
+
+  useEffect(() => {
+    if(addItemName){
+      dispatch(setItem(removeItemName, () => removeItem));
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [removeItemName, removeItem]);
 
   const data = [];
   items.forEach(item => {

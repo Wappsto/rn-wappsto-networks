@@ -20,7 +20,6 @@ const DeviceScreen = React.memo(({ navigation }) => {
   const query = useMemo(() => ({
     expand: 3,
     order_by: getServiceVersion('value') === '' ? 'created' : 'meta.created',
-    from_last: true,
     verbose: true
   }), []);
 
