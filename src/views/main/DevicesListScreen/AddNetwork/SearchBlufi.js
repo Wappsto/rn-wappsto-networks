@@ -3,6 +3,7 @@ import { Platform, PermissionsAndroid, NativeModules, NativeEventEmitter, Text, 
 import BleManager from 'react-native-ble-manager';
 import { BlufiParameter } from '@/BlufiLib/util/params';
 import i18n, { CapitalizeFirst } from '@/translations';
+import theme from '@/theme/themeExport';
 
 const BleManagerModule = NativeModules.BleManager;
 const bleManagerEmitter = new NativeEventEmitter(BleManagerModule);
@@ -84,7 +85,7 @@ const Blufi = ({ next, previous, hide, setSelectedDevice }) => {
 
   return (
     <>
-      <Text>{CapitalizeFirst(i18n.t(devices.length === 0 ? 'blufi.lookingForDevices' : 'blufi.foundDevices'))}</Text>
+      <Text style={theme.common.H3}>{CapitalizeFirst(i18n.t(devices.length === 0 ? 'blufi.lookingForDevices' : 'blufi.foundDevices'))}</Text>
       {scanning && <ActivityIndicator size='large'/>}
       {!scanning &&
         <TouchableOpacity onPress={scan} style={{ marginBottom: 10, backgroundColor: '#EFEFEF', padding: 10}}>
@@ -94,7 +95,7 @@ const Blufi = ({ next, previous, hide, setSelectedDevice }) => {
       <FlatList
         data={devices}
         renderItem={({ item }) => (
-          <TouchableOpacity onPress={() => handleDevicePress(item)} style={{ marginBottom: 10, backgroundColor: '#EFEFEF', padding: 10}}>
+          <TouchableOpacity onPress={() => handleDevicePress(item)} style={theme.common.button}>
             <Text>{item.name}</Text>
             <Text>{item.id}</Text>
           </TouchableOpacity>

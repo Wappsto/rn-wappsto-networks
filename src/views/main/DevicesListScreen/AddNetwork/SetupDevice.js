@@ -5,6 +5,7 @@ import Blufi from '@/BlufiLib';
 import { BlufiParameter, BlufiCallback } from '@/BlufiLib/util/params';
 import i18n, { CapitalizeFirst } from '@/translations';
 import theme from '@/theme/themeExport';
+import { isUUID } from 'wappsto-redux/util/helpers';
 
 const BleManagerModule = NativeModules.BleManager;
 const bleManagerEmitter = new NativeEventEmitter(BleManagerModule);
@@ -17,6 +18,20 @@ const STEPS = {
   SENDWIFIDATA: 'sendWifiData',
   WAITDEVICECONNECT: 'waitDeviceConnect',
   ADDNETWORK: 'addNetwork'
+}
+
+const ERRORS = {
+  FAILEDCONNECT: 'failedConnect',
+  FAILEDRETRIEVE: 'failedRetrieve',
+  FAILEDRETRIEVETIMEOUT: 'failedRetrieveTimeout',
+  FAILEDNOTUUID: 'failedNotUuid',
+  FAILEDINITNOTIFICATION: 'failedInitNotification',
+  FAILEDNEGOCIATESECURITY: 'failedNegotiateSecurity',
+  FAILEDNEGOCIATESECURITYTIMEOUT: 'failedNegotiateSecurityTimeout',
+  FAILEDSENDWIFIDATA: 'failedSendWifiData',
+  FAILEDWAITDEVICECONNECT: 'failedWaitDeviceConnect',
+  FAILEDADDNETWORK: 'failedAddNetwork',
+  GENERIC: 'generic'
 }
 
 const timeoutLimit = 10000;
@@ -46,19 +61,28 @@ const SetupDevice = React.memo(({ next, previous, hide, ssid, password, selected
 
     Blufi.onError = () => {
       clearTimeout(timeout.current);
-      setStep('error');
+      setStep(ERRORS.GENERIC);
     }
 
-    Blufi.onReceiveCustomData = async (data) => {
-      clearTimeout(timeout.current);
-      networkId.current = data;
-      setStep(STEPS.SENDWIFIDATA);
-      await Blufi.configure(selectedDevice, ssid, password);
-      setStep(STEPS.WAITDEVICECONNECT);
-      timeout.current = setTimeout(() => {
-        // device did not connect
-        setStep('error');
-      }, timeoutLimit);
+    Blufi.onReceiveCustomData = async (status, data) => {
+      try{
+        clearTimeout(timeout.current);
+        networkId.current = data.toString();
+        if(!isUUID(networkId.current)){
+          // message is not a uuid
+          setStep(ERRORS.FAILEDNOTUUID);
+          return;
+        }
+        setStep(STEPS.SENDWIFIDATA);
+        await Blufi.configure(ssid, password);
+        setStep(STEPS.WAITDEVICECONNECT);
+        timeout.current = setTimeout(() => {
+          // device did not connect
+          setStep(ERRORS.FAILEDWAITDEVICECONNECT);
+        }, timeoutLimit);
+      } catch(e) {
+        setStep(ERRORS.FAILEDSENDWIFIDATA);
+      }
     }
 
     Blufi.onNegotiateSecurityResult = (result) => {
@@ -68,10 +92,10 @@ const SetupDevice = React.memo(({ next, previous, hide, ssid, password, selected
         Blufi.postCustomData('network_id');
         timeout.current = setTimeout(() => {
           // device did not send back network id
-          setStep('error');
+          setStep(ERRORS.FAILEDRETRIEVETIMEOUT);
         }, timeoutLimit);
       } else {
-        setStep('error');
+        setStep(ERRORS.FAILEDRETRIEVE);
       }
     }
 
@@ -96,10 +120,10 @@ const SetupDevice = React.memo(({ next, previous, hide, ssid, password, selected
       Blufi.negotiateSecurity(selectedDevice);
       timeout.current = setTimeout(() => {
         // device did not negociate security
-        setStep('error');
+        setStep(ERRORS.FAILEDNEGOCIATESECURITYTIMEOUT);
       }, timeoutLimit);
     } catch (e) {
-      setStep('error');
+      setStep(ERRORS.FAILEDNEGOCIATESECURITY);
     }
   }
 
@@ -107,23 +131,24 @@ const SetupDevice = React.memo(({ next, previous, hide, ssid, password, selected
     configure();
     return () => {
       BleManager.disconnect(selectedDevice.id);
+      Blufi.reset();
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const done = step === 'done';
-  const error = step === 'error';
+  const error = ERRORS.hasOwnProperty(step);
   const loading = !done && !error;
   return (
     <>
-      <Text>{CapitalizeFirst(i18n.t(loading ? 'blufi.settingUp' : (error ? 'blufi.error' : 'blufi.done')))}</Text>
+      <Text style={theme.common.H3}>{CapitalizeFirst(i18n.t(loading ? 'blufi.settingUp' : (error ? 'blufi.error.title' : 'blufi.done')))}</Text>
       {loading && (
         <>
           <ActivityIndicator size='large' color={theme.variables.primary} />
           <Text>{CapitalizeFirst(i18n.t('blufi.step.' + step))}</Text>
         </>
       )}
-      {error && <Text>{CapitalizeFirst(i18n.t('blufi.errorDescription'))}</Text>}
+      {error && <Text>{CapitalizeFirst(i18n.t('blufi.error.' + step))}</Text>}
       {!loading && !error &&
         <>
           <Text>{CapitalizeFirst(i18n.t('blufi.doneDescription'))}</Text>
