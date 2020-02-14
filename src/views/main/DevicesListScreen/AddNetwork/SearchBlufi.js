@@ -92,15 +92,12 @@ const Blufi = ({ next, previous, hide, setSelectedDevice }) => {
           <Text>{CapitalizeFirst(i18n.t('blufi.scanAgain'))}</Text>
         </TouchableOpacity>
       }
-      <FlatList
-        data={devices}
-        renderItem={({ item }) => (
-          <TouchableOpacity onPress={() => handleDevicePress(item)} style={theme.common.button}>
-            <Text>{item.name}</Text>
-            <Text>{item.id}</Text>
-          </TouchableOpacity>
-        )}
-      />
+      {devices.map(device => (
+        <TouchableOpacity key={device.id} onPress={() => handleDevicePress(device)} style={theme.common.button}>
+          <Text>{device.name}</Text>
+          <Text>{device.id}</Text>
+        </TouchableOpacity>
+      ))}
       {error && <Text>{CapitalizeFirst(i18n.t('blufi.scanError'))}</Text>}
     </>
   )

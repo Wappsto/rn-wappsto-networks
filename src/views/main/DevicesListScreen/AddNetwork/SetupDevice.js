@@ -6,6 +6,7 @@ import { BlufiParameter, BlufiCallback } from '@/BlufiLib/util/params';
 import i18n, { CapitalizeFirst } from '@/translations';
 import theme from '@/theme/themeExport';
 import { isUUID } from 'wappsto-redux/util/helpers';
+import RequestError from '@/components/RequestError';
 
 const BleManagerModule = NativeModules.BleManager;
 const bleManagerEmitter = new NativeEventEmitter(BleManagerModule);
@@ -35,7 +36,7 @@ const ERRORS = {
 }
 
 const timeoutLimit = 10000;
-const SetupDevice = React.memo(({ next, previous, hide, ssid, password, selectedDevice }) => {
+const SetupDevice = React.memo(({ next, previous, hide, ssid, password, selectedDevice, sendRequest, postRequest, skipCodes }) => {
   const [ step, setStep ] = useState('pending');
   const listening = useRef(false);
   const networkId = useRef(null);
@@ -102,8 +103,9 @@ const SetupDevice = React.memo(({ next, previous, hide, ssid, password, selected
     Blufi.onStatusResponse = () => {
       // Device connected!
       clearTimeout(timeout.current);
-      // setStep(STEPS.ADDNETWORK);
-      setStep('done');
+      setStep(STEPS.ADDNETWORK);
+      sendRequest(networkId.current);
+      // setStep('done');
     }
   }
 
@@ -137,7 +139,7 @@ const SetupDevice = React.memo(({ next, previous, hide, ssid, password, selected
   }, []);
 
   const done = step === 'done';
-  const error = ERRORS.hasOwnProperty(step);
+  const error = Object.values(ERRORS).includes(step);
   const loading = !done && !error;
   return (
     <>
@@ -149,6 +151,7 @@ const SetupDevice = React.memo(({ next, previous, hide, ssid, password, selected
         </>
       )}
       {error && <Text>{CapitalizeFirst(i18n.t('blufi.error.' + step))}</Text>}
+      <RequestError request={postRequest} skipCodes={skipCodes} />
       {!loading && !error &&
         <>
           <Text>{CapitalizeFirst(i18n.t('blufi.doneDescription'))}</Text>

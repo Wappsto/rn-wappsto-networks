@@ -5,12 +5,10 @@ import BarcodeMask from 'react-native-barcode-mask';
 import RequestError from '@/components/RequestError';
 import theme from '@/theme/themeExport';
 import i18n, { CapitalizeFirst, CapitalizeEach } from '@/translations';
-import { manufacturerAsOwnerErrorCode } from '@/util/params';
 import { isUUID } from 'wappsto-redux/util/helpers';
 
 const styles = StyleSheet.create({
   qrCodeScannerWrapper: {
-    flex: 1,
     height: 140,
     width: '100%',
     marginBottom: 20,
@@ -34,8 +32,7 @@ const styles = StyleSheet.create({
   },
 });
 
-const skipCodes = [manufacturerAsOwnerErrorCode];
-const AddNetwork = React.memo(({ postRequest, sendRequest }) => {
+const AddNetwork = React.memo(({ postRequest, sendRequest, skipCodes }) => {
   const [ inputValue, setInputValue ] = useState('');
   const [ isScanning, setIsScanning ] = useState(false);
   const [ didScan, setDidScan ] = useState(false);
@@ -63,7 +60,7 @@ const AddNetwork = React.memo(({ postRequest, sendRequest }) => {
 
   const loading = postRequest && postRequest.status === 'pending';
   return (
-    <View style={theme.common.fullScreenModalContent}>
+    <>
       <Text style={theme.common.H3}>
         {CapitalizeEach(i18n.t('addNetwork.addNetworkTitle'))}
       </Text>
@@ -142,7 +139,7 @@ const AddNetwork = React.memo(({ postRequest, sendRequest }) => {
           {CapitalizeFirst(i18n.t('add'))}
         </Text>
       </TouchableOpacity>
-    </View>
+    </>
   );
 });
 
