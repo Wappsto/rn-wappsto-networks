@@ -37,7 +37,7 @@ const ERRORS = {
 
 const timeoutLimit = 10000;
 const SetupDevice = React.memo(({ next, previous, hide, ssid, password, selectedDevice, sendRequest, postRequest, skipCodes }) => {
-  const [ step, setStep ] = useState('pending');
+  const [ step, setStep ] = useState(STEPS.CONNECT);
   const networkId = useRef(null);
   const timeout = useRef(null);
 

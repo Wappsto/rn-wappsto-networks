@@ -108,5 +108,49 @@
       "not_shared": "You do not have permission to access the data",
       "not_paid": "You do not have enough money to access the data"
     },
-    "cancel": "cancel"
+    "cancel": "cancel",
+    "addDevice": {
+      "title": "add device",
+      "register": "register",
+      "registerAndWifi": "regist & setup wifi"
+    },
+    "blufi": {
+      "lookingForDevices": "looking for devices",
+      "scanAgain": "scan again",
+      "scanError": "scan error",
+      "foundDevices": "found devices",
+      "insertWifi": "insert wifi credentials",
+      "ssid": "ssid",
+      "password": "password",
+      "configure": "configure",
+      "warning5G": "if your network is 5g blufi won't work",
+      "settingUp": "setting up",
+      "doneDescription": "your device is included to your list.",
+      "permissionError": "need bluetooth permission to scan devices",
+      "error": {
+        "title": "failed to add your device",
+        "failedConnect": "failed to connect to the device",
+        "failedRetrieve": "failed to retrieve device information",
+        "failedRetrieveTimeout": "failed to retrieve device information, device did not send anything back",
+        "failedNotUuid": "the device replied with a wrong uuid",
+        "failedInitNotification": "failed to initialize notification listener",
+        "failedNegotiateSecurity": "failed to negociate security with the device",
+        "failedNegotiateSecurityTimeout": "the device did not send back the security key",
+        "failedSendWifiData": "failed to send wifi data",
+        "failedWaitDeviceConnect": "the device failed to connect to the wifi",
+        "failedAddNetwork": "failed to add network",
+        "generic": "something went wrong and we don't know what(actually I do but that would be too specific)"
+      },
+      "step": {
+        "connect": "connecting to device",
+        "retrieve": "retrieving device information",
+        "initNotification": "initializing notification listener",
+        "negotiateSecurity": "negociating security with the device",
+        "sendWifiData": "sending wifi data",
+        "waitDeviceConnect": "waiting for the device to connect",
+        "addNetwork": "adding network"
+      }
+    },
+    "done": "done",
+    "next": "next"
 }
