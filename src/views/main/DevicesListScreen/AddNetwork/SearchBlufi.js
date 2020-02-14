@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useCallback } from 'react';
+import React, { useEffect, useState, useCallback, useRef } from 'react';
 import { Platform, PermissionsAndroid, NativeModules, NativeEventEmitter, Text, FlatList, TouchableOpacity, ActivityIndicator } from 'react-native';
 import BleManager from 'react-native-ble-manager';
 import { BlufiParameter } from '@/BlufiLib/util/params';
@@ -19,6 +19,11 @@ const Blufi = ({ next, previous, hide, setSelectedDevice }) => {
     setSelectedDevice(item);
     next();
   }, [next, setSelectedDevice]);
+
+  const removeDiscoveryListener = () => {
+    bleManagerEmitter.removeAllListeners('BleManagerDiscoverPeripheral');
+    bleManagerEmitter.removeAllListeners('BleManagerStopScan');
+  }
 
   const addDiscoveryListener = () => {
     // Get discovered peripherals
@@ -80,6 +85,7 @@ const Blufi = ({ next, previous, hide, setSelectedDevice }) => {
   useEffect(() => {
     init();
     return () => {
+      removeDiscoveryListener();
       BleManager.stopScan();
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps

@@ -28,9 +28,9 @@ class LinkedBlockingQueue {
   }
 
   clear(){
-    this.queue = [];
     this.waiting.forEach(({ resolve }) => resolve(''));
     this.waiting = [];
+    this.queue = [];
   }
 }
 

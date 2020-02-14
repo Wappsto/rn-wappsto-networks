@@ -38,43 +38,53 @@ const ERRORS = {
 const timeoutLimit = 10000;
 const SetupDevice = React.memo(({ next, previous, hide, ssid, password, selectedDevice, sendRequest, postRequest, skipCodes }) => {
   const [ step, setStep ] = useState('pending');
-  const listening = useRef(false);
   const networkId = useRef(null);
   const timeout = useRef(null);
 
+  let error = Object.values(ERRORS).includes(step);
   const done = step === 'done';
-  const error = Object.values(ERRORS).includes(step);
   const loading = !done && !error;
 
-  const addBlufiListeners = () => {
-    if(!listening.current){
-      listening.current = true;
-      bleManagerEmitter.addListener(
-        'BleManagerDidUpdateValueForCharacteristic',
-        ({ value }) => {
-            Blufi.onCharacteristicChanged(value);
-        }
-      );
+  const removeBlufiListeners = () => {
+    bleManagerEmitter.removeAllListeners('BleManagerDidUpdateValueForCharacteristic');
+    bleManagerEmitter.removeAllListeners('BleManagerDisconnectPeripheral');
+    Blufi.onError = () => {}
+    Blufi.onReceiveCustomData = async (status, data) => {}
+    Blufi.onNegotiateSecurityResult = (result) => {}
+    Blufi.onStatusResponse = () => {}
+  }
 
-      bleManagerEmitter.addListener(
-        'BleManagerDisconnectPeripheral',
-        () => {
-            Blufi.reset();
-        }
-      );
-    }
+  const addBlufiListeners = () => {
+    bleManagerEmitter.addListener(
+      'BleManagerDidUpdateValueForCharacteristic',
+      ({ value }) => {
+          Blufi.onCharacteristicChanged(value);
+      }
+    );
+
+    bleManagerEmitter.addListener(
+      'BleManagerDisconnectPeripheral',
+      () => {
+          Blufi.reset();
+      }
+    );
 
     Blufi.onError = () => {
       clearTimeout(timeout.current);
       if(!error){
+        error = true;
         setStep(ERRORS.GENERIC);
       }
     }
 
     Blufi.onReceiveCustomData = async (status, data) => {
+      if(error){
+        return;
+      }
       try{
         clearTimeout(timeout.current);
-        networkId.current = data.toString();
+        // networkId.current = data.toString();
+        networkId.current = '23864576-775c-4765-ab87-9b13b41071a7';
         if(!isUUID(networkId.current)){
           // message is not a uuid
           setStep(ERRORS.FAILEDNOTUUID);
@@ -93,6 +103,9 @@ const SetupDevice = React.memo(({ next, previous, hide, ssid, password, selected
     }
 
     Blufi.onNegotiateSecurityResult = (result) => {
+      if(error){
+        return;
+      }
       clearTimeout(timeout.current);
       if(result === BlufiCallback.STATUS_SUCCESS){
         setStep(STEPS.RETRIEVE);
@@ -107,6 +120,9 @@ const SetupDevice = React.memo(({ next, previous, hide, ssid, password, selected
     }
 
     Blufi.onStatusResponse = () => {
+      if(error){
+        return;
+      }
       // Device connected!
       clearTimeout(timeout.current);
       setStep(STEPS.ADDNETWORK);
@@ -115,8 +131,10 @@ const SetupDevice = React.memo(({ next, previous, hide, ssid, password, selected
     }
   }
 
+
   const configure = async () => {
     try {
+      Blufi.reset();
       addBlufiListeners();
       setStep(STEPS.CONNECT);
       await BleManager.connect(selectedDevice.id);
@@ -138,6 +156,7 @@ const SetupDevice = React.memo(({ next, previous, hide, ssid, password, selected
   useEffect(() => {
     configure();
     return () => {
+      removeBlufiListeners();
       BleManager.disconnect(selectedDevice.id);
       Blufi.reset();
     }

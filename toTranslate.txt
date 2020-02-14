@@ -12,6 +12,7 @@ blufi.configure
 blufi.warning5G
 blufi.settingUp
 blufi.doneDescription
+blufi.permissionError
 blufi.error.title
 blufi.error.failedConnect
 blufi.error.failedRetrieve
