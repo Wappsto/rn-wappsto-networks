@@ -32,35 +32,15 @@ const DevicesListScreen = React.memo(({ navigation }) => {
     verbose: true
   }), []);
 
-  const _handleNetworkAdd = (event) => {
-    try{
-      let data = JSON.parse(event.data);
-      if (data.constructor !== Array) {
-        data = [data];
-      }
-      data.forEach(message => {
-        if(message.meta_object.type === 'network'){
-          if(message.event === 'create'){
-            addToList(message.meta_object.id);
-          } else if(message.event === 'delete'){
-            removeFromList(message.meta_object.id);
-          }
-        }
-      })
-    } catch(e){
-
-    }
-  }
-
-  const _handleAppStateChange = (nextAppState) => {
-    if (appState.match(/inactive|background/) && nextAppState === 'active' && stream && stream.ws && stream.ws.readyState === stream.ws.CLOSED) {
-      startStream(dispatch);
-    }
-    setAppState(nextAppState);
-  };
-
   // handle app status change
   useEffect(() => {
+    const _handleAppStateChange = (nextAppState) => {
+      if (appState.match(/inactive|background/) && nextAppState === 'active' && stream && stream.ws && stream.ws.readyState === stream.ws.CLOSED) {
+        startStream(dispatch);
+      }
+      setAppState(nextAppState);
+    };
+
     AppState.addEventListener('change', _handleAppStateChange);
     return () => {
       AppState.removeEventListener('change', _handleAppStateChange);
@@ -72,13 +52,33 @@ const DevicesListScreen = React.memo(({ navigation }) => {
   useEffect(() => {
     startStream(dispatch);
     return () => {
-      endStream(dispatch);
+      endStream(dispatch, true);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   // add network from stream
   useEffect(() => {
+    const _handleNetworkAdd = (event) => {
+      try{
+        let data = JSON.parse(event.data);
+        if (data.constructor !== Array) {
+          data = [data];
+        }
+        data.forEach(message => {
+          if(message.meta_object.type === 'network'){
+            if(message.event === 'create'){
+              addToList(message.meta_object.id);
+            } else if(message.event === 'delete'){
+              removeFromList(message.meta_object.id);
+            }
+          }
+        })
+      } catch(e){
+
+      }
+    }
+
     if(stream && stream.ws && addToList){
       stream.ws.addEventListener('message', _handleNetworkAdd);
     }

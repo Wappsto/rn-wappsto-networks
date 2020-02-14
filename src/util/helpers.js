@@ -18,8 +18,8 @@ export function startStream(dispatch){
   }
 }
 
-export function endStream(dispatch){
+export function endStream(dispatch, silent){
   if(config.stream){
-    dispatch(closeStream(config.stream.name));
+    dispatch(closeStream(config.stream.name, silent));
   }
 }
