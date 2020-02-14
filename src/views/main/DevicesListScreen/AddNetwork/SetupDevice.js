@@ -83,8 +83,7 @@ const SetupDevice = React.memo(({ next, previous, hide, ssid, password, selected
       }
       try{
         clearTimeout(timeout.current);
-        // networkId.current = data.toString();
-        networkId.current = '23864576-775c-4765-ab87-9b13b41071a7';
+        networkId.current = data.toString();
         if(!isUUID(networkId.current)){
           // message is not a uuid
           setStep(ERRORS.FAILEDNOTUUID);
