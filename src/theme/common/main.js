@@ -249,7 +249,6 @@ export function generateStyles(c = {}) {
         backgroundColor: variables.containerBgColor,
         color: variables.textSecondary,
         paddingHorizontal: 10,
-        paddingHorizontal: 10,
         marginTop: 10,
         marginBottom: 10
       },

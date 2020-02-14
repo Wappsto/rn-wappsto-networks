@@ -75,7 +75,7 @@ const ConfigureWifi = React.memo(({ next, previous, hide, ssid, setSsid, passwor
   return (
     <View style={theme.common.formElements}>
       <Text style={theme.common.H3}>{CapitalizeFirst(i18n.t('blufi.insertWifi'))}</Text>
-      <Text>{CapitalizeFirst(i18n.t('blufi.warning5G'))}</Text>
+      <Text style={[theme.common.infoText, theme.common.warning]}>{CapitalizeFirst(i18n.t('blufi.warning5G'))}</Text>
       <Text style={theme.common.label}>
         {CapitalizeFirst(i18n.t('blufi.ssid'))}
       </Text>

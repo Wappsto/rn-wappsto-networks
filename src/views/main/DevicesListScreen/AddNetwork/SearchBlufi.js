@@ -11,6 +11,7 @@ const bleManagerEmitter = new NativeEventEmitter(BleManagerModule);
 const filter = ['ad'];
 const Blufi = ({ next, previous, hide, setSelectedDevice }) => {
   const [ error, setError ] = useState(false);
+  const [ permissionError, setPermissionError ] = useState(false);
   const [ scanning, setScanning ] = useState(true);
   const [ devices, setDevices ] = useState([]);
 
@@ -18,40 +19,6 @@ const Blufi = ({ next, previous, hide, setSelectedDevice }) => {
     setSelectedDevice(item);
     next();
   }, [next, setSelectedDevice]);
-
-  const scan = async () => {
-    setDevices([]);
-    setScanning(true);
-    try{
-      await BleManager.enableBluetooth();
-      BleManager.scan([BlufiParameter.UUID_SERVICE], 5, false);
-    } catch(e){
-      // SAMI: Handle enable bluetooth error!!!
-      setScanning(false);
-      setError(true);
-    }
-  }
-
-  const init = () => {
-    BleManager.start({showAlert: false});
-
-    if (Platform.OS === 'android' && Platform.Version >= 23) {
-        PermissionsAndroid.check(PermissionsAndroid.PERMISSIONS.ACCESS_COARSE_LOCATION).then((result) => {
-            if (result) {
-              scan();
-            } else {
-              PermissionsAndroid.request(PermissionsAndroid.PERMISSIONS.ACCESS_COARSE_LOCATION).then((result) => {
-                if (result) {
-                  scan();
-                } else {
-                  // SAMI: Handle reqject location permission, this is required by BLE!!!
-                  console.log('User refuse');
-                }
-              });
-            }
-      });
-    }
-  }
 
   const addDiscoveryListener = () => {
     // Get discovered peripherals
@@ -77,28 +44,64 @@ const Blufi = ({ next, previous, hide, setSelectedDevice }) => {
     );
   }
 
+  const scan = async () => {
+    setDevices([]);
+    setScanning(true);
+    try{
+      addDiscoveryListener();
+      await BleManager.enableBluetooth();
+      BleManager.scan([BlufiParameter.UUID_SERVICE], 5, false);
+    } catch(e){
+      setScanning(false);
+      setError(true);
+    }
+  }
+
+  const init = () => {
+    BleManager.start({showAlert: false});
+
+    if (Platform.OS === 'android' && Platform.Version >= 23) {
+        PermissionsAndroid.check(PermissionsAndroid.PERMISSIONS.ACCESS_COARSE_LOCATION).then((result) => {
+            if (result) {
+              scan();
+            } else {
+              PermissionsAndroid.request(PermissionsAndroid.PERMISSIONS.ACCESS_COARSE_LOCATION).then((result) => {
+                if (result) {
+                  scan();
+                } else {
+                  setPermissionError(true);
+                }
+              });
+            }
+      });
+    }
+  }
+
   useEffect(() => {
     init();
-    addDiscoveryListener();
+    return () => {
+      BleManager.stopScan();
+    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (
     <>
       <Text style={theme.common.H3}>{CapitalizeFirst(i18n.t(devices.length === 0 ? 'blufi.lookingForDevices' : 'blufi.foundDevices'))}</Text>
-      {scanning && <ActivityIndicator size='large'/>}
+      {scanning && <ActivityIndicator size='large' style={theme.common.spaceAround}/>}
       {!scanning &&
-        <TouchableOpacity onPress={scan} style={{ marginBottom: 10, backgroundColor: '#EFEFEF', padding: 10}}>
+        <TouchableOpacity onPress={scan} style={theme.common.button}>
           <Text>{CapitalizeFirst(i18n.t('blufi.scanAgain'))}</Text>
         </TouchableOpacity>
       }
       {devices.map(device => (
-        <TouchableOpacity key={device.id} onPress={() => handleDevicePress(device)} style={theme.common.button}>
+        <TouchableOpacity key={device.id} onPress={() => handleDevicePress(device)} style={{ marginBottom: 10, backgroundColor: '#EFEFEF', padding: 10}}>
           <Text>{device.name}</Text>
           <Text>{device.id}</Text>
         </TouchableOpacity>
       ))}
-      {error && <Text>{CapitalizeFirst(i18n.t('blufi.scanError'))}</Text>}
+      {error && <Text style={theme.common.error}>{CapitalizeFirst(i18n.t('blufi.scanError'))}</Text>}
+      {permissionError && <Text style={theme.common.error}>{CapitalizeFirst(i18n.t('blufi.permissionError'))}</Text>}
     </>
   )
 }

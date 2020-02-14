@@ -42,6 +42,10 @@ const SetupDevice = React.memo(({ next, previous, hide, ssid, password, selected
   const networkId = useRef(null);
   const timeout = useRef(null);
 
+  const done = step === 'done';
+  const error = Object.values(ERRORS).includes(step);
+  const loading = !done && !error;
+
   const addBlufiListeners = () => {
     if(!listening.current){
       listening.current = true;
@@ -62,7 +66,9 @@ const SetupDevice = React.memo(({ next, previous, hide, ssid, password, selected
 
     Blufi.onError = () => {
       clearTimeout(timeout.current);
-      setStep(ERRORS.GENERIC);
+      if(!error){
+        setStep(ERRORS.GENERIC);
+      }
     }
 
     Blufi.onReceiveCustomData = async (status, data) => {
@@ -137,26 +143,22 @@ const SetupDevice = React.memo(({ next, previous, hide, ssid, password, selected
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
-
-  const done = step === 'done';
-  const error = Object.values(ERRORS).includes(step);
-  const loading = !done && !error;
   return (
     <>
-      <Text style={theme.common.H3}>{CapitalizeFirst(i18n.t(loading ? 'blufi.settingUp' : (error ? 'blufi.error.title' : 'blufi.done')))}</Text>
+      <Text style={[theme.common.H3, error && theme.common.error]}>{CapitalizeFirst(i18n.t(loading ? 'blufi.settingUp' : (error ? 'blufi.error.title' : 'blufi.done')))}</Text>
       {loading && (
         <>
-          <ActivityIndicator size='large' color={theme.variables.primary} />
+          <ActivityIndicator size='large' color={theme.variables.primary} style={theme.common.spaceAround}/>
           <Text>{CapitalizeFirst(i18n.t('blufi.step.' + step))}</Text>
         </>
       )}
-      {error && <Text>{CapitalizeFirst(i18n.t('blufi.error.' + step))}</Text>}
+      {error && <Text style={theme.common.error}>{CapitalizeFirst(i18n.t('blufi.error.' + step))}</Text>}
       <RequestError request={postRequest} skipCodes={skipCodes} />
       {!loading && !error &&
         <>
           <Text>{CapitalizeFirst(i18n.t('blufi.doneDescription'))}</Text>
           <TouchableOpacity onPress={hide}>
-            <Text>{CapitalizeFirst(i18n.t('done'))}</Text>
+            <Text style={theme.common.success}>{CapitalizeFirst(i18n.t('done'))}</Text>
           </TouchableOpacity>
         </>
       }
