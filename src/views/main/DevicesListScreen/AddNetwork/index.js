@@ -128,7 +128,7 @@ const Content = React.memo(({ visible, hide, show }) => {
 
   return (
     <>
-      <Popup visible={maoVisible} onRequestClose={refuseManufacturerAsOwner} hide={refuseManufacturerAsOwner} hideC>
+      <Popup visible={maoVisible} onRequestClose={refuseManufacturerAsOwner} hide={refuseManufacturerAsOwner} hideCloseIcon>
         <ConfirmAddManufacturerNetwork
           accept={acceptManufacturerAsOwner}
           reject={refuseManufacturerAsOwner}
