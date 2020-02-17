@@ -9,8 +9,9 @@ import SetupDevice from './SetupDevice';
 import AddNetworkPopup from './AddNetworkPopup';
 import useRequest from 'wappsto-blanket/hooks/useRequest';
 import useVisible from 'wappsto-blanket/hooks/useVisible';
+import { removeRequest } from 'wappsto-redux/actions/request';
 import { makeItemSelector } from 'wappsto-redux/selectors/items';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import { manufacturerAsOwnerErrorCode, iotNetworkListAdd } from '@/util/params';
 import Popup from '@/components/Popup';
 import ConfirmAddManufacturerNetwork from './ConfirmAddManufacturerNetwork';
@@ -18,6 +19,7 @@ import BackHandlerView from './BackHandlerView';
 
 const skipCodes = [manufacturerAsOwnerErrorCode];
 const Content = React.memo(({ visible, hide, show }) => {
+  const dispatch = useDispatch();
   const [ ssid, setSsid ] = useState('');
   const [ password, setPassword ] = useState('');
   const [ selectedDevice, setSelectedDevice ] = useState();
@@ -44,6 +46,7 @@ const Content = React.memo(({ visible, hide, show }) => {
   useEffect(() => {
     if(!visible){
       setStep(0);
+      setAcceptedManufacturerAsOwner(true);
     }
   }, [visible]);
 
@@ -89,6 +92,7 @@ const Content = React.memo(({ visible, hide, show }) => {
       if(request.status === 'error' && request.json.code === manufacturerAsOwnerErrorCode){
         maoShow();
       } else if(request.status === 'success'){
+        dispatch(removeRequest(request.id));
         addToList(request.json && request.json.meta.id);
       }
     }
