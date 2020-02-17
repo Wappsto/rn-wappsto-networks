@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Text, TextInput, View, ActivityIndicator, TouchableOpacity, StyleSheet } from 'react-native';
 import { RNCamera } from 'react-native-camera';
 import BarcodeMask from 'react-native-barcode-mask';
@@ -6,6 +6,7 @@ import RequestError from '@/components/RequestError';
 import theme from '@/theme/themeExport';
 import i18n, { CapitalizeFirst, CapitalizeEach } from '@/translations';
 import { isUUID } from 'wappsto-redux/util/helpers';
+import { manufacturerAsOwnerErrorCode } from '@/util/params';
 
 const styles = StyleSheet.create({
   qrCodeScannerWrapper: {
@@ -32,10 +33,11 @@ const styles = StyleSheet.create({
   },
 });
 
-const AddNetwork = React.memo(({ postRequest, sendRequest, skipCodes }) => {
+const AddNetwork = React.memo(({ postRequest, sendRequest, skipCodes, acceptedManufacturerAsOwner, hide }) => {
   const [ inputValue, setInputValue ] = useState('');
   const [ isScanning, setIsScanning ] = useState(false);
   const [ didScan, setDidScan ] = useState(false);
+  const [ loading, setLoading ] = useState(false);
 
   const onRead = event => {
     const qrText = (event.data.split('+')[0] || '').trim();
@@ -45,6 +47,7 @@ const AddNetwork = React.memo(({ postRequest, sendRequest, skipCodes }) => {
   };
 
   const addNetwork = () => {
+    setLoading(true);
     sendRequest(inputValue);
   };
 
@@ -58,7 +61,23 @@ const AddNetwork = React.memo(({ postRequest, sendRequest, skipCodes }) => {
     }
   }
 
-  const loading = postRequest && postRequest.status === 'pending';
+  useEffect(() => {
+    if(postRequest){
+      if(postRequest.status === 'success'){
+        hide();
+      } else if(postRequest.status !== 'pending' && (postRequest.status !== 'error' || postRequest.json.code !== manufacturerAsOwnerErrorCode)){
+        setLoading(false);
+      }
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [postRequest]);
+
+  useEffect(() => {
+    if(!acceptedManufacturerAsOwner){
+      setLoading(false);
+    }
+  }, [acceptedManufacturerAsOwner]);
+
   return (
     <>
       <Text style={theme.common.H3}>

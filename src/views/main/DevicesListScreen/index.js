@@ -32,7 +32,7 @@ const DevicesListScreen = React.memo(({ navigation }) => {
     verbose: true
   }), []);
 
-  // handle app status change
+  // handle app state change
   useEffect(() => {
     const _handleAppStateChange = (nextAppState) => {
       if (appState.match(/inactive|background/) && nextAppState === 'active' && stream && stream.ws && stream.ws.readyState === stream.ws.CLOSED) {

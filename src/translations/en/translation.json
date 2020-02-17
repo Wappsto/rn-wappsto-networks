@@ -138,7 +138,7 @@
         "failedNegotiateSecurityTimeout": "the device did not send back the security key",
         "failedSendWifiData": "failed to send wifi data",
         "failedWaitDeviceConnect": "the device failed to connect to the wifi",
-        "failedAddNetwork": "failed to add network",
+        "rejectedManufacturerAsOwner": "you rejected manufacturer as owner",
         "generic": "something went wrong and we don't know what(actually I do but that would be too specific)"
       },
       "step": {

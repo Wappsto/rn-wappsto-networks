@@ -18,7 +18,8 @@ const STEPS = {
   NEGOCIATESECURITY: 'negotiateSecurity',
   SENDWIFIDATA: 'sendWifiData',
   WAITDEVICECONNECT: 'waitDeviceConnect',
-  ADDNETWORK: 'addNetwork'
+  ADDNETWORK: 'addNetwork',
+  DONE: 'done'
 }
 
 const ERRORS = {
@@ -31,18 +32,18 @@ const ERRORS = {
   FAILEDNEGOCIATESECURITYTIMEOUT: 'failedNegotiateSecurityTimeout',
   FAILEDSENDWIFIDATA: 'failedSendWifiData',
   FAILEDWAITDEVICECONNECT: 'failedWaitDeviceConnect',
-  FAILEDADDNETWORK: 'failedAddNetwork',
+  REJECTEDMANUFACTURERASOWNER: 'rejectedManufacturerAsOwner',
   GENERIC: 'generic'
 }
 
 const timeoutLimit = 10000;
-const SetupDevice = React.memo(({ next, previous, hide, ssid, password, selectedDevice, sendRequest, postRequest, skipCodes }) => {
+const SetupDevice = React.memo(({ next, previous, hide, ssid, password, selectedDevice, sendRequest, postRequest, skipCodes, acceptedManufacturerAsOwner }) => {
   const [ step, setStep ] = useState(STEPS.CONNECT);
   const networkId = useRef(null);
   const timeout = useRef(null);
 
   let error = Object.values(ERRORS).includes(step);
-  const done = step === 'done';
+  const done = step === STEPS.DONE;
   const loading = !done && !error;
 
   const removeBlufiListeners = () => {
@@ -126,7 +127,6 @@ const SetupDevice = React.memo(({ next, previous, hide, ssid, password, selected
       clearTimeout(timeout.current);
       setStep(STEPS.ADDNETWORK);
       sendRequest(networkId.current);
-      // setStep('done');
     }
   }
 
@@ -137,10 +137,20 @@ const SetupDevice = React.memo(({ next, previous, hide, ssid, password, selected
       addBlufiListeners();
       setStep(STEPS.CONNECT);
       await BleManager.connect(selectedDevice.id);
+    } catch(e) {
+      setStep(ERRORS.FAILEDCONNECT);
+      return;
+    }
+    try {
       Blufi.setConnectedDevice(selectedDevice);
       setStep(STEPS.INITNOTIFICATION);
       await BleManager.retrieveServices(selectedDevice.id);
       await BleManager.startNotification(selectedDevice.id, BlufiParameter.UUID_SERVICE, BlufiParameter.UUID_NOTIFICATION_CHARACTERISTIC);
+    } catch(e){
+      setStep(ERRORS.FAILEDINITNOTIFICATION);
+      return;
+    }
+    try{
       setStep(STEPS.NEGOCIATESECURITY);
       Blufi.negotiateSecurity(selectedDevice);
       timeout.current = setTimeout(() => {
@@ -149,6 +159,7 @@ const SetupDevice = React.memo(({ next, previous, hide, ssid, password, selected
       }, timeoutLimit);
     } catch (e) {
       setStep(ERRORS.FAILEDNEGOCIATESECURITY);
+      return;
     }
   }
 
@@ -161,6 +172,18 @@ const SetupDevice = React.memo(({ next, previous, hide, ssid, password, selected
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
+  useEffect(() => {
+    if(step === STEPS.ADDNETWORK && postRequest){
+      if(postRequest.status === 'success'){
+        setStep(STEPS.DONE);
+      } else if(postRequest.status === 'error' && !acceptedManufacturerAsOwner){
+        setStep(ERRORS.REJECTEDMANUFACTURERASOWNER);
+      }
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [postRequest, acceptedManufacturerAsOwner]);
+
   return (
     <>
       <Text style={[theme.common.H3, error && theme.common.error]}>{CapitalizeFirst(i18n.t(loading ? 'blufi.settingUp' : (error ? 'blufi.error.title' : 'blufi.done')))}</Text>

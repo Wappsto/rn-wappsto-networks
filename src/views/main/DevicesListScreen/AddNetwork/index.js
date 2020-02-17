@@ -8,6 +8,7 @@ import ConfigureWifi from './ConfigureWifi';
 import SetupDevice from './SetupDevice';
 import AddNetworkPopup from './AddNetworkPopup';
 import useRequest from 'wappsto-blanket/hooks/useRequest';
+import useVisible from 'wappsto-blanket/hooks/useVisible';
 import { makeItemSelector } from 'wappsto-redux/selectors/items';
 import { useSelector } from 'react-redux';
 import { manufacturerAsOwnerErrorCode, iotNetworkListAdd } from '@/util/params';
@@ -20,10 +21,11 @@ const Content = React.memo(({ visible, hide, show }) => {
   const [ ssid, setSsid ] = useState('');
   const [ password, setPassword ] = useState('');
   const [ selectedDevice, setSelectedDevice ] = useState();
+  const [ maoVisible, maoShow, maoHide ] = useVisible(false);
   const [ step, setStep ] = useState(0);
   const { request, send } = useRequest();
   const [ networkId, setNetworkId ] = useState();
-  const [ manufacturerAsOwnerError, setManufacturerAsOwnerError ] = useState(false);
+  const [ acceptedManufacturerAsOwner, setAcceptedManufacturerAsOwner ] = useState(true);
   const getItem = useMemo(makeItemSelector, []);
   const addToList = useSelector(state => getItem(state, iotNetworkListAdd));
 
@@ -59,6 +61,8 @@ const Content = React.memo(({ visible, hide, show }) => {
   }, []);
 
   const acceptManufacturerAsOwner = useCallback(() => {
+    setAcceptedManufacturerAsOwner(true);
+    maoHide();
     send({
       method: 'POST',
       url: '/network/' + networkId,
@@ -74,38 +78,22 @@ const Content = React.memo(({ visible, hide, show }) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [networkId]);
 
+  const refuseManufacturerAsOwner = useCallback(() => {
+    setAcceptedManufacturerAsOwner(false);
+    maoHide();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
   useEffect(() => {
     if(request){
       if(request.status === 'error' && request.json.code === manufacturerAsOwnerErrorCode){
-        hide();
-        setManufacturerAsOwnerError(true);
+        maoShow();
       } else if(request.status === 'success'){
-        hide();
-        setManufacturerAsOwnerError(false);
         addToList(request.json && request.json.meta.id);
       }
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [request]);
-
-  useEffect(() => {
-    if(manufacturerAsOwnerError){
-      show();
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [manufacturerAsOwnerError]);
-
-  if (manufacturerAsOwnerError) {
-    return (
-      <Popup visible={visible} onRequestClose={hide} hide={hide}>
-        <ConfirmAddManufacturerNetwork
-          acceptManufacturerAsOwner={acceptManufacturerAsOwner}
-          postRequest={request}
-          networkId={networkId}
-        />
-      </Popup>
-    );
-  }
 
   let Step = null;
   switch (step) {
@@ -130,27 +118,36 @@ const Content = React.memo(({ visible, hide, show }) => {
   }
 
   return (
-    <Modal
-      transparent={true}
-      visible={visible}
-      hide={hide}
-      onRequestClose={handleBack}>
-        <BackHandlerView hide={hide} handleBack={handleBack}>
-          <Step
-            next={next}
-            setStep={setStep}
-            selectedDevice={selectedDevice}
-            setSelectedDevice={setSelectedDevice}
-            ssid={ssid}
-            setSsid={setSsid}
-            password={password}
-            setPassword={setPassword}
-            sendRequest={sendRequest}
-            postRequest={request}
-            skipCodes={skipCodes}
-            />
-        </BackHandlerView>
-    </Modal>
+    <>
+      <Popup visible={maoVisible} onRequestClose={refuseManufacturerAsOwner} hide={refuseManufacturerAsOwner}>
+        <ConfirmAddManufacturerNetwork
+          acceptManufacturerAsOwner={acceptManufacturerAsOwner}
+        />
+      </Popup>
+      <Modal
+        transparent={true}
+        visible={visible}
+        hide={hide}
+        onRequestClose={handleBack}>
+          <BackHandlerView hide={hide} handleBack={handleBack}>
+            <Step
+              hide={hide}
+              next={next}
+              setStep={setStep}
+              selectedDevice={selectedDevice}
+              setSelectedDevice={setSelectedDevice}
+              ssid={ssid}
+              setSsid={setSsid}
+              password={password}
+              setPassword={setPassword}
+              sendRequest={sendRequest}
+              postRequest={request}
+              skipCodes={skipCodes}
+              acceptedManufacturerAsOwner={acceptedManufacturerAsOwner}
+              />
+          </BackHandlerView>
+      </Modal>
+    </>
   );
 });
 
