@@ -74,6 +74,11 @@ export function generateStyles(c = {}) {
         alignItems: 'stretch',
         backgroundColor: variables.white,
       },
+      btnGroup: {
+        flexDirection: 'row',
+        alignSelf: 'flex-end',
+        justifyContent: 'space-between'
+      },
       row: {
         flexDirection: 'row',
         alignItems: 'center',
@@ -111,6 +116,9 @@ export function generateStyles(c = {}) {
       },
       spaceTop: {
         marginTop: 15,
+      },
+      spaceLeft: {
+        marginLeft: 15,
       },
       listItem: {
         flex: 1,

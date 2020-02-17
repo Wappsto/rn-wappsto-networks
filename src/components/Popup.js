@@ -11,7 +11,7 @@ import { SafeAreaView} from 'react-native-safe-area-context';
 import Icon from 'react-native-vector-icons/Feather';
 import theme from '../theme/themeExport';
 
-const Popup = React.memo(({ animationType, visible, hide, onRequestClose, contentStyle, children }) => {
+const Popup = React.memo(({ animationType, visible, hide, onRequestClose, contentStyle, children, hideCloseIcon }) => {
   return (
     <Modal
       transparent={true}
@@ -30,7 +30,7 @@ const Popup = React.memo(({ animationType, visible, hide, onRequestClose, conten
                   zIndex: 10,
                   right: 0
                 }}>
-                <Icon name="x" size={24} color={theme.variables.primary} />
+                {!hideCloseIcon && <Icon name="x" size={24} color={theme.variables.primary} />}
               </TouchableOpacity>
             </View>
           </TouchableWithoutFeedback>

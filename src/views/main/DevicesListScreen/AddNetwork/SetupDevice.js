@@ -78,30 +78,6 @@ const SetupDevice = React.memo(({ next, previous, hide, ssid, password, selected
       }
     }
 
-    Blufi.onReceiveCustomData = async (status, data) => {
-      if(error){
-        return;
-      }
-      try{
-        clearTimeout(timeout.current);
-        networkId.current = data.toString();
-        if(!isUUID(networkId.current)){
-          // message is not a uuid
-          setStep(ERRORS.FAILEDNOTUUID);
-          return;
-        }
-        setStep(STEPS.SENDWIFIDATA);
-        await Blufi.configure(ssid, password);
-        setStep(STEPS.WAITDEVICECONNECT);
-        timeout.current = setTimeout(() => {
-          // device did not connect
-          setStep(ERRORS.FAILEDWAITDEVICECONNECT);
-        }, timeoutLimit);
-      } catch(e) {
-        setStep(ERRORS.FAILEDSENDWIFIDATA);
-      }
-    }
-
     Blufi.onNegotiateSecurityResult = (result) => {
       if(error){
         return;
@@ -119,17 +95,44 @@ const SetupDevice = React.memo(({ next, previous, hide, ssid, password, selected
       }
     }
 
+    Blufi.onReceiveCustomData = async (status, data) => {
+      if(error){
+        return;
+      }
+      clearTimeout(timeout.current);
+      networkId.current = data.toString();
+      if(!isUUID(networkId.current)){
+        // message is not a uuid
+        setStep(ERRORS.FAILEDNOTUUID);
+        return;
+      }
+      setStep(STEPS.ADDNETWORK);
+      sendRequest(networkId.current);
+    }
+
     Blufi.onStatusResponse = () => {
       if(error){
         return;
       }
       // Device connected!
       clearTimeout(timeout.current);
-      setStep(STEPS.ADDNETWORK);
-      sendRequest(networkId.current);
+      setStep(STEPS.DONE);
     }
   }
 
+  const sendWifiData = async () => {
+    try{
+      setStep(STEPS.SENDWIFIDATA);
+      await Blufi.configure(ssid, password);
+      setStep(STEPS.WAITDEVICECONNECT);
+      timeout.current = setTimeout(() => {
+        // device did not connect
+        setStep(ERRORS.FAILEDWAITDEVICECONNECT);
+      }, timeoutLimit);
+    } catch(e) {
+      setStep(ERRORS.FAILEDSENDWIFIDATA);
+    }
+  }
 
   const configure = async () => {
     try {
@@ -176,7 +179,7 @@ const SetupDevice = React.memo(({ next, previous, hide, ssid, password, selected
   useEffect(() => {
     if(step === STEPS.ADDNETWORK && postRequest){
       if(postRequest.status === 'success'){
-        setStep(STEPS.DONE);
+        sendWifiData();
       } else if(postRequest.status === 'error' && !acceptedManufacturerAsOwner){
         setStep(ERRORS.REJECTEDMANUFACTURERASOWNER);
       }
