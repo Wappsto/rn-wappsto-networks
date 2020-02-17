@@ -32,7 +32,12 @@ const Content = React.memo(({ visible, hide, show }) => {
   const addToList = useSelector(state => getItem(state, iotNetworkListAdd));
 
   const next = useCallback(() => {
-    setStep(s => s + 1);
+    setStep(s => {
+      if(s === 3){
+        setAcceptedManufacturerAsOwner(true);
+      }
+      return s + 1;
+    });
   }, []);
 
   const handleBack = useCallback(() => {
