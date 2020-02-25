@@ -1,19 +1,14 @@
-import React, { useMemo } from 'react';
+import React from 'react';
 import { Text } from 'react-native';
 import PopupButton from '@/components/PopupButton';
 import Popup from '@/components/Popup';
 import theme from '@/theme/themeExport';
 import i18n, { CapitalizeFirst, CapitalizeEach } from '@/translations';
-import { makeEntitySelector } from 'wappsto-redux/selectors/entities';
-import { makeItemSelector } from 'wappsto-redux/selectors/items';
 import { selectedDeviceName } from '@/util/params';
-import { useSelector } from 'react-redux';
+import useGetItemEntity from '@/hooks/useGetItemEntity';
 
 const ValueSettings = React.memo(() => {
-  const getItem = useMemo(makeItemSelector, []);
-  const selectedDevice = useSelector(state => getItem(state, selectedDeviceName));
-  const getEntity = useMemo(makeEntitySelector, []);
-  const device = useSelector(state => getEntity(state, 'device', selectedDevice));
+  const device = useGetItemEntity(selectedDeviceName, 'device');
 
   const content = (visible, hide) => {
     if(!device || !device.meta || !device.meta.id){

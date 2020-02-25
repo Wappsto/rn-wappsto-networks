@@ -1,12 +1,11 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import { Text, TextInput, View, ActivityIndicator, TouchableOpacity, StyleSheet } from 'react-native';
 import { RNCamera } from 'react-native-camera';
 import BarcodeMask from 'react-native-barcode-mask';
 import RequestError from '@/components/RequestError';
 import theme from '@/theme/themeExport';
 import i18n, { CapitalizeFirst, CapitalizeEach } from '@/translations';
-import { isUUID } from 'wappsto-redux/util/helpers';
-import { manufacturerAsOwnerErrorCode } from '@/util/params';
+import useAddNetwork from '@/hooks/useAddNetwork';
 
 const styles = StyleSheet.create({
   qrCodeScannerWrapper: {
@@ -34,49 +33,18 @@ const styles = StyleSheet.create({
 });
 
 const AddNetwork = React.memo(({ postRequest, sendRequest, skipCodes, acceptedManufacturerAsOwner, hide }) => {
-  const [ inputValue, setInputValue ] = useState('');
-  const [ isScanning, setIsScanning ] = useState(false);
-  const [ didScan, setDidScan ] = useState(false);
-  const [ loading, setLoading ] = useState(false);
-
-  const onRead = event => {
-    const qrText = (event.data.split('+')[0] || '').trim();
-    setInputValue(qrText);
-    setIsScanning(false);
-    setDidScan(true);
-  };
-
-  const addNetwork = () => {
-    setLoading(true);
-    sendRequest(inputValue);
-  };
-
-  const switchView = () => {
-    setIsScanning(v => !v);
-  };
-
-  const onSubmitEditing = () => {
-    if(isUUID(inputValue)){
-      addNetwork();
-    }
-  }
-
-  useEffect(() => {
-    if(postRequest){
-      if(postRequest.status === 'success'){
-        hide();
-      } else if(postRequest.status !== 'pending' && (postRequest.status !== 'error' || postRequest.json.code !== manufacturerAsOwnerErrorCode)){
-        setLoading(false);
-      }
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [postRequest]);
-
-  useEffect(() => {
-    if(!acceptedManufacturerAsOwner){
-      setLoading(false);
-    }
-  }, [acceptedManufacturerAsOwner]);
+  const {
+    inputValue,
+    setInputValue,
+    switchView,
+    isScanning,
+    didScan,
+    onRead,
+    onSubmitEditing,
+    addNetwork,
+    loading,
+    canAdd 
+  } = useAddNetwork(sendRequest, postRequest, acceptedManufacturerAsOwner, hide);
 
   return (
     <>
@@ -151,8 +119,8 @@ const AddNetwork = React.memo(({ postRequest, sendRequest, skipCodes, acceptedMa
       )}
       <RequestError request={postRequest} skipCodes={skipCodes} />
       <TouchableOpacity
-        disabled={!isUUID(inputValue) || loading}
-        style={[theme.common.button, !isUUID(inputValue) || loading ? theme.common.disabled : null]}
+        disabled={!canAdd}
+        style={[theme.common.button, canAdd ? null : theme.common.disabled]}
         onPress={addNetwork}>
         <Text style={theme.common.btnText}>
           {CapitalizeFirst(i18n.t('add'))}

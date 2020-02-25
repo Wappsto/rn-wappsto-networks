@@ -1,76 +1,16 @@
-import React, { useEffect, useState, useRef, useCallback } from 'react';
+import React, { useCallback } from 'react';
 import { View, Text, TextInput, TouchableOpacity } from 'react-native';
-import AsyncStorage from '@react-native-community/async-storage';
-import { NetworkInfo } from 'react-native-network-info';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import theme from '@/theme/themeExport';
 import i18n, { CapitalizeFirst } from '@/translations';
+import useConfigureWifi from '@/hooks/useConfigureWifi';
 
-const wifiSsidStorageKey = 'wifiSSID';
-const wifiPasswordStorageKey = 'wifiPassword';
 const ConfigureWifi = React.memo(({ next, previous, hide, ssid, setSsid, password, setPassword }) => {
-  const [ showPassword, setShowPassword ] = useState(false);
-  const passwordInputRef = useRef();
-
+  const { save, showPassword, toggleShowPassword, handleTextChange, passwordInputRef, moveToPasswordField } = useConfigureWifi(ssid, setSsid, password, setPassword);
   const saveAndMove = useCallback(() => {
-    AsyncStorage.setItem(wifiSsidStorageKey, ssid);
-    AsyncStorage.setItem(wifiPasswordStorageKey, password);
-    setShowPassword(false);
+    save();
     next();
-  }, [next, ssid, password]);
-
-  const toggleShowPassword = useCallback(() => {
-    setShowPassword(sp => !sp);
-  }, []);
-
-  const moveToPasswordField = useCallback(() => {
-    const trimText = ssid.trim();
-    if (trimText !== ssid) {
-      setSsid(trimText);
-    }
-    passwordInputRef.current.focus();
-  }, [ssid, setSsid]);
-
-  const handleTextChange = useCallback((text, type) => {
-    let currentText;
-    let set;
-    if(type === 'ssid'){
-      currentText = ssid;
-      set = setSsid;
-    } else {
-      currentText = password;
-      set = setPassword;
-    }
-    if (text.length - currentText.length === 1) {
-      set(text);
-    } else {
-      set(text.trim());
-    }
-  }, [ssid, password, setSsid, setPassword]);
-
-  const init = async () => {
-    try {
-      const currentSsid = await NetworkInfo.getSSID();
-      const ssid = await AsyncStorage.getItem(wifiSsidStorageKey);
-      if(ssid !== null){
-        setSsid(ssid);
-      } else {
-        setSsid(currentSsid);
-      }
-
-      const password = await AsyncStorage.getItem(wifiPasswordStorageKey);
-      if(password && ssid === currentSsid){
-        setPassword(password);
-      }
-    } catch (e) {
-
-    }
-  }
-
-  useEffect(() => {
-    init();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [save, next]);
 
   return (
     <View style={theme.common.formElements}>

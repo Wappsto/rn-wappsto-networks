@@ -19,5 +19,6 @@
   "300084": "username or password does not match",
   "9900032": "invalid action",
   "9900145": "device with provided ID is not found",
-  "9900147": "device with provided ID does not exist.\n\n If you are trying to reclaim deleted device make sure you reboot it first."
+  "9900147": "device with provided ID does not exist.\n\n If you are trying to reclaim deleted device make sure you reboot it first.",
+  "134000005": "device is unreachable or offline"
 }

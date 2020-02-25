@@ -1,4 +1,4 @@
-import React, { useState, useCallback, useEffect, useMemo } from 'react';
+import React, { useState, useCallback, useEffect } from 'react';
 import PopupButton from '@/components/PopupButton';
 import { Modal } from 'react-native';
 import theme from '@/theme/themeExport';
@@ -7,38 +7,37 @@ import SearchBlufi from './SearchBlufi';
 import ConfigureWifi from './ConfigureWifi';
 import SetupDevice from './SetupDevice';
 import AddNetworkPopup from './AddNetworkPopup';
-import useRequest from 'wappsto-blanket/hooks/useRequest';
 import useVisible from 'wappsto-blanket/hooks/useVisible';
-import { removeRequest } from 'wappsto-redux/actions/request';
-import { makeItemSelector } from 'wappsto-redux/selectors/items';
-import { useSelector, useDispatch } from 'react-redux';
-import { manufacturerAsOwnerErrorCode, iotNetworkListAdd } from '@/util/params';
+import { iotNetworkListAdd } from '@/util/params';
 import Popup from '@/components/Popup';
 import ConfirmAddManufacturerNetwork from './ConfirmAddManufacturerNetwork';
 import BackHandlerView from './BackHandlerView';
+import useAddNetworkAsManufacturer from '@/hooks/useAddNetworkAsManufacturer';
 
-const skipCodes = [manufacturerAsOwnerErrorCode];
 const Content = React.memo(({ visible, hide, show }) => {
-  const dispatch = useDispatch();
   const [ ssid, setSsid ] = useState('');
   const [ password, setPassword ] = useState('');
   const [ selectedDevice, setSelectedDevice ] = useState();
   const [ maoVisible, maoShow, maoHide ] = useVisible(false);
   const [ step, setStep ] = useState(0);
-  const { request, send } = useRequest();
-  const [ networkId, setNetworkId ] = useState();
-  const [ acceptedManufacturerAsOwner, setAcceptedManufacturerAsOwner ] = useState(true);
-  const getItem = useMemo(makeItemSelector, []);
-  const addToList = useSelector(state => getItem(state, iotNetworkListAdd));
+  const {
+    setAcceptedManufacturerAsOwner,
+    sendRequest,
+    request,
+    acceptManufacturerAsOwner,
+    refuseManufacturerAsOwner,
+    acceptedManufacturerAsOwner,
+    skipErrorCodes
+  } = useAddNetworkAsManufacturer(iotNetworkListAdd, maoShow, maoHide);
 
   const next = useCallback(() => {
     setStep(s => {
       if(s === 3){
-        setAcceptedManufacturerAsOwner(true);
+        setAcceptedManufacturerAsOwner(null);
       }
       return s + 1;
     });
-  }, []);
+  }, [setAcceptedManufacturerAsOwner]);
 
   const handleBack = useCallback(() => {
     if (step) {
@@ -51,58 +50,9 @@ const Content = React.memo(({ visible, hide, show }) => {
   useEffect(() => {
     if(!visible){
       setStep(0);
-      setAcceptedManufacturerAsOwner(true);
+      setAcceptedManufacturerAsOwner(null);
     }
-  }, [visible]);
-
-  const sendRequest = useCallback((id, body = {}) => {
-    setNetworkId(id);
-    send({
-      method: 'POST',
-      url: '/network/' + id,
-      query: {
-        verbose: true
-      },
-      body
-    });
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
-
-  const acceptManufacturerAsOwner = useCallback(() => {
-    setAcceptedManufacturerAsOwner(true);
-    maoHide();
-    send({
-      method: 'POST',
-      url: '/network/' + networkId,
-      query: {
-        verbose: true
-      },
-      body: {
-        meta: {
-          accept_manufacturer_as_owner: true
-        }
-      }
-    });
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [networkId]);
-
-  const refuseManufacturerAsOwner = useCallback(() => {
-    setAcceptedManufacturerAsOwner(false);
-    maoHide();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
-
-  useEffect(() => {
-    if(request){
-      if(request.status === 'error' && request.json.code === manufacturerAsOwnerErrorCode){
-        maoShow();
-      } else if(request.status === 'success'){
-        dispatch(removeRequest(request.id));
-        addToList(request.json && request.json.meta.id);
-      }
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [request]);
+  }, [visible, setAcceptedManufacturerAsOwner]);
 
   let Step = null;
   switch (step) {
@@ -152,7 +102,7 @@ const Content = React.memo(({ visible, hide, show }) => {
               setPassword={setPassword}
               sendRequest={sendRequest}
               postRequest={request}
-              skipCodes={skipCodes}
+              skipCodes={skipErrorCodes}
               acceptedManufacturerAsOwner={acceptedManufacturerAsOwner}
               />
           </BackHandlerView>

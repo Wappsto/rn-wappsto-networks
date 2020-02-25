@@ -5,6 +5,7 @@ import ValueSettings from './ValueSettings';
 import theme from '@/theme/themeExport';
 import Icon from 'react-native-vector-icons/Feather';
 import useRequest from 'wappsto-blanket/hooks/useRequest';
+import RequestError from '@/components/RequestError';
 
 const ValueComponent = React.memo(({ item, navigation }) => {
   const { request, send } = useRequest();
@@ -45,6 +46,7 @@ const ValueComponent = React.memo(({ item, navigation }) => {
           <ValueSettings item={item} />
         </>
       </View>
+      <RequestError request={request} />
       <States value={item} />
     </View>
   );

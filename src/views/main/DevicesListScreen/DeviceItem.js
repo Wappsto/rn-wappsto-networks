@@ -17,8 +17,7 @@ const DeviceSection = React.memo(({ navigation, id, isPrototype }) => {
   const navigate = useCallback(() => {
     dispatch(setItem(selectedDeviceName, device.meta.id));
     navigation.navigate('DeviceScreen', {
-      title: device.name,
-
+      title: device.name
     });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [device]);
