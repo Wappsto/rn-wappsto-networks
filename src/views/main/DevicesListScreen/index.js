@@ -8,11 +8,10 @@ import AddNetwork from './AddNetwork';
 import theme from '@/theme/themeExport';
 import i18n, { CapitalizeEach, CapitalizeFirst } from '@/translations';
 import { iotNetworkListAdd, iotNetworkListRemove } from '@/util/params';
-import { isPrototype } from '@/util/helpers';
+import { isPrototype } from 'wappsto-blanket/util';
 import { getServiceVersion } from 'wappsto-redux/util/helpers';
 import useAppStateStream from '@/hooks/useAppStateStream';
 import useAddNetworkStream from '@/hooks/useAddNetworkStream';
-import useClearNetworkChilds from '@/hooks/useClearNetworkChilds';
 
 const DevicesListScreen = React.memo(({ navigation }) => {
   const query = useMemo(() => ({
@@ -25,7 +24,6 @@ const DevicesListScreen = React.memo(({ navigation }) => {
 
   useAppStateStream();
   useAddNetworkStream(iotNetworkListAdd, iotNetworkListRemove);
-  const onRefresh = useClearNetworkChilds();
 
   return (
     <Screen>
@@ -34,7 +32,6 @@ const DevicesListScreen = React.memo(({ navigation }) => {
         query={query}
         addItemName={iotNetworkListAdd}
         removeItemName={iotNetworkListRemove}
-        onRefresh={onRefresh}
         page={navigation.state.routeName}
         renderSectionHeader={({section: {title: network}}) => {
           return (

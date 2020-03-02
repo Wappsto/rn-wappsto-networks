@@ -6,7 +6,8 @@ import theme from '@/theme/themeExport';
 import i18n, { CapitalizeFirst } from '@/translations';
 import useRequest from 'wappsto-blanket/hooks/useRequest';
 import Timestamp from './Timestamp';
-import { cannotAccessState, getStateData } from '@/util/helpers';
+import { cannotAccessState } from 'wappsto-blanket/util';
+import { getStateData } from '@/util/helpers';
 
 const ControlState = React.memo(({ state, value }) => {
   const { request, send } = useRequest();

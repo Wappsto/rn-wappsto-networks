@@ -1,14 +1,6 @@
 import { config } from '../configureWappstoRedux';
 import { openStream, closeStream } from 'wappsto-redux/actions/stream';
 
-export function isPrototype(item){
-  return item.meta && !item.meta.iot && !item.meta.application;
-}
-
-export function cannotAccessState(state){
-  return state.status_payment === 'not_shared' || state.status_payment === 'not_paid';
-}
-
 export function startStream(dispatch){
   if(config.stream){
     const streamJSON = { ...config.stream };

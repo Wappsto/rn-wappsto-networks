@@ -2,7 +2,7 @@ import { useState, useEffect, useCallback } from 'react';
 import { isUUID } from 'wappsto-redux/util/helpers';
 import { manufacturerAsOwnerErrorCode } from '@/util/params';
 
-const useAddNetwork = (sendRequest, postRequest, acceptedManufacturerAsOwner, hide) => {
+const useAddNetwork = (sendRequest, postRequest, acceptedManufacturerAsOwner, onDone) => {
   const [ inputValue, setInputValue ] = useState('');
   const [ isScanning, setIsScanning ] = useState(false);
   const [ didScan, setDidScan ] = useState(false);
@@ -33,7 +33,9 @@ const useAddNetwork = (sendRequest, postRequest, acceptedManufacturerAsOwner, hi
   useEffect(() => {
     if(postRequest){
       if(postRequest.status === 'success'){
-        hide();
+        if(onDone){
+          onDone();
+        }
       } else if(postRequest.status !== 'pending' && (postRequest.status !== 'error' || postRequest.json.code !== manufacturerAsOwnerErrorCode)){
         setLoading(false);
       }

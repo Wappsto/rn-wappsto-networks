@@ -15,6 +15,7 @@ const useAppStateStream = () => {
   useEffect(() => {
     const _handleAppStateChange = (nextAppState) => {
       if (appState.match(/inactive|background/) && nextAppState === 'active' && stream && stream.ws && stream.ws.readyState === stream.ws.CLOSED) {
+        endStream(dispatch, true);
         startStream(dispatch);
       }
       setAppState(nextAppState);
