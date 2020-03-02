@@ -1,7 +1,7 @@
 import React from 'react';
 import { Text, TouchableOpacity } from 'react-native';
-import i18n, { CapitalizeFirst } from '@/translations';
-import theme from '@/theme/themeExport';
+import i18n, { CapitalizeFirst } from 'src/translations';
+import theme from 'src/theme/themeExport';
 import Icon from 'react-native-vector-icons/Feather';
 
 const SelectChoice = React.memo(({ hide, setStep }) => {

@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { Platform, PermissionsAndroid, NativeModules, NativeEventEmitter } from 'react-native';
 import BleManager from 'react-native-ble-manager';
-import { BlufiParameter } from '@/BlufiLib/util/params';
+import { BlufiParameter } from 'src/BlufiLib/util/params';
 
 const BleManagerModule = NativeModules.BleManager;
 const bleManagerEmitter = new NativeEventEmitter(BleManagerModule);

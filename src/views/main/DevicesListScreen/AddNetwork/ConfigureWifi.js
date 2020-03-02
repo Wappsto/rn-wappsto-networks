@@ -1,9 +1,9 @@
 import React, { useCallback } from 'react';
 import { View, Text, TextInput, TouchableOpacity } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome5';
-import theme from '@/theme/themeExport';
-import i18n, { CapitalizeFirst } from '@/translations';
-import useConfigureWifi from '@/hooks/useConfigureWifi';
+import theme from 'src/theme/themeExport';
+import i18n, { CapitalizeFirst } from 'src/translations';
+import useConfigureWifi from 'src/hooks/useConfigureWifi';
 
 const ConfigureWifi = React.memo(({ next, previous, hide, ssid, setSsid, password, setPassword }) => {
   const { save, showPassword, toggleShowPassword, handleTextChange, passwordInputRef, moveToPasswordField } = useConfigureWifi(ssid, setSsid, password, setPassword);

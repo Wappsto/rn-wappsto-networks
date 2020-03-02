@@ -2,8 +2,8 @@ import React from 'react';
 import { StatusBar, ScrollView, TouchableOpacity, Text, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import Icon from 'react-native-vector-icons/Feather';
-import theme from '@/theme/themeExport';
-import i18n, { CapitalizeFirst } from '@/translations';
+import theme from 'src/theme/themeExport';
+import i18n, { CapitalizeFirst } from 'src/translations';
 
 const BackHandlerView = React.memo(({ handleBack, hide, children }) => {
   return (

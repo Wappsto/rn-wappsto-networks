@@ -1,8 +1,8 @@
 import React, { useCallback } from 'react';
 import { Text, TouchableOpacity, ActivityIndicator } from 'react-native';
-import i18n, { CapitalizeFirst } from '@/translations';
-import theme from '@/theme/themeExport';
-import useSearchBlufi from '@/hooks/useSearchBlufi';
+import i18n, { CapitalizeFirst } from 'src/translations';
+import theme from 'src/theme/themeExport';
+import useSearchBlufi from 'src/hooks/useSearchBlufi';
 
 const filter = ['ad'];
 const SearchBlufi = ({ next, previous, hide, setSelectedDevice }) => {

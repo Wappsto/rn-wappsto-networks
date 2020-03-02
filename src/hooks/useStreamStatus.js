@@ -1,5 +1,5 @@
 import { useMemo, useCallback } from 'react';
-import { config } from '@/configureWappstoRedux';
+import { config } from 'src/configureWappstoRedux';
 import { useSelector, useDispatch } from 'react-redux';
 import { makeStreamSelector } from 'wappsto-redux/selectors/stream';
 import { startStream } from '../util/helpers';

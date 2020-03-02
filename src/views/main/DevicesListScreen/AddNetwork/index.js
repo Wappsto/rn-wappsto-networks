@@ -1,18 +1,18 @@
 import React, { useState, useCallback, useEffect } from 'react';
-import PopupButton from '@/components/PopupButton';
+import PopupButton from 'src/components/PopupButton';
 import { Modal } from 'react-native';
-import theme from '@/theme/themeExport';
+import theme from 'src/theme/themeExport';
 import SelectChoice from './SelectChoice';
 import SearchBlufi from './SearchBlufi';
 import ConfigureWifi from './ConfigureWifi';
 import SetupDevice from './SetupDevice';
 import AddNetworkPopup from './AddNetworkPopup';
 import useVisible from 'wappsto-blanket/hooks/useVisible';
-import { iotNetworkListAdd } from '@/util/params';
-import Popup from '@/components/Popup';
+import { iotNetworkListAdd } from 'src/util/params';
+import Popup from 'src/components/Popup';
 import ConfirmAddManufacturerNetwork from './ConfirmAddManufacturerNetwork';
 import BackHandlerView from './BackHandlerView';
-import useAddNetworkAsManufacturer from '@/hooks/useAddNetworkAsManufacturer';
+import useAddNetworkAsManufacturer from 'src/hooks/useAddNetworkAsManufacturer';
 
 const Content = React.memo(({ visible, hide, show }) => {
   const [ ssid, setSsid ] = useState('');

@@ -1,17 +1,17 @@
 import React, { useMemo } from 'react';
 import { Text, View } from 'react-native';
-import Screen from '@/components/Screen';
-import MenuButton from '@/components/MenuButton';
-import List from '@/components/List';
+import Screen from 'src/components/Screen';
+import MenuButton from 'src/components/MenuButton';
+import List from 'src/components/List';
 import DeviceItem from './DeviceItem';
 import AddNetwork from './AddNetwork';
-import theme from '@/theme/themeExport';
-import i18n, { CapitalizeEach, CapitalizeFirst } from '@/translations';
-import { iotNetworkListAdd, iotNetworkListRemove } from '@/util/params';
+import theme from 'src/theme/themeExport';
+import i18n, { CapitalizeEach, CapitalizeFirst } from 'src/translations';
+import { iotNetworkListAdd, iotNetworkListRemove } from 'src/util/params';
 import { isPrototype } from 'wappsto-blanket/util';
 import { getServiceVersion } from 'wappsto-redux/util/helpers';
-import useAppStateStream from '@/hooks/useAppStateStream';
-import useAddNetworkStream from '@/hooks/useAddNetworkStream';
+import useAppStateStream from 'src/hooks/useAppStateStream';
+import useAddNetworkStream from 'src/hooks/useAddNetworkStream';
 
 const DevicesListScreen = React.memo(({ navigation }) => {
   const query = useMemo(() => ({

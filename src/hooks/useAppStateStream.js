@@ -1,8 +1,8 @@
 import { useState, useEffect, useMemo } from 'react';
 import { AppState } from 'react-native';
-import { startStream, endStream } from '@/util/helpers';
+import { startStream, endStream } from 'src/util/helpers';
 import { useDispatch, useSelector } from 'react-redux';
-import { config } from '@/configureWappstoRedux';
+import { config } from 'src/configureWappstoRedux';
 import { makeStreamSelector } from 'wappsto-redux/selectors/stream';
 
 const useAppStateStream = () => {

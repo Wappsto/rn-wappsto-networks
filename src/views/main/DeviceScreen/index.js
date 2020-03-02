@@ -1,14 +1,14 @@
 import React, { useMemo } from 'react';
-import Screen from '@/components/Screen';
-import List from '@/components/List';
+import Screen from 'src/components/Screen';
+import List from 'src/components/List';
 import Value from './Value';
-import theme from '@/theme/themeExport';
-import { selectedDeviceName } from '@/util/params';
+import theme from 'src/theme/themeExport';
+import { selectedDeviceName } from 'src/util/params';
 import { getServiceVersion } from 'wappsto-redux/util/helpers';
 import DeviceDetails from './DeviceDetails';
-import useUnmountRemoveItem from '@/hooks/useUnmountRemoveItem';
-import useUndefinedBack from '@/hooks/useUndefinedBack';
-import useGetItemEntity from '@/hooks/useGetItemEntity';
+import useUnmountRemoveItem from 'src/hooks/useUnmountRemoveItem';
+import useUndefinedBack from 'src/hooks/useUndefinedBack';
+import useGetItemEntity from 'src/hooks/useGetItemEntity';
 
 const DeviceScreen = React.memo(({ navigation }) => {
   const device = useGetItemEntity(selectedDeviceName, 'device');
