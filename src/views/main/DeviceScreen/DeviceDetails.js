@@ -1,11 +1,11 @@
 import React from 'react';
 import { Text } from 'react-native';
-import PopupButton from 'src/components/PopupButton';
-import Popup from 'src/components/Popup';
-import theme from 'src/theme/themeExport';
-import i18n, { CapitalizeFirst, CapitalizeEach } from 'src/translations';
-import { selectedDeviceName } from 'src/util/params';
-import useGetItemEntity from 'src/hooks/useGetItemEntity';
+import PopupButton from '../../../components/PopupButton';
+import Popup from '../../../components/Popup';
+import theme from '../../../theme/themeExport';
+import i18n, { CapitalizeFirst, CapitalizeEach } from '../../../translations';
+import { selectedDeviceName } from '../../../util/params';
+import useGetItemEntity from '../../../hooks/useGetItemEntity';
 
 const ValueSettings = React.memo(() => {
   const device = useGetItemEntity(selectedDeviceName, 'device');

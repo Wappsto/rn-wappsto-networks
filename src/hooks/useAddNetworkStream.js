@@ -1,5 +1,5 @@
 import { useEffect, useMemo } from 'react';
-import { config } from 'src/configureWappstoRedux';
+import { config } from '../configureWappstoRedux';
 import { makeItemSelector } from 'wappsto-redux/selectors/items';
 import { makeStreamSelector } from 'wappsto-redux/selectors/stream';
 import { useSelector } from 'react-redux';

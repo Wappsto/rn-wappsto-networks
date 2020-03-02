@@ -1,8 +1,8 @@
 import { useState, useEffect, useRef } from 'react';
 import { NativeModules, NativeEventEmitter } from 'react-native';
 import BleManager from 'react-native-ble-manager';
-import Blufi from 'src/BlufiLib';
-import { BlufiParameter, BlufiCallback } from 'src/BlufiLib/util/params';
+import Blufi from '../BlufiLib';
+import { BlufiParameter, BlufiCallback } from '../BlufiLib/util/params';
 import { isUUID } from 'wappsto-redux/util/helpers';
 
 const BleManagerModule = NativeModules.BleManager;

@@ -1,13 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import { View, Text, TextInput, Switch } from 'react-native';
 import Slider from '@react-native-community/slider';
-import RequestError from 'src/components/RequestError';
-import theme from 'src/theme/themeExport';
-import i18n, { CapitalizeFirst } from 'src/translations';
+import RequestError from '../../../components/RequestError';
+import theme from '../../../theme/themeExport';
+import i18n, { CapitalizeFirst } from '../../../translations';
 import useRequest from 'wappsto-blanket/hooks/useRequest';
 import Timestamp from './Timestamp';
 import { cannotAccessState } from 'wappsto-blanket/util';
-import { getStateData } from 'src/util/helpers';
+import { getStateData } from '../../../util/helpers';
 
 const ControlState = React.memo(({ state, value }) => {
   const { request, send } = useRequest();

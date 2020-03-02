@@ -1,9 +1,9 @@
 import React from 'react';
 import { View, StatusBar } from 'react-native';
 import SessionVerifier from './SessionVerifier';
-import useStorageSession from 'src/hooks/useStorageSession';
+import useStorageSession from '../hooks/useStorageSession';
 
-import theme from 'src/theme/themeExport';
+import theme from '../theme/themeExport';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 
 const SplashScreen = ({ navigation }) => {

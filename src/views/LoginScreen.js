@@ -1,13 +1,13 @@
 import React from 'react';
 import { View, Text, TextInput, TouchableOpacity, ActivityIndicator, StatusBar, ScrollView } from 'react-native';
 import { GoogleSigninButton } from '@react-native-community/google-signin';
-import Screen from 'src/components/Screen';
-import { useTranslation, CapitalizeFirst } from 'src/translations';
+import Screen from '../components/Screen';
+import { useTranslation, CapitalizeFirst } from '../translations';
 
-import useSignIn from 'src/hooks/useSignIn';
-import RequestError from 'src/components/RequestError';
+import useSignIn from '../hooks/useSignIn';
+import RequestError from '../components/RequestError';
 
-import theme from 'src/theme/themeExport';
+import theme from '../theme/themeExport';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 
 const LoginScreen = React.memo(({ navigation }) => {

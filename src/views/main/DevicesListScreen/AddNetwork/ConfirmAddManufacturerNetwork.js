@@ -1,7 +1,7 @@
 import React from 'react';
 import { Text, TouchableOpacity, View } from 'react-native';
-import theme from 'src/theme/themeExport';
-import i18n, { CapitalizeFirst, CapitalizeEach } from 'src/translations';
+import theme from '../../../../theme/themeExport';
+import i18n, { CapitalizeFirst, CapitalizeEach } from '../../../../translations';
 
 const ConfirmAddManufacturerNetwork = React.memo(({ accept, reject }) => {
   return (

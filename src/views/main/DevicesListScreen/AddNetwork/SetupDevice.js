@@ -1,9 +1,9 @@
 import React from 'react';
 import { Text, TouchableOpacity, ActivityIndicator } from 'react-native';
-import i18n, { CapitalizeFirst } from 'src/translations';
-import theme from 'src/theme/themeExport';
-import RequestError from 'src/components/RequestError';
-import useSetupDevice from 'src/hooks/useSetupDevice';
+import i18n, { CapitalizeFirst } from '../../../../translations';
+import theme from '../../../../theme/themeExport';
+import RequestError from '../../../../components/RequestError';
+import useSetupDevice from '../../../../hooks/useSetupDevice';
 
 const SetupDevice = React.memo(({ next, previous, hide, ssid, password, selectedDevice, sendRequest, postRequest, skipCodes, acceptedManufacturerAsOwner }) => {
   const { loading, error, step } = useSetupDevice(selectedDevice, sendRequest, postRequest, acceptedManufacturerAsOwner, ssid, password);

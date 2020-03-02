@@ -2,10 +2,10 @@ import React from 'react';
 import { Text, TextInput, View, ActivityIndicator, TouchableOpacity, StyleSheet } from 'react-native';
 import { RNCamera } from 'react-native-camera';
 import BarcodeMask from 'react-native-barcode-mask';
-import RequestError from 'src/components/RequestError';
-import theme from 'src/theme/themeExport';
-import i18n, { CapitalizeFirst, CapitalizeEach } from 'src/translations';
-import useAddNetwork from 'src/hooks/useAddNetwork';
+import RequestError from '../../../../components/RequestError';
+import theme from '../../../../theme/themeExport';
+import i18n, { CapitalizeFirst, CapitalizeEach } from '../../../../translations';
+import useAddNetwork from '../../../../hooks/useAddNetwork';
 
 const styles = StyleSheet.create({
   qrCodeScannerWrapper: {

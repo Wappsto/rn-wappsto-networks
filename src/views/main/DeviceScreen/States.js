@@ -3,10 +3,10 @@ import {View, Text, ActivityIndicator} from 'react-native';
 import { useSelector } from 'react-redux';
 import ControlState from './ControlState';
 import ReportState from './ReportState';
-import RequestError from 'src/components/RequestError';
+import RequestError from '../../../components/RequestError';
 import { makeEntitiesSelector } from 'wappsto-redux/selectors/entities';
-import theme from 'src/theme/themeExport';
-import i18n, { CapitalizeFirst } from 'src/translations';
+import theme from '../../../theme/themeExport';
+import i18n, { CapitalizeFirst } from '../../../translations';
 import useRequest from 'wappsto-blanket/hooks/useRequest';
 
 const StatesComponent = React.memo(({ value }) => {
