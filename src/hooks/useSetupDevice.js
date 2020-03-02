@@ -98,8 +98,7 @@ const useSetupDevice = (selectedDevice, sendRequest, postRequest, acceptedManufa
         return;
       }
       clearTimeout(timeout.current);
-      // networkId.current = data.toString();
-      networkId.current = 'aa3542ce-0e2d-4917-9126-1770f2eb7378';
+      networkId.current = data.toString();
       if(!isUUID(networkId.current)){
         // message is not a uuid
         setStep(ERRORS.FAILEDNOTUUID);
