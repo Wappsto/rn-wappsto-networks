@@ -139,6 +139,7 @@
         "failedSendWifiData": "failed to send wifi data",
         "failedWaitDeviceConnect": "the device failed to connect to the wifi",
         "rejectedManufacturerAsOwner": "you rejected manufacturer as owner",
+        "rserror": "",
         "generic": "something went wrong and we don't know what(actually I do but that would be too specific)"
       },
       "step": {
