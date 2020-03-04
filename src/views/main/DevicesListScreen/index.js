@@ -33,7 +33,7 @@ const DevicesListScreen = React.memo(({ navigation }) => {
         addItemName={iotNetworkListAdd}
         removeItemName={iotNetworkListRemove}
         page={navigation.state.routeName}
-        renderSectionHeader={({section: {title: network}}) => {
+        renderSectionHeader={({ section: { title: network } }) => {
           return (
             <Text style={theme.common.listHeader}>
               { isPrototype(network) && <Text>({CapitalizeEach(i18n.t('prototype'))}) </Text> }

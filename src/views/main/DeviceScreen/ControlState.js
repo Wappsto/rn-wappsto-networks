@@ -1,56 +1,25 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import { View, Text, TextInput, Switch } from 'react-native';
 import Slider from '@react-native-community/slider';
 import RequestError from '../../../components/RequestError';
 import theme from '../../../theme/themeExport';
 import i18n, { CapitalizeFirst } from '../../../translations';
-import useRequest from 'wappsto-blanket/hooks/useRequest';
 import Timestamp from './Timestamp';
 import { cannotAccessState } from 'wappsto-blanket/util';
 import { getStateData } from '../../../util/helpers';
+import useControlState from '../../../hooks/useControlState';
 
 const ControlState = React.memo(({ state, value }) => {
-  const { request, send } = useRequest();
-  const [ input, setInput ] = useState();
-  const [ isFocused, setIsFocused ] = useState(false);
-  const isUpdating = request && request.status === 'pending';
-
-  useEffect(() => {
-    if(!isFocused){
-      setInput(value.hasOwnProperty('number') ? parseFloat(state.data) || 0 : state.data);
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [state]);
-
-  const updateState = (data) => {
-    data = data + '';
-    if (!isUpdating) {
-      let timestamp = new Date().toISOString();
-      send({
-        method: 'PATCH',
-        url: '/state/' + state.meta.id,
-        body: {
-          data,
-          timestamp,
-        }
-      });
-    }
-  }
-
-  const updateStateFromInput = ({nativeEvent: {text}}) => {
-    updateState(text);
-  };
-
-  const updateSwitchState = boolValue => {
-    let data;
-    if (value.hasOwnProperty('number')) {
-      data = boolValue ? '1' : '0';
-    } else {
-      data = boolValue;
-    }
-    updateState(data);
-    setInput(data);
-  };
+  const {
+    input,
+    setInput,
+    setIsFocused,
+    updateStateFromInput,
+    updateSwitchState,
+    updateState,
+    request,
+    isUpdating
+  } = useControlState(state, value);
 
   let stateDataField = null;
   if (value.hasOwnProperty('string')) {

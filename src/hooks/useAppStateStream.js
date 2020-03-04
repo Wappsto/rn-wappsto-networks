@@ -1,32 +1,23 @@
-import { useState, useEffect, useMemo } from 'react';
-import { AppState } from 'react-native';
+import { useEffect, useMemo, useCallback } from 'react';
 import { startStream, endStream } from '../util/helpers';
 import { useDispatch, useSelector } from 'react-redux';
 import { config } from '../configureWappstoRedux';
 import { makeStreamSelector } from 'wappsto-redux/selectors/stream';
+import useAppState from './useAppState';
 
 const useAppStateStream = () => {
   const dispatch = useDispatch();
-  const [ appState, setAppState ] = useState(AppState.currentState);
   const getStream = useMemo(makeStreamSelector, []);
   const stream = useSelector(state => getStream(state, config.stream && config.stream.name));
 
-  // handle app state change
-  useEffect(() => {
-    const _handleAppStateChange = (nextAppState) => {
-      if (appState.match(/inactive|background/) && nextAppState === 'active' && stream && stream.ws && stream.ws.readyState === stream.ws.CLOSED) {
+  useAppState(
+    useCallback(() => {
+      if (stream && stream.ws && stream.ws.readyState === stream.ws.CLOSED) {
         endStream(dispatch, true);
         startStream(dispatch);
       }
-      setAppState(nextAppState);
-    };
-
-    AppState.addEventListener('change', _handleAppStateChange);
-    return () => {
-      AppState.removeEventListener('change', _handleAppStateChange);
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [appState, stream]);
+    }, [dispatch, stream])
+  );
 
   // subscribe to stream
   useEffect(() => {

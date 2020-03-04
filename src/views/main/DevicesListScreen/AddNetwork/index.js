@@ -12,7 +12,7 @@ import { iotNetworkListAdd } from '../../../../util/params';
 import Popup from '../../../../components/Popup';
 import ConfirmAddManufacturerNetwork from './ConfirmAddManufacturerNetwork';
 import BackHandlerView from './BackHandlerView';
-import useAddNetworkAsManufacturer from '../../../../hooks/useAddNetworkAsManufacturer';
+import useAddNetwork from '../../../../hooks/useAddNetwork';
 
 const Content = React.memo(({ visible, hide, show }) => {
   const [ ssid, setSsid ] = useState('');
@@ -28,7 +28,7 @@ const Content = React.memo(({ visible, hide, show }) => {
     refuseManufacturerAsOwner,
     acceptedManufacturerAsOwner,
     skipErrorCodes
-  } = useAddNetworkAsManufacturer(iotNetworkListAdd, maoShow, maoHide);
+  } = useAddNetwork(iotNetworkListAdd, maoShow, maoHide);
 
   const next = useCallback(() => {
     setStep(s => {

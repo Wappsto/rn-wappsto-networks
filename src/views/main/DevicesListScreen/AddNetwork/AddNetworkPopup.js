@@ -5,7 +5,7 @@ import BarcodeMask from 'react-native-barcode-mask';
 import RequestError from '../../../../components/RequestError';
 import theme from '../../../../theme/themeExport';
 import i18n, { CapitalizeFirst, CapitalizeEach } from '../../../../translations';
-import useAddNetwork from '../../../../hooks/useAddNetwork';
+import useAddNetworkForm from '../../../../hooks/useAddNetworkForm';
 
 const styles = StyleSheet.create({
   qrCodeScannerWrapper: {
@@ -44,7 +44,7 @@ const AddNetwork = React.memo(({ postRequest, sendRequest, skipCodes, acceptedMa
     addNetwork,
     loading,
     canAdd
-  } = useAddNetwork(sendRequest, postRequest, acceptedManufacturerAsOwner, hide);
+  } = useAddNetworkForm(sendRequest, postRequest, acceptedManufacturerAsOwner, hide);
 
   return (
     <>

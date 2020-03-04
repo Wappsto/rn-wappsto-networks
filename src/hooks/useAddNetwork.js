@@ -1,65 +1,78 @@
-import { useState, useEffect, useCallback } from 'react';
-import { isUUID } from 'wappsto-redux/util/helpers';
+import { useState, useCallback, useEffect, useMemo } from 'react';
+import useRequest from 'wappsto-blanket/hooks/useRequest';
+import { removeRequest } from 'wappsto-redux/actions/request';
+import { makeItemSelector } from 'wappsto-redux/selectors/items';
+import { useSelector, useDispatch } from 'react-redux';
 import { manufacturerAsOwnerErrorCode } from '../util/params';
 
-const useAddNetwork = (sendRequest, postRequest, acceptedManufacturerAsOwner, onDone) => {
-  const [ inputValue, setInputValue ] = useState('');
-  const [ isScanning, setIsScanning ] = useState(false);
-  const [ didScan, setDidScan ] = useState(false);
-  const [ loading, setLoading ] = useState(false);
+const skipErrorCodes = [manufacturerAsOwnerErrorCode];
+const useAddNetwork = (iotNetworkListAdd, maoShow, maoHide) => {
+  const { request, send } = useRequest();
+  const [ networkId, setNetworkId ] = useState();
+  const [ acceptedManufacturerAsOwner, setAcceptedManufacturerAsOwner ] = useState(true);
+  const getItem = useMemo(makeItemSelector, []);
+  const dispatch = useDispatch();
 
-  const onRead = useCallback(event => {
-    const qrText = (event.data.split('+')[0] || '').trim();
-    setInputValue(qrText);
-    setIsScanning(false);
-    setDidScan(true);
+  const addToList = useSelector(state => getItem(state, iotNetworkListAdd));
+  const sendRequest = useCallback((id, body = {}) => {
+    setNetworkId(id);
+    send({
+      method: 'POST',
+      url: '/network/' + id,
+      query: {
+        verbose: true
+      },
+      body
+    });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  const addNetwork = useCallback(() => {
-    setLoading(true);
-    sendRequest(inputValue);
-  }, [sendRequest, inputValue]);
+  const acceptManufacturerAsOwner = useCallback(() => {
+    setAcceptedManufacturerAsOwner(true);
+    maoHide();
+    send({
+      method: 'POST',
+      url: '/network/' + networkId,
+      query: {
+        verbose: true
+      },
+      body: {
+        meta: {
+          accept_manufacturer_as_owner: true
+        }
+      }
+    });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [networkId]);
 
-  const switchView = useCallback(() => {
-    setIsScanning(v => !v);
+  const refuseManufacturerAsOwner = useCallback(() => {
+    setAcceptedManufacturerAsOwner(false);
+    maoHide();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
-
-  const onSubmitEditing = useCallback(() => {
-    if(isUUID(inputValue)){
-      addNetwork();
-    }
-  }, [inputValue, addNetwork]);
 
   useEffect(() => {
-    if(postRequest){
-      if(postRequest.status === 'success'){
-        if(onDone){
-          onDone();
+    if(request){
+      if(request.status === 'error' && request.json.code === manufacturerAsOwnerErrorCode){
+        maoShow();
+      } else if(request.status === 'success'){
+        dispatch(removeRequest(request.id));
+        if(addToList){
+          addToList(request.json && request.json.meta.id);
         }
-      } else if(postRequest.status !== 'pending' && (postRequest.status !== 'error' || postRequest.json.code !== manufacturerAsOwnerErrorCode)){
-        setLoading(false);
       }
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [postRequest]);
-
-  useEffect(() => {
-    if(acceptedManufacturerAsOwner === false){
-      setLoading(false);
-    }
-  }, [acceptedManufacturerAsOwner]);
+  }, [request]);
 
   return {
-    inputValue,
-    setInputValue,
-    switchView,
-    isScanning,
-    didScan,
-    onRead,
-    onSubmitEditing,
-    addNetwork,
-    loading,
-    canAdd: isUUID(inputValue) && !loading
+    setAcceptedManufacturerAsOwner,
+    sendRequest,
+    request,
+    acceptManufacturerAsOwner,
+    refuseManufacturerAsOwner,
+    acceptedManufacturerAsOwner,
+    skipErrorCodes
   };
 }
 
