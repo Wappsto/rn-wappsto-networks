@@ -20,7 +20,7 @@ const List = React.memo(({
   page
 }) => {
   const { items, request, refresh, canLoadMore, loadMore } = usePageList(name, url, query, addItemName, removeItemName, page);
-  const data = useSectionData(items, url);
+  const data = useSectionData(items);
 
   return (
     <View style={style || theme.common.container}>
