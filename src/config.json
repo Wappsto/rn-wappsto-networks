@@ -8,5 +8,6 @@
     "subscription": ["/network"],
     "version": "2.0"
   },
-  "firebaseWebClientId": ""
+  "firebaseWebClientId": "",
+  "blufiFilter": ["adu"]
 }

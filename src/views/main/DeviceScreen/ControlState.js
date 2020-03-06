@@ -9,18 +9,17 @@ import { cannotAccessState } from 'wappsto-blanket/util';
 import { getStateData } from '../../../util/helpers';
 import useControlState from '../../../hooks/useControlState';
 
-const ControlState = React.memo(({ state, value }) => {
-  const {
-    input,
-    setInput,
-    setIsFocused,
-    updateStateFromInput,
-    updateSwitchState,
-    updateState,
-    request,
-    isUpdating
-  } = useControlState(state, value);
-
+export const StateDataField = ({
+  value,
+  input,
+  setInput,
+  setIsFocused,
+  updateStateFromInput,
+  updateSwitchState,
+  updateState,
+  request,
+  isUpdating
+}) => {
   let stateDataField = null;
   if (value.hasOwnProperty('string')) {
     stateDataField = (
@@ -108,6 +107,11 @@ const ControlState = React.memo(({ state, value }) => {
       />
     );
   }
+  return stateDataField;
+}
+
+const ControlState = React.memo(({ state, value }) => {
+  const controlStateController = useControlState(state, value);
 
   return (
     <View>
@@ -123,9 +127,9 @@ const ControlState = React.memo(({ state, value }) => {
         ) : (
           <>
             <View style={{alignItems: 'center', marginBottom: 15}}>
-              {stateDataField}
+              <StateDataField {...controlStateController} value={value}/>
             </View>
-            <RequestError request={request} />
+            <RequestError request={controlStateController.request} />
             <Timestamp timestamp={state.timestamp}/>
           </>
         )

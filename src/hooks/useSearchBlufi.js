@@ -1,12 +1,13 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useCallback } from 'react';
 import { Platform, PermissionsAndroid, NativeModules, NativeEventEmitter } from 'react-native';
 import BleManager from 'react-native-ble-manager';
 import { BlufiParameter } from '../BlufiLib/util/params';
+import { config } from '../configureWappstoRedux';
 
 const BleManagerModule = NativeModules.BleManager;
 const bleManagerEmitter = new NativeEventEmitter(BleManagerModule);
 
-const useSearchBlufi = (filter) => {
+const useSearchBlufi = () => {
   const [ error, setError ] = useState(false);
   const [ permissionError, setPermissionError ] = useState(false);
   const [ scanning, setScanning ] = useState(true);
@@ -24,7 +25,7 @@ const useSearchBlufi = (filter) => {
       (device) => {
         const lowerName = device.name ? device.name.toLowerCase() : '';
         setDevices(devices => {
-          if(!filter || filter.length === 0 || (filter.find(f => lowerName.includes(f.toLowerCase())) && !devices.find(d => d.id === device.id))){
+          if(!config.blufiFilter || config.blufiFilter.length === 0 || (config.blufiFilter.find(f => lowerName.includes(f.toLowerCase())) && !devices.find(d => d.id === device.id))){
             return [...devices, device];
           }
           return devices;
@@ -41,7 +42,7 @@ const useSearchBlufi = (filter) => {
     );
   }
 
-  const scan = async () => {
+  const scan = useCallback(async () => {
     setDevices([]);
     setScanning(true);
     try{
@@ -52,7 +53,7 @@ const useSearchBlufi = (filter) => {
       setScanning(false);
       setError(true);
     }
-  }
+  }, []);
 
   const init = () => {
     BleManager.start({showAlert: false});
@@ -83,7 +84,7 @@ const useSearchBlufi = (filter) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  return { error, permissionError, scanning, devices };
+  return { scan, error, permissionError, scanning, devices };
 }
 
 export default useSearchBlufi;

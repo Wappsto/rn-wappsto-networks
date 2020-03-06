@@ -4,9 +4,8 @@ import i18n, { CapitalizeFirst } from '../../../../translations';
 import theme from '../../../../theme/themeExport';
 import useSearchBlufi from '../../../../hooks/useSearchBlufi';
 
-const filter = ['ad'];
 const SearchBlufi = ({ next, previous, hide, setSelectedDevice }) => {
-  const { devices, scan, scanning, error, permissionError } = useSearchBlufi(filter);
+  const { devices, scan, scanning, error, permissionError } = useSearchBlufi();
   const handleDevicePress = useCallback((item) => {
     setSelectedDevice(item);
     next();

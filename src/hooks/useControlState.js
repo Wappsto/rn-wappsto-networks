@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import useRequest from 'wappsto-blanket/hooks/useRequest';
 
 const useControlState = (state, value) => {
@@ -6,6 +6,7 @@ const useControlState = (state, value) => {
   const [ input, setInput ] = useState();
   const [ isFocused, setIsFocused ] = useState(false);
   const isUpdating = request && request.status === 'pending';
+  const stateId = state && state.meta && state.meta.id;
 
   useEffect(() => {
     if(!isFocused){
@@ -14,26 +15,26 @@ const useControlState = (state, value) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [state]);
 
-  const updateState = (data) => {
+  const updateState = useCallback((data) => {
     data = data + '';
     if (!isUpdating) {
       let timestamp = new Date().toISOString();
       send({
         method: 'PATCH',
-        url: '/state/' + state.meta.id,
+        url: '/state/' + stateId,
         body: {
           data,
           timestamp,
         }
       });
     }
-  }
+  }, [isUpdating, send, stateId]);
 
-  const updateStateFromInput = ({nativeEvent: {text}}) => {
+  const updateStateFromInput = useCallback(({nativeEvent: {text}}) => {
     updateState(text);
-  };
+  }, [updateState]);
 
-  const updateSwitchState = boolValue => {
+  const updateSwitchState = useCallback(boolValue => {
     let data;
     if (value.hasOwnProperty('number')) {
       data = boolValue ? '1' : '0';
@@ -42,7 +43,7 @@ const useControlState = (state, value) => {
     }
     updateState(data);
     setInput(data);
-  };
+  }, [updateState, value]);
 
   return {
     input,
