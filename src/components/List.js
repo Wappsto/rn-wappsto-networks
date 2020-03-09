@@ -2,7 +2,7 @@ import React from 'react';
 import { View, Text, SectionList, TouchableOpacity, ActivityIndicator } from 'react-native';
 import RequestError from './RequestError';
 import theme from '../theme/themeExport';
-import i18n, { CapitalizeFirst } from '../translations';
+import { useTranslation, CapitalizeFirst } from '../translations';
 import usePageList from '../hooks/usePageList';
 import useSectionData from '../hooks/useSectionData';
 
@@ -19,6 +19,7 @@ const List = React.memo(({
   removeItemName,
   page
 }) => {
+  const { t } = useTranslation();
   const { items, request, refresh, canLoadMore, loadMore } = usePageList(name, url, query, addItemName, removeItemName, page);
   const data = useSectionData(items);
 
@@ -32,12 +33,12 @@ const List = React.memo(({
           (!request || request.status !== 'pending') && (
             <>
               <Text style={theme.common.infoText}>
-                {CapitalizeFirst(i18n.t('infoMessage.listIsEmpty'))}
+                {CapitalizeFirst(t('infoMessage.listIsEmpty'))}
               </Text>
               <TouchableOpacity
                 onPress={refresh}
                 style={[theme.common.button, theme.common.ghost]}>
-                <Text>{CapitalizeFirst(i18n.t('refresh'))}</Text>
+                <Text>{CapitalizeFirst(t('refresh'))}</Text>
               </TouchableOpacity>
             </>
           )

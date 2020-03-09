@@ -6,7 +6,7 @@ import List from '../../../components/List';
 import DeviceItem from './DeviceItem';
 import AddNetwork from './AddNetwork';
 import theme from '../../../theme/themeExport';
-import i18n, { CapitalizeEach, CapitalizeFirst } from '../../../translations';
+import { useTranslation, CapitalizeEach, CapitalizeFirst } from '../../../translations';
 import { iotNetworkListAdd, iotNetworkListRemove } from '../../../util/params';
 import { isPrototype } from 'wappsto-blanket/util';
 import { getServiceVersion } from 'wappsto-redux/util/helpers';
@@ -14,6 +14,7 @@ import useAppStateStream from '../../../hooks/useAppStateStream';
 import useAddNetworkStream from '../../../hooks/useAddNetworkStream';
 
 const DevicesListScreen = React.memo(({ navigation }) => {
+  const { t } = useTranslation();
   const query = useMemo(() => ({
     expand: 1,
     limit: 10,
@@ -36,7 +37,7 @@ const DevicesListScreen = React.memo(({ navigation }) => {
         renderSectionHeader={({ section: { title: network } }) => {
           return (
             <Text style={theme.common.listHeader}>
-              { isPrototype(network) && <Text>({CapitalizeEach(i18n.t('prototype'))}) </Text> }
+              { isPrototype(network) && <Text>({CapitalizeEach(t('prototype'))}) </Text> }
               { network.name ?
                 <>
                   <Text style={theme.common.H5}>{network.name}</Text>{'\n'}
@@ -55,7 +56,7 @@ const DevicesListScreen = React.memo(({ navigation }) => {
           if (item.device.length === 0) {
             return (
               <Text style={[theme.common.infoText, theme.common.secondary]}>
-                {CapitalizeFirst(i18n.t('infoMessage.networkIsEmpty'))}
+                {CapitalizeFirst(t('infoMessage.networkIsEmpty'))}
               </Text>
             );
           }
@@ -73,10 +74,10 @@ const DevicesListScreen = React.memo(({ navigation }) => {
   );
 });
 
-DevicesListScreen.navigationOptions = ({ navigation }) => {
+DevicesListScreen.navigationOptions = ({ navigation, screenProps: { t } }) => {
   return {
     ...theme.headerStyle,
-    title: CapitalizeEach(i18n.t('pageTitle.main')),
+    title: CapitalizeEach(t('pageTitle.main')),
     headerLeft: <MenuButton navigation={navigation} />,
     headerRight: <AddNetwork navigation={navigation} />,
   };

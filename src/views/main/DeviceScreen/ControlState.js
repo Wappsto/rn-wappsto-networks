@@ -3,7 +3,7 @@ import { View, Text, TextInput, Switch } from 'react-native';
 import Slider from '@react-native-community/slider';
 import RequestError from '../../../components/RequestError';
 import theme from '../../../theme/themeExport';
-import i18n, { CapitalizeFirst } from '../../../translations';
+import { useTranslation, CapitalizeFirst } from '../../../translations';
 import Timestamp from './Timestamp';
 import { cannotAccessState } from 'wappsto-blanket/util';
 import { getStateData } from '../../../util/helpers';
@@ -111,18 +111,19 @@ export const StateDataField = ({
 }
 
 const ControlState = React.memo(({ state, value }) => {
+  const { t } = useTranslation();
   const controlStateController = useControlState(state, value);
 
   return (
     <View>
       <Text style={theme.common.H6}>
-        {CapitalizeFirst(i18n.t('desiredState'))}
+        {CapitalizeFirst(t('desiredState'))}
       </Text>
       {
         cannotAccessState(state) ?
         (
           <Text>
-            {CapitalizeFirst(i18n.t('cannotAccess.' + state.status_payment))}
+            {CapitalizeFirst(t('cannotAccess.' + state.status_payment))}
           </Text>
         ) : (
           <>

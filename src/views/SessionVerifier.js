@@ -43,7 +43,7 @@ const SessionVerifier = React.memo(({ status, session, navigate }) => {
       cache.current.timeoutEnded = true;
       if (status !== 'pending') {
         if (cache.current.sessionStatus === 'error') {
-          navigateTo('LoginScreen');
+          navigateTo('LoginStackScreen');
         } else if (cache.current.sessionStatus === 'success') {
           navigateTo('MainScreen');
         }
@@ -54,7 +54,7 @@ const SessionVerifier = React.memo(({ status, session, navigate }) => {
   const addMaximumTimeout = () => {
     cache.current.maximumTimeout = setTimeout(() => {
       cache.current.timeoutEnded = true;
-      navigateTo('LoginScreen');
+      navigateTo('LoginStackScreen');
     }, 10000);
   }
 
@@ -63,7 +63,7 @@ const SessionVerifier = React.memo(({ status, session, navigate }) => {
       if (status === 'error') {
         cache.current.sessionStatus = 'error';
         if (cache.current.timeoutEnded) {
-          navigateTo('LoginScreen');
+          navigateTo('LoginStackScreen');
         }
       }
       if (!request && session) {
@@ -77,7 +77,7 @@ const SessionVerifier = React.memo(({ status, session, navigate }) => {
             userLogged(request, session);
           }
         } else if (request.status === 'error') {
-          navigateTo('LoginScreen');
+          navigateTo('LoginStackScreen');
         }
       }
     }

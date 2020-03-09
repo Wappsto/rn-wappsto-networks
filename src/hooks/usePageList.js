@@ -1,4 +1,4 @@
-import { useEffect, useCallback, useMemo, useRef } from 'react';
+import { useEffect, useCallback, useMemo } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import useList from 'wappsto-blanket/hooks/useList';
 import { setItem } from 'wappsto-redux/actions/items';

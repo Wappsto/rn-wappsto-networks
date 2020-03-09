@@ -7,10 +7,7 @@ import config from 'wappsto-redux/config';
 import { removeRequest } from 'wappsto-redux/actions/request';
 import useRequest from 'wappsto-blanket/hooks/useRequest';
 import useConnected from '../hooks/useConnected';
-
-const isEmail = (str) => {
-  return str.match(/\w+([-+.']\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*/);
-}
+import { isEmail } from '../util/helpers';
 
 const useSignIn = (navigation) => {
   const connected = useConnected();

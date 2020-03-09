@@ -1,13 +1,13 @@
-import React from 'react';
+import React, { useCallback } from 'react';
 import { View, Text, TextInput, TouchableOpacity, ActivityIndicator, StatusBar, ScrollView } from 'react-native';
 import { GoogleSigninButton } from '@react-native-community/google-signin';
-import Screen from '../components/Screen';
-import { useTranslation, CapitalizeFirst } from '../translations';
+import Screen from '../../components/Screen';
+import { useTranslation, CapitalizeFirst } from '../../translations';
 
-import useSignIn from '../hooks/useSignIn';
-import RequestError from '../components/RequestError';
+import useSignIn from '../../hooks/useSignIn';
+import RequestError from '../../components/RequestError';
 
-import theme from '../theme/themeExport';
+import theme from '../../theme/themeExport';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 
 const LoginScreen = React.memo(({ navigation }) => {
@@ -28,6 +28,10 @@ const LoginScreen = React.memo(({ navigation }) => {
     postRequest,
     loading
   } = useSignIn(navigation);
+
+  const moveToTACScreen = useCallback(() => {
+    navigation.navigate('TermsAndConditionsScreen');
+  }, [navigation]);
 
   return (
     <Screen>
@@ -96,6 +100,19 @@ const LoginScreen = React.memo(({ navigation }) => {
               {CapitalizeFirst(t('signIn'))}
             </Text>
           </TouchableOpacity>
+          <TouchableOpacity
+            disabled={loading}
+            style={[
+              theme.common.button,
+              loading
+                ? theme.common.disabled
+                : null,
+            ]}
+            onPress={moveToTACScreen}>
+            <Text style={theme.common.btnText}>
+              {CapitalizeFirst(t('register'))}
+            </Text>
+          </TouchableOpacity>
           <GoogleSigninButton
             style={theme.common.GoogleSigninButtonStyle}
             size={GoogleSigninButton.Size.Wide}
@@ -109,6 +126,12 @@ const LoginScreen = React.memo(({ navigation }) => {
     </Screen>
   );
 });
+
+LoginScreen.navigationOptions = ({ screenProps: { t } }) => {
+  return {
+    headerShown: false
+  };
+};
 
 LoginScreen.Header = () => (
   <View style={theme.common.header}>

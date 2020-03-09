@@ -7,16 +7,24 @@ import {createStackNavigator} from 'react-navigation-stack';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import theme from './theme/themeExport';
 import store from './configureWappstoRedux';
+import { useTranslation } from './translations';
 
-let dependencies = ['MainStackScreen', 'AccountStackScreen', 'MainScreen', 'SwitchNavigator', 'AppContainer', 'App'];
+let dependencies = ['LoginStackScreen', 'MainStackScreen', 'AccountStackScreen', 'MainScreen', 'SwitchNavigator', 'AppContainer', 'App'];
 
 let components = {
   SplashScreen: require('./views/SplashScreen').default,
-  LoginScreen: require('./views/LoginScreen').default,
   DevicesListScreen: require('./views/main/DevicesListScreen').default,
   DeviceScreen: require('./views/main/DeviceScreen').default,
   AccountScreen: require('./views/main/AccountScreen').default,
   DrawerMenu: require('./components/DrawerMenu').default,
+  LoginStackScreen: function(){
+    return createStackNavigator({
+      LoginScreen: require('./views/login/LoginScreen').default,
+      RegisterScreen: require('./views/login/RegisterScreen').default,
+      TermsAndConditionsScreen: require('./views/login/TermsAndConditionsScreen').default
+    });
+  },
+
   MainStackScreen: function() {
     return createStackNavigator({
       DevicesListScreen: {screen: this.DevicesListScreen},
@@ -48,7 +56,7 @@ let components = {
   SwitchNavigator: function() {
     return createSwitchNavigator({
       SplashScreen: {screen: this.SplashScreen},
-      LoginScreen: {screen: this.LoginScreen},
+      LoginStackScreen: {screen: this.LoginStackScreen},
       MainScreen: {screen: this.MainScreen},
     });
   },
@@ -75,22 +83,26 @@ export function replaceComponent(func) {
 }
 
 let rendered = false;
-export default class App extends Component {
-  render() {
-    if(!rendered){
-      rendered = true;
-      dependencies.forEach(d => {
-        if(components[d] && components[d].constructor === Function){
-          components[d] = components[d]();
-        }
-      });
-    }
-    return (
-      <Provider store={store}>
-        <SafeAreaProvider>
-          <components.App useSuspense={false} />
-        </SafeAreaProvider>
-      </Provider>
-    );
+const App = React.memo(() => {
+  const { t } = useTranslation();
+  if(!rendered){
+    rendered = true;
+    dependencies.forEach(d => {
+      if(components[d] && components[d].constructor === Function){
+        components[d] = components[d]();
+      }
+    });
   }
-}
+  return (
+    <Provider store={store}>
+      <SafeAreaProvider>
+        <components.App
+          screenProps={{ t }}
+          useSuspense={false}
+        />
+      </SafeAreaProvider>
+    </Provider>
+  );
+});
+
+export default App;

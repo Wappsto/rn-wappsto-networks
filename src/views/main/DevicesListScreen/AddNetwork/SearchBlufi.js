@@ -1,10 +1,11 @@
 import React, { useCallback } from 'react';
 import { Text, TouchableOpacity, ActivityIndicator } from 'react-native';
-import i18n, { CapitalizeFirst } from '../../../../translations';
+import { useTranslation, CapitalizeFirst } from '../../../../translations';
 import theme from '../../../../theme/themeExport';
 import useSearchBlufi from '../../../../hooks/useSearchBlufi';
 
 const SearchBlufi = ({ next, previous, hide, setSelectedDevice }) => {
+  const { t } = useTranslation();
   const { devices, scan, scanning, error, permissionError } = useSearchBlufi();
   const handleDevicePress = useCallback((item) => {
     setSelectedDevice(item);
@@ -13,11 +14,11 @@ const SearchBlufi = ({ next, previous, hide, setSelectedDevice }) => {
 
   return (
     <>
-      <Text style={theme.common.H3}>{CapitalizeFirst(i18n.t(devices.length === 0 ? 'blufi.lookingForDevices' : 'blufi.foundDevices'))}</Text>
+      <Text style={theme.common.H3}>{CapitalizeFirst(t(devices.length === 0 ? 'blufi.lookingForDevices' : 'blufi.foundDevices'))}</Text>
       {scanning && <ActivityIndicator size='large' style={theme.common.spaceAround}/>}
       {!scanning &&
         <TouchableOpacity onPress={scan} style={theme.common.button}>
-          <Text>{CapitalizeFirst(i18n.t('blufi.scanAgain'))}</Text>
+          <Text>{CapitalizeFirst(t('blufi.scanAgain'))}</Text>
         </TouchableOpacity>
       }
       {devices.map(device => (
@@ -26,8 +27,8 @@ const SearchBlufi = ({ next, previous, hide, setSelectedDevice }) => {
           <Text>{device.id}</Text>
         </TouchableOpacity>
       ))}
-      {error && <Text style={theme.common.error}>{CapitalizeFirst(i18n.t('blufi.scanError'))}</Text>}
-      {permissionError && <Text style={theme.common.error}>{CapitalizeFirst(i18n.t('blufi.permissionError'))}</Text>}
+      {error && <Text style={theme.common.error}>{CapitalizeFirst(t('blufi.scanError'))}</Text>}
+      {permissionError && <Text style={theme.common.error}>{CapitalizeFirst(t('blufi.permissionError'))}</Text>}
     </>
   )
 }

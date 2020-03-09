@@ -1,7 +1,7 @@
 import React from 'react';
 import { View, Text, StyleSheet, Image } from 'react-native';
 import theme from '../../../theme/themeExport';
-import i18n, { CapitalizeFirst } from '../../../translations';
+import { useTranslation, CapitalizeFirst } from '../../../translations';
 import Timestamp from './Timestamp';
 import { cannotAccessState } from 'wappsto-blanket/util';
 
@@ -37,15 +37,16 @@ const content = (state, value) => {
 };
 
 const ReportState = React.memo(({ state, value }) => {
+  const { t } = useTranslation();
   return (
     <View>
       <Text style={theme.common.H6}>
-        {CapitalizeFirst(i18n.t('currentState'))}
+        {CapitalizeFirst(t('currentState'))}
       </Text>
       {
         cannotAccessState(state) ? (
           <Text>
-            {CapitalizeFirst(i18n.t('cannotAccess.' + state.status_payment))}
+            {CapitalizeFirst(t('cannotAccess.' + state.status_payment))}
           </Text>
         ) : (
           <>

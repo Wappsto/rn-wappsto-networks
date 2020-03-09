@@ -1,37 +1,9 @@
-addDevice.title
-addDevice.register
-addDevice.registerAndWifi
-blufi.lookingForDevices
-blufi.scanAgain
-blufi.scanError
-blufi.foundDevices
-blufi.insertWifi
-blufi.ssid
-blufi.password
-blufi.configure
-blufi.warning5G
-blufi.settingUp
-blufi.doneDescription
-blufi.permissionError
-blufi.error.title
-blufi.error.failedConnect
-blufi.error.failedRetrieve
-blufi.error.failedRetrieveTimeout
-blufi.error.failedNotUuid
-blufi.error.failedInitNotification
-blufi.error.failedNegotiateSecurity
-blufi.error.failedNegotiateSecurityTimeout
-blufi.error.failedSendWifiData
-blufi.error.failedWaitDeviceConnect
-blufi.error.failedAddNetwork
-blufi.error.generic
-blufi.steps.connect
-blufi.steps.retrieve
-blufi.steps.initNotification
-blufi.steps.negotiateSecurity
-blufi.steps.sendWifiData
-blufi.steps.waitDeviceConnect
-blufi.steps.addNetwork
-done
-next
-cancel
+register
+pageTitle.register
+pageTitle.termsAndConditions
+continue
+readAndAcceptTerms
+repeatPassword
+register.error.username: username must be an email address
+register.error.password: password need to be specified
+register.error.repeatPassword: passwords do not match

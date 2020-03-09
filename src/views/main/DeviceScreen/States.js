@@ -6,10 +6,11 @@ import ReportState from './ReportState';
 import RequestError from '../../../components/RequestError';
 import { makeEntitiesSelector } from 'wappsto-redux/selectors/entities';
 import theme from '../../../theme/themeExport';
-import i18n, { CapitalizeFirst } from '../../../translations';
+import { useTranslation, CapitalizeFirst } from '../../../translations';
 import useRequest from 'wappsto-blanket/hooks/useRequest';
 
 const StatesComponent = React.memo(({ value }) => {
+  const { t } = useTranslation();
   const id = value.meta.id;
   const url = '/value/' + id + '/state';
   const { request, send } = useRequest();
@@ -44,7 +45,7 @@ const StatesComponent = React.memo(({ value }) => {
         </>
       ) : (
         <Text style={[theme.common.infoText, theme.common.secondary]}>
-          {CapitalizeFirst(i18n.t('infoMessage.valueIsEmpty'))}
+          {CapitalizeFirst(t('infoMessage.valueIsEmpty'))}
         </Text>
       )}
       {request && request.status === 'pending' && (

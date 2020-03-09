@@ -4,7 +4,7 @@ import { RNCamera } from 'react-native-camera';
 import BarcodeMask from 'react-native-barcode-mask';
 import RequestError from '../../../../components/RequestError';
 import theme from '../../../../theme/themeExport';
-import i18n, { CapitalizeFirst, CapitalizeEach } from '../../../../translations';
+import { useTranslation, CapitalizeFirst, CapitalizeEach } from '../../../../translations';
 import useAddNetworkForm from '../../../../hooks/useAddNetworkForm';
 
 const styles = StyleSheet.create({
@@ -33,6 +33,7 @@ const styles = StyleSheet.create({
 });
 
 const AddNetwork = React.memo(({ postRequest, sendRequest, skipCodes, acceptedManufacturerAsOwner, hide }) => {
+  const { t } = useTranslation();
   const {
     inputValue,
     setInputValue,
@@ -49,10 +50,10 @@ const AddNetwork = React.memo(({ postRequest, sendRequest, skipCodes, acceptedMa
   return (
     <>
       <Text style={theme.common.H3}>
-        {CapitalizeEach(i18n.t('addNetwork.addNetworkTitle'))}
+        {CapitalizeEach(t('addNetwork.addNetworkTitle'))}
       </Text>
       <Text style={theme.common.p}>
-        {CapitalizeFirst(i18n.t('addNetwork.addNetworkInfo'))}
+        {CapitalizeFirst(t('addNetwork.addNetworkInfo'))}
       </Text>
       <View style={styles.qrCodeScannerWrapper}>
         {isScanning ? (
@@ -65,7 +66,7 @@ const AddNetwork = React.memo(({ postRequest, sendRequest, skipCodes, acceptedMa
               <View style={styles.cameraCapture}>
                 <Text>
                   {CapitalizeFirst(
-                    i18n.t('addNetwork.cameraPermission.denied'),
+                    t('addNetwork.cameraPermission.denied'),
                   )}
                 </Text>
               </View>
@@ -74,17 +75,17 @@ const AddNetwork = React.memo(({ postRequest, sendRequest, skipCodes, acceptedMa
               <View style={styles.cameraCapture}>
                 <Text>
                   {CapitalizeFirst(
-                    i18n.t('addNetwork.cameraPermission.pending'),
+                    t('addNetwork.cameraPermission.pending'),
                   )}
                 </Text>
               </View>
             }
             androidCameraPermissionOptions={{
               title: CapitalizeFirst(
-                i18n.t('addNetwork.cameraPermission.title'),
+                t('addNetwork.cameraPermission.title'),
               ),
               message: CapitalizeFirst(
-                i18n.t('addNetwork.cameraPermission.message'),
+                t('addNetwork.cameraPermission.message'),
               ),
             }}>
             <BarcodeMask
@@ -98,12 +99,12 @@ const AddNetwork = React.memo(({ postRequest, sendRequest, skipCodes, acceptedMa
           <TouchableOpacity
             style={styles.cameraCapture}
             onPress={switchView}>
-            <Text>{CapitalizeFirst(i18n.t(didScan ? 'addNetwork.rescanQRCode' : 'addNetwork.scanQRCode'))}</Text>
+            <Text>{CapitalizeFirst(t(didScan ? 'addNetwork.rescanQRCode' : 'addNetwork.scanQRCode'))}</Text>
           </TouchableOpacity>
         )}
       </View>
       <Text style={theme.common.label}>
-        {CapitalizeFirst(i18n.t('addNetwork.uuid'))}
+        {CapitalizeFirst(t('addNetwork.uuid'))}
       </Text>
       <TextInput
         style={theme.common.input}
@@ -123,7 +124,7 @@ const AddNetwork = React.memo(({ postRequest, sendRequest, skipCodes, acceptedMa
         style={[theme.common.button, canAdd ? null : theme.common.disabled]}
         onPress={addNetwork}>
         <Text style={theme.common.btnText}>
-          {CapitalizeFirst(i18n.t('add'))}
+          {CapitalizeFirst(t('add'))}
         </Text>
       </TouchableOpacity>
     </>

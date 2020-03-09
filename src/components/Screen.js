@@ -2,13 +2,14 @@ import React from 'react';
 import {Text, View, TouchableOpacity, StatusBar} from 'react-native';
 import { useSafeArea} from 'react-native-safe-area-context';
 import { status } from 'wappsto-redux/actions/stream';
-import i18n, { CapitalizeFirst } from '../translations';
+import { useTranslation, CapitalizeFirst } from '../translations';
 import theme from '../theme/themeExport';
 import useCurrentPage from '../hooks/useCurrentPage';
 import useConnected from '../hooks/useConnected';
 import useStreamStatus from '../hooks/useStreamStatus';
 
 const Screen = React.memo(({ style, children }) => {
+  const { t } = useTranslation();
   const { stream, reconnectStream, message } = useStreamStatus();
   const connected = useConnected();
   useCurrentPage();
@@ -22,7 +23,7 @@ const Screen = React.memo(({ style, children }) => {
       <StatusBar backgroundColor={theme.variables.primary} barStyle='light-content' />
       {!connected && (
         <Text style={[theme.common.toastFullWidth, theme.common.warningPanel]}>
-          {CapitalizeFirst(i18n.t('error:internetConnectionLost'))}
+          {CapitalizeFirst(t('error:internetConnectionLost'))}
         </Text>
       )}
       {showStream && (
@@ -31,7 +32,7 @@ const Screen = React.memo(({ style, children }) => {
           {(stream.status === status.LOST || stream.status === status.CLOSED) && (
             <TouchableOpacity onPress={reconnectStream}>
               <Text style={theme.common.actionText}>
-                {CapitalizeFirst(i18n.t('tryAgain'))}
+                {CapitalizeFirst(t('tryAgain'))}
               </Text>
             </TouchableOpacity>
           )}

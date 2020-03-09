@@ -1,6 +1,5 @@
 import React, { useState, useCallback } from 'react';
 import {TouchableOpacity} from 'react-native';
-
 import theme from '../theme/themeExport';
 import Icon from 'react-native-vector-icons/Feather';
 

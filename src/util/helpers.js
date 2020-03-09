@@ -1,6 +1,10 @@
 import { config } from '../configureWappstoRedux';
 import { openStream, closeStream } from 'wappsto-redux/actions/stream';
 
+export function isEmail(str) {
+  return str.match(/\w+([-+.']\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*/);
+}
+
 export function startStream(dispatch){
   if(config.stream){
     const streamJSON = { ...config.stream };

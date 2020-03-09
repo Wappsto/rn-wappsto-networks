@@ -5,10 +5,11 @@ import { View, Text, StyleSheet, ScrollView, Image, ActivityIndicator, Touchable
 import RequestError from './RequestError';
 import theme from '../theme/themeExport';
 import Icon from 'react-native-vector-icons/Feather';
-import i18n, { CapitalizeFirst } from '../translations';
+import { useTranslation, CapitalizeFirst } from '../translations';
 import useUser from '../hooks/useUser';
 
 const DrawerMenu = React.memo((props) => {
+  const { t } = useTranslation();
   const { user, name, logout, request } = useUser(props.navigation);
   return (
     <SafeAreaView style={{flex:1}}>
@@ -43,7 +44,7 @@ const DrawerMenu = React.memo((props) => {
         style={theme.common.spaceAround}
         onPress={logout}>
         <Text style={theme.common.linkBtn}>
-          {CapitalizeFirst(i18n.t('logout'))}
+          {CapitalizeFirst(t('logout'))}
         </Text>
       </TouchableOpacity>
     </SafeAreaView>

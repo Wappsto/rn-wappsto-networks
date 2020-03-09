@@ -3,9 +3,10 @@ import { StatusBar, ScrollView, TouchableOpacity, Text, View } from 'react-nativ
 import { SafeAreaView } from 'react-native-safe-area-context';
 import Icon from 'react-native-vector-icons/Feather';
 import theme from '../../../../theme/themeExport';
-import i18n, { CapitalizeFirst } from '../../../../translations';
+import { useTranslation, CapitalizeFirst } from '../../../../translations';
 
 const BackHandlerView = React.memo(({ handleBack, hide, children }) => {
+  const { t } = useTranslation();
   return (
     <SafeAreaView style={{flex: 1, backgroundColor: theme.variables.white}}>
       <StatusBar backgroundColor={theme.variables.white} barStyle='dark-content' />
@@ -19,7 +20,7 @@ const BackHandlerView = React.memo(({ handleBack, hide, children }) => {
         style={theme.common.spaceAround}
         onPress={hide}>
         <Text style={theme.common.linkBtn}>
-          {CapitalizeFirst(i18n.t('cancel'))}
+          {CapitalizeFirst(t('cancel'))}
         </Text>
       </TouchableOpacity>
     </SafeAreaView>

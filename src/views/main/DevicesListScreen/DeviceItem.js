@@ -6,9 +6,10 @@ import { selectedDeviceName } from '../../../util/params';
 import { useDispatch } from 'react-redux';
 import { setItem } from 'wappsto-redux/actions/items';
 import theme from '../../../theme/themeExport';
-import i18n from '../../../translations';
+import { useTranslation } from '../../../translations';
 
 const DeviceSection = React.memo(({ navigation, id, isPrototype }) => {
+  const { t } = useTranslation();
   const getEntity = useMemo(makeEntitySelector, []);
   const device = useSelector(state => getEntity(state, 'device', id));
 
@@ -32,7 +33,7 @@ const DeviceSection = React.memo(({ navigation, id, isPrototype }) => {
           <Text style={theme.common.listItemHeader}>{device.name}</Text>
           <Text style={theme.common.listItemSubheader}>
             {device.value.length}{' '}
-            {i18n.t('value', {count: device.value.length})}
+            {t('value', {count: device.value.length})}
           </Text>
         </View>
       </View>
