@@ -19,9 +19,9 @@ const TermsAndConditionsScreen = React.memo(({ navigation }) => {
 
   return (
     <Screen>
-      <View style={theme.common.container}>
+      <View style={[theme.common.container, theme.common.spaceAround]}>
         <ScrollView>
-          <Text>this is TermsAndConditionsScreen</Text>
+          <Text>{CapitalizeFirst(t('register.termsAndConditions'))}</Text>
         </ScrollView>
         <CheckBox
           checked={checked}

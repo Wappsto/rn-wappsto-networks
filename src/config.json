@@ -1,5 +1,5 @@
 {
-  "baseUrl": "https://qa.wappsto.com/services",
+  "baseUrl": "https://dev.wappsto.com/services",
   "serviceVersion": {
     "default": "2.0"
   },
@@ -9,5 +9,6 @@
     "version": "2.0"
   },
   "firebaseWebClientId": "",
-  "blufiFilter": ["adu"]
+  "blufiFilter": [],
+  "recaptchaKey": ""
 }

@@ -1,55 +1,54 @@
-import React, { PureComponent } from 'react';
+import React, { useRef, useEffect } from 'react';
 import { WebView } from 'react-native-webview';
+import i18n from 'rn-wappsto-networks/src/translations';
+import { config } from '../configureWappstoRedux';
 
-const recaptchaHtml = `<!DOCTYPE html>
-<html>
-<head>
-  <script src="https://www.google.com/recaptcha/api.js?render=explicit&onload=onRecaptchaLoadCallback"></script>
-  <script>
-    function onRecaptchaLoadCallback() {
-      var clientId = grecaptcha.render('inline-badge', {
-        'sitekey': '[SITEKEY]'
-      });
-      grecaptcha.ready(function () {
-        grecaptcha.execute(clientId, {
-          action: 'verify'
-        })
-          .then(function (token) {
-            window.ReactNativeWebView.postMessage(token, '*')
-          });
-      });
+const generateWebViewContent = (siteKey, languageCode) => {
+  const originalForm =
+    `<!DOCTYPE html>
+    <html>
+    <head>
+      <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <meta http-equiv="X-UA-Compatible" content="ie=edge">
+      <script src="https://recaptcha.google.com/recaptcha/api.js?explicit&hl=${languageCode || 'en'}"></script>
+      <script type="text/javascript">
+      var onloadCallback = function() { };
+      var onDataCallback = function(response) {
+        window.ReactNativeWebView.postMessage(response);
+      };
+      </script>
+    </head>
+    <body>
+      <div
+        class="g-recaptcha"
+        data-sitekey="${siteKey}" data-callback="onDataCallback">
+      </div>
+    </body>
+    </html>`;
+  return originalForm;
+};
+
+const ReCaptcha = React.memo(({ onCheck, style, extraData }) => {
+  const webview = useRef();
+
+  useEffect(() => {
+    if(webview.current){
+      webview.current.reload();
     }
-  </script>
-  <style>
-    body {
-      display: flex;
-      justify-content: left;
-      align-items: top;
-    }
-  </style>
-</head>
-<body>
-  <div id="inline-badge" class="g-recaptcha" data-sitekey="{{config.captchaKey}}"></div>
-</body>
-</html>`;
+  }, [extraData]);
 
-class ReactNativeRecaptchaV3 extends PureComponent {
-  render() {
-    const { onCheck, url, siteKey } = this.props;
-    const recaptchaHtmlWithKey = recaptchaHtml.replace('[SITEKEY]', siteKey);
+  return (
+    <WebView
+      ref={webview}
+      originWhitelist={['*']}
+      style={style || { height: 100 }}
+      startInLoadingState
+      javaScriptEnabledAndroid
+      javaScriptEnabled
+      source={{ html: generateWebViewContent(config.recaptchaKey, i18n.language), baseUrl: config.baseUrl.replace('/services', '') }}
+      onMessage={event => onCheck(event.nativeEvent.data)}
+    />
+  );
+});
 
-    return (
-      <WebView
-        originWhitelist={['*']}
-        style={{ height: 300, width: 300 }}
-        startInLoadingState
-        javaScriptEnabledAndroid
-        javaScriptEnabled
-        source={{ html: recaptchaHtmlWithKey, baseUrl: url }}
-        onMessage={event => onCheck(event.nativeEvent.data)}
-      />
-    );
-  }
-}
-
-export default ReactNativeRecaptchaV3;
+export default ReCaptcha;

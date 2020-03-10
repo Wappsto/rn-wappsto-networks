@@ -1,85 +1,38 @@
-import React, { useState, useRef, useCallback } from 'react';
+import React from 'react';
 import { View, Text, TextInput, TouchableOpacity, ActivityIndicator, StatusBar, ScrollView } from 'react-native';
 import Screen from '../../components/Screen';
 import { useTranslation, CapitalizeFirst, CapitalizeEach } from '../../translations';
 import theme from '../../theme/themeExport';
 import RequestError from '../../components/RequestError';
-import { isEmail } from '../../util/helpers';
-import useRequest from 'wappsto-blanket/hooks/useRequest';
-import useConnected from '../../hooks/useConnected';
 import ReCaptcha from '../../components/ReCaptcha';
+import Popup from '../../components/Popup';
+import useRegisterUser from '../../hooks/useRegisterUser';
 
 const RegisterScreen = React.memo(({ navigation }) => {
   const { t } = useTranslation();
-  const [ username, setUsername ] = useState('');
-  const [ password, setPassword ] = useState('');
-  const [ repeatPassword, setRepeatPassword ] = useState('');
-  const [ usernameBlurred, setUsernameBlurred ] = useState(false);
-  const [ passwordBlurred, setPasswordBlurred] = useState(false);
-  const [ repeatPasswordBlurred, setRepeatPasswordBlurred] = useState(false);
-  const [ recaptcha, setRecaptcha ] = useState(false);
-  const passwordInputRef = useRef();
-  const repeatPasswordInputRef = useRef();
-  const map = {
-    username: {
-      value: username,
-      set: setUsername,
-      nextField: passwordInputRef
-    },
-    password: {
-      value: password,
-      set: setPassword,
-      nextField: repeatPasswordInputRef
-    },
-    repeatPassword: {
-      value: repeatPassword,
-      set: setRepeatPassword
-    }
-  };
-
-  const connected = useConnected();
-  const { request, send } = useRequest();
-
-
-  const handleTextChange = useCallback((text, type) => {
-    if (text.length - map[type].value.length === 1) {
-      map[type].set(text);
-    } else {
-      map[type].set(text.trim());
-    }
-  }, [map]);
-
-  const moveToNextField = useCallback((field) => {
-    const trimText = map[field].value.trim();
-    if (trimText !== map[field].value) {
-      setUsername(trimText);
-    }
-    map[field].nextField.current.focus();
-  }, [map]);
-
-  const onCheckRecaptcha = useCallback((data) => {
-    setRecaptcha(data);
-  }, [])
-
-  const register = useCallback(() => {
-    if(canRegister){
-      send({
-        method: 'POST',
-        url: '/register',
-        body: {
-          username: username,
-          password: password,
-          captcha: recaptcha
-        }
-      });
-    }
-  }, [username, password, recaptcha, send, canRegister]);
-
-  const loading = request && (request.status === 'pending' || request.status === 'success');
-  const canRegister = connected && !loading && isEmail(username) && password && repeatPassword && password === repeatPassword && recaptcha;
-  const usernameError = usernameBlurred && !isEmail(username);
-  const passwordError = passwordBlurred && !password;
-  const repeatPasswordError = repeatPasswordBlurred && repeatPassword !== password;
+  const {
+    successVisible,
+    hideSuccessPopup,
+    username,
+    usernameError,
+    setUsernameBlurred,
+    password,
+    passwordError,
+    setPasswordBlurred,
+    repeatPassword,
+    repeatPasswordError,
+    setRepeatPasswordBlurred,
+    moveToNextField,
+    handleTextChange,
+    onCheckRecaptcha,
+    recaptchaReload,
+    passwordInputRef,
+    repeatPasswordInputRef,
+    canRegister,
+    register,
+    request,
+    loading
+  } = useRegisterUser(navigation);
 
   return (
     <Screen>
@@ -88,6 +41,13 @@ const RegisterScreen = React.memo(({ navigation }) => {
           backgroundColor={theme.variables.white}
           barStyle='dark-content'
         />
+        <Popup visible={successVisible} onRequestClose={hideSuccessPopup} hide={hideSuccessPopup} hideCloseIcon>
+          <Text style={[theme.common.H1, theme.common.header, theme.common.success]}>{CapitalizeFirst(t('register.success.title'))}</Text>
+          <Text style={theme.common.infoText}>{CapitalizeFirst(t('register.success.description'))}</Text>
+          <TouchableOpacity style={[theme.common.button, theme.common.success]} onPress={hideSuccessPopup}>
+            <Text>{CapitalizeFirst(t('ok'))}</Text>
+          </TouchableOpacity>
+        </Popup>
         <View style={theme.common.formElements}>
           <Text style={theme.common.label}>
             {CapitalizeFirst(t('email'))}
@@ -135,7 +95,7 @@ const RegisterScreen = React.memo(({ navigation }) => {
           </Text>
           <TextInput
             ref={repeatPasswordInputRef}
-            style={[theme.common.input, repeatPasswordError ? theme.common.error : null]}
+            style={[theme.common.input, repeatPasswordError ? theme.common.error : theme.common.spaceBottom]}
             onChangeText={repeatPasswordText =>
               handleTextChange(repeatPasswordText, 'repeatPassword')
             }
@@ -151,13 +111,10 @@ const RegisterScreen = React.memo(({ navigation }) => {
           { repeatPasswordError &&
             <Text style={[theme.common.error, theme.common.spaceBottom]}>{CapitalizeFirst(t('register.error.repeatPassword'))}</Text>
           }
+          <ReCaptcha onCheck={onCheckRecaptcha} extraData={recaptchaReload} />
           {loading && (
             <ActivityIndicator size='large' color={theme.variables.primary} />
           )}
-          <ReCaptcha
-            url='https://qa.wappsto.com'
-            onCheck={onCheckRecaptcha}
-          />
           <RequestError request={request} />
           <TouchableOpacity
             disabled={!canRegister}

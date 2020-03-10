@@ -7,3 +7,7 @@ repeatPassword
 register.error.username: username must be an email address
 register.error.password: password need to be specified
 register.error.repeatPassword: passwords do not match
+register.success.title
+register.success.description
+register.termsAndConditions
+ok
