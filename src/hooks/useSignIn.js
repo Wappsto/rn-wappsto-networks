@@ -14,11 +14,15 @@ const useSignIn = (navigation) => {
   const dispatch = useDispatch();
   const [ username, setUsername ] = useState('');
   const [ password, setPassword ] = useState('');
+  const [ recaptcha, setRecaptcha ] = useState();
+  const [ showRecaptcha, setShowRecaptcha ] = useState('');
+  const [ recaptchaExtraData, setRecaptchaExtraData ] = useState(0);
   const [ isSigninInProgress, setIsSigninInProgress ] = useState(false);
   const [ showPassword, setShowPassword ] = useState(false);
   const passwordInputRef = useRef();
   const fbSignInError = useRef(null);
   const { request, send } = useRequest();
+  const errorNumber = useRef(0);
 
   const toggleShowPassword = useCallback(() => {
     setShowPassword(sp => !sp);
@@ -65,10 +69,11 @@ const useSignIn = (navigation) => {
       body: {
         username: username,
         password: password,
+        captcha: recaptcha,
         remember_me: true
       }
     });
-  }, [username, password, send]);
+  }, [username, password, recaptcha, send]);
 
   const checkAndSignIn = useCallback(() => {
     if (isEmail(username) && password) {
@@ -137,16 +142,33 @@ const useSignIn = (navigation) => {
   }
 
   useEffect(() => {
-    if(request && request.status === 'success'){
-      userLogged(request);
+    if(request){
+      if(request.status === 'success'){
+        errorNumber.current = 0;
+        setShowRecaptcha(false);
+        userLogged(request);
+      } else if(request.status === 'error'){
+        errorNumber.current++;
+        if(errorNumber.current > 3 || request.json.code === 9900007){
+          if(!showRecaptcha){
+            setShowRecaptcha(true);
+          } else {
+            setRecaptchaExtraData(n => n + 1);
+          }
+        }
+      }
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [request]);
 
+  const onCheckRecaptcha = useCallback((data) => {
+    setRecaptcha(data);
+  }, []);
+
   const postRequest = fbSignInError.current || request;
   const loading = postRequest && (postRequest.status === 'pending' || postRequest.status === 'success');
   const canTPSignIn = connected && !isSigninInProgress && !loading
-  const canSignIn = canTPSignIn && isEmail(username) && password;
+  const canSignIn = canTPSignIn && isEmail(username) && password && (!showRecaptcha || recaptcha);
 
   return {
     username,
@@ -162,7 +184,10 @@ const useSignIn = (navigation) => {
     canTPSignIn,
     googleSignIn,
     postRequest,
-    loading
+    loading,
+    showRecaptcha,
+    recaptchaExtraData,
+    onCheckRecaptcha
   }
 }
 

@@ -3,10 +3,9 @@ import { View, Text, TextInput, TouchableOpacity, ActivityIndicator, StatusBar, 
 import { GoogleSigninButton } from '@react-native-community/google-signin';
 import Screen from '../../components/Screen';
 import { useTranslation, CapitalizeFirst } from '../../translations';
-
 import useSignIn from '../../hooks/useSignIn';
 import RequestError from '../../components/RequestError';
-
+import ReCaptcha from '../../components/ReCaptcha';
 import theme from '../../theme/themeExport';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 
@@ -26,6 +25,9 @@ const LoginScreen = React.memo(({ navigation }) => {
     canTPSignIn,
     googleSignIn,
     postRequest,
+    showRecaptcha,
+    onCheckRecaptcha,
+    recaptchaExtraData,
     loading
   } = useSignIn(navigation);
 
@@ -86,6 +88,7 @@ const LoginScreen = React.memo(({ navigation }) => {
           {loading && (
             <ActivityIndicator size='large' color={theme.variables.primary} />
           )}
+          { showRecaptcha ? <ReCaptcha onCheck={onCheckRecaptcha} extraData={recaptchaExtraData} /> : null}
           <RequestError request={postRequest} />
           <TouchableOpacity
             disabled={!canSignIn}

@@ -10,8 +10,8 @@ const useRegisterUser = (navigation) => {
   const [ usernameBlurred, setUsernameBlurred ] = useState(false);
   const [ passwordBlurred, setPasswordBlurred] = useState(false);
   const [ repeatPasswordBlurred, setRepeatPasswordBlurred] = useState(false);
-  const [ recaptcha, setRecaptcha ] = useState(false);
-  const [ recaptchaReload, setRecaptchaReload ] = useState(0);
+  const [ recaptcha, setRecaptcha ] = useState();
+  const [ recaptchaExtraData, setRecaptchaExtraData ] = useState(0);
   const [ successVisible, setSuccessVisible ] = useState(false);
   const passwordInputRef = useRef();
   const repeatPasswordInputRef = useRef();
@@ -54,7 +54,7 @@ const useRegisterUser = (navigation) => {
 
   const onCheckRecaptcha = useCallback((data) => {
     setRecaptcha(data);
-  }, [])
+  }, []);
 
   const register = useCallback(() => {
     if(canRegister){
@@ -75,7 +75,7 @@ const useRegisterUser = (navigation) => {
       if(request.status === 'success'){
         setSuccessVisible(true);
       } else if(request.status === 'error'){
-        setRecaptchaReload(n => n + 1);
+        setRecaptchaExtraData(n => n + 1);
       }
     }
   }, [request]);
@@ -106,7 +106,7 @@ const useRegisterUser = (navigation) => {
     moveToNextField,
     handleTextChange,
     onCheckRecaptcha,
-    recaptchaReload,
+    recaptchaExtraData,
     passwordInputRef,
     repeatPasswordInputRef,
     canRegister,
