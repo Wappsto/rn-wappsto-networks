@@ -50,7 +50,7 @@ const List = React.memo(({
         }
         onRefresh={refresh}
         onEndReached={canLoadMore && loadMore}
-        onEndReachedThreshold={0.1}
+        onEndReachedThreshold={0.2}
         ListFooterComponent={
           request &&
           request.status === 'pending' &&

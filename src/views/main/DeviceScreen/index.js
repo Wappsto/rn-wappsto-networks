@@ -9,10 +9,12 @@ import DeviceDetails from './DeviceDetails';
 import useUnmountRemoveItem from '../../../hooks/useUnmountRemoveItem';
 import useUndefinedBack from '../../../hooks/useUndefinedBack';
 import useGetItemEntity from '../../../hooks/useGetItemEntity';
+import useDeleteItemRequest from '../../../hooks/useDeleteItemRequest';
 import ItemDeleteIndicator from '../../../components/ItemDeleteIndicator';
 
 const DeviceScreen = React.memo(({ navigation }) => {
   const device = useGetItemEntity(selectedDeviceName, 'device');
+  const deleteRequest = useDeleteItemRequest(device);
   const query = useMemo(() => ({
     expand: 3,
     order_by: getServiceVersion('value') === '' ? 'created' : 'meta.created',
@@ -28,6 +30,7 @@ const DeviceScreen = React.memo(({ navigation }) => {
   const url = '/device/' + device.meta.id + '/value';
   return (
     <Screen>
+      <ItemDeleteIndicator request={deleteRequest} />
       <List
         name={url}
         url={url}

@@ -13,3 +13,5 @@ register.termsAndConditions
 ok
 networkDescription.name
 networkDescription.uuid
+deleteDevice.name
+deleteDevice.uuid

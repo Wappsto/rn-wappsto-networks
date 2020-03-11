@@ -12,12 +12,12 @@ import { isPrototype } from 'wappsto-blanket/util';
 import { getServiceVersion } from 'wappsto-redux/util/helpers';
 import useAppStateStream from '../../../hooks/useAppStateStream';
 import useAddNetworkStream from '../../../hooks/useAddNetworkStream';
-import useDeleteItem from '../../../hooks/useDeleteItem';
 import Icon from 'react-native-vector-icons/Feather';
 import PopupButton from '../../../components/PopupButton';
 import Popup from '../../../components/Popup';
 import ConfirmationPopup from '../../../components/ConfirmationPopup';
 import ItemDeleteIndicator from '../../../components/ItemDeleteIndicator';
+import useDeleteItem from '../../../hooks/useDeleteItem';
 import useDeleteItemRequest from '../../../hooks/useDeleteItemRequest';
 
 const styles = StyleSheet.create({
@@ -29,7 +29,7 @@ const styles = StyleSheet.create({
   }
 });
 
-const NetworkSettings = React.memo(({ network, style }) => {
+const NetworkDetails = React.memo(({ network, style }) => {
   const content = useCallback((visible, hide) => {
     const { t } = useTranslation();
     const { deleteItem, request, confirmVisible, showDeleteConfirmation, hideDeleteConfirmation } = useDeleteItem(network);
@@ -79,7 +79,7 @@ const ItemHeader = React.memo(({ network }) => {
           <Text>{network.meta.id}</Text>
         }
       </Text>
-      <NetworkSettings style={styles.rightSide} network={network}/>
+      <NetworkDetails style={styles.rightSide} network={network}/>
     </View>
   )
 });

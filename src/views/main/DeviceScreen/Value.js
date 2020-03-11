@@ -1,7 +1,7 @@
 import React, { useCallback } from 'react';
 import {View, Text, TouchableOpacity, ActivityIndicator} from 'react-native';
 import States from './States';
-import ValueSettings from './ValueSettings';
+import ValueDetails from './ValueDetails';
 import theme from '../../../theme/themeExport';
 import Icon from 'react-native-vector-icons/Feather';
 import useRequest from 'wappsto-blanket/hooks/useRequest';
@@ -43,7 +43,7 @@ const ValueComponent = React.memo(({ item, navigation }) => {
               />
             </TouchableOpacity>
           )}
-          <ValueSettings item={item} />
+          <ValueDetails item={item} />
         </>
       </View>
       <RequestError request={request} />
