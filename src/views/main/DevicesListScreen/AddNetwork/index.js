@@ -9,7 +9,6 @@ import SetupDevice from './SetupDevice';
 import AddNetworkPopup from './AddNetworkPopup';
 import useVisible from 'wappsto-blanket/hooks/useVisible';
 import { iotNetworkListAdd } from '../../../../util/params';
-import Popup from '../../../../components/Popup';
 import ConfirmAddManufacturerNetwork from './ConfirmAddManufacturerNetwork';
 import BackHandlerView from './BackHandlerView';
 import useAddNetwork from '../../../../hooks/useAddNetwork';
@@ -78,12 +77,7 @@ const Content = React.memo(({ visible, hide, show }) => {
 
   return (
     <>
-      <Popup visible={maoVisible} onRequestClose={refuseManufacturerAsOwner} hide={refuseManufacturerAsOwner} hideCloseIcon>
-        <ConfirmAddManufacturerNetwork
-          accept={acceptManufacturerAsOwner}
-          reject={refuseManufacturerAsOwner}
-        />
-      </Popup>
+      <ConfirmAddManufacturerNetwork visible={maoVisible} accept={acceptManufacturerAsOwner} reject={refuseManufacturerAsOwner} />
       <Modal
         transparent={true}
         visible={visible}

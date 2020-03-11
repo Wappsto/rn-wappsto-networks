@@ -11,3 +11,5 @@ register.success.title
 register.success.description
 register.termsAndConditions
 ok
+networkDescription.name
+networkDescription.uuid

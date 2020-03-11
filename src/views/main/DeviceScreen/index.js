@@ -9,6 +9,7 @@ import DeviceDetails from './DeviceDetails';
 import useUnmountRemoveItem from '../../../hooks/useUnmountRemoveItem';
 import useUndefinedBack from '../../../hooks/useUndefinedBack';
 import useGetItemEntity from '../../../hooks/useGetItemEntity';
+import ItemDeleteIndicator from '../../../components/ItemDeleteIndicator';
 
 const DeviceScreen = React.memo(({ navigation }) => {
   const device = useGetItemEntity(selectedDeviceName, 'device');
