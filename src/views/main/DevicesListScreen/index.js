@@ -105,7 +105,6 @@ const ItemContent = React.memo(({ network, navigation }) => {
 
 const ListItem = React.memo(({ network, navigation }) => {
   const request = useDeleteItemRequest(network);
-  console.log('aaaaaaaaaaaa', request);
   return (
     <>
       <View>

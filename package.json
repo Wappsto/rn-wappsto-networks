@@ -48,7 +48,7 @@
     "redux-thunk": "^2.3.0",
     "stream-browserify": "^1.0.0",
     "vm-browserify": "0.0.4",
-    "wappsto-blanket": "^0.0.24",
+    "wappsto-blanket": "^0.0.25",
     "wappsto-redux": "^3.0.8"
   },
   "devDependencies": {

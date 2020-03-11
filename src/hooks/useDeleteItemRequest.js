@@ -19,9 +19,6 @@ const useDeleteItemRequest = (item) => {
     }
     return null;
   });
-  console.log(requestId);
-  console.log(request);
-  console.log('--------------------------------------');
   return request;
 }
 

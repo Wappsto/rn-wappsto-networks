@@ -6947,10 +6947,10 @@ walker@^1.0.7, walker@~1.0.5:
   dependencies:
     makeerror "1.0.x"
 
-wappsto-blanket@^0.0.24:
-  version "0.0.24"
-  resolved "https://registry.yarnpkg.com/wappsto-blanket/-/wappsto-blanket-0.0.24.tgz#aabde705d00674c1678d8e38f71e53d31e3aae09"
-  integrity sha512-j7RhohBjgIDbAlY8v09cwbZrhW+nsDpQqgpjumzQMF7aUzKvOKziZ1s3sPS9agQWv65p4Tr7wLIQmnxsU+HeIA==
+wappsto-blanket@^0.0.25:
+  version "0.0.25"
+  resolved "https://registry.yarnpkg.com/wappsto-blanket/-/wappsto-blanket-0.0.25.tgz#6f2bbe8138b64e0d119a7b06a25633f53bfebed7"
+  integrity sha512-5qnPvOm7g1S8qMDwnc57D2wmNzMDJtMWbuTHAGgRuZsHqWESVTmi2295C7K/3hqE3kmO1niRrrMYChhvvOEh7A==
 
 wappsto-redux@^3.0.8:
   version "3.0.8"
