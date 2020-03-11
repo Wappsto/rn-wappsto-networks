@@ -82,10 +82,6 @@ const useSignIn = (navigation) => {
   }, [username, password, signIn]);
 
   const googleSignIn = useCallback(async() => {
-    fbSignInError.current = {
-      id: 'fbSignInError',
-      status: 'pending'
-    };
     try {
       setIsSigninInProgress(true);
       await GoogleSignin.configure({
@@ -93,6 +89,10 @@ const useSignIn = (navigation) => {
       });
       const data = await GoogleSignin.signIn();
       GoogleSignin.signOut();
+      fbSignInError.current = {
+        id: 'fbSignInError',
+        status: 'pending'
+      };
       const credential = firebase.auth.GoogleAuthProvider.credential(
         data.idToken,
         data.accessToken,
