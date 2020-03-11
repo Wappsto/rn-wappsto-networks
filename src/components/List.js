@@ -1,10 +1,9 @@
 import React from 'react';
-import { View, Text, SectionList, TouchableOpacity, ActivityIndicator } from 'react-native';
+import { View, Text, FlatList, TouchableOpacity, ActivityIndicator } from 'react-native';
 import RequestError from './RequestError';
 import theme from '../theme/themeExport';
 import { useTranslation, CapitalizeFirst } from '../translations';
 import usePageList from '../hooks/usePageList';
-import useSectionData from '../hooks/useSectionData';
 
 const List = React.memo(({
   name,
@@ -21,13 +20,12 @@ const List = React.memo(({
 }) => {
   const { t } = useTranslation();
   const { items, request, refresh, canLoadMore, loadMore } = usePageList(name, url, query, addItemName, removeItemName, page);
-  const data = useSectionData(items);
 
   return (
     <View style={style || theme.common.container}>
-      <SectionList
+      <FlatList
         keyExtractor={(item, index) => item.meta.id}
-        sections={data}
+        data={items}
         ListHeaderComponent={listHeaderComponent}
         ListEmptyComponent={
           (!request || request.status !== 'pending') && (
@@ -43,8 +41,6 @@ const List = React.memo(({
             </>
           )
         }
-        renderSectionHeader={renderSectionHeader}
-        renderSectionFooter={renderSectionFooter}
         renderItem={renderItem}
         refreshing={
           (request &&

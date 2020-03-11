@@ -34,41 +34,39 @@ const DevicesListScreen = React.memo(({ navigation }) => {
         addItemName={iotNetworkListAdd}
         removeItemName={iotNetworkListRemove}
         page={navigation.state.routeName}
-        renderSectionHeader={({ section: { title: network } }) => {
-          return (
-            <Text style={theme.common.listHeader}>
-              { isPrototype(network) && <Text>({CapitalizeEach(t('prototype'))}) </Text> }
-              { network.name ?
-                <>
-                  <Text style={theme.common.H5}>{network.name}</Text>{'\n'}
+        renderItem={({ item: network }) => (
+          <>
+            <View>
+              <Text style={theme.common.listHeader}>
+                { isPrototype(network) && <Text>({CapitalizeEach(t('prototype'))}) </Text> }
+                { network.name ?
+                  <>
+                    <Text style={theme.common.H5}>{network.name}</Text>{'\n'}
+                    <Text>{network.meta.id}</Text>
+                  </>
+                :
                   <Text>{network.meta.id}</Text>
-                </>
-              :
-                <Text>{network.meta.id}</Text>
-              }
-            </Text>
-          );
-        }}
-        renderSectionFooter={() => (
-          <View style={theme.common.listFooter} />
-        )}
-        renderItem={({ item }) => {
-          if (item.device.length === 0) {
-            return (
-              <Text style={[theme.common.infoText, theme.common.secondary]}>
-                {CapitalizeFirst(t('infoMessage.networkIsEmpty'))}
+                }
               </Text>
-            );
-          }
-          return item.device.map(id => (
-            <DeviceItem
-              key={id}
-              id={id}
-              navigation={navigation}
-              isPrototype={isPrototype(item)}
-            />
-          ));
-        }}
+              {
+                network.device.length === 0 ?
+                <Text style={[theme.common.infoText, theme.common.secondary]}>
+                  {CapitalizeFirst(t('infoMessage.networkIsEmpty'))}
+                </Text>
+                :
+                network.device.map(id => (
+                  <DeviceItem
+                    key={id}
+                    id={id}
+                    navigation={navigation}
+                    isPrototype={isPrototype(network)}
+                  />
+                ))
+              }
+            </View>
+            <View style={theme.common.listFooter} />
+          </>
+        )}
       />
     </Screen>
   );
