@@ -52,6 +52,7 @@
     "refresh": "refresh",
     "reload": "reload",
     "signIn": "sign in",
+    "signInWithFacebook": "sign in with Facebook",
     "state": "state",
     "state_plural": "state",
     "statusMessage": {

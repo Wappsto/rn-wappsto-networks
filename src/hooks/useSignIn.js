@@ -1,5 +1,6 @@
 import { useState, useEffect, useRef, useCallback } from 'react';
 import AsyncStorage from '@react-native-community/async-storage';
+import { AccessToken, LoginManager } from 'react-native-fbsdk';
 import { GoogleSignin, statusCodes } from '@react-native-community/google-signin';
 import firebase from 'react-native-firebase';
 import { useDispatch } from 'react-redux';
@@ -81,7 +82,21 @@ const useSignIn = (navigation) => {
     }
   }, [username, password, signIn]);
 
+  // ----------------- 3rd Auth Signin ----------------------------
+  const sendAuthRequest = useCallback((token) => {
+    fbSignInError.current = null;
+    send({
+      method: 'POST',
+      url: '/session',
+      body: {
+        firebase_token: token,
+        remember_me: true
+      }
+    });
+  }, [send]);
+
   const googleSignIn = useCallback(async() => {
+    const id = 'fbSignInError' + Math.random();
     try {
       setIsSigninInProgress(true);
       await GoogleSignin.configure({
@@ -90,26 +105,13 @@ const useSignIn = (navigation) => {
       const data = await GoogleSignin.signIn();
       GoogleSignin.signOut();
       fbSignInError.current = {
-        id: 'fbSignInError',
+        id,
         status: 'pending'
       };
-      const credential = firebase.auth.GoogleAuthProvider.credential(
-        data.idToken,
-        data.accessToken,
-      );
-      const firebaseUserCredential = await firebase
-        .auth()
-        .signInWithCredential(credential);
+      const credential = firebase.auth.GoogleAuthProvider.credential(data.idToken, data.accessToken);
+      const firebaseUserCredential = await firebase.auth().signInWithCredential(credential);
       const token = await firebaseUserCredential.user.getIdToken();
-      fbSignInError.current = null;
-      send({
-        method: 'POST',
-        url: '/session',
-        body: {
-          firebase_token: token,
-          remember_me: true
-        }
-      });
+      sendAuthRequest(token);
     } catch (error) {
       let code;
       if (error.code !== statusCodes.SIGN_IN_CANCELLED) {
@@ -124,7 +126,7 @@ const useSignIn = (navigation) => {
           code = 'generic';
         }
         fbSignInError.current = {
-          id: 'fbSignInError',
+          id,
           status: 'error',
           json: {
             code,
@@ -133,7 +135,43 @@ const useSignIn = (navigation) => {
       }
     }
     setIsSigninInProgress(false);
-  }, [send]);
+  }, [sendAuthRequest]);
+
+  const facebookSignIn = useCallback(async () => {
+    const id = 'fbSignInError' + Math.random();
+    try {
+      setIsSigninInProgress(true);
+      fbSignInError.current = {
+        id,
+        status: 'pending'
+      };
+      LoginManager.setLoginBehavior('web_only');
+      const result = await LoginManager.logInWithPermissions(['public_profile', 'email']);
+      if(result.isCancelled){
+        fbSignInError.current = {
+          id,
+          status: 'success'
+        };
+        return;
+      }
+      const data = await AccessToken.getCurrentAccessToken();
+      if (!data) {
+        throw new Error('Something went wrong obtaining the users access token');
+      }
+      const credential = firebase.auth.FacebookAuthProvider.credential(data.accessToken);
+      const firebaseUserCredential = await firebase.auth().signInWithCredential(credential);
+      const token = await firebaseUserCredential.user.getIdToken();
+      sendAuthRequest(token);
+    } catch (e) {
+      fbSignInError.current = {
+        id,
+        status: 'error',
+        json: {}
+      };
+    }
+    setIsSigninInProgress(false);
+  }, [sendAuthRequest]);
+  // --------------------------------------------------------------------
 
   const userLogged = (cRequest) => {
     dispatch(removeRequest(cRequest.id));
@@ -183,6 +221,7 @@ const useSignIn = (navigation) => {
     signIn,
     canTPSignIn,
     googleSignIn,
+    facebookSignIn,
     postRequest,
     loading,
     showRecaptcha,

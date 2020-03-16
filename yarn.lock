@@ -5532,6 +5532,11 @@ react-native-crypto@^2.2.0:
     public-encrypt "^4.0.0"
     randomfill "^1.0.3"
 
+react-native-fbsdk@^1.1.2:
+  version "1.1.2"
+  resolved "https://registry.yarnpkg.com/react-native-fbsdk/-/react-native-fbsdk-1.1.2.tgz#4264903add869d05b84ef55ade9ff720c2957781"
+  integrity sha512-Sp+oja868QVsB5vpEFbwZkEcCJOSBuZgh7UGJzUhaoTCs/zwSUHA6b4QichM7GiTxtQyKfT/F31DtvLj2N/qAQ==
+
 react-native-firebase@^5.5.6:
   version "5.6.0"
   resolved "https://registry.yarnpkg.com/react-native-firebase/-/react-native-firebase-5.6.0.tgz#6f6123f53cb73477915dd55c55f3e1de91db38d2"
@@ -6947,10 +6952,10 @@ walker@^1.0.7, walker@~1.0.5:
   dependencies:
     makeerror "1.0.x"
 
-wappsto-blanket@^0.0.25:
-  version "0.0.25"
-  resolved "https://registry.yarnpkg.com/wappsto-blanket/-/wappsto-blanket-0.0.25.tgz#6f2bbe8138b64e0d119a7b06a25633f53bfebed7"
-  integrity sha512-5qnPvOm7g1S8qMDwnc57D2wmNzMDJtMWbuTHAGgRuZsHqWESVTmi2295C7K/3hqE3kmO1niRrrMYChhvvOEh7A==
+wappsto-blanket@^0.0.26:
+  version "0.0.26"
+  resolved "https://registry.yarnpkg.com/wappsto-blanket/-/wappsto-blanket-0.0.26.tgz#990bce2ef10890891318b1d600dce12868052e20"
+  integrity sha512-pzlESYi+H7lFX0yCBwujCN4p2Ly6ChZsVG++efH+XbiWluNnd3Z7c74hVdjo0Fd8PSADpP7gejhzNumhVSmxLQ==
 
 wappsto-redux@^3.0.8:
   version "3.0.8"

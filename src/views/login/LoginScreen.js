@@ -24,6 +24,7 @@ const LoginScreen = React.memo(({ navigation }) => {
     signIn,
     canTPSignIn,
     googleSignIn,
+    facebookSignIn,
     postRequest,
     showRecaptcha,
     onCheckRecaptcha,
@@ -123,6 +124,29 @@ const LoginScreen = React.memo(({ navigation }) => {
             onPress={googleSignIn}
             disabled={!canTPSignIn}
           />
+          <TouchableOpacity
+            disabled={!canTPSignIn}
+            style={[
+              theme.common.button,
+              { backgroundColor: 'cyan' },
+              theme.common.GoogleSigninButtonStyle,
+              !canTPSignIn
+                ? theme.common.disabled
+                : null
+            ]}
+            onPress={facebookSignIn}>
+            <View style={theme.common.row}>
+              <Icon
+                name='facebook-f'
+                onPress={toggleShowPassword}
+                size={14}
+                color='white'
+              />
+              <Text style={[theme.common.btnText, theme.common.spaceLeft]}>
+                {CapitalizeFirst(t('signInWithFacebook'))}
+              </Text>
+            </View>
+          </TouchableOpacity>
         </View>
         <LoginScreen.Footer />
       </ScrollView>
