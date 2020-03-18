@@ -4,6 +4,10 @@ React native wappsto networks is an application that allows the user to interact
 
 # How it works:
 
+First, you have to set up your facebook app. To do so, got to these links and follow the steps: 
+- [Android](https://developers.facebook.com/docs/android/getting-started/).
+- [iOS](https://developers.facebook.com/docs/ios/getting-started/)
+
 You can either use this project and continue on top of it, or simply install it as a dependency and override the things you want to change.
 
 In order for this project to work as a dependency, you should install all these react-native dependencies link them:
@@ -16,6 +20,9 @@ react-native-vector-icons               ^6.4.2
 react-native-localize                   ^1.1.0
 react-navigation                        ^3.5.1
 react-redux                             ^7.0.3
+.
+.
+.
 ```
 
 **Note that some of these libs require manual installation.**
