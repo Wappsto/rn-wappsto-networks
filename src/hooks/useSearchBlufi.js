@@ -25,7 +25,7 @@ const useSearchBlufi = () => {
       (device) => {
         const lowerName = device.name ? device.name.toLowerCase() : '';
         setDevices(devices => {
-          if(!config.blufiFilter || config.blufiFilter.length === 0 || (config.blufiFilter.find(f => lowerName.includes(f.toLowerCase())) && !devices.find(d => d.id === device.id))){
+          if((!config.blufiFilter || config.blufiFilter.length === 0 || config.blufiFilter.find(f => lowerName.includes(f.toLowerCase()))) && !devices.find(d => d.id === device.id)){
             return [...devices, device];
           }
           return devices;
