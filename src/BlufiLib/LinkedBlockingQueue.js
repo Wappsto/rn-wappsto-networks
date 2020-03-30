@@ -5,7 +5,7 @@ class LinkedBlockingQueue {
   }
 
   add(cell) {
-    if(this.waiting){
+    if(this.waiting.length > 0){
       this.waiting[0].resolve(cell);
       clearTimeout(this.waiting[0].timeout);
       this.waiting.shift();
