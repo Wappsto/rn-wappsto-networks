@@ -30,10 +30,6 @@ export function generateStyles(c = {}) {
         paddingBottom: 20,
         textAlign: 'center'
       },
-      p: {
-        color: variables.textSecondary,
-        marginBottom: 20
-      },
       error: {
         borderColor: variables.alert,
         color: variables.alert,
@@ -81,32 +77,53 @@ export function generateStyles(c = {}) {
       },
       row: {
         flexDirection: 'row',
-        alignItems: 'center',
+        alignItems: 'center'
       },
+      card: {
+        backgroundColor: variables.white,
+        borderRadius: variables.borderRadiusBase,
+        paddingHorizontal: 10,
+        paddingVertical: 20,
+        marginBottom: 10,
+      },
+
       H1: {
         fontSize: variables.h1,
-        marginBottom: variables.h1 / 2,
+        lineHeight: variables.h1 * 1.5,
+        marginBottom: variables.h1
       },
       H2: {
         fontSize: variables.h2,
-        marginBottom: variables.h2 / 2,
+        lineHeight: variables.h2 * 1.5,
+        marginBottom: variables.h2
       },
       H3: {
         fontSize: variables.h3,
-        marginBottom: variables.h3 / 2,
+        lineHeight: variables.h3 * 1.5,
+        marginBottom: variables.h3
       },
       H4: {
         fontSize: variables.h4,
-        marginBottom: variables.h4 / 2,
+        lineHeight: variables.h4 * 1.5,
+        marginBottom: variables.h4
       },
       H5: {
         fontSize: variables.h5,
-        marginBottom: variables.h5 / 2,
+        lineHeight: variables.h5 * 1.5,
+        marginBottom: variables.h5
       },
       H6: {
         fontSize: variables.h6,
-        marginBottom: variables.h6 / 2,
-        fontWeight: 'bold',
+        lineHeight: variables.h6 * 1.5,
+        marginBottom: variables.h6
+      },
+      p: {
+        fontSize: variables.defaultFontSize,
+        lineHeight: variables.defaultFontSize * 1.5,
+        marginBottom: variables.defaultFontSize * 1.5
+      },
+      p2: {
+        fontSize: variables.defaultFontSize,
       },
       spaceAround: {
         padding: 15,
@@ -114,11 +131,13 @@ export function generateStyles(c = {}) {
       spaceBottom: {
         marginBottom: 15,
       },
-      spaceTop: {
-        marginTop: 15,
-      },
       spaceLeft: {
         marginLeft: 15,
+      },
+      image:{
+        alignSelf:'center',
+        marginTop: 20,
+        marginBottom:40
       },
       listItem: {
         flex: 1,
@@ -163,15 +182,15 @@ export function generateStyles(c = {}) {
         color: variables.textColor,
       },
       input: {
-        fontSize: variables.inputTextSize,
+        width: '100%',
         height: variables.inputHeight,
+        paddingHorizontal: 10,
+        marginBottom: variables.inputHeight * 0.5,
+        fontSize: variables.inputTextSize,
         backgroundColor: variables.inputBg,
         borderColor: variables.inputBorderColor,
         borderWidth: variables.borderWidth,
-        borderRadius: variables.borderRadiusBase,
-        paddingHorizontal: 10,
-        marginBottom: 12,
-        width: '100%',
+        borderRadius: variables.borderRadiusBase
       },
       button: {
         backgroundColor: variables.buttonBg,
@@ -180,6 +199,9 @@ export function generateStyles(c = {}) {
         alignItems: 'center',
         height: variables.inputHeightBase,
         padding: 15,
+      },
+      primaryColor:{
+        color: variables.primary
       },
       ghost: {
         backgroundColor: 'transparent',
@@ -214,7 +236,9 @@ export function generateStyles(c = {}) {
         padding: 20,
       },
       fullScreenModalContent: {
-        padding: 20
+        padding: 20,
+        flex:2
+    //    backgroundColor:"green"
       },
       passwordVisibilityButton: {
         position: 'absolute',
@@ -272,7 +296,6 @@ export function generateStyles(c = {}) {
         margin: 8,
       },
       linkBtn: {
-        color: variables.primary,
         fontWeight: '600',
         padding: 20
       },

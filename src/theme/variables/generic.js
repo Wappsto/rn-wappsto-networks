@@ -14,13 +14,14 @@ export function generateVariables(v = {}) {
     // Color
     primary: 'hsla(169, 90%, 35%, 1)',
     secondary: 'hsla(17, 100%, 80%, 1)',
+
     get dark() {
       return color(this.primary).darken(0.5);
     },
-    darkGray: '#777777',
-    lightGray: '#f1f1f1',
+    darkGray: '#666',
+    lightGray: '#eee',
     white: '#ffffff',
-    black: '#000',
+    black: '#222',
     disabled: '#bbbbbb',
     inactive: '#fafafa',
     success: '#5cb85c',
@@ -67,8 +68,6 @@ export function generateVariables(v = {}) {
     get titleFontfamily() {
       return this.fontFamily;
     },
-    titleFontSize: platform === 'ios' ? 17 : 19,
-    subTitleFontSize: platform === 'ios' ? 11 : 14,
 
     // Text
     get textColor() {
@@ -90,7 +89,7 @@ export function generateVariables(v = {}) {
       return this.alert;
     },
     get textSecondary() {
-      return '#777';
+      return this.darkGray;
     },
 
     // Border
@@ -134,7 +133,7 @@ export function generateVariables(v = {}) {
     get inputErrorBorderColor() {
       return this.alert;
     },
-    inputHeight: 46,
+    inputHeight: 48,
     inputBg: 'rgba(255, 255, 255, 1)',
 
     // Progress Bar
