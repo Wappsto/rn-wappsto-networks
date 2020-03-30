@@ -16,9 +16,10 @@
       "4005": "failed to open websocket"
     }
   },
-  "300084": "username or password does not match",
-  "9900032": "invalid action",
-  "9900145": "device with provided ID is not found",
-  "9900147": "device with provided ID does not exist.\n\n If you are trying to reclaim deleted device make sure you reboot it first.",
+  "300084": "username or password does not match.",
+  "400006": "you don't have permission to access this device ID.",
+  "9900032": "invalid action!",
+  "9900145": "the IoT device with provided ID is not found",
+  "9900147": "the IoT device with provided ID does not exist.",
   "134000005": "device is unreachable or offline"
 }
