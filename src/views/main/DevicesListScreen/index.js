@@ -1,5 +1,5 @@
 import React, { useMemo, useCallback } from 'react';
-import { Text, View, TouchableOpacity, StyleSheet } from 'react-native';
+import { Text, View, TouchableOpacity } from 'react-native';
 import Screen from '../../../components/Screen';
 import MenuButton from '../../../components/MenuButton';
 import List from '../../../components/List';
@@ -19,15 +19,6 @@ import ConfirmationPopup from '../../../components/ConfirmationPopup';
 import ItemDeleteIndicator from '../../../components/ItemDeleteIndicator';
 import useDeleteItem from '../../../hooks/useDeleteItem';
 import useDeleteItemRequest from '../../../hooks/useDeleteItemRequest';
-
-const styles = StyleSheet.create({
-  leftSide: {
-    width: '85%'
-  },
-  rightSide: {
-    width: '15%'
-  }
-});
 
 const NetworkDetails = React.memo(({ network, style }) => {
   const content = useCallback((visible, hide) => {
@@ -68,7 +59,7 @@ const ItemHeader = React.memo(({ network }) => {
   const { t } = useTranslation();
   return (
     <View style={theme.common.row}>
-      <Text style={[theme.common.listHeader, styles.leftSide]}>
+      <Text style={[theme.common.listHeader, {flex:1}]}>
         { isPrototype(network) && <Text>({CapitalizeEach(t('prototype'))}) </Text> }
         { network.name ?
           <>
@@ -79,7 +70,7 @@ const ItemHeader = React.memo(({ network }) => {
           <Text>{network.meta.id}</Text>
         }
       </Text>
-      <NetworkDetails style={styles.rightSide} network={network}/>
+      <NetworkDetails network={network}/>
     </View>
   )
 });

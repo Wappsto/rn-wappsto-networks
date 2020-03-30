@@ -7,8 +7,8 @@ const ConfirmAddManufacturerNetwork = React.memo(({ visible, accept, reject }) =
   const { t } = useTranslation();
   return (
     <ConfirmationPopup
-      title={CapitalizeEach(t('addNetwork.addManufacturerNetworkTitle'))}
-      description={CapitalizeFirst(t('addNetwork.manufacturerAsOwnerWarning'))}
+      title={CapitalizeEach(t('onboarding.claiming.addManufacturerNetworkTitle'))}
+      description={CapitalizeFirst(t('onboarding.claiming.manufacturerAsOwnerWarning'))}
       visible={visible}
       accept={accept}
       reject={reject}

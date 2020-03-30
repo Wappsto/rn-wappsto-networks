@@ -14,11 +14,11 @@ const ConfigureWifi = React.memo(({ next, previous, hide, ssid, setSsid, passwor
   }, [save, next]);
 
   return (
-    <View style={theme.common.formElements}>
-      <Text style={theme.common.H3}>{CapitalizeFirst(t('blufi.insertWifi'))}</Text>
-      <Text style={[theme.common.infoText, theme.common.warning]}>{CapitalizeFirst(t('blufi.warning5G'))}</Text>
+    <>
+      <Text style={theme.common.H3}>{CapitalizeFirst(t('onboarding.wifiConfig.title'))}</Text>
+      <Text style={theme.common.p}>{CapitalizeFirst(t('onboarding.wifiConfig.intro'))} {CapitalizeFirst(t('onboarding.wifiConfig.warning5Ghz'))}</Text>
       <Text style={theme.common.label}>
-        {CapitalizeFirst(t('blufi.ssid'))}
+        {CapitalizeFirst(t('onboarding.wifiConfig.ssidLabel'))}
       </Text>
       <TextInput
         style={theme.common.input}
@@ -31,7 +31,7 @@ const ConfigureWifi = React.memo(({ next, previous, hide, ssid, setSsid, passwor
         returnKeyType='next'
       />
       <Text style={theme.common.label}>
-        {CapitalizeFirst(t('blufi.password'))}
+        {CapitalizeFirst(t('onboarding.wifiConfig.passwordLabel'))}
       </Text>
       <View>
         <TextInput
@@ -57,10 +57,10 @@ const ConfigureWifi = React.memo(({ next, previous, hide, ssid, setSsid, passwor
         style={theme.common.button}
         onPress={saveAndMove}>
         <Text style={theme.common.btnText}>
-          {CapitalizeFirst(t('blufi.configure'))}
+          {CapitalizeFirst(t('onboarding.wifiConfig.sendButton'))}
         </Text>
       </TouchableOpacity>
-    </View>
+    </>
   );
 });
 
