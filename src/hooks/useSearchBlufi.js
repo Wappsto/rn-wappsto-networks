@@ -48,7 +48,7 @@ const useSearchBlufi = () => {
     try{
       addDiscoveryListener();
       await BleManager.enableBluetooth();
-      BleManager.scan([BlufiParameter.UUID_SERVICE], 5, false);
+      BleManager.scan([BlufiParameter.UUID_SERVICE], 15, false);
     } catch(e){
       setScanning(false);
       setError(true);

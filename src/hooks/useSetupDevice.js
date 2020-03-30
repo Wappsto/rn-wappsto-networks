@@ -39,6 +39,7 @@ const useSetupDevice = (selectedDevice, sendRequest, postRequest, acceptedManufa
   const [ step, setStep ] = useState(STEPS.CONNECT);
   const networkId = useRef(null);
   const timeout = useRef(null);
+  const success = useRef(false);
 
   let error = Object.values(ERRORS).includes(step);
   const done = step === STEPS.DONE;
@@ -113,6 +114,7 @@ const useSetupDevice = (selectedDevice, sendRequest, postRequest, acceptedManufa
         return;
       }
       // Device connected!
+      success.current = true;
       clearTimeout(timeout.current);
       setStep(STEPS.DONE);
     }
@@ -165,11 +167,16 @@ const useSetupDevice = (selectedDevice, sendRequest, postRequest, acceptedManufa
   }
 
   useEffect(() => {
-    configure();
+    if(!success.current){
+      configure();
+    }
     return () => {
       removeBlufiListeners();
       BleManager.disconnect(selectedDevice.id);
       Blufi.reset();
+      networkId.current = null;
+      timeout.current = null;
+      success.current = false;
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);

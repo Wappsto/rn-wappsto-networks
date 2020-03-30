@@ -24,7 +24,7 @@ const ValueComponent = React.memo(({ item, navigation }) => {
   return (
     <View style={theme.common.itemPanel}>
       <View style={theme.common.itemHeader}>
-        <Text style={[theme.common.listItemTitleArea]}>{item.name}</Text>
+        <Text style={[theme.common.listItemTitleArea, theme.common.H5]}>{item.name}</Text>
         <>
           {request && request.status === 'pending' ? (
             <ActivityIndicator
