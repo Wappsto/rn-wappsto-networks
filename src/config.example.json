@@ -1,0 +1,14 @@
+{
+  "baseUrl": "https://dev.wappsto.com/services",
+  "serviceVersion": {
+    "default": "2.0"
+  },
+  "stream": {
+    "name": "wappsto-native-2.0",
+    "subscription": ["/network"],
+    "version": "2.0"
+  },
+  "firebaseWebClientId": "yourWebCliendID",
+  "blufiFilter": [],
+  "recaptchaKey": ""
+}
