@@ -141,19 +141,19 @@ const useSignIn = (navigation) => {
     const id = 'fbSignInError' + Math.random();
     try {
       setIsSigninInProgress(true);
-      fbSignInError.current = {
-        id,
-        status: 'pending'
-      };
       LoginManager.setLoginBehavior('web_only');
       const result = await LoginManager.logInWithPermissions(['public_profile', 'email']);
       if(result.isCancelled){
         fbSignInError.current = {
-          id,
-          status: 'success'
+          id
         };
+        setIsSigninInProgress(false);
         return;
       }
+      fbSignInError.current = {
+        id,
+        status: 'pending'
+      };
       const data = await AccessToken.getCurrentAccessToken();
       if (!data) {
         throw new Error('Something went wrong obtaining the users access token');
