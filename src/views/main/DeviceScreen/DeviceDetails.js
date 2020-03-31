@@ -8,6 +8,7 @@ import { selectedDeviceName } from '../../../util/params';
 import useGetItemEntity from '../../../hooks/useGetItemEntity';
 import ConfirmationPopup from '../../../components/ConfirmationPopup';
 import ItemDeleteIndicator from '../../../components/ItemDeleteIndicator';
+import RequestError from '../../../components/RequestError';
 import useDeleteItem from '../../../hooks/useDeleteItem';
 import Icon from 'react-native-vector-icons/Feather';
 
@@ -59,6 +60,7 @@ const ValueSettings = React.memo(() => {
           {CapitalizeFirst(t('deviceDescription.included'))}:{' '}
           {device.included}
         </Text>
+        <RequestError request={request} />
         <TouchableOpacity onPress={showDeleteConfirmation} style={[theme.common.button, theme.common.errorPanel]}>
           <ItemDeleteIndicator request={request} />
           <Text style={theme.common.btnText}>

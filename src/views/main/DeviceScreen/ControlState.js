@@ -70,6 +70,7 @@ export const StateDataField = ({
         <TextInput
           onFocus={() => setIsFocused(true)}
           onBlur={() => setIsFocused(false)}
+          keyboardType='number-pad'
           style={theme.common.input}
           value={input + ''}
           onSubmitEditing={updateStateFromInput}

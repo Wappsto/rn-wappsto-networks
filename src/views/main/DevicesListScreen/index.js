@@ -17,6 +17,7 @@ import PopupButton from '../../../components/PopupButton';
 import Popup from '../../../components/Popup';
 import ConfirmationPopup from '../../../components/ConfirmationPopup';
 import ItemDeleteIndicator from '../../../components/ItemDeleteIndicator';
+import RequestError from '../../../components/RequestError';
 import useDeleteItem from '../../../hooks/useDeleteItem';
 import useDeleteItemRequest from '../../../hooks/useDeleteItemRequest';
 
@@ -42,6 +43,7 @@ const NetworkDetails = React.memo(({ network, style }) => {
         <Text>
           {CapitalizeFirst(t('networkDescription.uuid'))}: {network.meta.id}
         </Text>
+        <RequestError request={request} />
         <TouchableOpacity onPress={showDeleteConfirmation} style={[theme.common.button, theme.common.errorPanel]}>
           <ItemDeleteIndicator request={request} />
           <Text style={theme.common.btnText}>
