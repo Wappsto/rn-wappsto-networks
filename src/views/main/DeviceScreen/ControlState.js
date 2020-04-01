@@ -8,14 +8,17 @@ import Timestamp from './Timestamp';
 import { cannotAccessState } from 'wappsto-blanket/util';
 import { getStateData } from '../../../util/helpers';
 import useControlState from '../../../hooks/useControlState';
+import NumericInput from 'react-native-numeric-input';
 
 export const StateDataField = ({
   value,
   input,
   setInput,
+  isFocused,
   setIsFocused,
   updateStateFromInput,
   updateSwitchState,
+  throttledUpdateState,
   updateState,
   request,
   isUpdating
@@ -28,6 +31,7 @@ export const StateDataField = ({
         onBlur={() => setIsFocused(false)}
         style={theme.common.input}
         value={input}
+        maxLength={value.string.max}
         onSubmitEditing={updateStateFromInput}
         onChangeText={text => setInput(text)}
         editable={!isUpdating}
@@ -67,14 +71,19 @@ export const StateDataField = ({
       );
     } else {
       stateDataField = (
-        <TextInput
+        <NumericInput
+          value={parseFloat(input)}
+          valueType='real'
+          maxValue={param.max}
+          minValue={param.min}
+          step={param.step}
           onFocus={() => setIsFocused(true)}
           onBlur={() => setIsFocused(false)}
-          keyboardType='number-pad'
-          style={theme.common.input}
-          value={input + ''}
-          onSubmitEditing={updateStateFromInput}
-          onChangeText={text => setInput(text)}
+          extraTextInputProps={{
+            onSubmitEditing: updateStateFromInput
+          }}
+          containerStyle={theme.common.spaceBottom}
+          onChange={(data) => !isFocused && throttledUpdateState(data)}
           editable={!isUpdating}
         />
       );
@@ -88,6 +97,7 @@ export const StateDataField = ({
         numberOfLines={10}
         style={theme.common.input}
         value={input}
+        maxLength={value.blob.max}
         onSubmitEditing={updateStateFromInput}
         onChangeText={text => setInput(text)}
         editable={!isUpdating}
@@ -102,6 +112,7 @@ export const StateDataField = ({
         numberOfLines={10}
         style={theme.common.input}
         value={input}
+        maxLength={value.xml.max}
         onSubmitEditing={updateStateFromInput}
         editable={!isUpdating}
         onChangeText={text => setInput(text)}

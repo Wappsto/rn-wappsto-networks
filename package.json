@@ -34,6 +34,7 @@
     "react-native-gesture-handler": "^1.4.1",
     "react-native-localize": "^1.2.0",
     "react-native-network-info": "^5.2.1",
+    "react-native-numeric-input": "^1.8.3",
     "react-native-randombytes": "^3.5.3",
     "react-native-reanimated": "^1.2.0",
     "react-native-safe-area-context": "^0.6.2",
