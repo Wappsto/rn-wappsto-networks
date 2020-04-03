@@ -10,7 +10,7 @@ const useControlState = (state, value) => {
   const throttleTimer = useRef();
 
   useEffect(() => {
-    if(!isFocused){
+    if(value && !isFocused){
       setInput(value.hasOwnProperty('number') ? parseFloat(state.data) || 0 : state.data);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
