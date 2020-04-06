@@ -47,12 +47,7 @@ const useConfigureWifi = (ssid, setSsid, password, setPassword) => {
     try {
       const currentSsid = await NetworkInfo.getSSID();
       const ssid = await AsyncStorage.getItem(wifiSsidStorageKey);
-      if(ssid !== null){
-        setSsid(ssid);
-      } else {
-        setSsid(currentSsid);
-      }
-
+      setSsid(ssid || currentSsid || '');
       const password = await AsyncStorage.getItem(wifiPasswordStorageKey);
       if(password && ssid === currentSsid){
         setPassword(password);
