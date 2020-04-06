@@ -1,4 +1,5 @@
 import { useState, useEffect, useRef, useCallback } from 'react';
+import { Platform } from 'react-native';
 import AsyncStorage from '@react-native-community/async-storage';
 import { AccessToken, LoginManager } from 'react-native-fbsdk';
 import { GoogleSignin, statusCodes } from '@react-native-community/google-signin';
@@ -141,7 +142,8 @@ const useSignIn = (navigation) => {
     const id = 'fbSignInError' + Math.random();
     try {
       setIsSigninInProgress(true);
-      LoginManager.setLoginBehavior('web_only');
+      const behavior = Platform.OS === 'ios' ? 'browser' : 'WEB_ONLY';
+      LoginManager.setLoginBehavior(behavior);
       const result = await LoginManager.logInWithPermissions(['public_profile', 'email']);
       if(result.isCancelled){
         fbSignInError.current = {
@@ -187,7 +189,7 @@ const useSignIn = (navigation) => {
         userLogged(request);
       } else if(request.status === 'error'){
         errorNumber.current++;
-        if(errorNumber.current > 3 || request.json.code === 9900007){
+        if(errorNumber.current > 3 || (request.json && request.json.code === 9900007)){
           if(!showRecaptcha){
             setShowRecaptcha(true);
           } else {

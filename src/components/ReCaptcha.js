@@ -46,7 +46,7 @@ const ReCaptcha = React.memo(({ onCheck, style, extraData }) => {
       startInLoadingState
       javaScriptEnabledAndroid
       javaScriptEnabled
-      source={{ html: generateWebViewContent(config.recaptchaKey, i18n.language), baseUrl: config.baseUrl.replace('/services', '') }}
+      source={{ html: generateWebViewContent(config.recaptchaKey, i18n.language), baseUrl: config.baseUrl && config.baseUrl.replace('/services', '') }}
       onMessage={event => onCheck(event.nativeEvent.data)}
     />
   );
