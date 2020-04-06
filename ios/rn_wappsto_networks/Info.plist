@@ -88,14 +88,14 @@
     <dict>
     <key>CFBundleURLSchemes</key>
     <array>
-      <string>fb1753508158021308</string>
+      <string>fb[APP_ID]</string>
     </array>
     </dict>
   </array>
   <key>FacebookAppID</key>
-  <string>1753508158021308</string>
+  <string>[APP_ID]</string>
   <key>FacebookDisplayName</key>
-  <string>firebase-auth-test</string>
+  <string>[APP_NAME]</string>
   <key>LSApplicationQueriesSchemes</key>
   <array>
     <string>fbapi</string>
