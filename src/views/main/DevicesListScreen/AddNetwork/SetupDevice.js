@@ -55,7 +55,7 @@ const SetupDevice = React.memo(({ next, previous, hide, ssid, password, selected
           <TouchableOpacity
             style={[theme.common.button,{marginTop: 30}]}
             onPress={hide}>
-            <Text style={theme.common.btnText}>{CapitalizeFirst(t('onboarding.wifiSetup.' + (error ? 'error' : 'success') +'.flowButton'))}</Text>
+            <Text style={theme.common.buttonText}>{CapitalizeFirst(t('onboarding.wifiSetup.' + (error ? 'error' : 'success') +'.flowButton'))}</Text>
           </TouchableOpacity>
         </>
       }

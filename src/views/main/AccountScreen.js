@@ -22,7 +22,7 @@ const AccountScreen = React.memo(() => {
   return (
     <Screen>
       {user ? (
-        <View style={theme.common.spaceAround}>
+        <View style={theme.common.contentContainer}>
           <Text>
             {CapitalizeFirst(t('userDescription.uuid'))}: {user.meta.id}
           </Text>

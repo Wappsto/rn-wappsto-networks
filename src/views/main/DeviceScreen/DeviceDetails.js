@@ -61,7 +61,7 @@ const ValueSettings = React.memo(() => {
         </Text>
         <TouchableOpacity onPress={showDeleteConfirmation} style={[theme.common.button, theme.common.errorPanel]}>
           <ItemDeleteIndicator request={request} />
-          <Text style={theme.common.btnText}>
+          <Text style={theme.common.buttonText}>
             <Icon name='trash-2' size={20} />
             {CapitalizeFirst(t('delete'))}
           </Text>

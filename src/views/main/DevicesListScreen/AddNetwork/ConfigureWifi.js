@@ -56,7 +56,7 @@ const ConfigureWifi = React.memo(({ next, previous, hide, ssid, setSsid, passwor
       <TouchableOpacity
         style={theme.common.button}
         onPress={saveAndMove}>
-        <Text style={theme.common.btnText}>
+        <Text style={theme.common.buttonText}>
           {CapitalizeFirst(t('onboarding.wifiConfig.sendButton'))}
         </Text>
       </TouchableOpacity>

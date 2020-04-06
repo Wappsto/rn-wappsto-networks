@@ -8,8 +8,8 @@ import { useTranslation, CapitalizeFirst } from '../../../../translations';
 const BackHandlerView = React.memo(({ handleBack, hide, children }) => {
   const { t } = useTranslation();
   return (
-    <SafeAreaView style={{flex: 1, backgroundColor: theme.variables.lightGray}}>
-      <StatusBar backgroundColor={theme.variables.lightGray} barStyle='dark-content' />
+    <SafeAreaView style={theme.common.container}>
+      <StatusBar backgroundColor={theme.variables.appBgColor} barStyle='dark-content' />
       <View style={[theme.common.row, {justifyContent:'space-between'}]}>
         <Icon name='arrow-left' onPress={handleBack} size={24} style={theme.common.spaceAround}/>
         <TouchableOpacity onPress={hide}>

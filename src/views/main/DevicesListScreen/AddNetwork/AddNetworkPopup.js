@@ -116,7 +116,7 @@ const AddNetwork = React.memo(({ postRequest, sendRequest, skipCodes, acceptedMa
         disabled={!canAdd}
         style={[theme.common.button, canAdd ? null : theme.common.disabled]}
         onPress={addNetwork}>
-        <Text style={theme.common.btnText}>
+        <Text style={theme.common.buttonText}>
           {CapitalizeFirst(t('add'))}
         </Text>
       </TouchableOpacity>
