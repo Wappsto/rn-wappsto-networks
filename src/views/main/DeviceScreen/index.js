@@ -17,6 +17,7 @@ const DeviceScreen = React.memo(({ navigation }) => {
   const deleteRequest = useDeleteItemRequest(device);
   const query = useMemo(() => ({
     expand: 3,
+    limit: 10,
     order_by: getServiceVersion('value') === '' ? 'created' : 'meta.created',
     verbose: true
   }), []);
