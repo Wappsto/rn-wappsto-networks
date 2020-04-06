@@ -105,12 +105,7 @@ export function generateVariables(v = {}) {
     },
     buttonColor: 'white',
     get buttonTextSize() {
-      return platform === 'ios'
-        ? this.fontSizeBase * 1.4
-        : this.fontSizeBase * 1.4;
-    },
-    get buttonDisabledBg() {
-      return this.disabled;
+      return this.fontSizeBase + 2;
     },
 
     // Icon
@@ -120,21 +115,12 @@ export function generateVariables(v = {}) {
 
     // Input
     get inputTextSize() {
-      return platform === 'ios'
-        ? this.fontSizeBase * 1.4
-        : this.fontSizeBase * 1.4;
+      return this.fontSizeBase + 2;
     },
     get inputBorderColor() {
       return color(this.textColor);
     },
-    get inputSuccessBorderColor() {
-      return this.secondary;
-    },
-    get inputErrorBorderColor() {
-      return this.alert;
-    },
-    inputHeight: 48,
-    inputBg: 'rgba(255, 255, 255, 1)',
+    inputBg: 'rgba(255, 255, 255, .8)',
 
     // Progress Bar
     get defaultProgressColor() {
@@ -157,10 +143,6 @@ export function generateVariables(v = {}) {
       return this.primary;
     },
 
-    // Container
-    get containerBgColor() {
-      return this.lightGray;
-    },
     ...v,
   });
   return variables;

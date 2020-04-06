@@ -14,7 +14,6 @@
         "version": "version"
     },
     "deviceInfoHeader": "device details",
-    "email": "email",
     "infoMessage": {
         "listIsEmpty": "list is empty",
         "networkIsEmpty": "network is empty",
@@ -30,13 +29,10 @@
         "main": "home",
         "settings": "settings"
     },
-    "password": "password",
     "prototype": "prototype",
     "prototype_plural": "prototypes",
     "refresh": "refresh",
     "reload": "reload",
-    "signIn": "sign in",
-    "signInWithFacebook": "sign in with Facebook",
     "state": "state",
     "state_plural": "state",
     "statusMessage": {
@@ -59,14 +55,6 @@
         "yearsAgo": "few years ago"
     },
     "tryAgain": "try again",
-    "userDescription": {
-        "email": "email",
-        "firstName": "first name",
-        "lastName": "last name",
-        "nickname": "nickname",
-        "phone": "phone",
-        "uuid": "UUID"
-    },
     "value": "value",
     "value_plural": "values",
     "valueDescription": {
@@ -97,6 +85,46 @@
     "delete": "delete",
     "cancel": "cancel",
     "next": "next",
+    "accountDetails": {
+        "email": "email",
+        "firstName": "first name",
+        "lastName": "last name",
+        "nickname": "nickname",
+        "phone": "phone",
+        "uuid": "UUID"
+    },
+    "loginAndRegistration":{
+      "appTitle":"Wappsto Networks",
+      "loginWithEmail": "login with email",
+      "chooseSignInOption": "or select sign in option",
+      "termsTitle":"terms & conditions",
+      "registerTitle":"Register an account",
+      "registrationText":"Please enter the following information to create an account.",
+      "registrationConfirmationText":"In a moment you will receive an email with a link to confirm the registration.",
+      "button":{
+        "createAccount":"create an account",
+        "recoverPassword":"recover password",
+        "logIn": "log in",
+        "privacyNotice":"Privacy",
+        "signInWithFacebook": "sign in with Facebook",
+        "signInWithGoogle": "sign in with Google",
+        "termsAndConditions":"Terms & Conditions",
+        "readAndAcceptTerms":"I have read and accept the terms and conditions.",
+        "continue":"continue",
+        "register": "register",
+        "ok":"ok"
+      },
+      "label": {
+        "username": "Email",
+        "password": "password",
+        "repeatPassword": "confirm password"
+      },
+      "validation":{
+        "password":"password is required",
+        "repeatPassword":"passwords do not match",
+        "username":"missing or invalid email"
+      }
+    },
     "onboarding": {
       "registrationTitle": "add device",
       "configurationTitle": "configure",

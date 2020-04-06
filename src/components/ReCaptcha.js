@@ -18,8 +18,9 @@ const generateWebViewContent = (siteKey, languageCode) => {
       };
       </script>
     </head>
-    <body>
+    <body style="text-align:center;padding:0">
       <div
+        style="width:300px; margin:auto;"
         class="g-recaptcha"
         data-sitekey="${siteKey}" data-callback="onDataCallback">
       </div>
@@ -41,7 +42,7 @@ const ReCaptcha = React.memo(({ onCheck, style, extraData }) => {
     <WebView
       ref={webview}
       originWhitelist={['*']}
-      style={style || { height: 100 }}
+      style={style || {minHeight:100}}
       startInLoadingState
       javaScriptEnabledAndroid
       javaScriptEnabled

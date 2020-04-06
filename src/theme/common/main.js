@@ -16,7 +16,7 @@ export function generateStyles(c = {}) {
     StyleSheet.create({
       container: {
         flex: 1,
-        backgroundColor: variables.containerBgColor
+        backgroundColor: variables.appBgColor
       },
       splashScreenContainer: {
         flex: 1,
@@ -63,13 +63,6 @@ export function generateStyles(c = {}) {
         paddingVertical: 20,
         width: '100%',
       },
-      centeredContent: {
-        flex: 1,
-        flexDirection: 'column',
-        justifyContent: 'center',
-        alignItems: 'stretch',
-        backgroundColor: variables.white,
-      },
       btnGroup: {
         flexDirection: 'row',
         alignSelf: 'flex-end',
@@ -82,9 +75,9 @@ export function generateStyles(c = {}) {
       card: {
         backgroundColor: variables.white,
         borderRadius: variables.borderRadiusBase,
-        paddingHorizontal: 10,
+        paddingHorizontal: 15,
         paddingVertical: 20,
-        marginBottom: 10,
+        marginBottom: 25,
       },
 
       H1: {
@@ -163,52 +156,64 @@ export function generateStyles(c = {}) {
       },
       listItemSubheader: {
         fontSize: variables.defaultFontSize - 1,
-        color: variables.textSecondary,
+        color: variables.textSecondary
       },
-      header: {
-        padding: 20,
-        alignItems: 'center',
-      },
-      footer: {
-        alignItems: 'center',
-        padding: 10,
-      },
-      formElements: {
+      contentContainer: {
         paddingHorizontal: 20,
-        paddingTop: 20,
+        paddingTop: 20
       },
       label: {
-        fontSize: variables.inputTextSize - 2,
-        color: variables.textColor,
+        fontSize: variables.defaultFontSize,
+        lineHeight: variables.defaultFontSize * 1.5,
+        color: variables.textColor
       },
       input: {
         width: '100%',
-        height: variables.inputHeight,
-        paddingHorizontal: 10,
-        marginBottom: variables.inputHeight * 0.5,
+        height: variables.inputTextSize * 1.5 + 26,
+        color: variables.textColor,
         fontSize: variables.inputTextSize,
+        lineHeight: variables.inputTextSize * 1.5,
+        marginBottom: variables.defaultFontSize,
+        paddingHorizontal: 10,
         backgroundColor: variables.inputBg,
         borderColor: variables.inputBorderColor,
         borderWidth: variables.borderWidth,
         borderRadius: variables.borderRadiusBase
       },
+      inputValidationError: {
+        color: variables.alert,
+        marginTop: -(variables.defaultFontSize * 0.8),
+        marginBottom: variables.defaultFontSize
+      },
+      buttonText: {
+        fontSize: variables.buttonTextSize,
+        color: variables.buttonColor
+      },
       button: {
-        backgroundColor: variables.buttonBg,
+        height: variables.buttonTextSize * 1.5 + 30,
         marginVertical: 20,
-        borderRadius: variables.borderRadiusBase,
-        alignItems: 'center',
-        height: variables.inputHeightBase,
         padding: 15,
+        alignItems: 'center',
+        backgroundColor: variables.buttonBg,
+        borderRadius: variables.borderRadiusBase
+      },
+      buttonOutlined: {
+        backgroundColor: 'transparent',
+        borderColor: variables.buttonBg,
+        borderWidth: variables.borderWidth
+      },
+      buttonAlert: {
+        backgroundColor: variables.alert
+      },
+      buttonAlertOutlined: {
+        color: variables.alert,
+        borderColor: variables.alert
       },
       primaryColor:{
         color: variables.primary
       },
       ghost: {
-        backgroundColor: 'transparent',
-      },
-      btnText: {
-        fontSize: variables.buttonTextSize,
-        color: variables.buttonColor,
+        backgroundColor: 'transparent'
       },
       actionText: {
         color: variables.primary,
@@ -238,12 +243,11 @@ export function generateStyles(c = {}) {
       fullScreenModalContent: {
         padding: 20,
         flex:2
-    //    backgroundColor:"green"
       },
       passwordVisibilityButton: {
         position: 'absolute',
         right: 0,
-        padding: 18,
+        padding: 16,
       },
       seperator: {
         marginVertical: 20,
@@ -297,11 +301,7 @@ export function generateStyles(c = {}) {
       },
       linkBtn: {
         fontWeight: '600',
-        padding: 20
-      },
-      GoogleSigninButtonStyle: {
-         width: 230,
-         alignSelf: 'center'
+        padding: 16
       },
       ...c,
     }),

@@ -1,4 +1,7 @@
 export default {
+	loginAndRegistration: {
+		header: require('../../assets/images/placeholder.png')
+	},
 	onboarding: {
     deviceDiscovery: require('../../assets/images/placeholder.png'),
     devicesNotFound: require('../../assets/images/placeholder.png'),

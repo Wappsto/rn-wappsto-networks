@@ -18,14 +18,14 @@ const ConfirmationPopup = React.memo(({ visible, accept, reject, title, descript
         <TouchableOpacity
           style={[theme.common.button, rejectStyle]}
           onPress={reject}>
-          <Text style={theme.common.btnText}>
+          <Text style={theme.common.buttonText}>
             {CapitalizeFirst(t('no'))}
           </Text>
         </TouchableOpacity>
         <TouchableOpacity
           style={[theme.common.button, theme.common.spaceLeft, acceptStyle]}
           onPress={accept}>
-          <Text style={theme.common.btnText}>
+          <Text style={theme.common.buttonText}>
             {acceptText || CapitalizeFirst(t('yes'))}
           </Text>
         </TouchableOpacity>

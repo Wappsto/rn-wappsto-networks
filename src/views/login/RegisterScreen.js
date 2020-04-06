@@ -38,19 +38,19 @@ const RegisterScreen = React.memo(({ navigation }) => {
     <Screen>
       <ScrollView>
         <StatusBar
-          backgroundColor={theme.variables.white}
-          barStyle='dark-content'
+          backgroundColor={theme.variables.primary}
+          barStyle='light-content'
         />
         <Popup visible={successVisible} onRequestClose={hideSuccessPopup} hide={hideSuccessPopup} hideCloseIcon>
-          <Text style={[theme.common.H1, theme.common.header, theme.common.success]}>{CapitalizeFirst(t('register.success.title'))}</Text>
-          <Text style={theme.common.infoText}>{CapitalizeFirst(t('register.success.description'))}</Text>
+          <Text style={theme.common.infoText}>{CapitalizeFirst(t('loginAndRegistration.registrationConfirmationText'))}</Text>
           <TouchableOpacity style={[theme.common.button, theme.common.success]} onPress={hideSuccessPopup}>
-            <Text>{CapitalizeFirst(t('ok'))}</Text>
+            <Text>{CapitalizeFirst(t('loginAndRegistration.button.ok'))}</Text>
           </TouchableOpacity>
         </Popup>
-        <View style={theme.common.formElements}>
+        <View style={theme.common.contentContainer}>
+          <Text style={theme.common.infoText}>{CapitalizeFirst(t('loginAndRegistration.registrationText'))}</Text>
           <Text style={theme.common.label}>
-            {CapitalizeFirst(t('email'))}
+            {CapitalizeFirst(t('loginAndRegistration.label.username'))}
           </Text>
           <TextInput
             style={[theme.common.input, usernameError ? theme.common.error : null]}
@@ -67,10 +67,10 @@ const RegisterScreen = React.memo(({ navigation }) => {
             disabled={loading}
           />
           { usernameError &&
-            <Text style={[theme.common.error, theme.common.spaceBottom]}>{CapitalizeFirst(t('register.error.username'))}</Text>
+            <Text style={theme.common.inputValidationError}>{CapitalizeFirst(t('loginAndRegistration.validation.username'))}</Text>
           }
           <Text style={theme.common.label}>
-            {CapitalizeFirst(t('password'))}
+            {CapitalizeFirst(t('loginAndRegistration.label.password'))}
           </Text>
           <TextInput
             ref={passwordInputRef}
@@ -88,10 +88,10 @@ const RegisterScreen = React.memo(({ navigation }) => {
             disabled={loading}
           />
           { passwordError &&
-            <Text style={[theme.common.error, theme.common.spaceBottom]}>{CapitalizeFirst(t('register.error.password'))}</Text>
+            <Text style={theme.common.inputValidationError}>{CapitalizeFirst(t('loginAndRegistration.validation.password'))}</Text>
           }
           <Text style={theme.common.label}>
-            {CapitalizeFirst(t('repeatPassword'))}
+            {CapitalizeFirst(t('loginAndRegistration.label.repeatPassword'))}
           </Text>
           <TextInput
             ref={repeatPasswordInputRef}
@@ -109,7 +109,7 @@ const RegisterScreen = React.memo(({ navigation }) => {
             disabled={loading}
           />
           { repeatPasswordError &&
-            <Text style={[theme.common.error, theme.common.spaceBottom]}>{CapitalizeFirst(t('register.error.repeatPassword'))}</Text>
+            <Text style={theme.common.inputValidationError}>{CapitalizeFirst(t('loginAndRegistration.validation.repeatPassword'))}</Text>
           }
           <ReCaptcha onCheck={onCheckRecaptcha} extraData={recaptchaReload} />
           {loading && (
@@ -125,8 +125,8 @@ const RegisterScreen = React.memo(({ navigation }) => {
                 : null,
             ]}
             onPress={register}>
-            <Text style={theme.common.btnText}>
-              {CapitalizeFirst(t('register'))}
+            <Text style={theme.common.buttonText}>
+              {CapitalizeFirst(t('loginAndRegistration.button.register'))}
             </Text>
           </TouchableOpacity>
         </View>
@@ -138,7 +138,7 @@ const RegisterScreen = React.memo(({ navigation }) => {
 RegisterScreen.navigationOptions = ({ screenProps: { t } }) => {
   return {
     ...theme.headerStyle,
-    title: CapitalizeEach(t('pageTitle.register'))
+    title: CapitalizeFirst(t('loginAndRegistration.registerTitle'))
   };
 };
 

@@ -21,19 +21,19 @@ const TermsAndConditionsScreen = React.memo(({ navigation }) => {
     <Screen>
       <View style={[theme.common.container, theme.common.spaceAround]}>
         <ScrollView>
-          <Text>{CapitalizeFirst(t('register.termsAndConditions'))}</Text>
+          <Text>TBD</Text>
         </ScrollView>
         <CheckBox
           checked={checked}
           onPress={toggleChecked}
-          text={CapitalizeFirst(t('readAndAcceptTerms'))}
+          text={CapitalizeFirst(t('loginAndRegistration.button.readAndAcceptTerms'))}
         />
         <TouchableOpacity
           disabled={!checked}
           style={[theme.common.button, checked ? null : theme.common.disabled]}
           onPress={navigateToRegisterScreen}
         >
-          <Text>{CapitalizeFirst(t('continue'))}</Text>
+          <Text style={theme.common.buttonText}>{CapitalizeFirst(t('loginAndRegistration.button.continue'))}</Text>
         </TouchableOpacity>
       </View>
     </Screen>
@@ -43,7 +43,7 @@ const TermsAndConditionsScreen = React.memo(({ navigation }) => {
 TermsAndConditionsScreen.navigationOptions = ({ screenProps: { t } }) => {
   return {
     ...theme.headerStyle,
-    title: CapitalizeEach(t('pageTitle.termsAndConditions'))
+    title: CapitalizeEach(t('loginAndRegistration.termsTitle'))
   };
 };
 
