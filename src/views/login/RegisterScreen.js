@@ -1,6 +1,7 @@
 import React from 'react';
-import { View, Text, TextInput, TouchableOpacity, ActivityIndicator, StatusBar, ScrollView } from 'react-native';
+import { View, Text, TouchableOpacity, ActivityIndicator, StatusBar, ScrollView } from 'react-native';
 import Screen from '../../components/Screen';
+import Input from '../../components/Input';
 import { useTranslation, CapitalizeFirst, CapitalizeEach } from '../../translations';
 import theme from '../../theme/themeExport';
 import RequestError from '../../components/RequestError';
@@ -49,11 +50,9 @@ const RegisterScreen = React.memo(({ navigation }) => {
         </Popup>
         <View style={theme.common.contentContainer}>
           <Text style={theme.common.infoText}>{CapitalizeFirst(t('loginAndRegistration.registrationText'))}</Text>
-          <Text style={theme.common.label}>
-            {CapitalizeFirst(t('loginAndRegistration.label.username'))}
-          </Text>
-          <TextInput
-            style={[theme.common.input, usernameError ? theme.common.error : null]}
+          <Input
+            label={CapitalizeFirst(t('loginAndRegistration.label.username'))}
+            style={usernameError && theme.common.error}
             onChangeText={usernameText =>
               handleTextChange(usernameText, 'username')
             }
@@ -65,16 +64,12 @@ const RegisterScreen = React.memo(({ navigation }) => {
             keyboardType='email-address'
             returnKeyType='next'
             disabled={loading}
+            validationError={usernameError && CapitalizeFirst(t('loginAndRegistration.validation.username'))}
           />
-          { usernameError &&
-            <Text style={theme.common.inputValidationError}>{CapitalizeFirst(t('loginAndRegistration.validation.username'))}</Text>
-          }
-          <Text style={theme.common.label}>
-            {CapitalizeFirst(t('loginAndRegistration.label.password'))}
-          </Text>
-          <TextInput
+          <Input
             ref={passwordInputRef}
-            style={[theme.common.input, passwordError ? theme.common.error : null]}
+            label={CapitalizeFirst(t('loginAndRegistration.label.password'))}
+            style={passwordError && theme.common.error}
             onChangeText={passwordText =>
               handleTextChange(passwordText, 'password')
             }
@@ -86,16 +81,11 @@ const RegisterScreen = React.memo(({ navigation }) => {
             returnKeyType='done'
             onSubmitEditing={() => moveToNextField('password')}
             disabled={loading}
+            validationError={passwordError && CapitalizeFirst(t('loginAndRegistration.validation.password'))}
           />
-          { passwordError &&
-            <Text style={theme.common.inputValidationError}>{CapitalizeFirst(t('loginAndRegistration.validation.password'))}</Text>
-          }
-          <Text style={theme.common.label}>
-            {CapitalizeFirst(t('loginAndRegistration.label.repeatPassword'))}
-          </Text>
-          <TextInput
+          <Input
             ref={repeatPasswordInputRef}
-            style={[theme.common.input, repeatPasswordError ? theme.common.error : theme.common.spaceBottom]}
+            label={CapitalizeFirst(t('loginAndRegistration.label.repeatPassword'))}
             onChangeText={repeatPasswordText =>
               handleTextChange(repeatPasswordText, 'repeatPassword')
             }
@@ -107,10 +97,8 @@ const RegisterScreen = React.memo(({ navigation }) => {
             returnKeyType='done'
             onSubmitEditing={register}
             disabled={loading}
+            validationError={repeatPasswordError && CapitalizeFirst(t('loginAndRegistration.validation.repeatPassword'))}
           />
-          { repeatPasswordError &&
-            <Text style={theme.common.inputValidationError}>{CapitalizeFirst(t('loginAndRegistration.validation.repeatPassword'))}</Text>
-          }
           <ReCaptcha onCheck={onCheckRecaptcha} extraData={recaptchaReload} />
           {loading && (
             <ActivityIndicator size='large' color={theme.variables.primary} />

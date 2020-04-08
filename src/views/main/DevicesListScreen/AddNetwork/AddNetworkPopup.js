@@ -1,5 +1,6 @@
 import React from 'react';
-import { Text, TextInput, View, ActivityIndicator, TouchableOpacity, StyleSheet } from 'react-native';
+import { Text, View, ActivityIndicator, TouchableOpacity, StyleSheet } from 'react-native';
+import Input from '../../../../components/Input';
 import { RNCamera } from 'react-native-camera';
 import BarcodeMask from 'react-native-barcode-mask';
 import RequestError from '../../../../components/RequestError';
@@ -96,11 +97,8 @@ const AddNetwork = React.memo(({ postRequest, sendRequest, skipCodes, acceptedMa
           </TouchableOpacity>
         )}
       </View>
-      <Text style={theme.common.label}>
-        {CapitalizeFirst(t('onboarding.claiming.uuidLabel'))}
-      </Text>
-      <TextInput
-        style={theme.common.input}
+      <Input
+        label={CapitalizeFirst(t('onboarding.claiming.uuidLabel'))}
         onChangeText={text => setInputValue(text)}
         value={inputValue}
         autoCapitalize='none'

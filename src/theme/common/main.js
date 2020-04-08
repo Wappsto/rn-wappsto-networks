@@ -162,29 +162,6 @@ export function generateStyles(c = {}) {
         paddingHorizontal: 20,
         paddingTop: 20
       },
-      label: {
-        fontSize: variables.defaultFontSize,
-        lineHeight: variables.defaultFontSize * 1.5,
-        color: variables.textColor
-      },
-      input: {
-        width: '100%',
-        height: variables.inputTextSize * 1.5 + 26,
-        color: variables.textColor,
-        fontSize: variables.inputTextSize,
-        lineHeight: variables.inputTextSize * 1.5,
-        marginBottom: variables.defaultFontSize,
-        paddingHorizontal: 10,
-        backgroundColor: variables.inputBg,
-        borderColor: variables.inputBorderColor,
-        borderWidth: variables.borderWidth,
-        borderRadius: variables.borderRadiusBase
-      },
-      inputValidationError: {
-        color: variables.alert,
-        marginTop: -(variables.defaultFontSize * 0.8),
-        marginBottom: variables.defaultFontSize
-      },
       buttonText: {
         fontSize: variables.buttonTextSize,
         color: variables.buttonColor
@@ -243,11 +220,6 @@ export function generateStyles(c = {}) {
       fullScreenModalContent: {
         padding: 20,
         flex:2
-      },
-      passwordVisibilityButton: {
-        position: 'absolute',
-        right: 0,
-        padding: 16,
       },
       seperator: {
         marginVertical: 20,

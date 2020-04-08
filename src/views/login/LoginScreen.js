@@ -1,13 +1,13 @@
 import React, { useCallback } from 'react';
-import { Image, View, Text, Linking, TextInput, TouchableOpacity, ActivityIndicator, StyleSheet, StatusBar, ScrollView } from 'react-native';
+import { Image, View, Text, Linking, TouchableOpacity, ActivityIndicator, StyleSheet, StatusBar, ScrollView } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { GoogleSigninButton } from '@react-native-community/google-signin';
 import { useTranslation, CapitalizeFirst } from '../../translations';
 import useSignIn from '../../hooks/useSignIn';
 import RequestError from '../../components/RequestError';
 import ReCaptcha from '../../components/ReCaptcha';
+import Input from '../../components/Input';
 import theme from '../../theme/themeExport';
-import Icon from 'react-native-vector-icons/FontAwesome5';
 import image from '../../theme/images';
 
 const OpenURLButton = ({ url, children }) => {
@@ -102,15 +102,12 @@ const LoginScreen = React.memo(({ navigation }) => {
             {CapitalizeFirst(t('loginAndRegistration.loginWithEmail'))}
           </Text>
           <View style={theme.common.card}>
-            <Text style={theme.common.label}>
-              {CapitalizeFirst(t('loginAndRegistration.label.username'))}
-            </Text>
-            <TextInput
-              style={theme.common.input}
+            <Input
               onChangeText={usernameText =>
                 handleTextChange(usernameText, 'username')
               }
               value={username}
+              label={CapitalizeFirst(t('loginAndRegistration.label.username'))}
               textContentType='emailAddress'
               autoCapitalize='none'
               onSubmitEditing={moveToPasswordField}
@@ -118,31 +115,19 @@ const LoginScreen = React.memo(({ navigation }) => {
               returnKeyType='next'
               disabled={loading}
             />
-            <Text style={theme.common.label}>
-              {CapitalizeFirst(t('loginAndRegistration.label.password'))}
-            </Text>
-            <View>
-              <TextInput
-                ref={passwordInputRef}
-                style={theme.common.input}
-                onChangeText={passwordText =>
-                  handleTextChange(passwordText, 'password')
-                }
-                value={password}
-                textContentType='password'
-                secureTextEntry={!showPassword}
-                autoCapitalize='none'
-                returnKeyType='done'
-                onSubmitEditing={checkAndSignIn}
-                disabled={loading}
-              />
-              <Icon
-                style={theme.common.passwordVisibilityButton}
-                name={showPassword ? 'eye-slash' : 'eye'}
-                onPress={toggleShowPassword}
-                size={14}
-              />
-            </View>
+            <Input
+              ref={passwordInputRef}
+              onChangeText={passwordText =>
+                handleTextChange(passwordText, 'password')
+              }
+              value={password}
+              label={CapitalizeFirst(t('loginAndRegistration.label.password'))}
+              textContentType='password'
+              autoCapitalize='none'
+              returnKeyType='done'
+              onSubmitEditing={checkAndSignIn}
+              disabled={loading}
+            />
 
             {loading && (
               <ActivityIndicator size='large' color={theme.variables.primary} />
