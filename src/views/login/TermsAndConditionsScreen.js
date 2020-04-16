@@ -1,8 +1,10 @@
 import React, { useState, useCallback } from 'react';
-import { Text, ScrollView, TouchableOpacity, View } from 'react-native';
+import { ScrollView, View } from 'react-native';
 import { useTranslation, CapitalizeEach, CapitalizeFirst } from '../../translations';
 import theme from '../../theme/themeExport';
 import Screen from '../../components/Screen';
+import Text from '../../components/Text';
+import Button from '../../components/Button';
 import CheckBox from '../../components/CheckBox';
 
 const TermsAndConditionsScreen = React.memo(({ navigation }) => {
@@ -21,20 +23,21 @@ const TermsAndConditionsScreen = React.memo(({ navigation }) => {
     <Screen>
       <View style={[theme.common.container, theme.common.spaceAround]}>
         <ScrollView>
-          <Text>TBD</Text>
+          <Text
+            content='TBD'
+          />
         </ScrollView>
         <CheckBox
           checked={checked}
           onPress={toggleChecked}
           text={CapitalizeFirst(t('loginAndRegistration.button.readAndAcceptTerms'))}
         />
-        <TouchableOpacity
+        <Button
           disabled={!checked}
-          style={[theme.common.button, checked ? null : theme.common.disabled]}
+          color={checked ? 'primary' : 'disabled'}
           onPress={navigateToRegisterScreen}
-        >
-          <Text style={theme.common.buttonText}>{CapitalizeFirst(t('loginAndRegistration.button.continue'))}</Text>
-        </TouchableOpacity>
+          text{CapitalizeFirst(t('loginAndRegistration.button.continue'))}
+        />
       </View>
     </Screen>
   );

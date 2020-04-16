@@ -1,7 +1,9 @@
 import React from 'react';
-import { View, Text, TouchableOpacity, ActivityIndicator, StatusBar, ScrollView } from 'react-native';
+import { View, TouchableOpacity, ActivityIndicator, StatusBar, ScrollView } from 'react-native';
 import Screen from '../../components/Screen';
 import Input from '../../components/Input';
+import Text from '../../components/Text';
+import Button from '../../components/Button';
 import { useTranslation, CapitalizeFirst, CapitalizeEach } from '../../translations';
 import theme from '../../theme/themeExport';
 import RequestError from '../../components/RequestError';
@@ -38,18 +40,24 @@ const RegisterScreen = React.memo(({ navigation }) => {
   return (
     <Screen>
       <ScrollView>
-        <StatusBar
-          backgroundColor={theme.variables.primary}
-          barStyle='light-content'
-        />
         <Popup visible={successVisible} onRequestClose={hideSuccessPopup} hide={hideSuccessPopup} hideCloseIcon>
-          <Text style={theme.common.infoText}>{CapitalizeFirst(t('loginAndRegistration.registrationConfirmationText'))}</Text>
-          <TouchableOpacity style={[theme.common.button, theme.common.success]} onPress={hideSuccessPopup}>
-            <Text>{CapitalizeFirst(t('loginAndRegistration.button.ok'))}</Text>
-          </TouchableOpacity>
+          <Text
+            size='p'
+            align='center'
+            content={CapitalizeFirst(t('loginAndRegistration.registrationConfirmationText'))}
+          />
+          <Button 
+            color='success'
+            onPress={hideSuccessPopup}
+            text={CapitalizeFirst(t('loginAndRegistration.button.ok'))}
+          />
         </Popup>
         <View style={theme.common.contentContainer}>
-          <Text style={theme.common.infoText}>{CapitalizeFirst(t('loginAndRegistration.registrationText'))}</Text>
+          <Text
+            size='p'
+            align='center'
+            content={CapitalizeFirst(t('loginAndRegistration.registrationText'))}
+          />
           <Input
             label={CapitalizeFirst(t('loginAndRegistration.label.username'))}
             style={usernameError && theme.common.error}
@@ -104,19 +112,13 @@ const RegisterScreen = React.memo(({ navigation }) => {
             <ActivityIndicator size='large' color={theme.variables.primary} />
           )}
           <RequestError request={request} />
-          <TouchableOpacity
+          <Button
             disabled={!canRegister}
-            style={[
-              theme.common.button,
-              !canRegister
-                ? theme.common.disabled
-                : null,
-            ]}
-            onPress={register}>
-            <Text style={theme.common.buttonText}>
-              {CapitalizeFirst(t('loginAndRegistration.button.register'))}
-            </Text>
-          </TouchableOpacity>
+            color={!canRegister ? 'disabled' : 'primary'}
+            onPress={register}
+            display='block'
+            text={CapitalizeFirst(t('loginAndRegistration.button.register'))}
+          />
         </View>
       </ScrollView>
     </Screen>

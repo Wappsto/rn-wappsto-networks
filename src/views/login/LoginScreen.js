@@ -1,5 +1,5 @@
 import React, { useCallback } from 'react';
-import { Image, View, Text, Linking, TouchableOpacity, ActivityIndicator, StyleSheet, StatusBar, ScrollView } from 'react-native';
+import { Image, View, Text as RNtext, Linking, TouchableOpacity, ActivityIndicator, StyleSheet, StatusBar, ScrollView } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { GoogleSigninButton } from '@react-native-community/google-signin';
 import { useTranslation, CapitalizeFirst } from '../../translations';
@@ -7,6 +7,8 @@ import useSignIn from '../../hooks/useSignIn';
 import RequestError from '../../components/RequestError';
 import ReCaptcha from '../../components/ReCaptcha';
 import Input from '../../components/Input';
+import Text from '../../components/Text';
+import Button from '../../components/Button';
 import theme from '../../theme/themeExport';
 import image from '../../theme/images';
 
@@ -19,9 +21,11 @@ const OpenURLButton = ({ url, children }) => {
   }, [url]);
 
   return (
-    <TouchableOpacity onPress={handlePress}>
-      <Text style={[theme.common.linkBtn, {textAlign: 'center', color: theme.variables.primary}]}>{children}</Text>
-    </TouchableOpacity>
+    <Button
+      type='link'
+      onPress={handlePress}
+      text={children}
+    />
   );
 };
 
@@ -57,7 +61,7 @@ const styles = StyleSheet.create({
     margin:10
   },
   appTitle:{
-    fontSize:30,
+    fontSize:25,
     padding: 10,
     fontWeight: 'bold',
     textAlign: 'center',
@@ -98,9 +102,11 @@ const LoginScreen = React.memo(({ navigation }) => {
       <ScrollView>
         <LoginScreen.Header />
         <View style={theme.common.contentContainer}>
-          <Text style={[theme.common.p, {textAlign: 'center'}]}>
-            {CapitalizeFirst(t('loginAndRegistration.loginWithEmail'))}
-          </Text>
+          <Text
+            size='p'
+            align='center'
+            content={CapitalizeFirst(t('loginAndRegistration.loginWithEmail'))}
+          />
           <View style={theme.common.card}>
             <Input
               onChangeText={usernameText =>
@@ -125,10 +131,12 @@ const LoginScreen = React.memo(({ navigation }) => {
               textContentType='password'
               autoCapitalize='none'
               returnKeyType='done'
+              showPassword={showPassword}
+              secureTextEntry={!showPassword}
+              toggleShowPassword={toggleShowPassword}
               onSubmitEditing={checkAndSignIn}
               disabled={loading}
             />
-
             {loading && (
               <ActivityIndicator size='large' color={theme.variables.primary} />
             )}
@@ -140,79 +148,75 @@ const LoginScreen = React.memo(({ navigation }) => {
             : null}
 
             <RequestError request={postRequest} />
-
-            <TouchableOpacity
+            <Button
               disabled={!canSignIn}
-              style={[
-                theme.common.button,
-                !canSignIn
-                  ? theme.common.disabled
-                  : null,
-              ]}
-              onPress={signIn}>
-              <Text style={theme.common.buttonText}>
-                {CapitalizeFirst(t('loginAndRegistration.button.logIn'))}
-              </Text>
-            </TouchableOpacity>
-            <View style={[theme.common.row, {justifyContent: 'center'}]}>
-              <TouchableOpacity
-                disabled={loading}
-                onPress={moveToTACScreen}>
-                <Text style={[loading ? {color: theme.variables.disabled} : theme.common.linkBtn, {color: theme.variables.primary}]}>
-                  {CapitalizeFirst(t('loginAndRegistration.button.recoverPassword'))}
-                </Text>
-              </TouchableOpacity>
-              <Text>|</Text>
-              <TouchableOpacity
-                disabled={loading}
-                onPress={moveToTACScreen}>
-                <Text style={[loading ? {color: theme.variables.disabled} : theme.common.linkBtn, {color: theme.variables.primary}]}>
-                  {CapitalizeFirst(t('loginAndRegistration.button.createAccount'))}
-                </Text>
-              </TouchableOpacity>
+              style={!canSignIn && theme.common.disabled}
+              onPress={signIn}
+              display='block'
+              color={!canSignIn ? 'disabled' : 'primary'}
+              text={CapitalizeFirst(t('loginAndRegistration.button.logIn'))}
+            />
+          <View style={[theme.common.row, {justifyContent: 'center'}]}>
+            <Button
+              disabled={loading}
+              onPress={moveToTACScreen}
+              type='link'
+              color={loading ? 'disabled' : 'primary'}
+              text={CapitalizeFirst(t('loginAndRegistration.button.recoverPassword'))}
+            />
+            <Text content='|'/>
+            <Button
+              disabled={loading}
+              onPress={moveToTACScreen}
+              type='link'
+              color={loading ? 'disabled' : 'primary'}
+              text={CapitalizeFirst(t('loginAndRegistration.button.createAccount'))}
+            />
             </View>
           </View>
 
-          <Text style={[theme.common.p, {textAlign: 'center'}]}>
-            {t('loginAndRegistration.chooseSignInOption')}
-          </Text>
+          <Text
+            size='p'
+            align='center'
+            content={t('loginAndRegistration.chooseSignInOption')}
+          />
 
           <View style={theme.common.card}>
             <TouchableOpacity
               disabled={!canTPSignIn}
               style={[
                 styles.signinButton,
-                !canTPSignIn
-                  ? theme.common.disabled
-                  : null
-              , {backgroundColor: '#4285F4'}]}
-              onPress={googleSignIn}>
+                !canTPSignIn && theme.common.disabled,
+                {backgroundColor: '#4285F4'}
+              ]}
+              onPress={googleSignIn}
+            >
               <View style={styles.GoogleSigninButtonWrapper}>
                 <Image
                   resizeMode='contain'
                   source={require('../../../assets/images/login/google_logo.png')} style={styles.signinButtonImage}/>
               </View>
-              <Text style={styles.signinButtonText}>
+              <RNtext style={styles.signinButtonText}>
                 {CapitalizeFirst(t('loginAndRegistration.button.signInWithGoogle'))}
-              </Text>
+              </RNtext>
             </TouchableOpacity>
             <TouchableOpacity
               disabled={!canTPSignIn}
               style={[
                 styles.signinButton,
-                !canTPSignIn
-                  ? theme.common.disabled
-                  : null
-              , {backgroundColor: '#4267B2'}]}
-              onPress={facebookSignIn}>
+                !canTPSignIn && theme.common.disabled,
+                {backgroundColor: '#4267B2'}
+              ]}
+              onPress={facebookSignIn}
+            >
               <View style={styles.FacebookSigninButtonWrapper}>
                 <Image
                   resizeMode='contain'
                   source={require('../../../assets/images/login/f_logo_RGB-White_58.png')} style={styles.signinButtonImage}/>
               </View>
-              <Text style={styles.signinButtonText}>
+              <RNtext style={styles.signinButtonText}>
                 {CapitalizeFirst(t('loginAndRegistration.button.signInWithFacebook'))}
-              </Text>
+              </RNtext>
             </TouchableOpacity>
           </View>
         </View>
@@ -232,13 +236,13 @@ LoginScreen.Header = () => {
   const { t } = useTranslation();
   return (
     <View style={{paddingTop: 30 }}>
-    {
-      image.loginAndRegistration.header &&
-      <Image resizeMode='contain' style={{ alignSelf: 'center' }} source={image.loginAndRegistration.header} />
-    }
-      <Text style={styles.appTitle}>
+      {
+        image.loginAndRegistration.header &&
+        <Image resizeMode='contain' style={{ alignSelf: 'center' }} source={image.loginAndRegistration.header} />
+      }
+      <RNtext style={styles.appTitle}>
         {CapitalizeFirst(t('loginAndRegistration.appTitle'))}
-      </Text>
+      </RNtext>
     </View>
   );
 }
