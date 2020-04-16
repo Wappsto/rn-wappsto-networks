@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import {Text} from 'react-native';
+import Text from '../components/Text';
 import usePrevious from 'wappsto-blanket/hooks/usePrevious';
 import theme from '../theme/themeExport';
 import {useTranslation, CapitalizeFirst} from '../translations';
@@ -44,10 +44,11 @@ const RequestError = React.memo(({ request, skipCodes = [] }) => {
       message = t('error:noResponse');
     }
     return (
-      <Text style={[theme.common.error, theme.common.infoText]}>
-        {CapitalizeFirst(message)}
-        {extra && '\n' + extra}
-      </Text>
+      <Text
+        size='p'
+        color='error'
+        content={CapitalizeFirst(message) + extra && '\n' + extra}
+      />
     );
   }
   return null;

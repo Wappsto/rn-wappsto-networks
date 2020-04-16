@@ -8,7 +8,7 @@ const MenuButton = React.memo(({ navigation }) => {
       name='menu'
       size={24}
       style={{paddingLeft: 10, paddingTop: 3}}
-      color={theme.variables.white}
+      color={theme.variables.headerColor}
       onPress={() => navigation.openDrawer()}
     />
   );

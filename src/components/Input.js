@@ -8,6 +8,7 @@ const styles = StyleSheet.create({
     width: '100%',
     height: Math.round(theme.variables.inputTextSize * 1.5) + 24,
     fontSize: theme.variables.inputTextSize,
+    fontFamily: theme.variables.fontFamily,
     lineHeight: Math.round(theme.variables.inputTextSize * 1.5),
     color: theme.variables.inputTextColor,
     marginBottom: theme.variables.defaultFontSize,
@@ -15,7 +16,7 @@ const styles = StyleSheet.create({
     backgroundColor: theme.variables.inputBg,
     borderColor: theme.variables.inputBorderColor,
     borderWidth: theme.variables.borderWidth,
-    borderRadius: theme.variables.borderRadiusBase
+    borderRadius: theme.variables.borderRadiusBase,
   },
   inputError: {
     borderColor: theme.variables.alert,
@@ -23,11 +24,13 @@ const styles = StyleSheet.create({
   },
   inputValidationError: {
     color: theme.variables.alert,
+    fontFamily: theme.variables.fontFamily,
     marginTop: Math.round(theme.variables.defaultFontSize * 0.8) * -1,
     marginBottom: theme.variables.defaultFontSize
   },
   label: {
     color: theme.variables.textColor,
+    fontFamily: theme.variables.fontFamily,
     fontSize: theme.variables.defaultFontSize,
     lineHeight: Math.round(theme.variables.defaultFontSize * 1.5)
   },
@@ -46,6 +49,7 @@ const Input = React.memo(({
   value,
   style,
   disabled,
+  placeholder,
   textContentType,
   secureTextEntry,
   keyboardType,
@@ -67,20 +71,23 @@ const Input = React.memo(({
       <View>
         <TextInput
           style={[styles.input, validationError && styles.inputError, style]}
+          selectionColor={theme.variables.inputSelectionColor}
           value={value}
           disabled={disabled}
           autoCapitalize={autoCapitalize}
-          textContentType={textContentType }
+          textContentType={textContentType}
           autoCapitalize={autoCapitalize}
+          autoCorrect={false}
           keyboardType={keyboardType}
           returnKeyType={returnKeyType}
           secureTextEntry={secureTextEntry}
           onChangeText={onChangeText}
           onSubmitEditing={onSubmitEditing}
+          placeholder={placeholder}
           onBlur={onBlur}
           validationError={validationError}
         />
-        {textContentType === 'password' &&
+        {toggleShowPassword &&
           <Icon
             style={styles.passwordVisibilityButton}
             name={showPassword ? 'eye-slash' : 'eye'}

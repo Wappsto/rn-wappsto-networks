@@ -13,11 +13,8 @@ export function generateVariables(v = {}) {
   Object.assign(variables, {
     // Color
     primary: 'hsla(169, 90%, 35%, 1)',
+    primaryDark: 'hsla(169, 90%, 21%, 1)',
     secondary: 'hsla(17, 100%, 80%, 1)',
-
-    get dark() {
-      return color(this.primary).darken(0.5);
-    },
     darkGray: '#666',
     lightGray: '#eee',
     white: '#ffffff',
@@ -37,41 +34,40 @@ export function generateVariables(v = {}) {
     get panelBgColor() {
       return this.white;
     },
-    get splashScreenBgColor() {
-      return this.white;
-    },
-
     // Typography
     defaultFontSize: 14,
     fontFamily: 'System',
     fontSizeBase: 12,
     get h1() {
-      return this.fontSizeBase + 22;
+      return this.fontSizeBase + 20;
     },
     get h2() {
-      return this.fontSizeBase + 18;
+      return this.fontSizeBase + 16;
     },
     get h3() {
-      return this.fontSizeBase + 14;
+      return this.fontSizeBase + 12;
     },
     get h4() {
-      return this.fontSizeBase + 10;
-    },
-    get h5() {
-      return this.fontSizeBase + 6;
-    },
-    get h6() {
-      return this.fontSizeBase + 2;
+      return this.fontSizeBase + 8;
     },
 
     // Title
-    get titleFontfamily() {
+    get titleFontFamily() {
       return this.fontFamily;
+    },
+    get titleColor() {
+      return this.primary;
+    },
+    get titleFontSize() {
+      return this.h1;
     },
 
     // Text
     get textColor() {
       return this.black;
+    },
+    get textSecondary() {
+      return this.darkGray;
     },
     get textSuccess() {
       return this.success;
@@ -85,13 +81,6 @@ export function generateVariables(v = {}) {
     get textInverse() {
       return this.white;
     },
-    get textImportant() {
-      return this.alert;
-    },
-    get textSecondary() {
-      return this.darkGray;
-    },
-
     // Border
     borderRadiusBase: 5,
     get borderRadiusLarge() {
@@ -101,18 +90,12 @@ export function generateVariables(v = {}) {
 
     // Button
     get buttonBg() {
-      return this.primary;
+      return this.darkGray;
     },
     buttonColor: 'white',
     get buttonTextSize() {
-      return platform === 'ios'
-        ? this.fontSizeBase * 1.4
-        : this.fontSizeBase * 1.4;
+      return Math.round(this.fontSizeBase * 1.25);
     },
-    get buttonDisabledBg() {
-      return this.disabled;
-    },
-
     // Icon
     iconSmall: 18,
     iconMedium: 28,
@@ -121,14 +104,21 @@ export function generateVariables(v = {}) {
     // Input
     inputBg: 'rgba(255, 255, 255, 1)',
     get inputTextSize() {
-      return  Math.round(this.fontSizeBase * 1.4);
+      return Math.round(this.fontSizeBase * 1.4);
     },
     get inputTextColor() {
       return this.textColor;
     },
-    get inputBorderColor() { return this.textColor; },
-    get inputActiveBorderColor() { return this.secondary; },
-    get inputErrorBorderColor() { return this.alert; },
+    get inputSelectionColor() {
+      if(color(this.inputTextColor).isDark()){
+        return color(this.inputTextColor).lighten(.9);
+      } else {
+       return color(this.inputTextColor).darken(0.7);
+     }
+    },
+    get inputBorderColor() {
+      return this.textColor;
+    },
 
     // Progress Bar
     get defaultProgressColor() {
@@ -140,7 +130,7 @@ export function generateVariables(v = {}) {
 
     // Spinner
     get spinnerColor() {
-      return this.dark;
+      return this.primaryDark;
     },
     get inverseSpinnerColor() {
       return this.white;
@@ -149,6 +139,9 @@ export function generateVariables(v = {}) {
     // Header
     get headerBgColor() {
       return this.primary;
+    },
+    get headerColor() {
+      return this.textInverse;
     },
 
     // Container

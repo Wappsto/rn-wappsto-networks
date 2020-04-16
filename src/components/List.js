@@ -1,7 +1,9 @@
 import React from 'react';
-import { View, Text, FlatList, TouchableOpacity, ActivityIndicator } from 'react-native';
+import { View, FlatList, TouchableOpacity, ActivityIndicator } from 'react-native';
 import RequestError from './RequestError';
 import theme from '../theme/themeExport';
+import Text from '../components/Text';
+import Button from '../components/Button';
 import { useTranslation, CapitalizeFirst } from '../translations';
 import usePageList from '../hooks/usePageList';
 
@@ -30,14 +32,19 @@ const List = React.memo(({
         ListEmptyComponent={
           (!request || request.status !== 'pending') && (
             <>
-              <Text style={theme.common.infoText}>
-                {CapitalizeFirst(t('infoMessage.listIsEmpty'))}
-              </Text>
-              <TouchableOpacity
+              <Text
+                size='p'
+                align='center'
+                color='secondary'
+                content={CapitalizeFirst(t('noData'))}
+                style={theme.common.spaceAround}
+              />
+              <Button
                 onPress={refresh}
-                style={[theme.common.button, theme.common.ghost]}>
-                <Text>{CapitalizeFirst(t('refresh'))}</Text>
-              </TouchableOpacity>
+                type='link'
+                color='primary'
+                text={CapitalizeFirst(t('refresh'))}
+              />
             </>
           )
         }

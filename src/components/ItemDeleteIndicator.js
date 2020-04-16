@@ -7,12 +7,7 @@ const styles = StyleSheet.create({
     width: '100%',
     height: '100%',
     zIndex: 99,
-    backgroundColor: 'grey',
-    opacity: 0.4
-  },
-  spaceBetween: {
-    justifyContent: 'space-between',
-    marginRight: 20
+    backgroundColor: 'rgba(255, 255, 255, .4)'
   }
 });
 

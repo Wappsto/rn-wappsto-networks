@@ -1,9 +1,9 @@
 import React, { useState, useCallback } from 'react';
 import {TouchableOpacity} from 'react-native';
 import theme from '../theme/themeExport';
-import Icon from 'react-native-vector-icons/Feather';
+import Button from '../components/Button';
 
-const PopupButton = React.memo(({ icon, style, iconStyle, color, children }) => {
+const PopupButton = React.memo(({ icon, style, color, children }) => {
   const [ modalVisible, setModalVisible ] = useState(false);
 
   const showPopup = useCallback(() => {
@@ -13,19 +13,15 @@ const PopupButton = React.memo(({ icon, style, iconStyle, color, children }) => 
   const hidePopup = useCallback(() => {
     setModalVisible(false);
   }, []);
-
   return (
     <>
-      <TouchableOpacity
+      <Button
         onPress={showPopup}
-        style={[theme.common.iconButton, style]}>
-        <Icon
-          name={icon}
-          size={20}
-          style={iconStyle}
-          color={color || theme.variables.primary}
-        />
-      </TouchableOpacity>
+        type='link'
+        icon={icon}
+        color={color}
+        style={style}
+      />
       {children(
         modalVisible,
         hidePopup,
