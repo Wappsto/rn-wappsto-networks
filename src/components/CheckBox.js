@@ -12,7 +12,7 @@ const CheckBox = ({ checked, onPress, style, textStyle, size = 30, color = theme
       name={ checked ? 'check-square' : 'square'}
     />
     <Text
-      style={textStyle}>
+      style={textStyle}
       content={text}
     />
   </TouchableOpacity>
