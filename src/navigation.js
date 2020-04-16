@@ -39,8 +39,8 @@ let components = {
   MainScreen: function() {
     return createDrawerNavigator(
       {
-        Home: {screen: this.MainStackScreen},
-        Account: {screen: this.AccountStackScreen},
+        main: {screen: this.MainStackScreen},
+        account: {screen: this.AccountStackScreen},
       },
       {
         contentComponent: this.DrawerMenu,

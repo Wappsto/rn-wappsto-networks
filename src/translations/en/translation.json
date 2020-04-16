@@ -3,6 +3,10 @@
     "desiredState": "desired state",
     "device": "device",
     "device_plural": "device",
+    "networkDescription": {
+        "name": "name",
+        "uuid": "uuid"
+    },
     "deviceDescription": {
         "description": "description",
         "included": "included",
@@ -13,12 +17,9 @@
         "uuid": "uuid",
         "version": "version"
     },
-    "deviceInfoHeader": "device details",
-    "infoMessage": {
-        "listIsEmpty": "list is empty",
-        "networkIsEmpty": "network is empty",
-        "valueIsEmpty": "value is empty"
-    },
+    "deleteConfirmationQuestion":"Are you sure you want to delete?",
+    "deleteConfirmationDescription":"this action cannot be undone.",
+    "noData": "no data",
     "lastUpdated": "last updated",
     "loading": "loading",
     "logout": "logout",
@@ -26,7 +27,7 @@
     "network_plural": "network",
     "pageTitle": {
         "account": "account",
-        "main": "home",
+        "main": "devices",
         "settings": "settings"
     },
     "prototype": "prototype",
@@ -75,8 +76,8 @@
         "uuid": "UUID",
         "xsd": "XSD"
     },
-    "valueInfoHeader": "value details",
     "yes": "yes",
+    "no": "no",
     "cannotAccess": {
       "not_shared": "You do not have permission to access the data",
       "not_paid": "You do not have enough money to access the data"
@@ -96,7 +97,7 @@
     "loginAndRegistration":{
       "appTitle":"Wappsto Networks",
       "loginWithEmail": "login with email",
-      "chooseSignInOption": "or select sign in option",
+      "chooseSignInOption": "or select sign-in option below",
       "termsTitle":"terms & conditions",
       "registerTitle":"Register an account",
       "registrationText":"Please enter the following information to create an account.",
