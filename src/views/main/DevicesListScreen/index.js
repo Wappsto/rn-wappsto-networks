@@ -1,5 +1,7 @@
 import React, { useMemo, useCallback } from 'react';
-import { Text, View, TouchableOpacity } from 'react-native';
+import { Text as RNtext, View, StyleSheet, TouchableOpacity } from 'react-native';
+import Text from '../../../components/Text';
+import Button from '../../../components/Button';
 import Screen from '../../../components/Screen';
 import MenuButton from '../../../components/MenuButton';
 import List from '../../../components/List';
@@ -17,9 +19,19 @@ import PopupButton from '../../../components/PopupButton';
 import Popup from '../../../components/Popup';
 import ConfirmationPopup from '../../../components/ConfirmationPopup';
 import ItemDeleteIndicator from '../../../components/ItemDeleteIndicator';
-import RequestError from '../../../components/RequestError';
 import useDeleteItem from '../../../hooks/useDeleteItem';
 import useDeleteItemRequest from '../../../hooks/useDeleteItemRequest';
+
+const styles = StyleSheet.create({
+  listHeader: {
+    backgroundColor: theme.variables.appBg,
+    paddingLeft: 10,
+    paddingRight: 5
+  },
+  listItem: {
+    marginBottom:20
+  }
+});
 
 const NetworkDetails = React.memo(({ network, style }) => {
   const content = useCallback((visible, hide) => {
@@ -28,29 +40,20 @@ const NetworkDetails = React.memo(({ network, style }) => {
     return (
       <Popup visible={visible} onRequestClose={hide} hide={hide}>
         <ConfirmationPopup
-          title={CapitalizeEach(t('deleteNetwork.title'))}
-          description={CapitalizeFirst(t('deleteNetwork.description'))}
           visible={confirmVisible}
           accept={deleteItem}
           reject={hideDeleteConfirmation}
-          acceptStyle={theme.common.errorPanel} />
-        <Text style={theme.common.H5}>
-          {CapitalizeEach(t('valueInfoHeader'))}
-        </Text>
-        <Text>
-          {CapitalizeFirst(t('networkDescription.name'))}: {network.name}
-        </Text>
-        <Text>
-          {CapitalizeFirst(t('networkDescription.uuid'))}: {network.meta.id}
-        </Text>
-        <RequestError request={request} />
-        <TouchableOpacity onPress={showDeleteConfirmation} style={[theme.common.button, theme.common.errorPanel]}>
-          <ItemDeleteIndicator request={request} />
-          <Text style={theme.common.buttonText}>
-            <Icon name='trash-2' size={20} />
-            {CapitalizeFirst(t('delete'))}
-          </Text>
-        </TouchableOpacity>
+        />
+        <Text size='h4' content={network.name}/>
+        <Text content={CapitalizeEach(t('networkDescription.uuid')) + ': ' + network.meta.id}/>
+        <Button
+          type='outline'
+          color='alert'
+          onPress={showDeleteConfirmation}
+          request={request}
+          text={CapitalizeFirst(t('delete'))}
+          icon='trash-2'
+        />
       </Popup>
     );
   }, [network]);
@@ -60,18 +63,16 @@ const NetworkDetails = React.memo(({ network, style }) => {
 const ItemHeader = React.memo(({ network }) => {
   const { t } = useTranslation();
   return (
-    <View style={theme.common.row}>
-      <Text style={[theme.common.listHeader, {flex:1}]}>
-        { isPrototype(network) && <Text>({CapitalizeEach(t('prototype'))}) </Text> }
-        { network.name ?
-          <>
-            <Text style={theme.common.H5}>{network.name}</Text>{'\n'}
-            <Text>{network.meta.id}</Text>
-          </>
-        :
-          <Text>{network.meta.id}</Text>
+    <View style={[theme.common.row,styles.listHeader]}>
+      <RNtext numberOfLines={1} ellipsizeMode='tail' style={{flex: 1}}>
+        { isPrototype(network) &&
+          <Text color='secondary' content={'(' + CapitalizeEach(t('prototype')) + ') '}/>
         }
-      </Text>
+        { network.name &&
+          <Text style={{fontWeight:'bold'}} content={network.name + ' '}/>
+        }
+        <Text color='secondary' content={network.meta.id}/>
+      </RNtext>
       <NetworkDetails network={network}/>
     </View>
   )
@@ -81,9 +82,13 @@ const ItemContent = React.memo(({ network, navigation }) => {
   const { t } = useTranslation();
   if(network.device.length === 0){
     return (
-      <Text style={[theme.common.infoText, theme.common.secondary]}>
-        {CapitalizeFirst(t('infoMessage.networkIsEmpty'))}
-      </Text>
+      <Text
+        size='p'
+        color='secondary'
+        align='center'
+        content={CapitalizeFirst(t('noData'))}
+        style={theme.common.spaceAround}
+      />
     )
   }
   return network.device.map(id => (
@@ -99,14 +104,11 @@ const ItemContent = React.memo(({ network, navigation }) => {
 const ListItem = React.memo(({ network, navigation }) => {
   const request = useDeleteItemRequest(network);
   return (
-    <>
-      <View>
-        <ItemDeleteIndicator request={request} />
-        <ItemHeader network={network}/>
-        <ItemContent network={network} navigation={navigation} />
-      </View>
-      <View style={theme.common.listFooter} />
-    </>
+    <View style={styles.listItem}>
+      <ItemDeleteIndicator request={request} />
+      <ItemHeader network={network}/>
+      <ItemContent network={network} navigation={navigation} />
+    </View>
   )
 });
 

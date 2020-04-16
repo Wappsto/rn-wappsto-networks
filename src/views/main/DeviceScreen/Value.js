@@ -1,11 +1,36 @@
 import React, { useCallback } from 'react';
-import {View, Text, TouchableOpacity, ActivityIndicator} from 'react-native';
+import {View, StyleSheet, ActivityIndicator} from 'react-native';
 import States from './States';
 import ValueDetails from './ValueDetails';
 import theme from '../../../theme/themeExport';
 import Icon from 'react-native-vector-icons/Feather';
 import useRequest from 'wappsto-blanket/hooks/useRequest';
 import RequestError from '../../../components/RequestError';
+import Text from '../../../components/Text';
+import Button from '../../../components/Button';
+
+
+const styles = StyleSheet.create({
+  itemPanel: {
+    flex: 1,
+    justifyContent: 'space-between',
+    marginVertical: 5,
+    marginHorizontal: 10,
+    backgroundColor: theme.variables.panelBgColor,
+    borderRadius: theme.variables.borderRadiusBase,
+  },
+  itemHeader: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    padding: 8,
+    borderBottomColor: theme.variables.lightGray,
+    borderBottomWidth: theme.variables.borderWidth,
+  },
+  itemHeaderText: {
+    marginBottom:0,
+    flex:1
+  }
+});
 
 const ValueComponent = React.memo(({ item, navigation }) => {
   const { request, send } = useRequest();
@@ -22,26 +47,25 @@ const ValueComponent = React.memo(({ item, navigation }) => {
   }, [item]);
 
   return (
-    <View style={theme.common.itemPanel}>
-      <View style={theme.common.itemHeader}>
-        <Text style={[theme.common.listItemTitleArea, theme.common.H5]}>{item.name}</Text>
+    <View style={styles.itemPanel}>
+      <View style={styles.itemHeader}>
+        <Text
+          size={16}
+          content={item.name}
+          style={styles.itemHeaderText}
+        />
         <>
           {request && request.status === 'pending' ? (
             <ActivityIndicator
               size='small'
               color={theme.variables.primary}
-              style={theme.common.iconButton}
             />
           ) : (
-            <TouchableOpacity
-              style={theme.common.iconButton}
-              onPress={updateValueStatus}>
-              <Icon
-                name='rotate-cw'
-                size={20}
-                color={theme.variables.primary}
-              />
-            </TouchableOpacity>
+            <Button
+              type='link'
+              onPress={updateValueStatus}
+              icon='rotate-cw'
+            />
           )}
           <ValueDetails item={item} />
         </>

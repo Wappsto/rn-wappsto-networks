@@ -1,5 +1,6 @@
 import React, { useMemo, useCallback } from 'react';
-import {View, Text, ActivityIndicator} from 'react-native';
+import {View, ActivityIndicator} from 'react-native';
+import Text from '../../../components/Text';
 import { useSelector } from 'react-redux';
 import ControlState from './ControlState';
 import ReportState from './ReportState';
@@ -37,16 +38,20 @@ const StatesComponent = React.memo(({ value }) => {
     <View>
       {states.length !== 0 ? (
         <>
-          <View style={theme.common.itemContent}>
+          <View style={{padding:15}}>
             {reportState && <ReportState value={value} state={reportState} />}
             {reportState && controlState && <View style={theme.common.seperator} />}
             {controlState && <ControlState value={value} state={controlState} />}
           </View>
         </>
       ) : (
-        <Text style={[theme.common.infoText, theme.common.secondary]}>
-          {CapitalizeFirst(t('infoMessage.valueIsEmpty'))}
-        </Text>
+        <Text
+          size='p'
+          color='secondary'
+          align='center'
+          content={CapitalizeFirst(t('noData'))}
+          style={theme.common.spaceAround}
+        />
       )}
       {request && request.status === 'pending' && (
         <ActivityIndicator size='large' />

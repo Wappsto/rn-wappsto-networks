@@ -1,6 +1,7 @@
 import React, { useMemo } from 'react';
-import { View, Text } from 'react-native';
+import { View } from 'react-native';
 import Screen from '../../components/Screen';
+import Text from '../../components/Text';
 import RequestError from '../../components/RequestError';
 import theme from '../../theme/themeExport';
 import MenuButton from '../../components/MenuButton';
@@ -23,30 +24,30 @@ const AccountScreen = React.memo(() => {
     <Screen>
       {user ? (
         <View style={theme.common.contentContainer}>
-          <Text>
-            {CapitalizeFirst(t('userDescription.uuid'))}: {user.meta.id}
-          </Text>
-          <Text>
-            {CapitalizeFirst(t('userDescription.firstName'))}:{' '}
-            {user.first_name}
-          </Text>
-          <Text>
-            {CapitalizeFirst(t('userDescription.lastName'))}:{' '}
-            {user.last_name}
-          </Text>
-          <Text>
-            {CapitalizeFirst(t('userDescription.nickname'))}:{' '}
-            {user.nickname}
-          </Text>
-          <Text>
-            {CapitalizeFirst(t('userDescription.email'))}: {user.email}
-          </Text>
-          <Text>
-            {CapitalizeFirst(t('userDescription.phone'))}: {user.phone}
-          </Text>
+          <Text
+            content={CapitalizeFirst(t('accountDetails.uuid')) + ': ' + user.meta.id}
+          />
+          <Text
+            content={CapitalizeFirst(t('accountDetails.firstName')) + ': ' + user.first_name}
+          />
+          <Text
+            content={CapitalizeFirst(t('accountDetails.lastName')) + ': ' + user.last_name}
+          />
+          <Text
+            content=
+            {CapitalizeFirst(t('accountDetails.nickname')) + ': ' + user.nickname}
+          />
+          <Text
+            content={CapitalizeFirst(t('accountDetails.email')) + ': ' + user.email}
+          />
+          <Text
+            content={CapitalizeFirst(t('accountDetails.phone')) + ': ' + user.phone}
+          />
         </View>
       ) : request && request.status === 'pending' ? (
-        <Text>{CapitalizeFirst(t('statusMessage.loading'))}</Text>
+        <Text
+          content={CapitalizeFirst(t('statusMessage.loading'))}
+        />
       ) : null}
       <RequestError request={request} />
     </Screen>

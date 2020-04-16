@@ -1,5 +1,7 @@
 import React from 'react';
-import { Image, View, Text, TouchableOpacity, ActivityIndicator } from 'react-native';
+import { Image, View, TouchableOpacity, ActivityIndicator } from 'react-native';
+import Text from '../../../../components/Text';
+import Button from '../../../../components/Button';
 import { useTranslation, CapitalizeFirst } from '../../../../translations';
 import theme from '../../../../theme/themeExport';
 import RequestError from '../../../../components/RequestError';
@@ -14,21 +16,28 @@ const SetupDevice = React.memo(({ next, previous, hide, ssid, password, selected
     <>
       {loading ?
         <>
-          <Text style={theme.common.H3}>{CapitalizeFirst(t('onboarding.wifiSetup.setupInProgress'))}</Text>
+          <Text
+            size='h3'
+            content={CapitalizeFirst(t('onboarding.wifiSetup.setupInProgress'))}
+          />
           {
             image.onboarding.wifiSetup &&
             <Image resizeMode='contain' source={image.onboarding.wifiSetup} style={theme.common.image}/>
           }
           <View style={theme.common.row}>
             <ActivityIndicator size='small' color={theme.variables.primary} style={{marginRight: 10}} />
-            <Text style={{flex:1}}>{CapitalizeFirst(t('onboarding.wifiSetup.progress.' + step))}</Text>
+            <Text
+              style={{flex:1}}
+              content={CapitalizeFirst(t('onboarding.wifiSetup.progress.' + step))}
+            />
           </View>
         </>
         :
         <>
-          <Text style={theme.common.H3}>
-            {CapitalizeFirst(t(error ? 'onboarding.wifiSetup.error.title' : 'onboarding.wifiSetup.success.title'))}
-          </Text>
+          <Text
+            size='h3'
+            content={CapitalizeFirst(t(error ? 'onboarding.wifiSetup.error.title' : 'onboarding.wifiSetup.success.title'))}
+          />
           {
             image.onboarding.wifiSetupError && image.onboarding.wifiSetupSuccess  &&
             <Image resizeMode='contain' source={error ? image.onboarding.wifiSetupError : image.onboarding.wifiSetupSuccess} style={theme.common.image}/>
@@ -40,23 +49,25 @@ const SetupDevice = React.memo(({ next, previous, hide, ssid, password, selected
               size={30}
               style={{marginRight: 10}}
             />
-            <Text style={{flex:1}}>
-              {error &&
-                <>
-                  {CapitalizeFirst(t('onboarding.wifiSetup.error.' + step))}
-                  {' '}
-                  <RequestError request={postRequest} skipCodes={skipCodes} />
-                  {' '}
-                </>
+            <Text
+              style={{flex:1}}
+              color={error ? 'error' : 'success'}
+              content={
+                error &&
+                  CapitalizeFirst(t('onboarding.wifiSetup.error.' + step))
+                  + ' ' +
+                  (<RequestError request={postRequest} skipCodes={skipCodes} />)
+                  + ' ' +
+                  CapitalizeFirst(t('onboarding.wifiSetup.' + (error ? 'error' : 'success') + '.description'))
               }
-              {CapitalizeFirst(t('onboarding.wifiSetup.' + (error ? 'error' : 'success') + '.description'))}
-            </Text>
+            />
           </View>
-          <TouchableOpacity
-            style={[theme.common.button,{marginTop: 30}]}
-            onPress={hide}>
-            <Text style={theme.common.buttonText}>{CapitalizeFirst(t('onboarding.wifiSetup.' + (error ? 'error' : 'success') +'.flowButton'))}</Text>
-          </TouchableOpacity>
+          <Button
+            style={{marginTop: 30}}
+            onPress={hide}
+            color='primary'
+            text={CapitalizeFirst(t('onboarding.wifiSetup.' + (error ? 'error' : 'success') +'.flowButton'))}
+          />
         </>
       }
     </>

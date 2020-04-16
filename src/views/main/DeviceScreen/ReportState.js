@@ -1,5 +1,6 @@
 import React from 'react';
-import { View, Text, StyleSheet, Image } from 'react-native';
+import { View, Text as RNtext, StyleSheet, Image } from 'react-native';
+import Text from '../../../components/Text';
 import theme from '../../../theme/themeExport';
 import { useTranslation, CapitalizeFirst } from '../../../translations';
 import Timestamp from './Timestamp';
@@ -10,13 +11,14 @@ const styles = StyleSheet.create({
     width: 200,
     height: 200,
   },
-  unit: {
-    color: theme.variables.darkGray,
-  },
   data: {
     fontSize: theme.variables.h3,
     fontWeight: '400',
   },
+  text:{
+    textAlign: 'center',
+    marginBottom: 15
+  }
 });
 
 const content = (state, value) => {
@@ -28,10 +30,16 @@ const content = (state, value) => {
     }
   } else {
     return (
-      <Text style={{textAlign: 'center', marginBottom: 15}}>
-        <Text style={styles.data}>{state.data}</Text>{' '}
-        <Text style={styles.unit}>{value.number && value.number.unit}</Text>
-      </Text>
+      <RNtext style={styles.text}>
+        <Text
+          style={styles.data}
+          content={state.data}
+        />
+        <Text
+          color='secondary'
+          content={value.number && ' ' + value.number.unit}
+        />
+      </RNtext>
     );
   }
 };
@@ -40,14 +48,10 @@ const ReportState = React.memo(({ state, value }) => {
   const { t } = useTranslation();
   return (
     <View>
-      <Text style={theme.common.H6}>
-        {CapitalizeFirst(t('currentState'))}
-      </Text>
+      <Text color='secondary' content={CapitalizeFirst(t('currentState'))}/>
       {
         cannotAccessState(state) ? (
-          <Text>
-            {CapitalizeFirst(t('cannotAccess.' + state.status_payment))}
-          </Text>
+          <Text content={CapitalizeFirst(t('cannotAccess.' + state.status_payment))} />
         ) : (
           <>
             {content(state, value)}

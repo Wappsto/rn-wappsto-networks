@@ -1,8 +1,10 @@
 import React, { useCallback } from 'react';
-import { View, Text, TouchableOpacity } from 'react-native';
+import { View, TouchableOpacity } from 'react-native';
 import Input from '../../../../components/Input';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import theme from '../../../../theme/themeExport';
+import Text from '../../../../components/Text';
+import Button from '../../../../components/Button';
 import { useTranslation, CapitalizeFirst } from '../../../../translations';
 import useConfigureWifi from '../../../../hooks/useConfigureWifi';
 
@@ -16,8 +18,14 @@ const ConfigureWifi = React.memo(({ next, previous, hide, ssid, setSsid, passwor
 
   return (
     <>
-      <Text style={theme.common.H3}>{CapitalizeFirst(t('onboarding.wifiConfig.title'))}</Text>
-      <Text style={theme.common.p}>{CapitalizeFirst(t('onboarding.wifiConfig.intro'))} {CapitalizeFirst(t('onboarding.wifiConfig.warning5Ghz'))}</Text>
+      <Text
+        size='h3'
+        content={CapitalizeFirst(t('onboarding.wifiConfig.title'))}
+      />
+      <Text
+        size='p'
+        content={CapitalizeFirst(t('onboarding.wifiConfig.intro')) + ' ' +  CapitalizeFirst(t('onboarding.wifiConfig.warning5Ghz'))}
+        />
       <Input
         label={CapitalizeFirst(t('onboarding.wifiConfig.ssidLabel'))}
         onChangeText={ssidText =>
@@ -42,13 +50,12 @@ const ConfigureWifi = React.memo(({ next, previous, hide, ssid, setSsid, passwor
         showPassword={showPassword}
         toggleShowPassword={toggleShowPassword}
       />
-      <TouchableOpacity
-        style={theme.common.button}
-        onPress={saveAndMove}>
-        <Text style={theme.common.buttonText}>
-          {CapitalizeFirst(t('onboarding.wifiConfig.sendButton'))}
-        </Text>
-      </TouchableOpacity>
+      <Button
+        display='block'
+        color='primary'
+        onPress={saveAndMove}
+        text={CapitalizeFirst(t('onboarding.wifiConfig.sendButton'))}
+      />
     </>
   );
 });

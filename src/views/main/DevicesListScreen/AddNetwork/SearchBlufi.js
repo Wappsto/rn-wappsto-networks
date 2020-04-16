@@ -1,8 +1,10 @@
 import React, { useCallback } from 'react';
-import { View, Image, Text, TouchableOpacity, StyleSheet, ActivityIndicator } from 'react-native';
+import { View, Text as RNtext, Image, TouchableOpacity, StyleSheet, ActivityIndicator } from 'react-native';
 import { useTranslation, CapitalizeFirst } from '../../../../translations';
 import theme from '../../../../theme/themeExport';
 import image from '../../../../theme/images';
+import Text from '../../../../components/Text';
+import Button from '../../../../components/Button';
 import useSearchBlufi from '../../../../hooks/useSearchBlufi';
 
 const styles = StyleSheet.create({
@@ -21,20 +23,31 @@ const SearchBlufi = ({ next, previous, hide, setSelectedDevice }) => {
 
   return (
     <>
-      {
-        devices.length !== 0 &&
-          <>
-            <Text style={theme.common.H3}>{CapitalizeFirst(t('onboarding.deviceDiscovery.foundDevices'))}</Text>
-            <Text style={theme.common.p}>{CapitalizeFirst(t('onboarding.deviceDiscovery.selectDevice'))}</Text>
-          </>
+      {devices.length !== 0 &&
+        <>
+          <Text
+            size='h3'
+            content={CapitalizeFirst(t('onboarding.deviceDiscovery.foundDevices'))}
+          />
+          <Text
+            size='p'
+            content={CapitalizeFirst(t('onboarding.deviceDiscovery.selectDevice'))}
+          />
+        </>
       }
       {devices.map(device => (
         <TouchableOpacity key={device.id} onPress={() => handleDevicePress(device)} style={theme.common.card}>
-          <Text>
-            <Text style={styles.deviceName}>{device.name}</Text>
+          <RNtext>
+            <Text
+              content={device.name}
+              style={styles.deviceName}
+            />
             {' '}
-            <Text style={theme.common.secondary}>{device.id}</Text>
-          </Text>
+            <Text
+              color='secondary'
+              content={device.id}
+            />
+          </RNtext>
         </TouchableOpacity>
       ))}
 
@@ -46,7 +59,11 @@ const SearchBlufi = ({ next, previous, hide, setSelectedDevice }) => {
                 {image.onboarding.deviceDiscovery &&
                   <Image resizeMode='contain' source={image.onboarding.deviceDiscovery} style={theme.common.image}/>
                 }
-                <Text style={[theme.common.p, {textAlign:'center'}]}>{CapitalizeFirst(t('onboarding.deviceDiscovery.lookingForDevices'))}</Text>
+                <Text
+                  size='p'
+                  align='center'
+                  content={CapitalizeFirst(t('onboarding.deviceDiscovery.lookingForDevices'))}
+                />
               </>
             }
             <ActivityIndicator style={theme.common.spaceAround} size='large'/>
@@ -59,20 +76,37 @@ const SearchBlufi = ({ next, previous, hide, setSelectedDevice }) => {
                   image.onboarding.devicesNotFound &&
                   <Image resizeMode='contain' source={image.onboarding.devicesNotFound} style={theme.common.image}/>
                 }
-                <Text style={[theme.common.p, {textAlign:'center'}]}>{CapitalizeFirst(t('onboarding.deviceDiscovery.noDevicesFound'))}</Text>
+                <Text
+                  size='p'
+                  align='center'
+                  content={CapitalizeFirst(t('onboarding.deviceDiscovery.noDevicesFound'))}
+                />
               </>
             }
-            <TouchableOpacity onPress={scan}>
-              <Text style={[theme.common.linkBtn, theme.common.primaryColor, {textAlign:'center'}]}>{CapitalizeFirst(t('onboarding.deviceDiscovery.scanAgain'))}</Text>
-            </TouchableOpacity>
+            <Button
+              onPress={scan}
+              type='link'
+              color='primary'
+              text={CapitalizeFirst(t('onboarding.deviceDiscovery.scanAgain'))}
+            />
           </>
       }
 
       {error &&
-        <Text style={theme.common.p, theme.common.error}>{CapitalizeFirst(t('onboarding.deviceDiscovery.scanError'))}</Text>
+        <Text
+          size='p'
+          align='center'
+          color='error'
+          content={CapitalizeFirst(t('onboarding.deviceDiscovery.scanError'))}
+        />
       }
       {permissionError &&
-        <Text style={theme.common.p, theme.common.error}>{CapitalizeFirst(t('onboarding.deviceDiscovery.permissionError'))}</Text>
+        <Text
+          size='p'
+          align='center'
+          color='error'
+          content={CapitalizeFirst(t('onboarding.deviceDiscovery.permissionError'))}
+        />
       }
     </>
   )

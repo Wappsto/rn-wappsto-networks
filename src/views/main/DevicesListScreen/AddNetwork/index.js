@@ -107,7 +107,7 @@ const Content = React.memo(({ visible, hide, show }) => {
 
 const AddNetwork = React.memo(() => {
   return (
-    <PopupButton icon='plus-circle' color={theme.variables.white}>
+    <PopupButton icon='plus-circle' style={{marginTop:6}} color={theme.variables.headerColor}>
       {(visible, hide, show) => <Content visible={visible} hide={hide} show={show} />}
     </PopupButton>
   );

@@ -1,5 +1,6 @@
 import React from 'react';
-import { View, Text, TextInput, Switch } from 'react-native';
+import { View, TextInput, Switch } from 'react-native';
+import Text from '../../../components/Text';
 import Slider from '@react-native-community/slider';
 import RequestError from '../../../components/RequestError';
 import theme from '../../../theme/themeExport';
@@ -128,15 +129,11 @@ const ControlState = React.memo(({ state, value }) => {
 
   return (
     <View>
-      <Text style={theme.common.H6}>
-        {CapitalizeFirst(t('desiredState'))}
-      </Text>
+      <Text color='secondary' content={CapitalizeFirst(t('desiredState'))}/>
       {
         cannotAccessState(state) ?
         (
-          <Text>
-            {CapitalizeFirst(t('cannotAccess.' + state.status_payment))}
-          </Text>
+          <Text content={CapitalizeFirst(t('cannotAccess.' + state.status_payment))}/>
         ) : (
           <>
             <View style={{alignItems: 'center', marginBottom: 15}}>

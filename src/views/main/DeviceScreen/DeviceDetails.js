@@ -1,5 +1,6 @@
 import React from 'react';
-import { Text, TouchableOpacity } from 'react-native';
+import Text from '../../../components/Text';
+import Button from '../../../components/Button';
 import PopupButton from '../../../components/PopupButton';
 import Popup from '../../../components/Popup';
 import theme from '../../../theme/themeExport';
@@ -7,7 +8,6 @@ import { useTranslation, CapitalizeFirst, CapitalizeEach } from '../../../transl
 import { selectedDeviceName } from '../../../util/params';
 import useGetItemEntity from '../../../hooks/useGetItemEntity';
 import ConfirmationPopup from '../../../components/ConfirmationPopup';
-import ItemDeleteIndicator from '../../../components/ItemDeleteIndicator';
 import RequestError from '../../../components/RequestError';
 import useDeleteItem from '../../../hooks/useDeleteItem';
 import Icon from 'react-native-vector-icons/Feather';
@@ -24,50 +24,27 @@ const ValueSettings = React.memo(() => {
     return (
       <Popup visible={visible} onRequestClose={hide} hide={hide}>
         <ConfirmationPopup
-          title={CapitalizeEach(t('deleteDevice.title'))}
-          description={CapitalizeFirst(t('deleteDevice.description'))}
           visible={confirmVisible}
           accept={deleteItem}
           reject={hideDeleteConfirmation}
-          acceptStyle={theme.common.errorPanel} />
-        <Text style={theme.common.H5}>
-          {CapitalizeEach(t('deviceInfoHeader'))}
-        </Text>
-        <Text>
-          {CapitalizeFirst(t('deviceDescription.name'))}: {device.name}
-        </Text>
-        <Text>
-          {CapitalizeFirst(t('deviceDescription.uuid'))}: {device.meta.id}
-        </Text>
-        <Text>
-          {CapitalizeFirst(t('deviceDescription.manufacturer'))}:{' '}
-          {device.manufacturer}
-        </Text>
-        <Text>
-          {CapitalizeFirst(t('deviceDescription.product'))}: {device.product}
-        </Text>
-        <Text>
-          {CapitalizeFirst(t('deviceDescription.version'))}: {device.version}
-        </Text>
-        <Text>
-          {CapitalizeFirst(t('deviceDescription.serial'))}: {device.serial}
-        </Text>
-        <Text>
-          {CapitalizeFirst(t('deviceDescription.description'))}:{' '}
-          {device.description}
-        </Text>
-        <Text>
-          {CapitalizeFirst(t('deviceDescription.included'))}:{' '}
-          {device.included}
-        </Text>
+        />
+        <Text size='h4' content={device.name}/>
+        <Text content={CapitalizeFirst(t('deviceDescription.uuid')) + ': ' + device.meta.id}/>
+        <Text content={CapitalizeFirst(t('deviceDescription.manufacturer')) + ': ' + device.manufacturer}/>
+        <Text content={CapitalizeFirst(t('deviceDescription.product')) + ': ' + device.product}/>
+        <Text content={CapitalizeFirst(t('deviceDescription.version')) + ': ' + device.version}/>
+        <Text content={CapitalizeFirst(t('deviceDescription.serial')) + ': ' + device.serial}/>
+        <Text content={CapitalizeFirst(t('deviceDescription.description')) + ': ' + device.description}/>
+        <Text content={CapitalizeFirst(t('deviceDescription.included')) + ': ' + device.included}/>
         <RequestError request={request} />
-        <TouchableOpacity onPress={showDeleteConfirmation} style={[theme.common.button, theme.common.errorPanel]}>
-          <ItemDeleteIndicator request={request} />
-          <Text style={theme.common.buttonText}>
-            <Icon name='trash-2' size={20} />
-            {CapitalizeFirst(t('delete'))}
-          </Text>
-        </TouchableOpacity>
+        <Button
+          type='outlined'
+          color='alert'
+          onPress={showDeleteConfirmation}
+          icon='trash-2'
+          request={request}
+          text={CapitalizeFirst(t('delete'))}
+        />
       </Popup>
     );
   };
