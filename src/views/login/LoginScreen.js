@@ -122,7 +122,7 @@ const LoginScreen = React.memo(({ navigation }) => {
               disabled={loading}
             />
             <Input
-              ref={passwordInputRef}
+              inputRef={passwordInputRef}
               onChangeText={passwordText =>
                 handleTextChange(passwordText, 'password')
               }
@@ -241,7 +241,7 @@ LoginScreen.Header = () => {
         <Image resizeMode='contain' style={{ alignSelf: 'center' }} source={image.loginAndRegistration.header} />
       }
       <RNtext style={styles.appTitle}>
-        {CapitalizeFirst(t('loginAndRegistration.appTitle'))}
+        {CapitalizeEach(t('loginAndRegistration.appTitle'))}
       </RNtext>
     </View>
   );

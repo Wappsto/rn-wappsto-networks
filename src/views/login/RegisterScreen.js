@@ -46,7 +46,7 @@ const RegisterScreen = React.memo(({ navigation }) => {
             align='center'
             content={CapitalizeFirst(t('loginAndRegistration.registrationConfirmationText'))}
           />
-          <Button 
+          <Button
             color='success'
             onPress={hideSuccessPopup}
             text={CapitalizeFirst(t('loginAndRegistration.button.ok'))}
@@ -75,7 +75,7 @@ const RegisterScreen = React.memo(({ navigation }) => {
             validationError={usernameError && CapitalizeFirst(t('loginAndRegistration.validation.username'))}
           />
           <Input
-            ref={passwordInputRef}
+            inputRef={passwordInputRef}
             label={CapitalizeFirst(t('loginAndRegistration.label.password'))}
             style={passwordError && theme.common.error}
             onChangeText={passwordText =>
@@ -92,7 +92,7 @@ const RegisterScreen = React.memo(({ navigation }) => {
             validationError={passwordError && CapitalizeFirst(t('loginAndRegistration.validation.password'))}
           />
           <Input
-            ref={repeatPasswordInputRef}
+            inputRef={repeatPasswordInputRef}
             label={CapitalizeFirst(t('loginAndRegistration.label.repeatPassword'))}
             onChangeText={repeatPasswordText =>
               handleTextChange(repeatPasswordText, 'repeatPassword')

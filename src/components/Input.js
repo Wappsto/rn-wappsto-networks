@@ -45,6 +45,7 @@ const styles = StyleSheet.create({
 });
 
 const Input = React.memo(({
+  inputRef,
   label,
   value,
   style,
@@ -70,6 +71,7 @@ const Input = React.memo(({
       }
       <View>
         <TextInput
+          ref={inputRef}
           style={[styles.input, validationError && styles.inputError, style]}
           selectionColor={theme.variables.inputSelectionColor}
           value={value}

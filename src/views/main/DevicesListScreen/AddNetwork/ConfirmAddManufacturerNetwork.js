@@ -12,7 +12,6 @@ const ConfirmAddManufacturerNetwork = React.memo(({ visible, accept, reject }) =
       visible={visible}
       accept={accept}
       reject={reject}
-      rejectStyle={theme.common.errorPanel}
     />
   );
 });

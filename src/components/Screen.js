@@ -20,7 +20,7 @@ const Screen = React.memo(({ style, children }) => {
 
   const showStream = connected && stream && stream.status !== 2;
   return (
-    <View style={{flex:1}}>
+    <View style={[{flex:1, backgroundColor:theme.variables.appBgColor}, style]}>
       <StatusBar backgroundColor={theme.variables.primary} barStyle='light-content' />
       {!connected && (
         <Text

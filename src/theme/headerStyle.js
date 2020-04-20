@@ -8,13 +8,13 @@ export function generateHeaderStyles(c = {}) {
   Object.assign(
     styles,
     {
-      headerTintColor: variables.white,
+      headerTintColor: variables.headerColor,
       headerStyle: {
-        backgroundColor: variables.primary
+        backgroundColor: variables.headerBgColor
       },
       headerTitleStyle: {
         marginLeft: 0,
-        fontFamily: variables.fontFamily // has to be set for onplus devices
+        fontFamily: variables.fontFamily
       },
       ...c
     }

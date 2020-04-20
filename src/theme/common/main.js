@@ -14,16 +14,8 @@ export function generateStyles(c = {}) {
         flex: 1,
         backgroundColor: variables.appBgColor
       },
-      errorPanel: {
-        backgroundColor: variables.alert,
-        color: variables.white,
-      },
       warningPanel: {
         backgroundColor: variables.warning,
-        color: variables.white,
-      },
-      successPanel: {
-        backgroundColor: variables.success,
         color: variables.white,
       },
       toastFullWidth: {
@@ -36,8 +28,10 @@ export function generateStyles(c = {}) {
         alignItems: 'center'
       },
       card: {
-        backgroundColor: variables.white,
+        backgroundColor: variables.cardBgColor,
         borderRadius: variables.borderRadiusBase,
+        borderWidth: variables.borderWidth,
+        borderColor: variables.cardBorderColor,
         paddingHorizontal: 15,
         paddingVertical: 20,
         marginBottom: 25,

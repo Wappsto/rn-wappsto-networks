@@ -37,7 +37,7 @@ const ConfigureWifi = React.memo(({ next, previous, hide, ssid, setSsid, passwor
         returnKeyType='next'
       />
       <Input
-        ref={passwordInputRef}
+        inputRef={passwordInputRef}
         label={CapitalizeFirst(t('onboarding.wifiConfig.passwordLabel'))}
         onChangeText={passwordText =>
           handleTextChange(passwordText, 'password')

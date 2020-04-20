@@ -25,15 +25,6 @@ export function generateVariables(v = {}) {
     alert: '#c51165',
     warning: '#f0ad4e',
 
-    get appBgColor() {
-      return '#f4f4f3';
-    },
-    get modalBgColor() {
-      return this.white;
-    },
-    get panelBgColor() {
-      return this.white;
-    },
     // Typography
     defaultFontSize: 14,
     fontFamily: 'System',
@@ -81,6 +72,7 @@ export function generateVariables(v = {}) {
     get textInverse() {
       return this.white;
     },
+
     // Border
     borderRadiusBase: 5,
     get borderRadiusLarge() {
@@ -143,10 +135,26 @@ export function generateVariables(v = {}) {
     get headerColor() {
       return this.textInverse;
     },
+    get statusBarBgColor(){
+      return this.appBgColor;
+    },
+    statusBarStyle: 'light-content',
 
-    // Container
-    get containerBgColor() {
-      return this.lightGray;
+    //Containers
+    get appBgColor() {
+      return '#f4f4f3';
+    },
+    get modalBgColor() {
+      return this.white;
+    },
+    get panelBgColor() {
+      return this.white;
+    },
+    get cardBgColor() {
+      return this.white;
+    },
+    get cardBorderColor() {
+      return this.white;
     },
     ...v,
   });
