@@ -36,7 +36,7 @@ const TermsAndConditionsScreen = React.memo(({ navigation }) => {
           disabled={!checked}
           color={checked ? 'primary' : 'disabled'}
           onPress={navigateToRegisterScreen}
-          text{CapitalizeFirst(t('loginAndRegistration.button.continue'))}
+          text={CapitalizeFirst(t('loginAndRegistration.button.continue'))}
         />
       </View>
     </Screen>
