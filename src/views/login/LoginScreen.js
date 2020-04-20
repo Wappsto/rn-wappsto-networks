@@ -10,7 +10,7 @@ import Input from '../../components/Input';
 import Text from '../../components/Text';
 import Button from '../../components/Button';
 import theme from '../../theme/themeExport';
-import image from '../../theme/images';
+import defaultImages from '../../theme/images';
 
 const OpenURLButton = ({ url, children }) => {
   const handlePress = useCallback(async () => {
@@ -237,8 +237,8 @@ LoginScreen.Header = () => {
   return (
     <View style={{paddingTop: 30 }}>
       {
-        image.loginAndRegistration.header &&
-        <Image resizeMode='contain' style={{ alignSelf: 'center' }} source={image.loginAndRegistration.header} />
+        defaultImages.loginAndRegistration.header &&
+        <Image resizeMode='contain' style={{ alignSelf: 'center' }} source={defaultImages.loginAndRegistration.header} />
       }
       <RNtext style={styles.appTitle}>
         {CapitalizeEach(t('loginAndRegistration.appTitle'))}

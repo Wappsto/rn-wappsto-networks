@@ -1,4 +1,4 @@
-export default {
+const Images = {
 	loginAndRegistration: {
 		header: require('../../assets/images/placeholder.png')
 	},
@@ -9,4 +9,6 @@ export default {
     wifiSetupSuccess: require('../../assets/images/placeholder.png'),
 		wifiSetupError: require('../../assets/images/placeholder.png')
 	}
-}
+};
+
+export default Images;
