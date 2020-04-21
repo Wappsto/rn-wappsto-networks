@@ -21,6 +21,7 @@ let components = {
     return createStackNavigator({
       LoginScreen: require('./views/login/LoginScreen').default,
       RegisterScreen: require('./views/login/RegisterScreen').default,
+      RecoverPasswordScreen: require('./views/login/RecoverPasswordScreen').default,
     //  TermsAndConditionsScreen: require('./views/login/TermsAndConditionsScreen').default
     });
   },

@@ -2,7 +2,7 @@ import React, { useCallback } from 'react';
 import { Image, View, Text as RNtext, Linking, TouchableOpacity, ActivityIndicator, StyleSheet, StatusBar, ScrollView } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { GoogleSigninButton } from '@react-native-community/google-signin';
-import { useTranslation, CapitalizeFirst } from '../../translations';
+import { useTranslation, CapitalizeFirst, CapitalizeEach } from '../../translations';
 import useSignIn from '../../hooks/useSignIn';
 import RequestError from '../../components/RequestError';
 import ReCaptcha from '../../components/ReCaptcha';
@@ -93,8 +93,12 @@ const LoginScreen = React.memo(({ navigation }) => {
   } = useSignIn(navigation);
 
   const moveToTACScreen = useCallback(() => {
-      navigation.navigate(LoginScreen.registerNavigateTo);
-    }, [navigation]);
+    navigation.navigate(LoginScreen.registerNavigateTo);
+  }, [navigation]);
+
+  const moveToRecoverPasswordScreen = useCallback(() => {
+    navigation.navigate('RecoverPasswordScreen');
+  }, [navigation]);
 
   return (
     <SafeAreaView style={theme.common.container}>
@@ -159,7 +163,7 @@ const LoginScreen = React.memo(({ navigation }) => {
           <View style={[theme.common.row, {justifyContent: 'center'}]}>
             <Button
               disabled={loading}
-              onPress={moveToTACScreen}
+              onPress={moveToRecoverPasswordScreen}
               type='link'
               color={loading ? 'disabled' : 'primary'}
               text={CapitalizeFirst(t('loginAndRegistration.button.recoverPassword'))}
