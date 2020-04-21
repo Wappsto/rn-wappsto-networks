@@ -1,4 +1,4 @@
-import React, {Component} from 'react';
+import React from 'react';
 import {Provider} from 'react-redux';
 import {createSwitchNavigator, createAppContainer} from 'react-navigation';
 import {createDrawerNavigator} from 'react-navigation-drawer';

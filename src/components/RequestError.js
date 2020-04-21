@@ -47,7 +47,7 @@ const RequestError = React.memo(({ request, skipCodes = [] }) => {
       <Text
         size='p'
         color='error'
-        content={CapitalizeFirst(message) + extra && '\n' + extra}
+        content={CapitalizeFirst(message) + (extra ? '\n' + extra : '')}
       />
     );
   }
