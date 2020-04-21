@@ -49,18 +49,17 @@ const SetupDevice = React.memo(({ next, previous, hide, ssid, password, selected
               size={30}
               style={{marginRight: 10}}
             />
-            <Text
-              style={{flex:1}}
-              color={error ? 'error' : 'success'}
-              content={
-                error &&
-                  CapitalizeFirst(t('onboarding.wifiSetup.error.' + step))
-                  + ' ' +
-                  (<RequestError request={postRequest} skipCodes={skipCodes} />)
-                  + ' ' +
-                  CapitalizeFirst(t('onboarding.wifiSetup.' + (error ? 'error' : 'success') + '.description'))
-              }
-            />
+            <View>
+              <Text
+                color={error ? 'error' : 'success'}
+                content={ error && CapitalizeFirst(t('onboarding.wifiSetup.error.' + step))}
+              />
+              <RequestError request={postRequest} skipCodes={skipCodes} />
+              <Text
+                color={error ? 'error' : 'success'}
+                content={error && CapitalizeFirst(t('onboarding.wifiSetup.' + (error ? 'error' : 'success') + '.description'))}
+              />
+            </View>
           </View>
           <Button
             style={{marginTop: 30}}
