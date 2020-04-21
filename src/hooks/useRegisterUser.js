@@ -35,7 +35,6 @@ const useRegisterUser = (navigation) => {
   const connected = useConnected();
   const { request, send } = useRequest();
 
-
   const handleTextChange = useCallback((text, type) => {
     if (text.length - map[type].value.length === 1) {
       map[type].set(text);

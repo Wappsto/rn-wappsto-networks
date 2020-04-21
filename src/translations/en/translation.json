@@ -1,205 +1,208 @@
 {
-    "currentState": "current state",
-    "desiredState": "desired state",
-    "device": "device",
-    "device_plural": "device",
-    "networkDescription": {
-        "name": "name",
-        "uuid": "uuid"
+  "currentState": "current state",
+  "desiredState": "desired state",
+  "device": "device",
+  "device_plural": "device",
+  "networkDescription": {
+    "name": "name",
+    "uuid": "uuid"
+  },
+  "deviceDescription": {
+    "description": "description",
+    "included": "included",
+    "manufacturer": "manufacturer",
+    "name": "name",
+    "product": "product",
+    "serial": "serial",
+    "uuid": "uuid",
+    "version": "version"
+  },
+  "deleteConfirmationQuestion": "Are you sure you want to delete?",
+  "deleteConfirmationDescription": "this action cannot be undone.",
+  "noData": "no data",
+  "lastUpdated": "last updated",
+  "loading": "loading",
+  "logout": "logout",
+  "network": "network",
+  "network_plural": "network",
+  "pageTitle": {
+    "account": "account",
+    "main": "devices",
+    "settings": "settings"
+  },
+  "prototype": "prototype",
+  "prototype_plural": "prototypes",
+  "refresh": "refresh",
+  "reload": "reload",
+  "state": "state",
+  "state_plural": "state",
+  "statusMessage": {
+    "connecting": "connecting...",
+    "creatingStream": "creating stream...",
+    "gettingStream": "getting stream...",
+    "loading": "loading...",
+    "openingConnection": "opening connection",
+    "reconnecting": "reconnecting...",
+    "streamClosed": "stream connection closed",
+    "streamOpen": "stream connection open",
+    "updatingStream": "updating stream..."
+  },
+  "timestamp": {
+    "daysAgo": "few day ago",
+    "hoursAgo": "few hours ago",
+    "minutesAgo": "few minutes ago",
+    "monthsAgo": "few month ago",
+    "secondsAgo": "few seconds ago",
+    "yearsAgo": "few years ago"
+  },
+  "tryAgain": "try again",
+  "value": "value",
+  "value_plural": "values",
+  "valueDescription": {
+    "blob": "blob",
+    "dataType": "data type",
+    "encoding": "encoding",
+    "max": "maximum",
+    "maxLength": "maximum length",
+    "min": "minimum",
+    "name": "name",
+    "namespace": "namespace",
+    "permission": "permission",
+    "status": "status",
+    "stepSize": "step size",
+    "string": "string",
+    "type": "type",
+    "unit": "unit",
+    "uuid": "UUID",
+    "xsd": "XSD"
+  },
+  "yes": "yes",
+  "no": "no",
+  "cannotAccess": {
+    "not_shared": "You do not have permission to access the data",
+    "not_paid": "You do not have enough money to access the data"
+  },
+  "done": "done",
+  "delete": "delete",
+  "cancel": "cancel",
+  "next": "next",
+  "accountDetails": {
+    "email": "email",
+    "firstName": "first name",
+    "lastName": "last name",
+    "nickname": "nickname",
+    "phone": "phone",
+    "uuid": "UUID"
+  },
+  "loginAndRegistration": {
+    "appTitle": "Wappsto Networks",
+    "loginWithEmail": "login with email",
+    "chooseSignInOption": "or select sign-in option below",
+    "termsTitle": "terms & conditions",
+    "registerTitle": "Register an account",
+    "registrationText": "Please enter the following information to create an account.",
+    "registrationConfirmationText": "In a moment you will receive an email with a link to confirm the registration.",
+    "recoverPasswordTitle": "recover password",
+    "recoverPasswordText": "Please enter the following information to recover password.",
+    "recoverPasswordSuccessText": "we have sent you an email with the link. Follow instructions provided in the link to recover your password.",
+    "button": {
+      "createAccount": "create an account",
+      "recoverPassword": "recover password",
+      "logIn": "log in",
+      "privacyNotice": "Privacy",
+      "signInWithFacebook": "sign in with Facebook",
+      "signInWithGoogle": "sign in with Google",
+      "termsAndConditions": "Terms & Conditions",
+      "readAndAcceptTerms": "I have read and accept the terms and conditions.",
+      "continue": "continue",
+      "register": "register",
+      "ok": "ok"
     },
-    "deviceDescription": {
-        "description": "description",
-        "included": "included",
-        "manufacturer": "manufacturer",
-        "name": "name",
-        "product": "product",
-        "serial": "serial",
-        "uuid": "uuid",
-        "version": "version"
+    "label": {
+      "username": "Email",
+      "password": "password",
+      "repeatPassword": "confirm password"
     },
-    "deleteConfirmationQuestion":"Are you sure you want to delete?",
-    "deleteConfirmationDescription":"this action cannot be undone.",
-    "noData": "no data",
-    "lastUpdated": "last updated",
-    "loading": "loading",
-    "logout": "logout",
-    "network": "network",
-    "network_plural": "network",
-    "pageTitle": {
-        "account": "account",
-        "main": "devices",
-        "settings": "settings"
+    "validation": {
+      "password": "password is required",
+      "repeatPassword": "passwords do not match",
+      "username": "missing or invalid email"
+    }
+  },
+  "onboarding": {
+    "registrationTitle": "add device",
+    "configurationTitle": "configure",
+    "option": {
+      "register": "register",
+      "registerAndSetupWifi": "register & setup WiFi",
+      "setupWifi": "setup WiFi"
     },
-    "prototype": "prototype",
-    "prototype_plural": "prototypes",
-    "refresh": "refresh",
-    "reload": "reload",
-    "state": "state",
-    "state_plural": "state",
-    "statusMessage": {
-        "connecting": "connecting...",
-        "creatingStream": "creating stream...",
-        "gettingStream": "getting stream...",
-        "loading": "loading...",
-        "openingConnection": "opening connection",
-        "reconnecting": "reconnecting...",
-        "streamClosed": "stream connection closed",
-        "streamOpen": "stream connection open",
-        "updatingStream": "updating stream..."
-    },
-    "timestamp": {
-        "daysAgo": "few day ago",
-        "hoursAgo": "few hours ago",
-        "minutesAgo": "few minutes ago",
-        "monthsAgo": "few month ago",
-        "secondsAgo": "few seconds ago",
-        "yearsAgo": "few years ago"
-    },
-    "tryAgain": "try again",
-    "value": "value",
-    "value_plural": "values",
-    "valueDescription": {
-        "blob": "blob",
-        "dataType": "data type",
-        "encoding": "encoding",
-        "max": "maximum",
-        "maxLength": "maximum length",
-        "min": "minimum",
-        "name": "name",
-        "namespace": "namespace",
-        "permission": "permission",
-        "status": "status",
-        "stepSize": "step size",
-        "string": "string",
-        "type": "type",
-        "unit": "unit",
-        "uuid": "UUID",
-        "xsd": "XSD"
-    },
-    "yes": "yes",
-    "no": "no",
-    "cannotAccess": {
-      "not_shared": "You do not have permission to access the data",
-      "not_paid": "You do not have enough money to access the data"
-    },
-    "done": "done",
-    "delete": "delete",
-    "cancel": "cancel",
-    "next": "next",
-    "accountDetails": {
-        "email": "email",
-        "firstName": "first name",
-        "lastName": "last name",
-        "nickname": "nickname",
-        "phone": "phone",
-        "uuid": "UUID"
-    },
-    "loginAndRegistration":{
-      "appTitle":"Wappsto Networks",
-      "loginWithEmail": "login with email",
-      "chooseSignInOption": "or select sign-in option below",
-      "termsTitle":"terms & conditions",
-      "registerTitle":"Register an account",
-      "registrationText":"Please enter the following information to create an account.",
-      "registrationConfirmationText":"In a moment you will receive an email with a link to confirm the registration.",
-      "button":{
-        "createAccount":"create an account",
-        "recoverPassword":"recover password",
-        "logIn": "log in",
-        "privacyNotice":"Privacy",
-        "signInWithFacebook": "sign in with Facebook",
-        "signInWithGoogle": "sign in with Google",
-        "termsAndConditions":"Terms & Conditions",
-        "readAndAcceptTerms":"I have read and accept the terms and conditions.",
-        "continue":"continue",
-        "register": "register",
-        "ok":"ok"
+    "claiming": {
+      "addNetworkTitle": "add an IoT device",
+      "addNetworkInfo": "To add an IoT device to your list, you need to provide a 36-character long unique identifier (UUID).\n\nUse QR-scanner to scan the code printed on your device (e.g. Porcupine) or enter it manually in the field below.",
+      "addManufacturerNetworkTitle": "Warning",
+      "cameraPermission": {
+        "denied": "camera not authorized",
+        "message": "we need your permission to get access to the camera and scan the QR code",
+        "pending": "waiting for camera",
+        "title": "your permission to use phone camera is required in order to be able to scan QR code"
       },
-      "label": {
-        "username": "Email",
-        "password": "password",
-        "repeatPassword": "confirm password"
-      },
-      "validation":{
-        "password":"password is required",
-        "repeatPassword":"passwords do not match",
-        "username":"missing or invalid email"
-      }
+      "manufacturerAsOwnerWarning": "the manufacturer of this device has full access. Do you really want to add this device to your account?",
+      "scanQRCode": "tap to scan QR code",
+      "rescanQRCode": "QR code scanned, tap to scan again",
+      "uuidLabel": "device UUID"
     },
-    "onboarding": {
-      "registrationTitle": "add device",
-      "configurationTitle": "configure",
-      "option":{
-        "register": "register",
-        "registerAndSetupWifi": "register & setup WiFi",
-        "setupWifi": "setup WiFi"
+    "deviceDiscovery": {
+      "lookingForDevices": "looking for devices",
+      "scanAgain": "search again",
+      "scanError": "failed to find devices",
+      "foundDevices": "found devices",
+      "selectDevice": "Select device you want to configure from the list below.",
+      "noDevicesFound": "No devices were found",
+      "permissionError": "Bluetooth is required to find nearby devices.",
+    },
+    "wifiConfig": {
+      "title": "configure WiFi",
+      "intro": "to setup WiFi on your IoT device, please, enter required details below.",
+      "warning5Ghz": "Please, keep in mind that WiFi setup may not be supported on 5GHz networks.",
+      "settingUp": "setting up",
+      "ssidLabel": "WiFi network",
+      "passwordLabel": "WiFi password",
+      "sendButton": "configure",
+    },
+    "wifiSetup": {
+      "setupInProgress": "setting up",
+      "progress": {
+        "connect": "connecting to the IoT device",
+        "retrieve": "retrieving device information",
+        "initNotification": "initializing notification listener",
+        "negotiateSecurity": "negotiating security with the IoT device",
+        "sendWifiData": "sending WiFi data",
+        "waitDeviceConnect": "waiting for the IoT device to connect",
+        "addNetwork": "registering IoT device in the cloud",
       },
-      "claiming":{
-        "addNetworkTitle": "add an IoT device",
-        "addNetworkInfo": "To add an IoT device to your list, you need to provide a 36-character long unique identifier (UUID).\n\nUse QR-scanner to scan the code printed on your device (e.g. Porcupine) or enter it manually in the field below.",
-        "addManufacturerNetworkTitle": "Warning",
-        "cameraPermission": {
-            "denied": "camera not authorized",
-            "message": "we need your permission to get access to the camera and scan the QR code",
-            "pending": "waiting for camera",
-            "title": "your permission to use phone camera is required in order to be able to scan QR code"
-        },
-        "manufacturerAsOwnerWarning": "the manufacturer of this device has full access. Do you really want to add this device to your account?",
-        "scanQRCode": "tap to scan QR code",
-        "rescanQRCode": "QR code scanned, tap to scan again",
-        "uuidLabel": "device UUID"
+      "success": {
+        "title": "your device is set up and added to your list.",
+        "description": "you can now finish the setup and go to device list view.",
+        "flowButton": "finish"
       },
-      "deviceDiscovery": {
-        "lookingForDevices": "looking for devices",
-        "scanAgain": "search again",
-        "scanError": "failed to find devices",
-        "foundDevices": "found devices",
-        "selectDevice": "Select device you want to configure from the list below.",
-        "noDevicesFound": "No devices were found",
-        "permissionError": "Bluetooth is required to find nearby devices.",
-      },
-      "wifiConfig": {
-        "title": "configure WiFi",
-        "intro": "to setup WiFi on your IoT device, please, enter required details below.",
-        "warning5Ghz": "Please, keep in mind that WiFi setup may not be supported on 5GHz networks.",
-        "settingUp": "setting up",
-        "ssidLabel": "WiFi network",
-        "passwordLabel": "WiFi password",
-        "sendButton": "configure",
-      },
-      "wifiSetup": {
-        "setupInProgress": "setting up",
-        "progress": {
-          "connect": "connecting to the IoT device",
-          "retrieve": "retrieving device information",
-          "initNotification": "initializing notification listener",
-          "negotiateSecurity": "negotiating security with the IoT device",
-          "sendWifiData": "sending WiFi data",
-          "waitDeviceConnect": "waiting for the IoT device to connect",
-          "addNetwork": "registering IoT device in the cloud",
-        },
-        "success":{
-          "title": "your device is set up and added to your list.",
-          "description": "you can now finish the setup and go to device list view.",
-          "flowButton": "finish"
-        },
-        "error": {
-          "title": "WiFi setup failed",
-          "description": "you can close the setup flow and try again.",
-          "flowButton": "close",
-          "failedConnect": "failed to connect to the device.",
-          "failedRetrieve": "failed to retrieve device information.",
-          "failedRetrieveTimeout": "failed to comunicate with the device.",
-          "failedNotUuid": "wrong UUID was received from the device.",
-          "failedInitNotification": "failed to initialize notification listener.",
-          "failedNegotiateSecurity": "failed to negotiate security with the device.",
-          "failedNegotiateSecurityTimeout": "the device did not send back the security key.",
-          "failedSendWifiData": "failed to send WiFi data.",
-          "failedWaitDeviceConnect": "the device failed to connect to WiFi.",
-          "rejectedManufacturerAsOwner": "Device was not registered to your account since you have rejected device data sharing with the manufacturer of the device.",
-          "rserror": "",
-          "generic": "something went wrong."
-        }
+      "error": {
+        "title": "WiFi setup failed",
+        "description": "you can close the setup flow and try again.",
+        "flowButton": "close",
+        "failedConnect": "failed to connect to the device.",
+        "failedRetrieve": "failed to retrieve device information.",
+        "failedRetrieveTimeout": "failed to comunicate with the device.",
+        "failedNotUuid": "wrong UUID was received from the device.",
+        "failedInitNotification": "failed to initialize notification listener.",
+        "failedNegotiateSecurity": "failed to negotiate security with the device.",
+        "failedNegotiateSecurityTimeout": "the device did not send back the security key.",
+        "failedSendWifiData": "failed to send WiFi data.",
+        "failedWaitDeviceConnect": "the device failed to connect to WiFi.",
+        "rejectedManufacturerAsOwner": "Device was not registered to your account since you have rejected device data sharing with the manufacturer of the device.",
+        "rserror": "",
+        "generic": "something went wrong."
       }
     }
+  }
 }

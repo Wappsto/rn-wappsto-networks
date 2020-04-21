@@ -93,8 +93,12 @@ const LoginScreen = React.memo(({ navigation }) => {
   } = useSignIn(navigation);
 
   const moveToTACScreen = useCallback(() => {
-      navigation.navigate(LoginScreen.registerNavigateTo);
-    }, [navigation]);
+    navigation.navigate(LoginScreen.registerNavigateTo);
+  }, [navigation]);
+
+  const moveToRecoverPasswordScreen = useCallback(() => {
+    navigation.navigate('RecoverPasswordScreen');
+  }, [navigation]);
 
   return (
     <SafeAreaView style={theme.common.container}>
@@ -159,7 +163,7 @@ const LoginScreen = React.memo(({ navigation }) => {
           <View style={[theme.common.row, {justifyContent: 'center'}]}>
             <Button
               disabled={loading}
-              onPress={moveToTACScreen}
+              onPress={moveToRecoverPasswordScreen}
               type='link'
               color={loading ? 'disabled' : 'primary'}
               text={CapitalizeFirst(t('loginAndRegistration.button.recoverPassword'))}

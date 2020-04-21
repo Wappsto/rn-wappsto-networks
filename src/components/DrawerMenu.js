@@ -1,7 +1,7 @@
 import React from 'react';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { DrawerNavigatorItems } from 'react-navigation-drawer';
-import { View, StyleSheet, ScrollView, Image, ActivityIndicator,  StatusBar } from 'react-native';
+import { View, StyleSheet, ScrollView, Image, ActivityIndicator } from 'react-native';
 import RequestError from './RequestError';
 import theme from '../theme/themeExport';
 import Text from './Text';
@@ -30,6 +30,14 @@ const styles = StyleSheet.create({
 const DrawerMenu = React.memo((props) => {
   const { t } = useTranslation();
   const { user, name, logout, request } = useUser(props.navigation);
+  for(const view in props.descriptors){
+    if(!props.descriptors[view].options) {
+      props.descriptors[view].options = {};
+    }
+    if(!props.descriptors[view].options.drawerLabel){
+      props.descriptors[view].options.drawerLabel = CapitalizeFirst(t('pageTitle.' + view));
+    }
+  }
   return (
     <SafeAreaView style={{flex:1}}>
       <ScrollView>
@@ -55,7 +63,7 @@ const DrawerMenu = React.memo((props) => {
               />
             )}
             <Text
-              content={CapitalizeFirst(t('logout'))}
+              content={name}
             />
           <RequestError request={request} />
         </View>
