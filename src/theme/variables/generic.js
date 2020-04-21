@@ -128,18 +128,6 @@ export function generateVariables(v = {}) {
       return this.white;
     },
 
-    // Header
-    get headerBgColor() {
-      return this.primary;
-    },
-    get headerColor() {
-      return this.textInverse;
-    },
-    get statusBarBgColor(){
-      return this.appBgColor;
-    },
-    statusBarStyle: 'light-content',
-
     //Containers
     get appBgColor() {
       return '#f4f4f3';
@@ -156,6 +144,17 @@ export function generateVariables(v = {}) {
     get cardBorderColor() {
       return this.white;
     },
+    // Header
+    get headerBgColor() {
+      return this.primary;
+    },
+    get headerColor() {
+      return this.textInverse;
+    },
+    get statusBarBgColor(){
+      return this.appBgColor;
+    },
+    statusBarStyle: 'dark-content',
     ...v,
   });
   return variables;

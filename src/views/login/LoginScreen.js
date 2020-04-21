@@ -2,7 +2,7 @@ import React, { useCallback } from 'react';
 import { Image, View, Text as RNtext, Linking, TouchableOpacity, ActivityIndicator, StyleSheet, StatusBar, ScrollView } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { GoogleSigninButton } from '@react-native-community/google-signin';
-import { useTranslation, CapitalizeFirst } from '../../translations';
+import { useTranslation, CapitalizeFirst, CapitalizeEach } from '../../translations';
 import useSignIn from '../../hooks/useSignIn';
 import RequestError from '../../components/RequestError';
 import ReCaptcha from '../../components/ReCaptcha';
@@ -238,7 +238,7 @@ LoginScreen.Header = () => {
     <View style={{paddingTop: 30 }}>
       {
         defaultImages.loginAndRegistration.header &&
-        <Image resizeMode='contain' style={{ alignSelf: 'center' }} source={defaultImages.loginAndRegistration.header} />
+        <Image resizeMode='contain' style={{ alignSelf: 'center', maxWidth: "100%" }} source={defaultImages.loginAndRegistration.header} />
       }
       <RNtext style={styles.appTitle}>
         {CapitalizeEach(t('loginAndRegistration.appTitle'))}
