@@ -18,10 +18,12 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
-    backgroundColor: 'rgba(0, 0, 0, 0.4)',
+    backgroundColor: theme.variables.popupOverlayColor
   },
   popupContent: {
-    backgroundColor: theme.variables.modalBgColor,
+    borderWidth: theme.variables.borderWidth,
+    borderColor: theme.variables.popupBorderColor,
+    backgroundColor: theme.variables.popupBackground,
     margin: 20,
     padding: 20,
   },

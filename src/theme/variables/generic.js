@@ -151,10 +151,67 @@ export function generateVariables(v = {}) {
     get headerColor() {
       return this.textInverse;
     },
+
+    // StatusBar
     get statusBarBgColor(){
       return this.appBgColor;
     },
     statusBarStyle: 'dark-content',
+
+    // Popup
+    popupOverlayColor:'rgba(0, 0, 0, 0.4)',
+    get popupBorderColor() {
+      return this.appBgColor;
+    },
+    get popupBorderWidth() {
+      return this.borderWidth;
+    },
+    get popupBackground() {
+      return this.appBgColor;
+    },
+    
+    // NumericInput
+    get NumericInputTextColor() {
+      return this.textColor;
+    },
+    get NumericInputButtonTextColor() {
+      return this.textColor;
+    },
+    get NumericInputBorder() {
+      return this.borderColor;
+    },
+    get NumericInputBackground() {
+      return this.light;
+    },
+    get NumericInputButtonBackground() {
+      return this.lightGray;
+    },
+    get NumericInputText() {
+      return this.lightGray;
+    },
+    NumericInputRounded: true,
+
+    // Slider:
+    get sliderThumbTintColor() {
+      return this.primary;
+    },
+    get sliderMinimumTrackTintColor() {
+      return this.darkGray;
+    },
+    get sliderMaximumTrackTintColor() {
+      return this.mediumGray;
+    },
+
+    // Switch
+    get switchThumbColor() {
+      return this.primaryColor;
+    },
+    get switchTrackColor() {
+      return this.darkGray;
+    },
+
+    // other
+
     ...v,
   });
   return variables;
