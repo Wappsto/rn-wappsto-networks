@@ -76,6 +76,7 @@ export const StateDataField = ({
     } else {
       stateDataField = (
         <NumericInput
+          initValue={parseFloat(input)}
           value={parseFloat(input)}
           valueType='real'
           maxValue={param.max}
