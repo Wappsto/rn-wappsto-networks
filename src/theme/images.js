@@ -10,7 +10,8 @@ const Images = {
     devicesNotFound: require('../../assets/images/placeholder.png'),
     wifiSetup: require('../../assets/images/placeholder.png'),
     wifiSetupSuccess: require('../../assets/images/placeholder.png'),
-		wifiSetupError: require('../../assets/images/placeholder.png')
+		wifiSetupError: require('../../assets/images/placeholder.png'),
+		deviceIcon: require('../../assets/images/placeholder.png')
 	}
 };
 

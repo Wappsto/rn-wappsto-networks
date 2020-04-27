@@ -8,8 +8,33 @@ import Button from '../../../../components/Button';
 import useSearchBlufi from '../../../../hooks/useSearchBlufi';
 
 const styles = StyleSheet.create({
+  deviceItem:{
+    flexDirection: 'row',
+    alignItems: 'center',
+    backgroundColor: theme.variables.cardBgColor,
+    borderRadius: theme.variables.borderRadiusBase,
+    borderWidth: theme.variables.borderWidth,
+    borderColor: theme.variables.cardBorderColor,
+    paddingHorizontal: 10,
+    paddingVertical: 10,
+    marginBottom: 25,
+  },
   deviceName: {
     fontWeight: 'bold'
+  },
+  deviceImageWrapper:{
+    width: 36,
+    height: 36,
+    padding: 3,
+    marginRight:10,
+    alignItems:'center',
+    borderWidth: theme.variables.borderWidth,
+    borderColor: theme.variables.borderColor,
+    borderRadius: theme.variables.borderRadiusBase
+  },
+  deviceImage:{
+    maxWidth: 28,
+    maxHeight: 28
   }
 });
 
@@ -36,7 +61,12 @@ const SearchBlufi = ({ next, previous, hide, setSelectedDevice }) => {
         </>
       }
       {devices.map(device => (
-        <TouchableOpacity key={device.id} onPress={() => handleDevicePress(device)} style={theme.common.card}>
+        <TouchableOpacity key={device.id} onPress={() => handleDevicePress(device)} style={styles.deviceItem}>
+          {image.onboarding.deviceIcon &&
+            <View style={styles.deviceImageWrapper}>
+              <Image resizeMode='contain' source={image.onboarding.deviceIcon} style={styles.deviceImage}/>
+            </View>
+          }
           <RNtext>
             <Text
               content={device.name}

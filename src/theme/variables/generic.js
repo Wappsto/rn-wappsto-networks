@@ -75,8 +75,8 @@ export function generateVariables(v = {}) {
 
     // Border
     borderRadiusBase: 5,
-    get borderRadiusLarge() {
-      return this.borderRadiusBase * 7;
+    get borderColor() {
+      return this.mediumGray;
     },
     borderWidth: 1 / PixelRatio.getPixelSizeForLayoutSize(0.3),
 
