@@ -1,4 +1,7 @@
 const Images = {
+	splashScreen: {
+		logo: require('../../assets/images/placeholder.png')
+	},
 	loginAndRegistration: {
 		header: require('../../assets/images/placeholder.png')
 	},
