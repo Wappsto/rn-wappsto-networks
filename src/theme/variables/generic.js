@@ -144,6 +144,18 @@ export function generateVariables(v = {}) {
     get cardBorderColor() {
       return this.white;
     },
+
+    // Header
+    get drawerMenuBgColor(){
+      return this.appBgColor;
+    },
+    get drawerMenuText(){
+      return this.textColor;
+    },
+    get drawerActiveTextColour(){
+      return this.primary;
+    },
+
     // Header
     get headerBgColor() {
       return this.primary;

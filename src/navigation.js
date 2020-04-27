@@ -46,7 +46,7 @@ let components = {
       {
         contentComponent: this.DrawerMenu,
         contentOptions: {
-          activeTintColor: theme.variables.primary,
+          activeTintColor: theme.variables.drawerActiveTextColour,
           labelStyle: {
             fontFamily: theme.variables.fontFamily
           },
