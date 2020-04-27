@@ -89,19 +89,14 @@ const Button = React.memo(({
       switch(color) {
         case 'primary':
           return {borderColor: theme.variables.primary};
-          break;
         case 'secondary':
           return {borderColor: theme.variables.secondary};
-          break;
         case 'success':
           return {borderColor: theme.variables.success};
-          break;
         case 'alert':
           return {borderColor: theme.variables.alert};
-          break;
         case 'disabled':
           return {borderColor: theme.variables.disabled};
-          break;
         default:
           return {borderColor: theme.variables.textColor};
       }
@@ -109,19 +104,14 @@ const Button = React.memo(({
       switch(color) {
         case 'primary':
           return {backgroundColor: theme.variables.primary};
-          break;
         case 'secondary':
           return {backgroundColor: theme.variables.secondary};
-          break;
         case 'success':
           return {backgroundColor: theme.variables.success};
-          break;
         case 'alert':
           return {backgroundColor: theme.variables.alert};
-          break;
         case 'disabled':
           return {backgroundColor: theme.variables.disabled};
-          break;
         default:
           return {};
       }
