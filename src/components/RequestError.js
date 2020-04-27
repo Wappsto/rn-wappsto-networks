@@ -30,7 +30,7 @@ const RequestError = React.memo(({ request, skipCodes = [] }) => {
     }
   }, [visible]);
 
-  if (visible.current) {
+  if (request && visible.current) {
     let message, extra;
     if (request.json && request.json.code) {
       message = t('error:' + request.json.code, request.json.data);
