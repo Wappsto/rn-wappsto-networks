@@ -37,7 +37,7 @@ const content = (state, value) => {
         />
         <Text
           color='secondary'
-          content={value.number && ' ' + value.number.unit}
+          content={value.number && value.number.unit && ' ' + value.number.unit}
         />
       </RNtext>
     );

@@ -28,6 +28,7 @@ const styles = StyleSheet.create({
   },
   itemHeaderText: {
     marginBottom:0,
+    fontWeight: 'bold',
     flex:1
   }
 });
