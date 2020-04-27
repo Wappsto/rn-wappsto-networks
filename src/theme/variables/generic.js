@@ -124,7 +124,7 @@ export function generateVariables(v = {}) {
     get spinnerColor() {
       return this.primaryDark;
     },
-    get inverseSpinnerColor() {
+    get spinnerInverseColor() {
       return this.white;
     },
 

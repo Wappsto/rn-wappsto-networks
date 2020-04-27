@@ -1,5 +1,7 @@
 import React from 'react';
 import { ActivityIndicator, StyleSheet } from 'react-native';
+import theme from '../theme/themeExport';
+import color from 'color';
 
 const styles = StyleSheet.create({
   spinner: {
@@ -7,14 +9,14 @@ const styles = StyleSheet.create({
     width: '100%',
     height: '100%',
     zIndex: 99,
-    backgroundColor: 'rgba(255, 255, 255, .4)'
+    backgroundColor: color(theme.variables.appBgColor).alpha(0.4)
   }
 });
 
 const ItemDeleteIndicator = React.memo(({ request }) => {
   if(request && request.status === 'pending'){
     return (
-      <ActivityIndicator style={styles.spinner} />
+      <ActivityIndicator style={styles.spinner} color={theme.variables.spinnerColor} />
     );
   }
   return null;

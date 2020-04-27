@@ -109,7 +109,7 @@ const RegisterScreen = React.memo(({ navigation }) => {
           />
           <ReCaptcha onCheck={onCheckRecaptcha} extraData={recaptchaReload} />
           {loading && (
-            <ActivityIndicator size='large' color={theme.variables.primary} />
+            <ActivityIndicator size='large' color={theme.variables.spinnerColor} />
           )}
           <RequestError request={request} />
           <Button

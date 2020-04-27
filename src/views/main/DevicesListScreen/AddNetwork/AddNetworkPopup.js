@@ -105,7 +105,7 @@ const AddNetwork = React.memo(({ postRequest, sendRequest, skipCodes, acceptedMa
         disabled={loading}
       />
       {loading && (
-        <ActivityIndicator size='large' color={theme.variables.primary} />
+        <ActivityIndicator size='large'  color={theme.variables.spinnerColor} />
       )}
       <RequestError request={postRequest} skipCodes={skipCodes} />
       <Button

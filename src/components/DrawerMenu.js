@@ -52,7 +52,7 @@ const DrawerMenu = React.memo((props) => {
               request.status === 'pending' ? (
               <ActivityIndicator
                 size='large'
-                color={theme.variables.textInverse}
+                color={theme.variables.spinnerInverseColor}
               />
             ) : (
               <Icon

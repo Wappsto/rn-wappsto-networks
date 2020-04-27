@@ -25,7 +25,7 @@ const SetupDevice = React.memo(({ next, previous, hide, ssid, password, selected
             <Image resizeMode='contain' source={image.onboarding.wifiSetup} style={theme.common.image}/>
           }
           <View style={theme.common.row}>
-            <ActivityIndicator size='small' color={theme.variables.primary} style={{marginRight: 10}} />
+            <ActivityIndicator size='small'  color={theme.variables.spinnerColor} style={{marginRight: 10}} />
             <Text
               style={{flex:1}}
               content={CapitalizeFirst(t('onboarding.wifiSetup.progress.' + step))}

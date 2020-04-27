@@ -66,7 +66,7 @@ const SearchBlufi = ({ next, previous, hide, setSelectedDevice }) => {
                 />
               </>
             }
-            <ActivityIndicator style={theme.common.spaceAround} size='large'/>
+            <ActivityIndicator style={theme.common.spaceAround} color={theme.variables.spinnerColor} size='large'/>
           </>
         :
           <>
