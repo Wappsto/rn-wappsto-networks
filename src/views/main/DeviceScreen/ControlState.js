@@ -49,6 +49,8 @@ export const StateDataField = ({
           value={!!parseFloat(input)}
           onValueChange={updateSwitchState}
           disabled={isUpdating}
+          switchThumbColor={theme.variables.switchThumbColor}
+          switchThumbColor={theme.variables.switchTrackColor}
         />
       );
     } else if ((param.max - param.min) / param.step <= 150) {
@@ -66,13 +68,15 @@ export const StateDataField = ({
           style={{width: '100%'}}
           value={parseFloat(input) || 0}
           disabled={isUpdating}
-          thumbTintColor={theme.variables.primary}
-          minimumTrackTintColor={theme.variables.dark}
+          thumbTintColor={theme.variables.sliderThumbTintColor}
+          minimumTrackTintColor={theme.variables.sliderMinimumTrackTintColor}
+          maximumTrackTintColor={theme.variables.sliderMaximumTrackTintColor}
         />
       );
     } else {
       stateDataField = (
         <NumericInput
+          initValue={parseFloat(input)}
           value={parseFloat(input)}
           valueType='real'
           maxValue={param.max}
@@ -83,9 +87,16 @@ export const StateDataField = ({
           extraTextInputProps={{
             onSubmitEditing: updateStateFromInput
           }}
-          containerStyle={theme.common.spaceBottom}
           onChange={(data) => !isFocused && throttledUpdateState(data)}
           editable={!isUpdating}
+          rounded={theme.variables.NumericInputRounded}
+          inputStyle={{borderColor:theme.variables.NumericInputBackground, borderColor:'rgba(0,0,0,0)'}}
+          textColor={theme.variables.NumericInputTextColor}
+          iconStyle={{color:theme.variables.NumericInputButtonTextColor}}
+          rightButtonBackgroundColor={theme.variables.NumericInputButtonBackground}
+          leftButtonBackgroundColor={theme.variables.NumericInputButtonBackground}
+          upDownButtonsBackgroundColor={theme.variables.NumericInputButtonBackground}
+          borderColor={theme.variables.NumericInputBorder}
         />
       );
     }

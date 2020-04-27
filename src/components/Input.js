@@ -6,7 +6,7 @@ import theme from '../theme/themeExport';
 const styles = StyleSheet.create({
   input: {
     width: '100%',
-    height: Math.round(theme.variables.inputTextSize * 1.5) + 24,
+    height: Math.round(theme.variables.inputTextSize * 1.5) + 20,
     fontSize: theme.variables.inputTextSize,
     fontFamily: theme.variables.fontFamily,
     lineHeight: Math.round(theme.variables.inputTextSize * 1.5),
@@ -39,7 +39,7 @@ const styles = StyleSheet.create({
     color: theme.variables.inputTextColor,
     lineHeight: Math.round(theme.variables.inputTextSize * 1.5),
     right: 0,
-    paddingVertical: 12,
+    paddingVertical: 10,
     paddingHorizontal: 16
   },
 });

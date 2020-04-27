@@ -27,19 +27,14 @@ const Title = React.memo(({
     switch(size) {
       case 'p':
         return theme.variables.defaultFontSize;
-        break;
       case 'h1':
         return theme.variables.h1;
-        break;
       case 'h2':
         return theme.variables.h2;
-        break;
       case 'h3':
         return theme.variables.h3;
-        break;
       case 'h4':
         return theme.variables.h4;
-        break;
       default:
         return !isNaN(size) ? size : theme.variables.defaultFontSize;
     }
@@ -58,25 +53,18 @@ const Title = React.memo(({
       switch(color) {
         case 'primary':
           return {color: theme.variables.primary};
-          break;
         case 'secondary':
           return {color: theme.variables.textSecondary};
-          break;
         case 'success':
           return {color: theme.variables.textSuccess};
-          break;
         case 'warning':
           return {color: theme.variables.textWarning};
-          break;
         case 'error':
           return {color: theme.variables.textError};
-          break;
         case 'inverse':
           return {color: theme.variables.textInverse};
-          break;
         case 'disabled':
           return {color: theme.variables.disabled};
-          break;
         default:
           return {color: color};
       }

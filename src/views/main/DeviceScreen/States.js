@@ -54,7 +54,7 @@ const StatesComponent = React.memo(({ value }) => {
         />
       )}
       {request && request.status === 'pending' && (
-        <ActivityIndicator size='large' />
+        <ActivityIndicator size='large' color={theme.variables.spinnerColor} />
       )}
       <RequestError request={request} />
     </View>

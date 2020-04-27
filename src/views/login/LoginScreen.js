@@ -142,7 +142,7 @@ const LoginScreen = React.memo(({ navigation }) => {
               disabled={loading}
             />
             {loading && (
-              <ActivityIndicator size='large' color={theme.variables.primary} />
+              <ActivityIndicator size='large' color={theme.variables.spinnerColor} />
             )}
 
             { showRecaptcha ?

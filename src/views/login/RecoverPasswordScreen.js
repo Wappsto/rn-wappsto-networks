@@ -64,7 +64,7 @@ const RecoverScreen = React.memo(({ navigation }) => {
             validationError={emailError && CapitalizeFirst(t('loginAndRegistration.validation.username'))}
           />
           {loading && (
-            <ActivityIndicator size='large' color={theme.variables.primary} />
+            <ActivityIndicator size='large' color={theme.variables.spinnerColor} />
           )}
           <RequestError request={request} />
           <Button

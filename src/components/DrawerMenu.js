@@ -11,6 +11,10 @@ import { useTranslation, CapitalizeFirst } from '../translations';
 import useUser from '../hooks/useUser';
 
 const styles = StyleSheet.create({
+  container:{
+    flex:1,
+    backgroundColor:theme.variables.drawerMenuBgColor,
+  },
   userInfo: {
     flex: 1,
     flexDirection: 'row',
@@ -39,7 +43,7 @@ const DrawerMenu = React.memo((props) => {
     }
   }
   return (
-    <SafeAreaView style={{flex:1}}>
+    <SafeAreaView style={styles.container}>
       <ScrollView>
         <View style={styles.userInfo}>
             {user && user.provider[0] ? (
@@ -52,12 +56,12 @@ const DrawerMenu = React.memo((props) => {
               request.status === 'pending' ? (
               <ActivityIndicator
                 size='large'
-                color={theme.variables.textInverse}
+                color={theme.variables.spinnerInverseColor}
               />
             ) : (
               <Icon
                 name='user'
-                color={theme.variables.textColor}
+                color={theme.variables.drawerMenuText}
                 style={theme.common.spaceAround}
                 size={20}
               />

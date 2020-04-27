@@ -15,13 +15,12 @@ const Screen = React.memo(({ style, children }) => {
   const connected = useConnected();
   useCurrentPage();
 
-  StatusBar.setBarStyle( 'light-content',true);
   const insets = useSafeArea();
 
   const showStream = connected && stream && stream.status !== 2;
   return (
     <View style={[{flex:1, backgroundColor:theme.variables.appBgColor}, style]}>
-      <StatusBar backgroundColor={theme.variables.primary} barStyle='light-content' />
+      <StatusBar backgroundColor={theme.variables.statusBarBgDark} barStyle='light-content' />
       {!connected && (
         <Text
           style={[theme.common.toastFullWidth, theme.common.warningPanel]}

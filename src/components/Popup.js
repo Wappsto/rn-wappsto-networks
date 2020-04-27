@@ -12,16 +12,19 @@ import {
 import { SafeAreaView } from 'react-native-safe-area-context';
 import Icon from 'react-native-vector-icons/Feather';
 import theme from '../theme/themeExport';
+import color from 'color';
 
 const styles = StyleSheet.create({
   popupOverlay: {
     flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
-    backgroundColor: 'rgba(0, 0, 0, 0.4)',
+    backgroundColor: theme.variables.popupOverlayColor
   },
   popupContent: {
-    backgroundColor: theme.variables.modalBgColor,
+    borderWidth: theme.variables.borderWidth,
+    borderColor: theme.variables.popupBorderColor,
+    backgroundColor: theme.variables.popupBackground,
     margin: 20,
     padding: 20,
   },
@@ -41,7 +44,7 @@ const Popup = React.memo(({ animationType, visible, hide, onRequestClose, conten
       onRequestClose={onRequestClose}>
       <TouchableWithoutFeedback onPress={hide}>
         <View style={styles.popupOverlay}>
-          <StatusBar backgroundColor={theme.variables.primaryDark} barStyle='light-content' />
+          <StatusBar backgroundColor={color(theme.variables.statusBarBgDark).darken(0.5)} barStyle='light-content' />
           <TouchableWithoutFeedback>
             <View style={[styles.popupContent, contentStyle]}>
               {children}

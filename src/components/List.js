@@ -62,7 +62,7 @@ const List = React.memo(({
           request &&
           request.status === 'pending' &&
           request.options.query.offset ? (
-            <ActivityIndicator size='large' />
+            <ActivityIndicator color={theme.variables.spinnerColor} size='large' />
           ) : null
         }
       />

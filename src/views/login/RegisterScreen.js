@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, TouchableOpacity, ActivityIndicator, StatusBar, ScrollView } from 'react-native';
+import { View, TouchableOpacity, ActivityIndicator, ScrollView } from 'react-native';
 import Screen from '../../components/Screen';
 import Input from '../../components/Input';
 import Text from '../../components/Text';
@@ -109,7 +109,7 @@ const RegisterScreen = React.memo(({ navigation }) => {
           />
           <ReCaptcha onCheck={onCheckRecaptcha} extraData={recaptchaReload} />
           {loading && (
-            <ActivityIndicator size='large' color={theme.variables.primary} />
+            <ActivityIndicator size='large' color={theme.variables.spinnerColor} />
           )}
           <RequestError request={request} />
           <Button

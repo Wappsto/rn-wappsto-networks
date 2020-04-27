@@ -75,8 +75,8 @@ export function generateVariables(v = {}) {
 
     // Border
     borderRadiusBase: 5,
-    get borderRadiusLarge() {
-      return this.borderRadiusBase * 7;
+    get borderColor() {
+      return this.mediumGray;
     },
     borderWidth: 1 / PixelRatio.getPixelSizeForLayoutSize(0.3),
 
@@ -124,7 +124,7 @@ export function generateVariables(v = {}) {
     get spinnerColor() {
       return this.primaryDark;
     },
-    get inverseSpinnerColor() {
+    get spinnerInverseColor() {
       return this.white;
     },
 
@@ -144,6 +144,18 @@ export function generateVariables(v = {}) {
     get cardBorderColor() {
       return this.white;
     },
+
+    // Header
+    get drawerMenuBgColor(){
+      return this.appBgColor;
+    },
+    get drawerMenuText(){
+      return this.textColor;
+    },
+    get drawerActiveTextColour(){
+      return this.primary;
+    },
+
     // Header
     get headerBgColor() {
       return this.primary;
@@ -151,10 +163,69 @@ export function generateVariables(v = {}) {
     get headerColor() {
       return this.textInverse;
     },
-    get statusBarBgColor(){
+
+    // StatusBar
+    get statusBarBgLight(){
       return this.appBgColor;
     },
-    statusBarStyle: 'dark-content',
+    get statusBarBgDark(){
+      return this.primary;
+    },
+
+    // Popup
+    popupOverlayColor:'rgba(0, 0, 0, 0.4)',
+    get popupBorderColor() {
+      return this.appBgColor;
+    },
+    get popupBorderWidth() {
+      return this.borderWidth;
+    },
+    get popupBackground() {
+      return this.appBgColor;
+    },
+
+    // NumericInput
+    get NumericInputTextColor() {
+      return this.textColor;
+    },
+    get NumericInputButtonTextColor() {
+      return this.textColor;
+    },
+    get NumericInputBorder() {
+      return this.borderColor;
+    },
+    get NumericInputBackground() {
+      return this.light;
+    },
+    get NumericInputButtonBackground() {
+      return this.lightGray;
+    },
+    get NumericInputText() {
+      return this.lightGray;
+    },
+    NumericInputRounded: true,
+
+    // Slider:
+    get sliderThumbTintColor() {
+      return this.primary;
+    },
+    get sliderMinimumTrackTintColor() {
+      return this.darkGray;
+    },
+    get sliderMaximumTrackTintColor() {
+      return this.mediumGray;
+    },
+
+    // Switch
+    get switchThumbColor() {
+      return this.primaryColor;
+    },
+    get switchTrackColor() {
+      return this.darkGray;
+    },
+
+    // other
+
     ...v,
   });
   return variables;

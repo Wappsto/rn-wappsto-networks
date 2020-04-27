@@ -28,6 +28,7 @@ const styles = StyleSheet.create({
   },
   itemHeaderText: {
     marginBottom:0,
+    fontWeight: 'bold',
     flex:1
   }
 });
@@ -58,7 +59,7 @@ const ValueComponent = React.memo(({ item, navigation }) => {
           {request && request.status === 'pending' ? (
             <ActivityIndicator
               size='small'
-              color={theme.variables.primary}
+              color={theme.variables.spinnerColor}
             />
           ) : (
             <Button
