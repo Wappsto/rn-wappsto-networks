@@ -21,7 +21,7 @@ const SplashScreen = ({ navigation }) => {
 
   return (
     <View style={styles.splashScreenContainer}>
-      <StatusBar backgroundColor={theme.variables.appBgColor} barStyle='light-content' />
+      <StatusBar backgroundColor={theme.variables.statusBarBgLight} barStyle='dark-content' />
       {
         defaultImages.splashScreen.logo &&
         <Image resizeMode='contain' style={{ alignSelf: 'center', maxWidth: "100%" }} source={defaultImages.splashScreen.logo} />

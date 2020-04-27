@@ -11,7 +11,7 @@ const BackHandlerView = React.memo(({ handleBack, hide, children }) => {
   const { t } = useTranslation();
   return (
     <SafeAreaView style={theme.common.container}>
-      <StatusBar backgroundColor={theme.variables.appBgColor} barStyle='dark-content' />
+      <StatusBar backgroundColor={theme.variables.statusBarBgLight} barStyle='dark-content' />
       <View style={[theme.common.row, {justifyContent:'space-between'}]}>
         <Icon name='arrow-left' color={theme.variables.textColor} onPress={handleBack} size={24} style={theme.common.spaceAround}/>
         <Button

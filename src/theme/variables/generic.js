@@ -153,10 +153,12 @@ export function generateVariables(v = {}) {
     },
 
     // StatusBar
-    get statusBarBgColor(){
+    get statusBarBgLight(){
       return this.appBgColor;
     },
-    statusBarStyle: 'dark-content',
+    get statusBarBgDark(){
+      return this.primary;
+    },
 
     // Popup
     popupOverlayColor:'rgba(0, 0, 0, 0.4)',
@@ -169,7 +171,7 @@ export function generateVariables(v = {}) {
     get popupBackground() {
       return this.appBgColor;
     },
-    
+
     // NumericInput
     get NumericInputTextColor() {
       return this.textColor;

@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, TouchableOpacity, ActivityIndicator, StatusBar, ScrollView } from 'react-native';
+import { View, TouchableOpacity, ActivityIndicator, ScrollView } from 'react-native';
 import Screen from '../../components/Screen';
 import Input from '../../components/Input';
 import Text from '../../components/Text';
