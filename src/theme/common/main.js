@@ -1,7 +1,6 @@
 import React from 'react';
 import color from 'color';
 import {StyleSheet} from 'react-native';
-import {Platform, Dimensions} from 'react-native';
 
 let variables = require('./../variables/generic').default;
 let styles = {};
@@ -83,6 +82,9 @@ export function generateStyles(c = {}) {
         marginVertical: 20,
         borderBottomColor: variables.lightGray,
         borderBottomWidth: variables.borderWidth,
+      },
+      headerButton:{
+        marginTop: variables.platform === 'ios' ? 0 : 6
       },
       ...c,
     }),

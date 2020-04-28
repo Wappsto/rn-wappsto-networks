@@ -1,16 +1,12 @@
 import color from 'color';
-import {Platform, Dimensions, PixelRatio} from 'react-native';
+import {Platform, PixelRatio} from 'react-native';
 
-const deviceHeight = Dimensions.get('window').height;
-const deviceWidth = Dimensions.get('window').width;
 const platform = Platform.OS;
-const isIphoneX =
-  platform === 'ios' && deviceHeight === 812 && deviceWidth === 375;
-
 let variables = {};
 
 export function generateVariables(v = {}) {
-  Object.assign(variables, {
+  Object.assign(variables, platform, {
+
     // Color
     primary: 'hsla(169, 90%, 35%, 1)',
     primaryDark: 'hsla(169, 90%, 21%, 1)',
@@ -145,7 +141,7 @@ export function generateVariables(v = {}) {
       return this.white;
     },
 
-    // Header
+    // Drawer
     get drawerMenuBgColor(){
       return this.appBgColor;
     },
@@ -195,7 +191,7 @@ export function generateVariables(v = {}) {
       return this.borderColor;
     },
     get NumericInputBackground() {
-      return this.light;
+      return this.white;
     },
     get NumericInputButtonBackground() {
       return this.lightGray;
@@ -218,7 +214,7 @@ export function generateVariables(v = {}) {
 
     // Switch
     get switchThumbColor() {
-      return this.primaryColor;
+      return this.primary;
     },
     get switchTrackColor() {
       return this.darkGray;

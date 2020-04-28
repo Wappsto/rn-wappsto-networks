@@ -9,7 +9,6 @@ const styles = StyleSheet.create({
     height: Math.round(theme.variables.inputTextSize * 1.5) + 20,
     fontSize: theme.variables.inputTextSize,
     fontFamily: theme.variables.fontFamily,
-    lineHeight: Math.round(theme.variables.inputTextSize * 1.5),
     color: theme.variables.inputTextColor,
     marginBottom: theme.variables.defaultFontSize,
     paddingHorizontal: 10,
