@@ -5,8 +5,8 @@ const platform = Platform.OS;
 let variables = {};
 
 export function generateVariables(v = {}) {
-  Object.assign(variables, platform, {
-
+  Object.assign(variables, {
+    platform,
     // Color
     primary: 'hsla(169, 90%, 35%, 1)',
     primaryDark: 'hsla(169, 90%, 21%, 1)',
