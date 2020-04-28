@@ -3,7 +3,7 @@ import { Platform } from 'react-native';
 import AsyncStorage from '@react-native-community/async-storage';
 import { AccessToken, LoginManager } from 'react-native-fbsdk';
 import { GoogleSignin, statusCodes } from '@react-native-community/google-signin';
-import firebase from 'react-native-firebase';
+import auth from '@react-native-firebase/auth';
 import { useDispatch } from 'react-redux';
 import config from 'wappsto-redux/config';
 import { removeRequest } from 'wappsto-redux/actions/request';
@@ -22,7 +22,7 @@ const useSignIn = (navigation) => {
   const [ isSigninInProgress, setIsSigninInProgress ] = useState(false);
   const [ showPassword, setShowPassword ] = useState(false);
   const passwordInputRef = useRef();
-  const fbSignInError = useRef(null);
+  const [ fbSignInError, setFbSignInError ] = useState(null);
   const { request, send } = useRequest();
   const errorNumber = useRef(0);
 
@@ -64,7 +64,7 @@ const useSignIn = (navigation) => {
   }, [username, password]);
 
   const signIn = useCallback(() => {
-    fbSignInError.current = null;
+    setFbSignInError(null);
     send({
       method: 'POST',
       url: '/session',
@@ -85,7 +85,7 @@ const useSignIn = (navigation) => {
 
   // ----------------- 3rd Auth Signin ----------------------------
   const sendAuthRequest = useCallback((token) => {
-    fbSignInError.current = null;
+    setFbSignInError(null);
     send({
       method: 'POST',
       url: '/session',
@@ -105,12 +105,12 @@ const useSignIn = (navigation) => {
       });
       const data = await GoogleSignin.signIn();
       GoogleSignin.signOut();
-      fbSignInError.current = {
+      setFbSignInError({
         id,
         status: 'pending'
-      };
-      const credential = firebase.auth.GoogleAuthProvider.credential(data.idToken, data.accessToken);
-      const firebaseUserCredential = await firebase.auth().signInWithCredential(credential);
+      });
+      const credential = auth.GoogleAuthProvider.credential(data.idToken, data.accessToken);
+      const firebaseUserCredential = await auth().signInWithCredential(credential);
       const token = await firebaseUserCredential.user.getIdToken();
       sendAuthRequest(token);
     } catch (error) {
@@ -126,13 +126,13 @@ const useSignIn = (navigation) => {
           // some other error happened
           code = 'generic';
         }
-        fbSignInError.current = {
+        setFbSignInError({
           id,
           status: 'error',
           json: {
             code,
           },
-        };
+        });
       }
     }
     setIsSigninInProgress(false);
@@ -144,32 +144,33 @@ const useSignIn = (navigation) => {
       setIsSigninInProgress(true);
       const behavior = Platform.OS === 'ios' ? 'browser' : 'WEB_ONLY';
       LoginManager.setLoginBehavior(behavior);
+      LoginManager.logOut();
       const result = await LoginManager.logInWithPermissions(['public_profile', 'email']);
       if(result.isCancelled){
-        fbSignInError.current = {
+        setFbSignInError({
           id
-        };
+        });
         setIsSigninInProgress(false);
         return;
       }
-      fbSignInError.current = {
+      setFbSignInError({
         id,
         status: 'pending'
-      };
+      });
       const data = await AccessToken.getCurrentAccessToken();
       if (!data) {
         throw new Error('Something went wrong obtaining the users access token');
       }
-      const credential = firebase.auth.FacebookAuthProvider.credential(data.accessToken);
-      const firebaseUserCredential = await firebase.auth().signInWithCredential(credential);
+      const credential = auth.FacebookAuthProvider.credential(data.accessToken);
+      const firebaseUserCredential = await auth().signInWithCredential(credential);
       const token = await firebaseUserCredential.user.getIdToken();
       sendAuthRequest(token);
     } catch (e) {
-      fbSignInError.current = {
+      setFbSignInError({
         id,
         status: 'error',
         json: {}
-      };
+      });
     }
     setIsSigninInProgress(false);
   }, [sendAuthRequest]);
@@ -205,7 +206,7 @@ const useSignIn = (navigation) => {
     setRecaptcha(data);
   }, []);
 
-  const postRequest = fbSignInError.current || request;
+  const postRequest = fbSignInError || request;
   const loading = postRequest && (postRequest.status === 'pending' || postRequest.status === 'success');
   const canTPSignIn = connected && !isSigninInProgress && !loading
   const canSignIn = canTPSignIn && isEmail(username) && password && (!showRecaptcha || recaptcha);

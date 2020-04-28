@@ -187,7 +187,6 @@ dependencies {
     implementation project(':react-native-network-info')
     implementation project(':react-native-ble-manager')
     implementation project(':@react-native-community_slider')
-    implementation project(':react-native-firebase')
     implementation project(':react-native-vector-icons')
     implementation project(':react-native-camera')
     implementation fileTree(dir: "libs", include: ["*.jar"])
@@ -197,12 +196,6 @@ dependencies {
     // react-native-screens
     implementation 'androidx.appcompat:appcompat:1.1.0-rc01'
     implementation 'androidx.swiperefreshlayout:swiperefreshlayout:1.1.0-alpha02'
-
-    // Firebase dependencies
-    implementation "com.google.firebase:firebase-analytics:17.2.0"
-    implementation "com.google.android.gms:play-services-base:16.1.0"
-    implementation "com.google.firebase:firebase-core:16.0.9"
-    implementation "com.google.firebase:firebase-auth:17.0.0"
 
     if (enableHermes) {
       def hermesPath = "../../node_modules/hermes-engine/android/";

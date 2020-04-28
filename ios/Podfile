@@ -37,11 +37,6 @@ target 'rn_wappsto_networks' do
   pod 'react-native-camera', :path => '../node_modules/react-native-camera'
   pod 'RNVectorIcons', :path => '../node_modules/react-native-vector-icons'
 
-  pod 'Firebase/Core', '~> 6.13.0'
-  pod 'Firebase/Auth', '~> 6.13.0'
-  pod 'RNFirebase', :path => '../node_modules/react-native-firebase/ios'
-
-
   pod 'react-native-slider', :path => '../node_modules/@react-native-community/slider'
 
   pod 'react-native-safe-area-context', :path => '../node_modules/react-native-safe-area-context'
