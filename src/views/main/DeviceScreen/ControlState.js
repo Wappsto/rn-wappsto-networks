@@ -90,7 +90,12 @@ export const StateDataField = ({
           onChange={(data) => !isFocused && throttledUpdateState(data)}
           editable={!isUpdating}
           rounded={theme.variables.NumericInputRounded}
-          inputStyle={{borderColor:theme.variables.NumericInputBackground, borderColor:'rgba(0,0,0,0)'}}
+          inputStyle={{
+            backgroundColor:theme.variables.NumericInputBackground,
+            maxHeight:'100%',
+            borderLeftWidth:0,
+            borderRightWidth:0
+          }}
           textColor={theme.variables.NumericInputTextColor}
           iconStyle={{color:theme.variables.NumericInputButtonTextColor}}
           rightButtonBackgroundColor={theme.variables.NumericInputButtonBackground}
