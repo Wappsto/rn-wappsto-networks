@@ -181,6 +181,7 @@ android {
 }
 
 dependencies {
+    implementation project(':@react-native-community_google-signin')
     implementation project(':react-native-fbsdk')
     implementation project(':react-native-webview')
     implementation project(':react-native-safe-area-context')
