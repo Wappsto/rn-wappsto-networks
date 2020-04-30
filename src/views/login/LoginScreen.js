@@ -77,6 +77,7 @@ const LoginScreen = React.memo(({ navigation }) => {
     moveToPasswordField,
     handleTextChange,
     passwordInputRef,
+    recaptchaRef,
     showPassword,
     toggleShowPassword,
     checkAndSignIn,
@@ -87,9 +88,7 @@ const LoginScreen = React.memo(({ navigation }) => {
     facebookSignIn,
     appleSignIn,
     postRequest,
-    showRecaptcha,
     onCheckRecaptcha,
-    recaptchaExtraData,
     loading
   } = useSignIn(navigation);
 
@@ -146,17 +145,13 @@ const LoginScreen = React.memo(({ navigation }) => {
               <ActivityIndicator size='large' color={theme.variables.spinnerColor} />
             )}
 
-            { showRecaptcha ?
-              <ReCaptcha
-                onCheck={onCheckRecaptcha}
-                extraData={recaptchaExtraData} />
-            : null}
+            <ReCaptcha onCheck={onCheckRecaptcha} recaptchaRef={recaptchaRef} />
 
             <RequestError request={postRequest} />
             <Button
               disabled={!canSignIn}
               style={!canSignIn && theme.common.disabled}
-              onPress={signIn}
+              onPress={checkAndSignIn}
               display='block'
               color={!canSignIn ? 'disabled' : 'primary'}
               text={CapitalizeFirst(t('loginAndRegistration.button.logIn'))}

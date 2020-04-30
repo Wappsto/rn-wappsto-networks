@@ -17,15 +17,19 @@ const useSignIn = (navigation) => {
   const dispatch = useDispatch();
   const [ username, setUsername ] = useState('');
   const [ password, setPassword ] = useState('');
-  const [ recaptcha, setRecaptcha ] = useState();
   const [ showRecaptcha, setShowRecaptcha ] = useState('');
-  const [ recaptchaExtraData, setRecaptchaExtraData ] = useState(0);
   const [ isSigninInProgress, setIsSigninInProgress ] = useState(false);
   const [ showPassword, setShowPassword ] = useState(false);
   const passwordInputRef = useRef();
   const [ fbSignInError, setFbSignInError ] = useState(null);
   const { request, send } = useRequest();
   const errorNumber = useRef(0);
+  const recaptchaRef = useRef();
+
+  const postRequest = fbSignInError || request;
+  const loading = postRequest && (postRequest.status === 'pending' || postRequest.status === 'success');
+  const canTPSignIn = connected && !isSigninInProgress && !loading
+  const canSignIn = canTPSignIn && isEmail(username) && password;
 
   const toggleShowPassword = useCallback(() => {
     setShowPassword(sp => !sp);
@@ -64,7 +68,7 @@ const useSignIn = (navigation) => {
     }
   }, [username, password]);
 
-  const signIn = useCallback(() => {
+  const signIn = useCallback((recaptcha) => {
     setFbSignInError(null);
     send({
       method: 'POST',
@@ -76,13 +80,17 @@ const useSignIn = (navigation) => {
         remember_me: true
       }
     });
-  }, [username, password, recaptcha, send]);
+  }, [username, password, send]);
 
   const checkAndSignIn = useCallback(() => {
     if (isEmail(username) && password) {
-      signIn();
+      if(showRecaptcha && recaptchaRef.current){
+        recaptchaRef.current.show();
+      } else {
+        signIn();
+      }
     }
-  }, [username, password, signIn]);
+  }, [username, password, signIn, showRecaptcha]);
 
   // ----------------- 3rd Auth Signin ----------------------------
   const sendAuthRequest = useCallback((token) => {
@@ -207,7 +215,6 @@ const useSignIn = (navigation) => {
       const token = await firebaseUserCredential.user.getIdToken();
       sendAuthRequest(token);
     } catch (e) {
-      console.log(e);
       setFbSignInError({
         id,
         status: 'error',
@@ -235,8 +242,6 @@ const useSignIn = (navigation) => {
         if(errorNumber.current > 3 || (request.json && request.json.code === 9900007)){
           if(!showRecaptcha){
             setShowRecaptcha(true);
-          } else {
-            setRecaptchaExtraData(n => n + 1);
           }
         }
       }
@@ -245,13 +250,22 @@ const useSignIn = (navigation) => {
   }, [request]);
 
   const onCheckRecaptcha = useCallback((data) => {
-    setRecaptcha(data);
-  }, []);
-
-  const postRequest = fbSignInError || request;
-  const loading = postRequest && (postRequest.status === 'pending' || postRequest.status === 'success');
-  const canTPSignIn = connected && !isSigninInProgress && !loading
-  const canSignIn = canTPSignIn && isEmail(username) && password && (!showRecaptcha || recaptcha);
+    if (data) {
+      if (['cancel', 'error', 'expired'].includes(data)) {
+        if(recaptchaRef.current){
+          recaptchaRef.current.hide();
+        }
+        return;
+      } else {
+        setTimeout(() => {
+          if(recaptchaRef.current){
+            recaptchaRef.current.hide();
+          }
+          signIn(data);
+        }, 1500);
+      }
+    }
+  }, [signIn]);
 
   return {
     username,
@@ -259,6 +273,7 @@ const useSignIn = (navigation) => {
     moveToPasswordField,
     handleTextChange,
     passwordInputRef,
+    recaptchaRef,
     showPassword,
     toggleShowPassword,
     checkAndSignIn,
@@ -271,7 +286,6 @@ const useSignIn = (navigation) => {
     postRequest,
     loading,
     showRecaptcha,
-    recaptchaExtraData,
     onCheckRecaptcha
   }
 }

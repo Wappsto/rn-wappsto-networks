@@ -34,6 +34,12 @@ const useRegisterUser = (navigation) => {
   const connected = useConnected();
   const { request, send } = useRequest();
 
+  const loading = request && (request.status === 'pending' || request.status === 'success');
+  const canRegister = connected && !loading && isEmail(username) && password && repeatPassword && password === repeatPassword;
+  const usernameError = usernameBlurred && !isEmail(username);
+  const passwordError = passwordBlurred && !password;
+  const repeatPasswordError = repeatPasswordBlurred && repeatPassword !== password;
+
   const handleTextChange = useCallback((text, type) => {
     if (text.length - map[type].value.length === 1) {
       map[type].set(text);
@@ -65,10 +71,17 @@ const useRegisterUser = (navigation) => {
   const onCheckRecaptcha = useCallback((data) => {
     if (data) {
       if (['cancel', 'error', 'expired'].includes(data)) {
-        recaptchaRef.current.hide();
+        if(recaptchaRef.current){
+          recaptchaRef.current.hide();
+        }
         return;
       } else {
-        sendRequest(data);
+        setTimeout(() => {
+          if(recaptchaRef.current){
+            recaptchaRef.current.hide();
+          }
+          sendRequest(data);
+        }, 1500);
       }
     }
   }, [sendRequest]);
@@ -95,12 +108,6 @@ const useRegisterUser = (navigation) => {
     setSuccessVisible(false);
     navigation.navigate('LoginScreen');
   }, [navigation]);
-
-  const loading = request && (request.status === 'pending' || request.status === 'success');
-  const canRegister = connected && !loading && isEmail(username) && password && repeatPassword && password === repeatPassword;
-  const usernameError = usernameBlurred && !isEmail(username);
-  const passwordError = passwordBlurred && !password;
-  const repeatPasswordError = repeatPasswordBlurred && repeatPassword !== password;
 
   return {
     successVisible,

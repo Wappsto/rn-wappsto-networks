@@ -1,10 +1,10 @@
 import React from 'react';
 import ConfirmGoogleCaptcha from 'react-native-google-recaptcha-v2';
-import { useTranslation } from '../translations';
+import { useTranslation, CapitalizeFirst } from '../translations';
 import { config } from '../configureWappstoRedux';
 
 const ReCaptcha = React.memo(({ onCheck, style, recaptchaRef }) => {
-  const { i18n } = useTranslation();
+  const { t, i18n } = useTranslation();
 
   return (
     <ConfirmGoogleCaptcha
@@ -13,6 +13,7 @@ const ReCaptcha = React.memo(({ onCheck, style, recaptchaRef }) => {
       baseUrl={config.baseUrl && config.baseUrl.replace('/services', '')}
       languageCode={i18n.language}
       onMessage={event => onCheck(event.nativeEvent.data)}
+      cancelButtonText={CapitalizeFirst(t('cancel'))}
     />
   );
 });
