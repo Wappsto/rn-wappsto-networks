@@ -31,6 +31,7 @@ const RegisterScreen = React.memo(({ navigation }) => {
     recaptchaReload,
     passwordInputRef,
     repeatPasswordInputRef,
+    recaptchaRef,
     canRegister,
     register,
     request,
@@ -107,7 +108,7 @@ const RegisterScreen = React.memo(({ navigation }) => {
             disabled={loading}
             validationError={repeatPasswordError && CapitalizeFirst(t('loginAndRegistration.validation.repeatPassword'))}
           />
-          <ReCaptcha onCheck={onCheckRecaptcha} extraData={recaptchaReload} />
+          <ReCaptcha onCheck={onCheckRecaptcha} recaptchaRef={recaptchaRef} />
           {loading && (
             <ActivityIndicator size='large' color={theme.variables.spinnerColor} />
           )}

@@ -5101,6 +5101,12 @@ react-is@^16.12.0, react-is@^16.13.0, react-is@^16.7.0, react-is@^16.8.1, react-
   version "16.13.1"
   resolved "https://registry.yarnpkg.com/react-is/-/react-is-16.13.1.tgz#789729a4dc36de2999dc156dd6c1d9c18cea56a4"
 
+react-native-animatable@1.3.3:
+  version "1.3.3"
+  resolved "https://registry.yarnpkg.com/react-native-animatable/-/react-native-animatable-1.3.3.tgz#a13a4af8258e3bb14d0a9d839917e9bb9274ec8a"
+  dependencies:
+    prop-types "^15.7.2"
+
 react-native-barcode-mask@^1.1.0:
   version "1.1.0"
   resolved "https://registry.yarnpkg.com/react-native-barcode-mask/-/react-native-barcode-mask-1.1.0.tgz#5ededfca152d35395a363939c574cd7cf1595151"
@@ -5145,9 +5151,20 @@ react-native-gesture-handler@^1.4.1:
     invariant "^2.2.4"
     prop-types "^15.7.2"
 
+react-native-google-recaptcha-v2@^1.1.0:
+  version "1.1.0"
+  resolved "https://registry.yarnpkg.com/react-native-google-recaptcha-v2/-/react-native-google-recaptcha-v2-1.1.0.tgz#9dc129c71ffa61c06470d5c95c6ea165bfdf4100"
+
 react-native-localize@^1.2.0:
   version "1.3.4"
   resolved "https://registry.yarnpkg.com/react-native-localize/-/react-native-localize-1.3.4.tgz#7d5c7b7ea30548d777a641457434d363cfac48db"
+
+react-native-modal@^11.5.6:
+  version "11.5.6"
+  resolved "https://registry.yarnpkg.com/react-native-modal/-/react-native-modal-11.5.6.tgz#bb25a78c35a5e24f45de060e5f64284397d38a87"
+  dependencies:
+    prop-types "^15.6.2"
+    react-native-animatable "1.3.3"
 
 react-native-network-info@^5.2.1:
   version "5.2.1"
