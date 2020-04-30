@@ -10,11 +10,10 @@ const useRegisterUser = (navigation) => {
   const [ usernameBlurred, setUsernameBlurred ] = useState(false);
   const [ passwordBlurred, setPasswordBlurred] = useState(false);
   const [ repeatPasswordBlurred, setRepeatPasswordBlurred] = useState(false);
-  const [ recaptcha, setRecaptcha ] = useState();
-  const [ recaptchaExtraData, setRecaptchaExtraData ] = useState(0);
   const [ successVisible, setSuccessVisible ] = useState(false);
   const passwordInputRef = useRef();
   const repeatPasswordInputRef = useRef();
+  const recaptchaRef = useRef();
   const map = {
     username: {
       value: username,
@@ -35,6 +34,12 @@ const useRegisterUser = (navigation) => {
   const connected = useConnected();
   const { request, send } = useRequest();
 
+  const loading = request && (request.status === 'pending' || request.status === 'success');
+  const canRegister = connected && !loading && isEmail(username) && password && repeatPassword && password === repeatPassword;
+  const usernameError = usernameBlurred && !isEmail(username);
+  const passwordError = passwordBlurred && !password;
+  const repeatPasswordError = repeatPasswordBlurred && repeatPassword !== password;
+
   const handleTextChange = useCallback((text, type) => {
     if (text.length - map[type].value.length === 1) {
       map[type].set(text);
@@ -51,30 +56,50 @@ const useRegisterUser = (navigation) => {
     map[field].nextField.current.focus();
   }, [map]);
 
+  const sendRequest = useCallback((recaptcha = '') => {
+    send({
+      method: 'POST',
+      url: '/register',
+      body: {
+        username: username,
+        password: password,
+        captcha: recaptcha
+      }
+    });
+  }, [username, password, send]);
+
   const onCheckRecaptcha = useCallback((data) => {
-    setRecaptcha(data);
-  }, []);
+    if (data) {
+      if (['cancel', 'error', 'expired'].includes(data)) {
+        if(recaptchaRef.current){
+          recaptchaRef.current.hide();
+        }
+        return;
+      } else {
+        setTimeout(() => {
+          if(recaptchaRef.current){
+            recaptchaRef.current.hide();
+          }
+          sendRequest(data);
+        }, 1500);
+      }
+    }
+  }, [sendRequest]);
 
   const register = useCallback(() => {
     if(canRegister){
-      send({
-        method: 'POST',
-        url: '/register',
-        body: {
-          username: username,
-          password: password,
-          captcha: recaptcha
-        }
-      });
+      if(recaptchaRef.current){
+        recaptchaRef.current.show();
+      } else {
+        sendRequest();
+      }
     }
-  }, [username, password, recaptcha, send, canRegister]);
+  }, [canRegister, sendRequest]);
 
   useEffect(() => {
     if(request){
       if(request.status === 'success'){
         setSuccessVisible(true);
-      } else if(request.status === 'error'){
-        setRecaptchaExtraData(n => n + 1);
       }
     }
   }, [request]);
@@ -83,12 +108,6 @@ const useRegisterUser = (navigation) => {
     setSuccessVisible(false);
     navigation.navigate('LoginScreen');
   }, [navigation]);
-
-  const loading = request && (request.status === 'pending' || request.status === 'success');
-  const canRegister = connected && !loading && isEmail(username) && password && repeatPassword && password === repeatPassword && recaptcha;
-  const usernameError = usernameBlurred && !isEmail(username);
-  const passwordError = passwordBlurred && !password;
-  const repeatPasswordError = repeatPasswordBlurred && repeatPassword !== password;
 
   return {
     successVisible,
@@ -105,9 +124,9 @@ const useRegisterUser = (navigation) => {
     moveToNextField,
     handleTextChange,
     onCheckRecaptcha,
-    recaptchaExtraData,
     passwordInputRef,
     repeatPasswordInputRef,
+    recaptchaRef,
     canRegister,
     register,
     request,

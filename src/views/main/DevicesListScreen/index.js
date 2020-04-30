@@ -1,5 +1,5 @@
 import React, { useMemo, useCallback } from 'react';
-import { Text as RNtext, View, StyleSheet, TouchableOpacity } from 'react-native';
+import { Text as RNText, View, StyleSheet, TouchableOpacity } from 'react-native';
 import Text from '../../../components/Text';
 import Button from '../../../components/Button';
 import Screen from '../../../components/Screen';
@@ -30,6 +30,12 @@ const styles = StyleSheet.create({
   },
   listItem: {
     marginBottom:20
+  },
+  circle: {
+    width: 10,
+    height: 10,
+    borderRadius: 5,
+    marginRight: 5
   }
 });
 
@@ -62,17 +68,22 @@ const NetworkDetails = React.memo(({ network, style }) => {
 
 const ItemHeader = React.memo(({ network }) => {
   const { t } = useTranslation();
+  const isPrototypeNetwork = isPrototype(network);
+  const online = network && network.meta && network.meta.connection && network.meta.connection.online;
   return (
     <View style={[theme.common.row,styles.listHeader]}>
-      <RNtext numberOfLines={1} ellipsizeMode='tail' style={{flex: 1}}>
-        { isPrototype(network) &&
+      { !isPrototypeNetwork &&
+        <View style={[styles.circle, { backgroundColor: online ? '#32CD32' : '#cccccc' }]} />
+      }
+      <RNText numberOfLines={1} ellipsizeMode='tail' style={{flex: 1}}>
+        { isPrototypeNetwork &&
           <Text color='secondary' content={'(' + CapitalizeEach(t('prototype')) + ') '}/>
         }
         { network.name &&
           <Text style={{fontWeight:'bold'}} content={network.name + ' '}/>
         }
         <Text color='secondary' content={network.meta.id}/>
-      </RNtext>
+      </RNText>
       <NetworkDetails network={network}/>
     </View>
   )

@@ -1,10 +1,10 @@
 import React from 'react';
-import { View, TouchableOpacity, ActivityIndicator, ScrollView } from 'react-native';
+import { View, ActivityIndicator, ScrollView } from 'react-native';
 import Screen from '../../components/Screen';
 import Input from '../../components/Input';
 import Text from '../../components/Text';
 import Button from '../../components/Button';
-import { useTranslation, CapitalizeFirst, CapitalizeEach } from '../../translations';
+import { useTranslation, CapitalizeFirst } from '../../translations';
 import theme from '../../theme/themeExport';
 import RequestError from '../../components/RequestError';
 import ReCaptcha from '../../components/ReCaptcha';
@@ -28,9 +28,9 @@ const RegisterScreen = React.memo(({ navigation }) => {
     moveToNextField,
     handleTextChange,
     onCheckRecaptcha,
-    recaptchaReload,
     passwordInputRef,
     repeatPasswordInputRef,
+    recaptchaRef,
     canRegister,
     register,
     request,
@@ -107,7 +107,7 @@ const RegisterScreen = React.memo(({ navigation }) => {
             disabled={loading}
             validationError={repeatPasswordError && CapitalizeFirst(t('loginAndRegistration.validation.repeatPassword'))}
           />
-          <ReCaptcha onCheck={onCheckRecaptcha} extraData={recaptchaReload} />
+          <ReCaptcha onCheck={onCheckRecaptcha} recaptchaRef={recaptchaRef} />
           {loading && (
             <ActivityIndicator size='large' color={theme.variables.spinnerColor} />
           )}

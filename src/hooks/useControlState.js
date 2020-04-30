@@ -1,7 +1,7 @@
 import { useState, useEffect, useCallback, useRef } from 'react';
 import useRequest from 'wappsto-blanket/hooks/useRequest';
 
-const useControlState = (state, value) => {
+const useControlState = (state, value, throttleTime = 3000) => {
   const { request, send } = useRequest();
   const [ input, setInput ] = useState();
   const [ isFocused, setIsFocused ] = useState(false);
@@ -52,7 +52,7 @@ const useControlState = (state, value) => {
     clearTimeout(throttleTimer.current);
     throttleTimer.current = setTimeout(() => {
       updateState(data);
-    }, 1000);
+    }, throttleTime);
   }, [updateState]);
 
   return {
