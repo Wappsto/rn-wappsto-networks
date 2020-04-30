@@ -286,7 +286,7 @@ PODS:
     - React-cxxreact (= 0.61.5)
     - React-jsi (= 0.61.5)
   - React-jsinspector (0.61.5)
-  - react-native-ble-manager (6.7.1):
+  - react-native-ble-manager (7.2.0):
     - React
   - react-native-camera (3.22.0):
     - React
@@ -584,7 +584,7 @@ SPEC CHECKSUMS:
   React-jsi: cb2cd74d7ccf4cffb071a46833613edc79cdf8f7
   React-jsiexecutor: d5525f9ed5f782fdbacb64b9b01a43a9323d2386
   React-jsinspector: fa0ecc501688c3c4c34f28834a76302233e29dc0
-  react-native-ble-manager: f81d736790c88c2fddb3e10e0df0cf580a52b041
+  react-native-ble-manager: fda5f6b20092f2b2d356676bd1f3dc7065bb4329
   react-native-camera: 33db8f7b774b32f3583be9376d05ed583154815b
   react-native-fbsdk: c35d42169e64aaf66f01713c1e18d0674f7f6519
   react-native-netinfo: ddaca8bbb9e6e914b1a23787ccb879bc642931c9

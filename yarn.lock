@@ -5113,9 +5113,9 @@ react-native-barcode-mask@^1.1.0:
   dependencies:
     prop-types "^15.6.2"
 
-react-native-ble-manager@^6.7.0:
-  version "6.7.1"
-  resolved "https://registry.yarnpkg.com/react-native-ble-manager/-/react-native-ble-manager-6.7.1.tgz#e0ed7f66971265aaad0197276fd4c4189909ad1d"
+react-native-ble-manager@^7.2.0:
+  version "7.2.0"
+  resolved "https://registry.yarnpkg.com/react-native-ble-manager/-/react-native-ble-manager-7.2.0.tgz#bbbf0e4b1dd01f131c26192413fb7cfa42d738f6"
 
 react-native-camera@^3.8.0:
   version "3.22.0"
