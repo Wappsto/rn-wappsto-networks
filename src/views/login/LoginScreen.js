@@ -1,5 +1,5 @@
 import React, { useCallback } from 'react';
-import { Image, View, Text as RNtext, Linking, TouchableOpacity, ActivityIndicator, StyleSheet, StatusBar, ScrollView } from 'react-native';
+import { Image, View, Text as RNtext, Linking, TouchableOpacity, ActivityIndicator, StyleSheet, StatusBar, ScrollView, Platform } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { AppleButton } from '@invertase/react-native-apple-authentication';
 import { useTranslation, CapitalizeFirst, CapitalizeEach } from '../../translations';
@@ -223,15 +223,18 @@ const LoginScreen = React.memo(({ navigation }) => {
                 {CapitalizeFirst(t('loginAndRegistration.button.signInWithFacebook'))}
               </RNtext>
             </TouchableOpacity>
-            <AppleButton
-              buttonStyle={AppleButton.Style.WHITE}
-              buttonType={AppleButton.Type.SIGN_IN}
-              style={[
-                styles.signinButton,
-                !canTPSignIn && theme.common.disabled
-              ]}
-              onPress={appleSignIn}
-            />
+            {
+              Platform.OS === 'ios' &&
+              <AppleButton
+                buttonStyle={AppleButton.Style.WHITE}
+                buttonType={AppleButton.Type.SIGN_IN}
+                style={[
+                  styles.signinButton,
+                  !canTPSignIn && theme.common.disabled
+                ]}
+                onPress={appleSignIn}
+              />
+            }
           </View>
         </View>
         <LoginScreen.Footer />
