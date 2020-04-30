@@ -71,7 +71,7 @@ const useRegisterUser = (navigation) => {
         sendRequest(data);
       }
     }
-  }, []);
+  }, [sendRequest]);
 
   const register = useCallback(() => {
     if(canRegister){
@@ -81,7 +81,7 @@ const useRegisterUser = (navigation) => {
         sendRequest();
       }
     }
-  }, [canRegister]);
+  }, [canRegister, sendRequest]);
 
   useEffect(() => {
     if(request){
