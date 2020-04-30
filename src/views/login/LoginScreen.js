@@ -1,7 +1,7 @@
 import React, { useCallback } from 'react';
 import { Image, View, Text as RNtext, Linking, TouchableOpacity, ActivityIndicator, StyleSheet, StatusBar, ScrollView } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { GoogleSigninButton } from '@react-native-community/google-signin';
+import { AppleButton } from '@invertase/react-native-apple-authentication';
 import { useTranslation, CapitalizeFirst, CapitalizeEach } from '../../translations';
 import useSignIn from '../../hooks/useSignIn';
 import RequestError from '../../components/RequestError';
@@ -85,6 +85,7 @@ const LoginScreen = React.memo(({ navigation }) => {
     canTPSignIn,
     googleSignIn,
     facebookSignIn,
+    appleSignIn,
     postRequest,
     showRecaptcha,
     onCheckRecaptcha,
@@ -222,6 +223,15 @@ const LoginScreen = React.memo(({ navigation }) => {
                 {CapitalizeFirst(t('loginAndRegistration.button.signInWithFacebook'))}
               </RNtext>
             </TouchableOpacity>
+            <AppleButton
+              buttonStyle={AppleButton.Style.WHITE}
+              buttonType={AppleButton.Type.SIGN_IN}
+              style={[
+                styles.signinButton,
+                !canTPSignIn && theme.common.disabled
+              ]}
+              onPress={appleSignIn}
+            />
           </View>
         </View>
         <LoginScreen.Footer />

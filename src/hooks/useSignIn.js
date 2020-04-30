@@ -3,6 +3,7 @@ import { Platform } from 'react-native';
 import AsyncStorage from '@react-native-community/async-storage';
 import { AccessToken, LoginManager } from 'react-native-fbsdk';
 import { GoogleSignin, statusCodes } from '@react-native-community/google-signin';
+import appleAuth, { AppleAuthRequestScope, AppleAuthRequestOperation } from '@invertase/react-native-apple-authentication';
 import auth from '@react-native-firebase/auth';
 import { useDispatch } from 'react-redux';
 import config from 'wappsto-redux/config';
@@ -174,6 +175,47 @@ const useSignIn = (navigation) => {
     }
     setIsSigninInProgress(false);
   }, [sendAuthRequest]);
+
+  const appleSignIn = useCallback(async () => {
+    const id = 'fbSignInError' + Math.random();
+    try {
+      setIsSigninInProgress(true);
+      // Start the sign-in request
+      const appleAuthRequestResponse = await appleAuth.performRequest({
+        requestedOperation: AppleAuthRequestOperation.LOGIN,
+        requestedScopes: [AppleAuthRequestScope.EMAIL, AppleAuthRequestScope.FULL_NAME],
+      });
+
+      // Ensure Apple returned a user identityToken
+      if (!appleAuthRequestResponse.identityToken) {
+        setFbSignInError({
+          id
+        });
+        setIsSigninInProgress(false);
+        return;
+      }
+
+      setFbSignInError({
+        id,
+        status: 'pending'
+      });
+
+      // Create a Firebase credential from the response
+      const { identityToken, nonce } = appleAuthRequestResponse;
+      const credential = auth.AppleAuthProvider.credential(identityToken, nonce);
+      const firebaseUserCredential = await auth().signInWithCredential(credential);
+      const token = await firebaseUserCredential.user.getIdToken();
+      sendAuthRequest(token);
+    } catch (e) {
+      console.log(e);
+      setFbSignInError({
+        id,
+        status: 'error',
+        json: {}
+      });
+    }
+    setIsSigninInProgress(false);
+  }, [sendAuthRequest]);
   // --------------------------------------------------------------------
 
   const userLogged = (cRequest) => {
@@ -225,6 +267,7 @@ const useSignIn = (navigation) => {
     canTPSignIn,
     googleSignIn,
     facebookSignIn,
+    appleSignIn,
     postRequest,
     loading,
     showRecaptcha,

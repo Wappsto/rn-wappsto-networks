@@ -14,6 +14,7 @@
     "postinstall": "./node_modules/.bin/rn-nodeify --install \"crypto,stream,events,vm\" --hack"
   },
   "dependencies": {
+    "@invertase/react-native-apple-authentication": "^1.0.0",
     "@react-native-community/async-storage": "^1.6.1",
     "@react-native-community/google-signin": "^4.0.0",
     "@react-native-community/netinfo": "^4.2.1",

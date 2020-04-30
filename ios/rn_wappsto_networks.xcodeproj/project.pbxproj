@@ -78,6 +78,7 @@
 		533BAA86D7A044A98C639D7C /* Feather.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Feather.ttf; path = "../node_modules/react-native-vector-icons/Fonts/Feather.ttf"; sourceTree = "<group>"; };
 		607EB9872E9140EEA1687CA5 /* FontAwesome5_Solid.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = FontAwesome5_Solid.ttf; path = "../node_modules/react-native-vector-icons/Fonts/FontAwesome5_Solid.ttf"; sourceTree = "<group>"; };
 		645E35F1355042D9805521D7 /* FontAwesome5_Regular.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = FontAwesome5_Regular.ttf; path = "../node_modules/react-native-vector-icons/Fonts/FontAwesome5_Regular.ttf"; sourceTree = "<group>"; };
+		67DED93E2459915B00386B5A /* rn_wappsto_networks.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; name = rn_wappsto_networks.entitlements; path = rn_wappsto_networks/rn_wappsto_networks.entitlements; sourceTree = "<group>"; };
 		67FBC122245971DE00B1A0C1 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		6802507841FE5A54801BB575 /* libPods-rn_wappsto_networks.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-rn_wappsto_networks.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		77C6730101CB44E998CC1E89 /* Ionicons.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Ionicons.ttf; path = "../node_modules/react-native-vector-icons/Fonts/Ionicons.ttf"; sourceTree = "<group>"; };
@@ -159,6 +160,7 @@
 		13B07FAE1A68108700A75B9A /* rn_wappsto_networks */ = {
 			isa = PBXGroup;
 			children = (
+				67DED93E2459915B00386B5A /* rn_wappsto_networks.entitlements */,
 				67FBC122245971DE00B1A0C1 /* GoogleService-Info.plist */,
 				008F07F21AC5B25A0029DE68 /* main.jsbundle */,
 				13B07FAF1A68108700A75B9A /* AppDelegate.h */,
@@ -772,6 +774,7 @@
 			baseConfigurationReference = ED9BE091DFFD5ED56B562C14 /* Pods-rn_wappsto_networks.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = rn_wappsto_networks/rn_wappsto_networks.entitlements;
 				CURRENT_PROJECT_VERSION = 1;
 				DEAD_CODE_STRIPPING = NO;
 				DEVELOPMENT_TEAM = P23A93J5F9;
@@ -782,7 +785,7 @@
 					"-ObjC",
 					"-lc++",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = "org.reactjs.native.example.$(PRODUCT_NAME:rfc1034identifier)";
+				PRODUCT_BUNDLE_IDENTIFIER = "org.reactjs.native.example.rn-wappsto-networks";
 				PRODUCT_NAME = rn_wappsto_networks;
 				VERSIONING_SYSTEM = "apple-generic";
 			};
@@ -793,6 +796,7 @@
 			baseConfigurationReference = E2156A7AEDAAA07FA9FA4709 /* Pods-rn_wappsto_networks.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = rn_wappsto_networks/rn_wappsto_networks.entitlements;
 				CURRENT_PROJECT_VERSION = 1;
 				DEAD_CODE_STRIPPING = YES;
 				DEVELOPMENT_TEAM = P23A93J5F9;
@@ -803,7 +807,7 @@
 					"-ObjC",
 					"-lc++",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = "org.reactjs.native.example.$(PRODUCT_NAME:rfc1034identifier)";
+				PRODUCT_BUNDLE_IDENTIFIER = "org.reactjs.native.example.rn-wappsto-networks";
 				PRODUCT_NAME = rn_wappsto_networks;
 				VERSIONING_SYSTEM = "apple-generic";
 			};
