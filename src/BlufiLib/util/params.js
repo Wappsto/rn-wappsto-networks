@@ -1,8 +1,20 @@
-export const BlufiParameter = {
+import { Platform } from 'react-native';
+
+const UUIDs = {
+  ios: {
+    UUID_SERVICE: 'FFFF',
+    UUID_WRITE_CHARACTERISTIC: 'FF01',
+    UUID_NOTIFICATION_CHARACTERISTIC: 'FF02'
+  },
+  android: {
     UUID_SERVICE: '0000ffff-0000-1000-8000-00805f9b34fb',
     UUID_WRITE_CHARACTERISTIC: '0000ff01-0000-1000-8000-00805f9b34fb',
-    UUID_NOTIFICATION_CHARACTERISTIC: '0000ff02-0000-1000-8000-00805f9b34fb',
+    UUID_NOTIFICATION_CHARACTERISTIC: '0000ff02-0000-1000-8000-00805f9b34fb'
+  }
+}
 
+export const BlufiParameter = {
+    ...UUIDs[Platform.OS],
     DIRECTION_OUTPUT: 0,
     DIRECTION_INPUT: 1,
 
