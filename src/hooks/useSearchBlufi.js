@@ -48,7 +48,9 @@ const useSearchBlufi = () => {
     setScanning(true);
     try{
       addDiscoveryListener();
-      await BleManager.enableBluetooth();
+      if(Platform.OS === 'android'){
+        await BleManager.enableBluetooth();
+      }
       BleManager.scan([BlufiParameter.UUID_SERVICE], 15, false);
     } catch(e){
       setScanning(false);
@@ -73,6 +75,8 @@ const useSearchBlufi = () => {
               });
             }
       });
+    } else {
+      scan();
     }
   }
 

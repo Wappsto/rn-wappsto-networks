@@ -3,7 +3,8 @@ import { Platform } from 'react-native';
 import AsyncStorage from '@react-native-community/async-storage';
 import { AccessToken, LoginManager } from 'react-native-fbsdk';
 import { GoogleSignin, statusCodes } from '@react-native-community/google-signin';
-import firebase from 'react-native-firebase';
+import appleAuth, { AppleAuthRequestScope, AppleAuthRequestOperation } from '@invertase/react-native-apple-authentication';
+import auth from '@react-native-firebase/auth';
 import { useDispatch } from 'react-redux';
 import config from 'wappsto-redux/config';
 import { removeRequest } from 'wappsto-redux/actions/request';
@@ -16,15 +17,19 @@ const useSignIn = (navigation) => {
   const dispatch = useDispatch();
   const [ username, setUsername ] = useState('');
   const [ password, setPassword ] = useState('');
-  const [ recaptcha, setRecaptcha ] = useState();
   const [ showRecaptcha, setShowRecaptcha ] = useState('');
-  const [ recaptchaExtraData, setRecaptchaExtraData ] = useState(0);
   const [ isSigninInProgress, setIsSigninInProgress ] = useState(false);
   const [ showPassword, setShowPassword ] = useState(false);
   const passwordInputRef = useRef();
-  const fbSignInError = useRef(null);
+  const [ fbSignInError, setFbSignInError ] = useState(null);
   const { request, send } = useRequest();
   const errorNumber = useRef(0);
+  const recaptchaRef = useRef();
+
+  const postRequest = fbSignInError || request;
+  const loading = postRequest && (postRequest.status === 'pending' || postRequest.status === 'success');
+  const canTPSignIn = connected && !isSigninInProgress && !loading
+  const canSignIn = canTPSignIn && isEmail(username) && password;
 
   const toggleShowPassword = useCallback(() => {
     setShowPassword(sp => !sp);
@@ -63,8 +68,8 @@ const useSignIn = (navigation) => {
     }
   }, [username, password]);
 
-  const signIn = useCallback(() => {
-    fbSignInError.current = null;
+  const signIn = useCallback((recaptcha) => {
+    setFbSignInError(null);
     send({
       method: 'POST',
       url: '/session',
@@ -75,17 +80,21 @@ const useSignIn = (navigation) => {
         remember_me: true
       }
     });
-  }, [username, password, recaptcha, send]);
+  }, [username, password, send]);
 
   const checkAndSignIn = useCallback(() => {
     if (isEmail(username) && password) {
-      signIn();
+      if(showRecaptcha && recaptchaRef.current){
+        recaptchaRef.current.show();
+      } else {
+        signIn();
+      }
     }
-  }, [username, password, signIn]);
+  }, [username, password, signIn, showRecaptcha]);
 
   // ----------------- 3rd Auth Signin ----------------------------
   const sendAuthRequest = useCallback((token) => {
-    fbSignInError.current = null;
+    setFbSignInError(null);
     send({
       method: 'POST',
       url: '/session',
@@ -105,12 +114,12 @@ const useSignIn = (navigation) => {
       });
       const data = await GoogleSignin.signIn();
       GoogleSignin.signOut();
-      fbSignInError.current = {
+      setFbSignInError({
         id,
         status: 'pending'
-      };
-      const credential = firebase.auth.GoogleAuthProvider.credential(data.idToken, data.accessToken);
-      const firebaseUserCredential = await firebase.auth().signInWithCredential(credential);
+      });
+      const credential = auth.GoogleAuthProvider.credential(data.idToken, data.accessToken);
+      const firebaseUserCredential = await auth().signInWithCredential(credential);
       const token = await firebaseUserCredential.user.getIdToken();
       sendAuthRequest(token);
     } catch (error) {
@@ -126,13 +135,13 @@ const useSignIn = (navigation) => {
           // some other error happened
           code = 'generic';
         }
-        fbSignInError.current = {
+        setFbSignInError({
           id,
           status: 'error',
           json: {
             code,
           },
-        };
+        });
       }
     }
     setIsSigninInProgress(false);
@@ -144,32 +153,73 @@ const useSignIn = (navigation) => {
       setIsSigninInProgress(true);
       const behavior = Platform.OS === 'ios' ? 'browser' : 'WEB_ONLY';
       LoginManager.setLoginBehavior(behavior);
+      LoginManager.logOut();
       const result = await LoginManager.logInWithPermissions(['public_profile', 'email']);
       if(result.isCancelled){
-        fbSignInError.current = {
+        setFbSignInError({
           id
-        };
+        });
         setIsSigninInProgress(false);
         return;
       }
-      fbSignInError.current = {
+      setFbSignInError({
         id,
         status: 'pending'
-      };
+      });
       const data = await AccessToken.getCurrentAccessToken();
       if (!data) {
         throw new Error('Something went wrong obtaining the users access token');
       }
-      const credential = firebase.auth.FacebookAuthProvider.credential(data.accessToken);
-      const firebaseUserCredential = await firebase.auth().signInWithCredential(credential);
+      const credential = auth.FacebookAuthProvider.credential(data.accessToken);
+      const firebaseUserCredential = await auth().signInWithCredential(credential);
       const token = await firebaseUserCredential.user.getIdToken();
       sendAuthRequest(token);
     } catch (e) {
-      fbSignInError.current = {
+      setFbSignInError({
         id,
         status: 'error',
         json: {}
-      };
+      });
+    }
+    setIsSigninInProgress(false);
+  }, [sendAuthRequest]);
+
+  const appleSignIn = useCallback(async () => {
+    const id = 'fbSignInError' + Math.random();
+    try {
+      setIsSigninInProgress(true);
+      // Start the sign-in request
+      const appleAuthRequestResponse = await appleAuth.performRequest({
+        requestedOperation: AppleAuthRequestOperation.LOGIN,
+        requestedScopes: [AppleAuthRequestScope.EMAIL, AppleAuthRequestScope.FULL_NAME],
+      });
+
+      // Ensure Apple returned a user identityToken
+      if (!appleAuthRequestResponse.identityToken) {
+        setFbSignInError({
+          id
+        });
+        setIsSigninInProgress(false);
+        return;
+      }
+
+      setFbSignInError({
+        id,
+        status: 'pending'
+      });
+
+      // Create a Firebase credential from the response
+      const { identityToken, nonce } = appleAuthRequestResponse;
+      const credential = auth.AppleAuthProvider.credential(identityToken, nonce);
+      const firebaseUserCredential = await auth().signInWithCredential(credential);
+      const token = await firebaseUserCredential.user.getIdToken();
+      sendAuthRequest(token);
+    } catch (e) {
+      setFbSignInError({
+        id,
+        status: 'error',
+        json: {}
+      });
     }
     setIsSigninInProgress(false);
   }, [sendAuthRequest]);
@@ -192,8 +242,6 @@ const useSignIn = (navigation) => {
         if(errorNumber.current > 3 || (request.json && request.json.code === 9900007)){
           if(!showRecaptcha){
             setShowRecaptcha(true);
-          } else {
-            setRecaptchaExtraData(n => n + 1);
           }
         }
       }
@@ -202,13 +250,22 @@ const useSignIn = (navigation) => {
   }, [request]);
 
   const onCheckRecaptcha = useCallback((data) => {
-    setRecaptcha(data);
-  }, []);
-
-  const postRequest = fbSignInError.current || request;
-  const loading = postRequest && (postRequest.status === 'pending' || postRequest.status === 'success');
-  const canTPSignIn = connected && !isSigninInProgress && !loading
-  const canSignIn = canTPSignIn && isEmail(username) && password && (!showRecaptcha || recaptcha);
+    if (data) {
+      if (['cancel', 'error', 'expired'].includes(data)) {
+        if(recaptchaRef.current){
+          recaptchaRef.current.hide();
+        }
+        return;
+      } else {
+        setTimeout(() => {
+          if(recaptchaRef.current){
+            recaptchaRef.current.hide();
+          }
+          signIn(data);
+        }, 1500);
+      }
+    }
+  }, [signIn]);
 
   return {
     username,
@@ -216,6 +273,7 @@ const useSignIn = (navigation) => {
     moveToPasswordField,
     handleTextChange,
     passwordInputRef,
+    recaptchaRef,
     showPassword,
     toggleShowPassword,
     checkAndSignIn,
@@ -224,10 +282,10 @@ const useSignIn = (navigation) => {
     canTPSignIn,
     googleSignIn,
     facebookSignIn,
+    appleSignIn,
     postRequest,
     loading,
     showRecaptcha,
-    recaptchaExtraData,
     onCheckRecaptcha
   }
 }

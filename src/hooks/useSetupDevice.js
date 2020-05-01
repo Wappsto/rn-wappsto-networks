@@ -150,6 +150,7 @@ const useSetupDevice = (selectedDevice, sendRequest, postRequest, acceptedManufa
       await BleManager.retrieveServices(selectedDevice.id);
       await BleManager.startNotification(selectedDevice.id, BlufiParameter.UUID_SERVICE, BlufiParameter.UUID_NOTIFICATION_CHARACTERISTIC);
     } catch(e){
+      console.log(e);
       setStep(ERRORS.FAILEDINITNOTIFICATION);
       return;
     }

@@ -1,7 +1,7 @@
 import React, { useCallback } from 'react';
-import { Image, View, Text as RNtext, Linking, TouchableOpacity, ActivityIndicator, StyleSheet, StatusBar, ScrollView } from 'react-native';
+import { Image, View, Text as RNtext, Linking, TouchableOpacity, ActivityIndicator, StyleSheet, StatusBar, ScrollView, Platform } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { GoogleSigninButton } from '@react-native-community/google-signin';
+import { AppleButton } from '@invertase/react-native-apple-authentication';
 import { useTranslation, CapitalizeFirst, CapitalizeEach } from '../../translations';
 import useSignIn from '../../hooks/useSignIn';
 import RequestError from '../../components/RequestError';
@@ -77,6 +77,7 @@ const LoginScreen = React.memo(({ navigation }) => {
     moveToPasswordField,
     handleTextChange,
     passwordInputRef,
+    recaptchaRef,
     showPassword,
     toggleShowPassword,
     checkAndSignIn,
@@ -85,10 +86,9 @@ const LoginScreen = React.memo(({ navigation }) => {
     canTPSignIn,
     googleSignIn,
     facebookSignIn,
+    appleSignIn,
     postRequest,
-    showRecaptcha,
     onCheckRecaptcha,
-    recaptchaExtraData,
     loading
   } = useSignIn(navigation);
 
@@ -145,17 +145,13 @@ const LoginScreen = React.memo(({ navigation }) => {
               <ActivityIndicator size='large' color={theme.variables.spinnerColor} />
             )}
 
-            { showRecaptcha ?
-              <ReCaptcha
-                onCheck={onCheckRecaptcha}
-                extraData={recaptchaExtraData} />
-            : null}
+            <ReCaptcha onCheck={onCheckRecaptcha} recaptchaRef={recaptchaRef} />
 
             <RequestError request={postRequest} />
             <Button
               disabled={!canSignIn}
               style={!canSignIn && theme.common.disabled}
-              onPress={signIn}
+              onPress={checkAndSignIn}
               display='block'
               color={!canSignIn ? 'disabled' : 'primary'}
               text={CapitalizeFirst(t('loginAndRegistration.button.logIn'))}
@@ -222,6 +218,18 @@ const LoginScreen = React.memo(({ navigation }) => {
                 {CapitalizeFirst(t('loginAndRegistration.button.signInWithFacebook'))}
               </RNtext>
             </TouchableOpacity>
+            {
+              Platform.OS === 'ios' &&
+              <AppleButton
+                buttonStyle={AppleButton.Style.WHITE}
+                buttonType={AppleButton.Type.SIGN_IN}
+                style={[
+                  styles.signinButton,
+                  !canTPSignIn && theme.common.disabled
+                ]}
+                onPress={appleSignIn}
+              />
+            }
           </View>
         </View>
         <LoginScreen.Footer />

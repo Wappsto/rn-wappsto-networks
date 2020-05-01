@@ -34,7 +34,7 @@ const styles = StyleSheet.create({
   },
 });
 
-const DeviceSection = React.memo(({ navigation, id, isPrototype }) => {
+const DeviceItem = React.memo(({ navigation, id, isPrototype }) => {
   const { t } = useTranslation();
   const getEntity = useMemo(makeEntitySelector, []);
   const device = useSelector(state => getEntity(state, 'device', id));
@@ -70,4 +70,4 @@ const DeviceSection = React.memo(({ navigation, id, isPrototype }) => {
   );
 });
 
-export default DeviceSection;
+export default DeviceItem;
