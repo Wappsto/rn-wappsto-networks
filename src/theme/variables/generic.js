@@ -24,7 +24,10 @@ export function generateVariables(v = {}) {
     // Typography
     defaultFontSize: 14,
     fontFamily: 'System',
+    fontFamilyBold: 'System',
+
     fontSizeBase: 12,
+
     get h1() {
       return this.fontSizeBase + 20;
     },
@@ -40,7 +43,7 @@ export function generateVariables(v = {}) {
 
     // Title
     get titleFontFamily() {
-      return this.fontFamily;
+      return this.fontFamilyBold;
     },
     get titleColor() {
       return this.primary;
@@ -80,10 +83,14 @@ export function generateVariables(v = {}) {
     get buttonBg() {
       return this.darkGray;
     },
+    get buttonFontFamily() {
+      return this.fontFamily;
+    },
     buttonColor: 'white',
     get buttonTextSize() {
       return Math.round(this.fontSizeBase * 1.25);
     },
+
     // Icon
     iconSmall: 18,
     iconMedium: 28,

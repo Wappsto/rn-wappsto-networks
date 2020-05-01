@@ -40,7 +40,7 @@ const styles = StyleSheet.create({
     marginRight: 12
   },
   text: {
-    fontFamily: theme.variables.fontFamily,
+    fontFamily: theme.variables.buttonFontFamily,
     fontSize: theme.variables.buttonTextSize,
     color: theme.variables.buttonColor
   }

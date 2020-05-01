@@ -17,6 +17,7 @@ const styles = StyleSheet.create({
 
 const Title = React.memo(({
   style,
+  bold,
   size,
   align,
   title,
@@ -74,6 +75,7 @@ const Title = React.memo(({
       style={[
         styles.text,
         title && styles.title,
+        bold && {fontFamily: theme.variables.fontFamilyBold},
         align && {textAlign: align},
         size && fontStyle(size),
         color && textColor(color),
