@@ -221,10 +221,13 @@ export function generateVariables(v = {}) {
 
     // Switch
     get switchThumbColor() {
-      return this.primary;
+      return this.white;
     },
     get switchTrackColor() {
-      return this.darkGray;
+      return this.primaryDark;
+    },
+    get switchTrackColorInverse() {
+      return this.mediumGray;
     },
 
     // other

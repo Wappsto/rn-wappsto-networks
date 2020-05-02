@@ -32,10 +32,11 @@ const styles = StyleSheet.create({
     marginBottom:20
   },
   circle: {
-    width: 10,
-    height: 10,
+    width: 7,
+    height: 7,
     borderRadius: 5,
-    marginRight: 5
+    marginTop: 3,
+    marginRight: 6
   }
 });
 

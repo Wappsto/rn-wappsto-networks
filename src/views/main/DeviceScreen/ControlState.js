@@ -49,9 +49,9 @@ export const StateDataField = ({
           value={!!parseFloat(input)}
           onValueChange={updateSwitchState}
           disabled={isUpdating}
-          color={theme.variables.switchThumbColor}
-          switchThumbColor={theme.variables.switchThumbColor}
-          switchTrackColor={theme.variables.switchTrackColor}
+          ios_backgroundColor={theme.variables.switchThumbColor}
+          thumbColor={theme.variables.switchThumbColor}
+          trackColor={{false: theme.variables.switchTrackColorInverse, true: theme.variables.switchTrackColor}}
         />
       );
     } else if ((param.max - param.min) / param.step <= 150) {
