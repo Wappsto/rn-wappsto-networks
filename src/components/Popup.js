@@ -44,7 +44,7 @@ const Popup = React.memo(({ animationType, visible, hide, onRequestClose, conten
       onRequestClose={onRequestClose}>
       <TouchableWithoutFeedback onPress={hide}>
         <View style={styles.popupOverlay}>
-          <StatusBar backgroundColor={color(theme.variables.statusBarBgDark).darken(0.5)} barStyle='light-content' />
+          <StatusBar backgroundColor={color(theme.variables.statusBarBgDark).darken(0.5)} barStyle={theme.variables.statusBarColorLight} />
           <TouchableWithoutFeedback>
             <View style={[styles.popupContent, contentStyle]}>
               {children}

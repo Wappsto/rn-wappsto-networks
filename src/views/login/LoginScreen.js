@@ -102,7 +102,7 @@ const LoginScreen = React.memo(({ navigation }) => {
 
   return (
     <SafeAreaView style={theme.common.container}>
-      <StatusBar backgroundColor={theme.variables.appBgColor} barStyle='dark-content' />
+      <StatusBar backgroundColor={theme.variables.statusBarBgLight} barStyle={theme.variables.statusBarColorDark} />
       <ScrollView>
         <LoginScreen.Header />
         <View style={theme.common.contentContainer}>

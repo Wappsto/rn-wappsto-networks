@@ -74,7 +74,7 @@ const ItemHeader = React.memo(({ network }) => {
   return (
     <View style={[theme.common.row,styles.listHeader]}>
       { !isPrototypeNetwork &&
-        <View style={[styles.circle, { backgroundColor: online ? '#32CD32' : '#cccccc' }]} />
+        <View style={[styles.circle, { backgroundColor: online ? '#32CD32' : '#bbb' }]} />
       }
       <RNText numberOfLines={1} ellipsizeMode='tail' style={{flex: 1}}>
         { isPrototypeNetwork &&

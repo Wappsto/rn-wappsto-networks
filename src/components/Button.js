@@ -40,7 +40,7 @@ const styles = StyleSheet.create({
     marginRight: 12
   },
   text: {
-    fontFamily: theme.variables.buttonFontFamily,
+    fontFamily: theme.variables.fontFamily,
     fontSize: theme.variables.buttonTextSize,
     color: theme.variables.buttonColor
   }
@@ -51,6 +51,7 @@ const Button = React.memo(({
   icon,
   style,
   color,
+  bold,
   onPress,
   align,
   type,
@@ -160,7 +161,8 @@ const Button = React.memo(({
       {text &&
         <Text style={[
           styles.text,
-          type && textColor()
+          type && textColor(),
+          bold && (theme.variables.fontFamilyBold ? {fontFamily:theme.variables.fontFamilyBold } : {fontWeight: 'bold'})
         ]}>{text}</Text>
       }
     </TouchableOpacity>

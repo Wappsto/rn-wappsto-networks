@@ -77,7 +77,9 @@ const DrawerMenu = React.memo((props) => {
         type='link'
         color='primary'
         align='left'
+        bold
         onPress={logout}
+        style={{marginBottom: 20, marginLeft: 5}}
         text={CapitalizeFirst(t('logout'))}
       />
     </SafeAreaView>

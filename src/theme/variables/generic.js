@@ -83,9 +83,6 @@ export function generateVariables(v = {}) {
     get buttonBg() {
       return this.darkGray;
     },
-    get buttonFontFamily() {
-      return this.fontFamily;
-    },
     buttonColor: 'white',
     get buttonTextSize() {
       return Math.round(this.fontSizeBase * 1.25);
@@ -168,6 +165,8 @@ export function generateVariables(v = {}) {
     },
 
     // StatusBar
+    statusBarColorLight:'light-content',
+    statusBarColorDark:'dark-content',
     get statusBarBgLight(){
       return this.appBgColor;
     },
@@ -201,9 +200,6 @@ export function generateVariables(v = {}) {
       return this.white;
     },
     get NumericInputButtonBackground() {
-      return this.lightGray;
-    },
-    get NumericInputText() {
       return this.lightGray;
     },
     NumericInputRounded: true,

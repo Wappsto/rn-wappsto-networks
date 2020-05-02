@@ -20,7 +20,7 @@ const Screen = React.memo(({ style, children }) => {
   const showStream = connected && stream && stream.status !== 2;
   return (
     <View style={[{flex:1, backgroundColor:theme.variables.appBgColor}, style]}>
-      <StatusBar backgroundColor={theme.variables.statusBarBgDark} barStyle='light-content' />
+      <StatusBar backgroundColor={theme.variables.statusBarBgDark} barStyle={theme.variables.statusBarColorLight} />
       {!connected && (
         <Text
           style={[theme.common.toastFullWidth, theme.common.warningPanel]}
