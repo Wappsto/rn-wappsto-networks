@@ -1,5 +1,3 @@
-import React from 'react';
-import color from 'color';
 import {StyleSheet} from 'react-native';
 
 let variables = require('./../variables/generic').default;

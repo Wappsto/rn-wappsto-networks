@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, TextInput, Switch } from 'react-native';
+import { View, TextInput, Switch, StyleSheet } from 'react-native';
 import Text from '../../../components/Text';
 import Slider from '@react-native-community/slider';
 import RequestError from '../../../components/RequestError';
@@ -10,6 +10,16 @@ import { cannotAccessState } from 'wappsto-blanket/util';
 import { getStateData } from '../../../util/helpers';
 import useControlState from '../../../hooks/useControlState';
 import NumericInput from 'react-native-numeric-input';
+
+const styles = StyleSheet.create({
+  slider:{
+    width: '100%'
+  },
+  dataWrapper:{
+    alignItems: 'center',
+    marginBottom: 15
+  }
+});
 
 export const StateDataField = ({
   value,
@@ -66,7 +76,7 @@ export const StateDataField = ({
           maximumValue={param.max}
           minimumValue={param.min}
           step={param.step}
-          style={{width: '100%'}}
+          style={styles.slider}
           value={parseFloat(input) || 0}
           disabled={isUpdating}
           thumbTintColor={theme.variables.sliderThumbTintColor}
@@ -153,7 +163,7 @@ const ControlState = React.memo(({ state, value }) => {
           <Text content={CapitalizeFirst(t('cannotAccess.' + state.status_payment))}/>
         ) : (
           <>
-            <View style={{alignItems: 'center', marginBottom: 15}}>
+            <View style={styles.dataWrapper}>
               <StateDataField {...controlStateController} value={value}/>
             </View>
             <RequestError request={controlStateController.request} />

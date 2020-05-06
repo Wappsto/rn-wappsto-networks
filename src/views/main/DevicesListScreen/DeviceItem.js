@@ -24,6 +24,9 @@ const styles = StyleSheet.create({
   listItemTitleArea: {
     flex: 1,
   },
+  virtual: {
+    backgroundColor: '#e5e5e5'
+  },
   listItemHeader: {
     fontSize: 16,
     color: theme.variables.primary
@@ -54,7 +57,7 @@ const DeviceItem = React.memo(({ navigation, id, isPrototype }) => {
   }
   return (
     <TouchableOpacity onPress={navigate}>
-      <View style={[styles.listItem, isPrototype ? { backgroundColor: '#e5e5e5' } : {}]}>
+      <View style={[styles.listItem, isPrototype && styles.virtual]}>
         <View style={styles.listItemTitleArea}>
           <Text
             style={styles.listItemHeader}

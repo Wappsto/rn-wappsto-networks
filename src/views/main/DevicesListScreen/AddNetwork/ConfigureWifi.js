@@ -1,8 +1,5 @@
 import React, { useCallback } from 'react';
-import { View, TouchableOpacity } from 'react-native';
 import Input from '../../../../components/Input';
-import Icon from 'react-native-vector-icons/FontAwesome5';
-import theme from '../../../../theme/themeExport';
 import Text from '../../../../components/Text';
 import Button from '../../../../components/Button';
 import { useTranslation, CapitalizeFirst } from '../../../../translations';

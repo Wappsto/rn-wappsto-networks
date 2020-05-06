@@ -3,7 +3,6 @@ import {View, StyleSheet, ActivityIndicator} from 'react-native';
 import States from './States';
 import ValueDetails from './ValueDetails';
 import theme from '../../../theme/themeExport';
-import Icon from 'react-native-vector-icons/Feather';
 import useRequest from 'wappsto-blanket/hooks/useRequest';
 import RequestError from '../../../components/RequestError';
 import Text from '../../../components/Text';
