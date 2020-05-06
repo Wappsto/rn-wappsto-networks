@@ -2,8 +2,7 @@ import React, { useCallback } from 'react';
 import PopupButton from '../../../components/PopupButton';
 import Popup from '../../../components/Popup';
 import Text from '../../../components/Text';
-import theme from '../../../theme/themeExport';
-import { useTranslation, CapitalizeFirst, CapitalizeEach } from '../../../translations';
+import { useTranslation, CapitalizeFirst } from '../../../translations';
 
 const  getValueType = (value, t) => {
   if (value) {
@@ -11,8 +10,12 @@ const  getValueType = (value, t) => {
       return {
         view: (
           <>
-            <Text content={CapitalizeFirst(t('valueDescription.encoding')) + ': ' + value.blob.encoding}/>
-            <Text content={CapitalizeFirst(t('valueDescription.maxLength')) + ': ' + value.blob.max}/>
+            {!!value.blob.encoding &&
+              <Text content={CapitalizeFirst(t('valueDescription.encoding')) + ': ' + value.blob.encoding}/>
+            }
+            {!!value.blob.max &&
+              <Text content={CapitalizeFirst(t('valueDescription.maxLength')) + ': ' + value.blob.max}/>
+            }
           </>
         ),
         text: 'blob',
@@ -21,10 +24,18 @@ const  getValueType = (value, t) => {
       return {
         view: (
           <>
-            <Text content={CapitalizeFirst(t('valueDescription.min')) + ': ' + value.number.min} />
-            <Text content={CapitalizeFirst(t('valueDescription.max')) + ': ' + value.number.max} />
-            <Text content={CapitalizeFirst(t('valueDescription.stepSize')) + ': ' + value.number.step} />
-            <Text content={CapitalizeFirst(t('valueDescription.unit')) + ': ' + value.number.unit} />
+            {!!value.number.min &&
+              <Text content={CapitalizeFirst(t('valueDescription.min')) + ': ' + value.number.min} />
+            }
+            {!!value.number.max &&
+              <Text content={CapitalizeFirst(t('valueDescription.max')) + ': ' + value.number.max} />
+            }
+            {!!value.number.step &&
+              <Text content={CapitalizeFirst(t('valueDescription.stepSize')) + ': ' + value.number.step} />
+            }
+            {!!value.number.unit &&
+              <Text content={CapitalizeFirst(t('valueDescription.unit')) + ': ' + value.number.unit} />
+            }
           </>
         ),
         text: 'number',
@@ -33,8 +44,12 @@ const  getValueType = (value, t) => {
       return {
         view: (
           <>
+          {!!value.string.encoding &&
             <Text content={CapitalizeFirst(t('valueDescription.encoding')) + ': ' + value.string.encoding}/>
+          }
+          {!!value.string.max &&
             <Text content={CapitalizeFirst(t('valueDescription.maxLength')) + ': ' + value.string.max}/>
+          }
           </>
         ),
         text: 'string',
@@ -43,8 +58,12 @@ const  getValueType = (value, t) => {
       return {
         view: (
           <>
-            <Text content={CapitalizeFirst(t('valueDescription.xsd')) + ': ' + value.xml.xsd}/>
-            <Text content={CapitalizeFirst(t('valueDescription.namespace')) + ': ' + value.xml.namespace}/>
+            {!!value.xml.xsd &&
+              <Text content={CapitalizeFirst(t('valueDescription.xsd')) + ': ' + value.xml.xsd}/>
+            }
+            {!!value.xml.namespace &&
+              <Text content={CapitalizeFirst(t('valueDescription.namespace')) + ': ' + value.xml.namespace}/>
+            }
           </>
         ),
         text: 'xml',
@@ -62,10 +81,18 @@ const ValueSettings = React.memo(({ item }) => {
       <Popup visible={visible} onRequestClose={hide} hide={hide}>
         <Text size={'h4'} content={item.name}/>
         <Text content={CapitalizeFirst(t('valueDescription.uuid')) + ': ' + item.meta.id}/>
-        <Text content={CapitalizeFirst(t('valueDescription.type')) + ': ' + item.type}/>
-        <Text content={CapitalizeFirst(t('valueDescription.permission')) + ': ' + item.permission}/>
-        <Text content={CapitalizeFirst(t('valueDescription.status')) + ': ' + item.status}/>
-        <Text content={CapitalizeFirst(t('valueDescription.dataType')) + ': ' + valueDataType.text}/>
+        {!!item.type &&
+          <Text content={CapitalizeFirst(t('valueDescription.type')) + ': ' + item.type}/>
+        }
+        {!!item.permission &&
+          <Text content={CapitalizeFirst(t('valueDescription.permission')) + ': ' + item.permission}/>
+        }
+        {!!item.status &&
+          <Text content={CapitalizeFirst(t('valueDescription.status')) + ': ' + item.status}/>
+        }
+        {!!valueDataType.text &&
+          <Text content={CapitalizeFirst(t('valueDescription.dataType')) + ': ' + valueDataType.text}/>
+        }
         {valueDataType.view}
       </Popup>
     );

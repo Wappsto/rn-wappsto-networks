@@ -1,5 +1,5 @@
 import React, { useMemo, useCallback } from 'react';
-import { Text as RNText, View, StyleSheet, TouchableOpacity } from 'react-native';
+import { Text as RNText, View, StyleSheet } from 'react-native';
 import Text from '../../../components/Text';
 import Button from '../../../components/Button';
 import Screen from '../../../components/Screen';
@@ -14,7 +14,6 @@ import { isPrototype } from 'wappsto-blanket/util';
 import { getServiceVersion } from 'wappsto-redux/util/helpers';
 import useAppStateStream from '../../../hooks/useAppStateStream';
 import useAddNetworkStream from '../../../hooks/useAddNetworkStream';
-import Icon from 'react-native-vector-icons/Feather';
 import PopupButton from '../../../components/PopupButton';
 import Popup from '../../../components/Popup';
 import ConfirmationPopup from '../../../components/ConfirmationPopup';
@@ -28,6 +27,9 @@ const styles = StyleSheet.create({
     paddingLeft: 10,
     paddingRight: 5
   },
+  textRow:{
+    flex: 1
+  },
   listItem: {
     marginBottom:20
   },
@@ -37,6 +39,12 @@ const styles = StyleSheet.create({
     borderRadius: 5,
     marginTop: 3,
     marginRight: 6
+  },
+  online: {
+    backgroundColor: '#32CD32'
+  },
+  offline: {
+    backgroundColor: '#bbb'
   }
 });
 
@@ -74,14 +82,14 @@ const ItemHeader = React.memo(({ network }) => {
   return (
     <View style={[theme.common.row,styles.listHeader]}>
       { !isPrototypeNetwork &&
-        <View style={[styles.circle, { backgroundColor: online ? '#32CD32' : '#bbb' }]} />
+        <View style={[styles.circle, online ? styles.online : styles.offline ]} />
       }
-      <RNText numberOfLines={1} ellipsizeMode='tail' style={{flex: 1}}>
+      <RNText numberOfLines={1} ellipsizeMode='tail' style={styles.textRow}>
         { isPrototypeNetwork &&
           <Text color='secondary' content={'(' + CapitalizeEach(t('prototype')) + ') '}/>
         }
         { network.name &&
-          <Text style={{fontWeight:'bold'}} content={network.name + ' '}/>
+          <Text bold content={network.name + ' '}/>
         }
         <Text color='secondary' content={network.meta.id}/>
       </RNText>

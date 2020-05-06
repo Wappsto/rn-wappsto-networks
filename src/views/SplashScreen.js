@@ -3,7 +3,6 @@ import { View, StatusBar, StyleSheet, Image } from 'react-native';
 import SessionVerifier from './SessionVerifier';
 import useStorageSession from '../hooks/useStorageSession';
 import theme from '../theme/themeExport';
-import Icon from 'react-native-vector-icons/FontAwesome5';
 import defaultImages from '../theme/images';
 
 const styles = StyleSheet.create({
@@ -13,6 +12,10 @@ const styles = StyleSheet.create({
     flexDirection: 'column',
     justifyContent: 'space-around',
     backgroundColor: theme.variables.appBgColor
+  },
+  image:{
+    alignSelf: 'center',
+    maxWidth: '100%'
   }
 });
 
@@ -24,7 +27,7 @@ const SplashScreen = ({ navigation }) => {
       <StatusBar backgroundColor={theme.variables.statusBarBgLight} barStyle={theme.variables.statusBarColorDark}/>
       {
         defaultImages.splashScreen.logo &&
-        <Image resizeMode='contain' style={{ alignSelf: 'center', maxWidth: "100%" }} source={defaultImages.splashScreen.logo} />
+        <Image resizeMode='contain' style={styles.image} source={defaultImages.splashScreen.logo} />
       }
       <SessionVerifier
         status={status}

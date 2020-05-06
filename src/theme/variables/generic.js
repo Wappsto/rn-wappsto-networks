@@ -24,7 +24,7 @@ export function generateVariables(v = {}) {
     // Typography
     defaultFontSize: 14,
     fontFamily: 'System',
-    fontFamilyBold: 'System',
+  //  fontFamilyBold: 'System',
 
     fontSizeBase: 12,
 
@@ -103,7 +103,7 @@ export function generateVariables(v = {}) {
     },
     get inputSelectionColor() {
       if(color(this.inputTextColor).isDark()){
-        return color(this.inputTextColor).lighten(.9);
+        return color(this.inputTextColor).lighten(0.9);
       } else {
        return color(this.inputTextColor).darken(0.7);
      }

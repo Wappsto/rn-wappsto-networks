@@ -10,6 +10,7 @@ const styles = StyleSheet.create({
     flexDirection:'row',
     justifyContent: 'center',
     alignItems: 'center',
+    alignSelf: 'center',
     maxWidth: 400,
     borderRadius: theme.variables.borderRadiusBase,
     paddingVertical: 12,
@@ -43,6 +44,9 @@ const styles = StyleSheet.create({
     fontFamily: theme.variables.fontFamily,
     fontSize: theme.variables.buttonTextSize,
     color: theme.variables.buttonColor
+  },
+  textBold:{
+    fontWeight: 'bold'
   }
 });
 
@@ -65,24 +69,21 @@ const Button = React.memo(({
         switch(color) {
           case 'primary':
             return {color: theme.variables.primary};
-            break;
           case 'secondary':
             return {color: theme.variables.secondary};
-            break;
           case 'success':
             return {color: theme.variables.success};
-            break;
           case 'alert':
             return {color: theme.variables.alert};
-            break;
           case 'disabled':
             return {color: theme.variables.disabled};
-            break;
           default:
             return {color: color};
         }
       }
-    } else return {color: theme.variables.textColor};
+    } else {
+      return {color: theme.variables.textColor};
+    }
   };
 
   const colorStyle = () => {
@@ -116,7 +117,7 @@ const Button = React.memo(({
         default:
           return {};
       }
-    };
+    }
   };
 
   return (
@@ -130,7 +131,7 @@ const Button = React.memo(({
         {
           'left': {alignSelf: 'flex-start'},
           'right': {alignSelf: 'flex-end'},
-        }[align] || {alignSelf: 'center'},
+        }[align],
         {
           'block': {width: '100%'}
         }[display],
@@ -162,7 +163,7 @@ const Button = React.memo(({
         <Text style={[
           styles.text,
           type && textColor(),
-          bold && (theme.variables.fontFamilyBold ? {fontFamily:theme.variables.fontFamilyBold } : {fontWeight: 'bold'})
+          bold && (theme.variables.fontFamilyBold ? {fontFamily:theme.variables.fontFamilyBold } : styles.textBold)
         ]}>{text}</Text>
       }
     </TouchableOpacity>

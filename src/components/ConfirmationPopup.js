@@ -4,7 +4,6 @@ import Text from '../components/Text';
 import Button from '../components/Button';
 import Popup from './Popup';
 import { useTranslation, CapitalizeFirst } from '../translations';
-import theme from '../theme/themeExport';
 
 const styles = StyleSheet.create({
   btnGroup: {
@@ -20,7 +19,7 @@ const ConfirmationPopup = React.memo(({ visible, accept, reject, title, descript
     <Popup visible={visible} onRequestClose={reject} hide={reject} hideCloseIcon={true}>
       <Text
         size={16}
-        style={{fontWeight:'bold'}}
+        bold
         content={title ? title : CapitalizeFirst(t('deleteConfirmationQuestion'))}
       />
       <Text

@@ -1,5 +1,3 @@
-import {StyleSheet} from 'react-native';
-
 let variables = require('./variables/generic').default;
 
 let styles = {};

@@ -30,6 +30,11 @@ const OpenURLButton = ({ url, children }) => {
 };
 
 const styles = StyleSheet.create({
+  formLinkButtons:{
+    justifyContent: 'center',
+    flexDirection: 'row',
+    alignItems: 'center'
+  },
   signinButton: {
     width:'100%',
     maxWidth: 260,
@@ -60,13 +65,22 @@ const styles = StyleSheet.create({
     height:25,
     margin:10
   },
+  header:{
+    paddingTop: 30
+  },
+  headerImage:{
+    alignSelf: 'center',
+    maxWidth: '100%'
+  },
   appTitle:{
     fontSize:25,
     padding: 10,
     fontWeight: 'bold',
     textAlign: 'center',
     color:theme.variables.primary
-  }
+  },
+  googleColor: {backgroundColor: '#4285F4'},
+  facebookColor: {backgroundColor: '#4267B2'}
 });
 
 const LoginScreen = React.memo(({ navigation }) => {
@@ -82,7 +96,6 @@ const LoginScreen = React.memo(({ navigation }) => {
     toggleShowPassword,
     checkAndSignIn,
     canSignIn,
-    signIn,
     canTPSignIn,
     googleSignIn,
     facebookSignIn,
@@ -156,7 +169,7 @@ const LoginScreen = React.memo(({ navigation }) => {
               color={!canSignIn ? 'disabled' : 'primary'}
               text={CapitalizeFirst(t('loginAndRegistration.button.logIn'))}
             />
-          <View style={[theme.common.row, {justifyContent: 'center'}]}>
+          <View style={styles.formLinkButtons}>
             <Button
               disabled={loading}
               onPress={moveToRecoverPasswordScreen}
@@ -187,7 +200,7 @@ const LoginScreen = React.memo(({ navigation }) => {
               style={[
                 styles.signinButton,
                 !canTPSignIn && theme.common.disabled,
-                {backgroundColor: '#4285F4'}
+                styles.googleColor
               ]}
               onPress={googleSignIn}
             >
@@ -205,7 +218,7 @@ const LoginScreen = React.memo(({ navigation }) => {
               style={[
                 styles.signinButton,
                 !canTPSignIn && theme.common.disabled,
-                {backgroundColor: '#4267B2'}
+                styles.facebookColor
               ]}
               onPress={facebookSignIn}
             >
@@ -247,10 +260,10 @@ LoginScreen.navigationOptions = ({ screenProps: { t } }) => {
 LoginScreen.Header = () => {
   const { t } = useTranslation();
   return (
-    <View style={{paddingTop: 30 }}>
+    <View style={styles.header}>
       {
         defaultImages.loginAndRegistration.header &&
-        <Image resizeMode='contain' style={{ alignSelf: 'center', maxWidth: "100%" }} source={defaultImages.loginAndRegistration.header} />
+        <Image resizeMode='contain' style={styles.headerImage} source={defaultImages.loginAndRegistration.header} />
       }
       <RNtext style={styles.appTitle}>
         {CapitalizeEach(t('loginAndRegistration.appTitle'))}
@@ -262,7 +275,7 @@ LoginScreen.Header = () => {
 LoginScreen.Footer = () => {
   const { t } = useTranslation();
   return (
-    <OpenURLButton url="https://www.seluxit.com/privacy">
+    <OpenURLButton url='https://www.seluxit.com/privacy'>
       {CapitalizeFirst(t('loginAndRegistration.button.privacyNotice'))}
     </OpenURLButton>
   );

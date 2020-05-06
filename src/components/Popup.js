@@ -2,14 +2,12 @@ import React from 'react';
 import {
   Modal,
   View,
-  ScrollView,
   StyleSheet,
   TouchableOpacity,
   TouchableWithoutFeedback,
   StatusBar
 } from 'react-native';
 
-import { SafeAreaView } from 'react-native-safe-area-context';
 import Icon from 'react-native-vector-icons/Feather';
 import theme from '../theme/themeExport';
 import color from 'color';
@@ -51,7 +49,9 @@ const Popup = React.memo(({ animationType, visible, hide, onRequestClose, conten
               <TouchableOpacity
                 onPress={hide}
                 style={styles.closeButton}>
-                {!hideCloseIcon && <Icon name="x" size={24} color={theme.variables.textSecondary} />}
+                {!hideCloseIcon &&
+                  <Icon name='x' size={24} color={theme.variables.textSecondary} />
+                }
               </TouchableOpacity>
             </View>
           </TouchableWithoutFeedback>
