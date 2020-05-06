@@ -3,11 +3,19 @@ import { Platform, PermissionsAndroid, NativeModules, NativeEventEmitter } from 
 import BleManager from 'react-native-ble-manager';
 import { BlufiParameter } from '../BlufiLib/util/params';
 import { config } from '../configureWappstoRedux';
+import LocationServicesDialogBox from 'react-native-android-location-services-dialog-box';
+import { useTranslation, CapitalizeFirst } from '../translations';
 
 const BleManagerModule = NativeModules.BleManager;
 const bleManagerEmitter = new NativeEventEmitter(BleManagerModule);
 
+const PermissionError = {
+  BLUETOOTH: 'bluetooth',
+  LOCATION: 'location'
+}
+
 const useSearchBlufi = () => {
+  const { t } = useTranslation();
   const [ error, setError ] = useState(false);
   const [ permissionError, setPermissionError ] = useState(false);
   const [ scanning, setScanning ] = useState(true);
@@ -43,41 +51,71 @@ const useSearchBlufi = () => {
     );
   }
 
-  const scan = useCallback(async () => {
-    setDevices([]);
-    setScanning(true);
-    try{
-      addDiscoveryListener();
-      if(Platform.OS === 'android'){
-        await BleManager.enableBluetooth();
+  const getAndroidLocationPermission = useCallback(async () => {
+    if (Platform.Version >= 23) {
+      try{
+        await PermissionsAndroid.check(PermissionsAndroid.PERMISSIONS.ACCESS_COARSE_LOCATION);
+      } catch(e){
+        try{
+          await PermissionsAndroid.request(PermissionsAndroid.PERMISSIONS.ACCESS_COARSE_LOCATION);
+        } catch(err){
+          throw PermissionError.LOCATION;
+        }
       }
-      BleManager.scan([BlufiParameter.UUID_SERVICE], 15, false);
-    } catch(e){
-      setScanning(false);
-      setError(true);
     }
   }, []);
 
+  const enableLocation = useCallback(async () => {
+    try{
+      await LocationServicesDialogBox.checkLocationServicesIsEnabled({
+        message: CapitalizeFirst(t('onboarding.deviceDiscovery.locationPermissionMessage')),
+        ok: CapitalizeFirst(t('yes')),
+        cancel: CapitalizeFirst(t('no')),
+        enableHighAccuracy: true, // true => GPS AND NETWORK PROVIDER, false => GPS OR NETWORK PROVIDER
+        showDialog: true, // false => Opens the Location access page directly
+        openLocationServices: true, // false => Directly catch method is called if location services are turned off
+        preventOutSideTouch: false, // true => To prevent the location services window from closing when it is clicked outside
+        preventBackClick: false, // true => To prevent the location services popup from closing when it is clicked back button
+        providerListener: false, // true ==> Trigger locationProviderStatusChange listener when the location state changes
+      });
+    } catch(e){
+      throw PermissionError.LOCATION;
+    }
+  }, [t]);
+
+  const enableBluetooth = useCallback(async () => {
+    try {
+      await BleManager.enableBluetooth();
+    } catch (e) {
+      throw PermissionError.BLUETOOTH;
+    }
+  }, []);
+
+  const scan = useCallback(async () => {
+    setDevices([]);
+    setScanning(true);
+    setPermissionError();
+    setError(false);
+    try{
+      addDiscoveryListener();
+      if(Platform.OS === 'android'){
+        await getAndroidLocationPermission();
+        await enableLocation();
+        await enableBluetooth();
+      }
+      BleManager.scan([BlufiParameter.UUID_SERVICE], 15, false);
+    } catch(e){
+      if(typeof e === 'string'){
+        setPermissionError(e);
+      }
+      setScanning(false);
+      setError(true);
+    }
+  }, [enableLocation, getAndroidLocationPermission, enableBluetooth]);
+
   const init = () => {
     BleManager.start({showAlert: false});
-
-    if (Platform.OS === 'android' && Platform.Version >= 23) {
-        PermissionsAndroid.check(PermissionsAndroid.PERMISSIONS.ACCESS_COARSE_LOCATION).then((result) => {
-            if (result) {
-              scan();
-            } else {
-              PermissionsAndroid.request(PermissionsAndroid.PERMISSIONS.ACCESS_COARSE_LOCATION).then((result) => {
-                if (result) {
-                  scan();
-                } else {
-                  setPermissionError(true);
-                }
-              });
-            }
-      });
-    } else {
-      scan();
-    }
+    scan();
   }
 
   useEffect(() => {

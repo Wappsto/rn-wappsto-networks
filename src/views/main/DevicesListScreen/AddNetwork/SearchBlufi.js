@@ -135,7 +135,7 @@ const SearchBlufi = ({ next, previous, hide, setSelectedDevice }) => {
           size='p'
           align='center'
           color='error'
-          content={CapitalizeFirst(t('onboarding.deviceDiscovery.permissionError'))}
+          content={CapitalizeFirst(t('onboarding.deviceDiscovery.permissionError.' + permissionError))}
         />
       }
     </>
