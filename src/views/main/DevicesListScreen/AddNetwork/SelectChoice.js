@@ -3,7 +3,6 @@ import { View, TouchableOpacity, StyleSheet } from 'react-native';
 import { useTranslation, CapitalizeFirst } from '../../../../translations';
 import theme from '../../../../theme/themeExport';
 import Text from '../../../../components/Text';
-import Button from '../../../../components/Button';
 import Icon from 'react-native-vector-icons/Feather';
 
 const styles = StyleSheet.create({

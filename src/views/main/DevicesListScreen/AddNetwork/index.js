@@ -4,6 +4,7 @@ import { Modal } from 'react-native';
 import theme from '../../../../theme/themeExport';
 import SelectChoice from './SelectChoice';
 import SearchBlufi from './SearchBlufi';
+import DeviceWifiList from './DeviceWifiList';
 import ConfigureWifi from './ConfigureWifi';
 import SetupDevice from './SetupDevice';
 import AddNetworkPopup from './AddNetworkPopup';
@@ -65,9 +66,12 @@ const Content = React.memo(({ visible, hide, show }) => {
       Step = SearchBlufi;
       break;
     case 3:
-      Step = ConfigureWifi;
+      Step = DeviceWifiList;
       break;
     case 4:
+      Step = ConfigureWifi;
+      break;
+    case 5:
       Step = SetupDevice;
       break;
     default:

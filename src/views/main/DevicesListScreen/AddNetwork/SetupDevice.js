@@ -1,5 +1,5 @@
 import React from 'react';
-import { Image, View, TouchableOpacity, ActivityIndicator } from 'react-native';
+import { Image, View, ActivityIndicator } from 'react-native';
 import Text from '../../../../components/Text';
 import Button from '../../../../components/Button';
 import { useTranslation, CapitalizeFirst } from '../../../../translations';

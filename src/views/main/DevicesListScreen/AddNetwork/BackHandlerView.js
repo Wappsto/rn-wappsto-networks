@@ -1,7 +1,6 @@
 import React from 'react';
-import { StatusBar, ScrollView, View } from 'react-native';
+import { ScrollView, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import Text from '../../../../components/Text';
 import Button from '../../../../components/Button';
 import Icon from 'react-native-vector-icons/Feather';
 import theme from '../../../../theme/themeExport';
