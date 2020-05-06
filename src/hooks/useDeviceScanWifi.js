@@ -2,15 +2,15 @@ import { useState, useEffect, useRef } from 'react';
 import { NativeModules, NativeEventEmitter } from 'react-native';
 import BleManager from 'react-native-ble-manager';
 import Blufi from '../BlufiLib';
-import { BlufiParameter } from '../BlufiLib/util/params';
+import { BlufiParameter, BlufiCallback } from '../BlufiLib/util/params';
 
 const BleManagerModule = NativeModules.BleManager;
 const bleManagerEmitter = new NativeEventEmitter(BleManagerModule);
 
 const STEPS = {
   CONNECT: 'connect',
-  RETRIEVE: 'retrieve',
   INITNOTIFICATION: 'initNotification',
+  NEGOCIATESECURITY: 'negotiateSecurity',
   GETDEVICEWIFILIST: 'getDeviceWifiList',
   DONE: 'done'
 }
@@ -18,12 +18,15 @@ const STEPS = {
 const ERRORS = {
   FAILEDCONNECT: 'failedConnect',
   FAILEDINITNOTIFICATION: 'failedInitNotification',
+  FAILEDNEGOCIATESECURITY: 'failedNegotiateSecurity',
+  FAILEDNEGOCIATESECURITYTIMEOUT: 'failedNegotiateSecurityTimeout',
   FAILEDGETDEVICEWIFILIST: 'failedGetDeviceWifiList',
-  FAILEDGETDEVICEWIFILISTTIMEOUT: 'failedGetDeviceWifiListTimeout'
+  FAILEDGETDEVICEWIFILISTTIMEOUT: 'failedGetDeviceWifiListTimeout',
+  GENERIC: 'generic'
 }
 
-const timeoutLimit = 10000;
-const useDeviceWifiList = (selectedDevice) => {
+const timeoutLimit = 20000;
+const useDeviceScanWifi = (selectedDevice) => {
   const [ result, setResult ] = useState([]);
   const [ step, setStep ] = useState(STEPS.CONNECT);
   const timeout = useRef(null);
@@ -33,10 +36,20 @@ const useDeviceWifiList = (selectedDevice) => {
   const done = step === STEPS.DONE;
   const loading = !done && !error;
 
+  const getDeviceWifiList = () => {
+    setStep(STEPS.GETDEVICEWIFILIST);
+    Blufi.requestDeviceWifiScan();
+    timeout.current = setTimeout(() => {
+      // device did not send back network id
+      setStep(ERRORS.FAILEDGETDEVICEWIFILISTTIMEOUT);
+    }, timeoutLimit);
+  }
+
   const removeBlufiListeners = () => {
     bleManagerEmitter.removeAllListeners('BleManagerDidUpdateValueForCharacteristic');
     bleManagerEmitter.removeAllListeners('BleManagerDisconnectPeripheral');
     Blufi.onError = () => {}
+    Blufi.onNegotiateSecurityResult = async (status, data) => {}
     Blufi.onReceiveCustomData = async (status, data) => {}
   }
 
@@ -63,21 +76,36 @@ const useDeviceWifiList = (selectedDevice) => {
       }
     }
 
+    Blufi.onNegotiateSecurityResult = (status) => {
+      if(error){
+        return;
+      }
+      clearTimeout(timeout.current);
+      if(status === BlufiCallback.STATUS_SUCCESS){
+        getDeviceWifiList();
+      } else {
+        setStep(ERRORS.FAILEDNEGOCIATESECURITY);
+      }
+    }
+
     Blufi.onDeviceScanResult = async (status, data) => {
       if(error){
         return;
       }
-      success.current = true;
-      clearTimeout(timeout.current);
-      setStep(STEPS.DONE);
-      setResult(data);
+      if(status === BlufiCallback.STATUS_SUCCESS){
+        success.current = true;
+        clearTimeout(timeout.current);
+        setStep(STEPS.DONE);
+        setResult(data);
+      } else {
+        setStep(ERRORS.FAILEDGETDEVICEWIFILIST);
+      }
     }
   }
 
-  const getDeviceWifiList = async () => {
+  const initConnectionAndGetDeviceWifiList = async () => {
     try {
       Blufi.reset();
-      addBlufiListeners();
       setStep(STEPS.CONNECT);
       await BleManager.connect(selectedDevice.id);
     } catch(e) {
@@ -94,32 +122,43 @@ const useDeviceWifiList = (selectedDevice) => {
       return;
     }
     try{
-      setStep(STEPS.GETDEVICEWIFILIST);
-      Blufi.requestDeviceWifiScan();
+      setStep(STEPS.NEGOCIATESECURITY);
+      Blufi.negotiateSecurity();
       timeout.current = setTimeout(() => {
         // device did not negociate security
-        setStep(ERRORS.FAILEDGETDEVICEWIFILISTTIMEOUT);
+        setStep(ERRORS.FAILEDNEGOCIATESECURITYTIMEOUT);
       }, timeoutLimit);
     } catch (e) {
-      setStep(ERRORS.FAILEDGETDEVICEWIFILIST);
+      setStep(ERRORS.FAILEDNEGOCIATESECURITY);
       return;
+    }
+  }
+
+  const scan = async (force) => {
+    if(force || !loading){
+      addBlufiListeners();
+      if(Blufi.connectedDevice
+        && Blufi.connectedDevice.id === selectedDevice.id
+        && (!error || [ERRORS.FAILEDGETDEVICEWIFILIST, ERRORS.FAILEDGETDEVICEWIFILISTTIMEOUT].includes(error))){
+        getDeviceWifiList();
+      } else {
+        initConnectionAndGetDeviceWifiList();
+      }
     }
   }
 
   useEffect(() => {
     if(!success.current){
-      getDeviceWifiList();
+      scan(true);
     }
     return () => {
       removeBlufiListeners();
-      BleManager.disconnect(selectedDevice.id);
-      Blufi.reset();
-      timeout.current = null;
+      clearTimeout(timeout.current);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  return { loading, error, step, getDeviceWifiList, result };
+  return { loading, error, step, scan, result };
 }
 
-export default useDeviceWifiList;
+export default useDeviceScanWifi;

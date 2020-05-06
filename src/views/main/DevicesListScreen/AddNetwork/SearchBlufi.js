@@ -1,4 +1,4 @@
-import React, { useCallback } from 'react';
+import React, { useCallback, useEffect } from 'react';
 import { View, Text as RNtext, Image, TouchableOpacity, StyleSheet, ActivityIndicator } from 'react-native';
 import { useTranslation, CapitalizeFirst } from '../../../../translations';
 import theme from '../../../../theme/themeExport';
@@ -6,6 +6,8 @@ import image from '../../../../theme/images';
 import Text from '../../../../components/Text';
 import Button from '../../../../components/Button';
 import useSearchBlufi from '../../../../hooks/useSearchBlufi';
+import BleManager from 'react-native-ble-manager';
+import Blufi from '../../../../BlufiLib';
 
 const styles = StyleSheet.create({
   deviceItem:{
@@ -45,6 +47,13 @@ const SearchBlufi = ({ next, previous, hide, setSelectedDevice }) => {
     setSelectedDevice(item);
     next();
   }, [next, setSelectedDevice]);
+
+  useEffect(() => {
+    if(Blufi.connectedDevice){
+      BleManager.disconnect(Blufi.connectedDevice.id);
+    }
+    Blufi.reset();
+  }, []);
 
   return (
     <>

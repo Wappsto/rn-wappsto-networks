@@ -172,10 +172,10 @@ const useSetupDevice = (selectedDevice, sendRequest, postRequest, acceptedManufa
     }
     return () => {
       removeBlufiListeners();
+      clearTimeout(timeout.current);
       BleManager.disconnect(selectedDevice.id);
       Blufi.reset();
       networkId.current = null;
-      timeout.current = null;
       success.current = false;
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps

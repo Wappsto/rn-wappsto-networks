@@ -13,6 +13,8 @@ import { iotNetworkListAdd } from '../../../../util/params';
 import ConfirmAddManufacturerNetwork from './ConfirmAddManufacturerNetwork';
 import BackHandlerView from './BackHandlerView';
 import useAddNetwork from '../../../../hooks/useAddNetwork';
+import BleManager from 'react-native-ble-manager';
+import Blufi from '../../../../BlufiLib';
 
 const Content = React.memo(({ visible, hide, show }) => {
   const [ ssid, setSsid ] = useState('');
@@ -29,6 +31,14 @@ const Content = React.memo(({ visible, hide, show }) => {
     acceptedManufacturerAsOwner,
     skipErrorCodes
   } = useAddNetwork(iotNetworkListAdd, maoShow, maoHide);
+
+  const cancel = useCallback(() => {
+    if(selectedDevice){
+      BleManager.disconnect(selectedDevice.id);
+    }
+    Blufi.reset();
+    hide();
+  }, [selectedDevice, hide]);
 
   const next = useCallback(() => {
     setStep(s => {
@@ -87,9 +97,9 @@ const Content = React.memo(({ visible, hide, show }) => {
         visible={visible}
         hide={hide}
         onRequestClose={handleBack}>
-          <BackHandlerView hide={hide} handleBack={handleBack}>
+          <BackHandlerView hide={cancel} handleBack={handleBack}>
             <Step
-              hide={hide}
+              hide={cancel}
               next={next}
               setStep={setStep}
               selectedDevice={selectedDevice}
