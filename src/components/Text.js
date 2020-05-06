@@ -8,6 +8,12 @@ const styles = StyleSheet.create({
     fontFamily: theme.variables.fontFamily,
     fontSize: theme.variables.defaultFontSize
   },
+  bold:{
+    fontWeight: 'bold'
+  },
+  fontBold: {
+    fontFamily: theme.variables.fontFamilyBold
+  },
   title:{
     color: theme.variables.titleColor,
     fontFamily: theme.variables.titleFontFamily,
@@ -46,7 +52,7 @@ const Title = React.memo(({
     return {
       fontSize: s,
       lineHeight: s * 1.5,
-      marginBottom: s * .8
+      marginBottom: s * 0.8
     }
   };
 
@@ -75,7 +81,7 @@ const Title = React.memo(({
       style={[
         styles.text,
         title && styles.title,
-        bold && {fontFamily: theme.variables.fontFamilyBold},
+        bold && (theme.variables.fontFamilyBold ? styles.fontBold : styles.bold),
         align && {textAlign: align},
         size && fontStyle(size),
         color && textColor(color),

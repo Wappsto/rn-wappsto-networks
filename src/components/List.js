@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, FlatList, TouchableOpacity, ActivityIndicator } from 'react-native';
+import { View, FlatList, ActivityIndicator } from 'react-native';
 import RequestError from './RequestError';
 import theme from '../theme/themeExport';
 import Text from '../components/Text';

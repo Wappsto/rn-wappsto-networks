@@ -1,6 +1,4 @@
 import React, { useState, useCallback } from 'react';
-import {TouchableOpacity} from 'react-native';
-import theme from '../theme/themeExport';
 import Button from '../components/Button';
 
 const PopupButton = React.memo(({ icon, style, color, children }) => {

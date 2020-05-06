@@ -29,6 +29,10 @@ const styles = StyleSheet.create({
     height: 35,
     borderRadius: 20,
     margin: 8,
+  },
+  logoutBtn:{
+    marginBottom: 20,
+    marginLeft: 5
   }
 });
 const DrawerMenu = React.memo((props) => {
@@ -79,7 +83,7 @@ const DrawerMenu = React.memo((props) => {
         align='left'
         bold
         onPress={logout}
-        style={{marginBottom: 20, marginLeft: 5}}
+        style={styles.logoutBtn}
         text={CapitalizeFirst(t('logout'))}
       />
     </SafeAreaView>

@@ -1,7 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import Text from '../components/Text';
 import usePrevious from 'wappsto-blanket/hooks/usePrevious';
-import theme from '../theme/themeExport';
 import {useTranslation, CapitalizeFirst} from '../translations';
 
 const RequestError = React.memo(({ request, skipCodes = [] }) => {

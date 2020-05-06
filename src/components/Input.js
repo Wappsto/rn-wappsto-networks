@@ -77,7 +77,6 @@ const Input = React.memo(({
           disabled={disabled}
           autoCapitalize={autoCapitalize}
           textContentType={textContentType}
-          autoCapitalize={autoCapitalize}
           autoCorrect={false}
           keyboardType={keyboardType}
           returnKeyType={returnKeyType}
