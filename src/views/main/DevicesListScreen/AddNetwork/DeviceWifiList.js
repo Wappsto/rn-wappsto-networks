@@ -97,8 +97,8 @@ const DeviceWifiList = React.memo(({ next, previous, setSsid, selectedDevice }) 
             size='p'
             content={CapitalizeFirst(t('onboarding.wifiScan.selectWifi'))}
           />
-          {result.map(wifi => (
-            <TouchableOpacity key={wifi.ssid} onPress={() => selectSsid(wifi.ssid)} style={styles.deviceItem}>
+          {result.map((wifi, index) => (
+            <TouchableOpacity key={index} onPress={() => selectSsid(wifi.ssid)} style={styles.deviceItem}>
               {image.onboarding.deviceIcon &&
                 <View style={styles.deviceImageWrapper}>
                   <Image resizeMode='contain' source={image.onboarding.deviceIcon} style={styles.deviceImage}/>
@@ -120,6 +120,18 @@ const DeviceWifiList = React.memo(({ next, previous, setSsid, selectedDevice }) 
           text={CapitalizeFirst(t('onboarding.wifiScan.scanAgain'))}
         />
       }
+      <Text
+        style={{ marginTop: 30 }}
+        size='p'
+        align='center'
+        content={t('onboarding.wifiScan.or')}
+      />
+      <Button
+        onPress={next}
+        type='link'
+        color='primary'
+        text={CapitalizeFirst(t('onboarding.wifiScan.putOwnWifi'))}
+      />
     </>
   );
 });

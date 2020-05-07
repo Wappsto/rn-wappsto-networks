@@ -1,6 +1,5 @@
 import { useEffect, useState, useRef, useCallback } from 'react';
 import AsyncStorage from '@react-native-community/async-storage';
-import { NetworkInfo } from 'react-native-network-info';
 
 const wifiSsidStorageKey = 'wifiSSID';
 const wifiPasswordStorageKey = 'wifiPassword';
@@ -45,12 +44,14 @@ const useConfigureWifi = (ssid, setSsid, password, setPassword) => {
 
   const init = async () => {
     try {
-      const currentSsid = await NetworkInfo.getSSID();
-      const ssid = await AsyncStorage.getItem(wifiSsidStorageKey);
-      setSsid(ssid || currentSsid || '');
-      const password = await AsyncStorage.getItem(wifiPasswordStorageKey);
-      if(password && ssid === currentSsid){
-        setPassword(password);
+      const savedSsid = await AsyncStorage.getItem(wifiSsidStorageKey);
+      if(!ssid){
+        setSsid(savedSsid);
+      }
+
+      const passwords = await AsyncStorage.getItem(wifiPasswordStorageKey);
+      if(passwords[ssid]){
+        setPassword(passwords[ssid]);
       }
     } catch (e) {
 

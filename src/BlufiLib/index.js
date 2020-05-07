@@ -108,7 +108,7 @@ const Blufi = {
     return _negotiateSecurity();
   },
 
-  onCharacteristicChanged(data) {
+  onCharacteristicChanged(data){
     const parse = parseNotification(data);
     if (parse < 0) {
       onError(BlufiCallback.CODE_INVALID_NOTIFICATION);
@@ -116,6 +116,10 @@ const Blufi = {
       parseBlufiNotifyData(notification);
       notification = {};
     }
+  },
+
+  onCustomCharacteristicChanged({ value }){
+    Blufi.onCharacteristicChanged(value);
   },
 
   reset(){
@@ -188,7 +192,9 @@ function toHex(byteArray) {
 //----------------------------------------------------------------------------------------------------------
 
 async function gattWrite(data) {
-  await BleManager.write(Blufi.connectedDevice.id, BlufiParameter.UUID_SERVICE, BlufiParameter.UUID_WRITE_CHARACTERISTIC, data);
+  if(Blufi.connectedDevice && Blufi.connectedDevice.id){
+    await BleManager.write(Blufi.connectedDevice.id, BlufiParameter.UUID_SERVICE, BlufiParameter.UUID_WRITE_CHARACTERISTIC, data);
+  }
 }
 
 async function receiveAck(sequence) {

@@ -8,7 +8,6 @@ import com.facebook.react.ReactApplication;
 import com.facebook.reactnative.androidsdk.FBSDKPackage;
 import com.reactnativecommunity.webview.RNCWebViewPackage;
 import com.th3rdwave.safeareacontext.SafeAreaContextPackage;
-import com.pusherman.networkinfo.RNNetworkInfoPackage;
 import it.innove.BleManagerPackage;
 import com.reactnativecommunity.slider.ReactSliderPackage;
 import com.oblador.vectoricons.VectorIconsPackage;

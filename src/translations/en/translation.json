@@ -219,7 +219,6 @@
         "failedRetrieveTimeout": "failed to comunicate with the device.",
         "failedNotUuid": "wrong UUID was received from the device.",
         "failedSendWifiData": "failed to send WiFi data.",
-        "failedWaitDeviceConnect": "the device failed to connect to WiFi.",
         "rejectedManufacturerAsOwner": "Device was not registered to your account since you have rejected device data sharing with the manufacturer of the device.",
         "rserror": "",
         "generic": "something went wrong."

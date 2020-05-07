@@ -1,6 +1,6 @@
 import React, { useState, useCallback, useEffect } from 'react';
 import PopupButton from '../../../../components/PopupButton';
-import { Modal } from 'react-native';
+import { Modal, NativeModules, NativeEventEmitter } from 'react-native';
 import theme from '../../../../theme/themeExport';
 import SelectChoice from './SelectChoice';
 import SearchBlufi from './SearchBlufi';
@@ -15,6 +15,9 @@ import BackHandlerView from './BackHandlerView';
 import useAddNetwork from '../../../../hooks/useAddNetwork';
 import BleManager from 'react-native-ble-manager';
 import Blufi from '../../../../BlufiLib';
+
+const BleManagerModule = NativeModules.BleManager;
+const bleManagerEmitter = new NativeEventEmitter(BleManagerModule);
 
 const Content = React.memo(({ visible, hide, show }) => {
   const [ ssid, setSsid ] = useState('');
@@ -32,7 +35,7 @@ const Content = React.memo(({ visible, hide, show }) => {
     skipErrorCodes
   } = useAddNetwork(iotNetworkListAdd, maoShow, maoHide);
 
-  const cancel = useCallback(() => {
+  const disconnectAndHide = useCallback(() => {
     if(selectedDevice){
       BleManager.disconnect(selectedDevice.id);
     }
@@ -63,6 +66,13 @@ const Content = React.memo(({ visible, hide, show }) => {
       setAcceptedManufacturerAsOwner(null);
     }
   }, [visible, setAcceptedManufacturerAsOwner]);
+
+  useEffect(() => {
+    bleManagerEmitter.addListener('BleManagerDisconnectPeripheral', Blufi.reset);
+    return () => {
+      bleManagerEmitter.removeListener('BleManagerDisconnectPeripheral', Blufi.reset);
+    }
+  }, []);
 
   let Step = null;
   switch (step) {
@@ -95,11 +105,11 @@ const Content = React.memo(({ visible, hide, show }) => {
       <Modal
         transparent={true}
         visible={visible}
-        hide={hide}
+        hide={disconnectAndHide}
         onRequestClose={handleBack}>
-          <BackHandlerView hide={cancel} handleBack={handleBack}>
+          <BackHandlerView hide={disconnectAndHide} handleBack={handleBack}>
             <Step
-              hide={cancel}
+              hide={disconnectAndHide}
               next={next}
               setStep={setStep}
               selectedDevice={selectedDevice}
