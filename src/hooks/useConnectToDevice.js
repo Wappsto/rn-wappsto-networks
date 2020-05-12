@@ -30,17 +30,16 @@ const useConnectToDevice = (selectedDevice) => {
   const success = useRef(false);
 
   let error = Object.values(ERRORS).includes(step);
-  const done = step === STEPS.CONNECTED;
-  const loading = !done && !error;
   const connected = Blufi.connectedDevice
                   && Blufi.connectedDevice.id === selectedDevice.id
                   && device === selectedDevice.id;
+  const loading = !connected && !error;
 
   const removeBlufiListeners = () => {
     bleManagerEmitter.removeListener('BleManagerDidUpdateValueForCharacteristic', Blufi.onCustomCharacteristicChanged);
     bleManagerEmitter.removeListener('BleManagerDisconnectPeripheral', Blufi.reset);
     Blufi.onError = () => {}
-    Blufi.onNegotiateSecurityResult = async (status, data) => {}
+    Blufi.onNegotiateSecurityResult = () => {}
   }
 
   const addBlufiListeners = () => {

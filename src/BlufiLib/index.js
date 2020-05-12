@@ -293,11 +293,11 @@ async function postContainData(encrypt, checksum, requireAck, type, data) {
   return true;
 }
 
-function post(encrypt, checksum, requireAck, type, data) {
+async function post(encrypt, checksum, requireAck, type, data) {
   if (data === null || data.length === 0) {
-    return postNonData(encrypt, checksum, requireAck, type);
+    return await postNonData(encrypt, checksum, requireAck, type);
   } else {
-    return postContainData(encrypt, checksum, requireAck, type, data);
+    return await postContainData(encrypt, checksum, requireAck, type, data);
   }
 }
 

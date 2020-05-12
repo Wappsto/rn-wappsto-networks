@@ -142,8 +142,6 @@ const useSetupDevice = (selectedDevice, sendRequest, postRequest, acceptedManufa
     return () => {
       removeBlufiListeners();
       clearTimeout(timeout.current);
-      BleManager.disconnect(selectedDevice.id);
-      Blufi.reset();
       networkId.current = null;
       success.current = false;
     }
