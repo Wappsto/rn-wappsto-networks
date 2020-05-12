@@ -1,5 +1,6 @@
 import { useState, useEffect, useRef } from 'react';
 import useConnectToDevice from './useConnectToDevice';
+import BleManager from 'react-native-ble-manager';
 import Blufi from '../BlufiLib';
 import { BlufiCallback } from '../BlufiLib/util/params';
 import { isUUID } from 'wappsto-redux/util/helpers';
@@ -129,7 +130,7 @@ const useSetupDevice = (selectedDevice, sendRequest, postRequest, acceptedManufa
 
   useEffect(() => {
     if(connected){
-      configure();
+      startConfigure();
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [connected]);
