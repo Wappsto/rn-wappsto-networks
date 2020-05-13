@@ -1,13 +1,19 @@
 import { useState, useEffect, useCallback, useRef } from 'react';
 import useRequest from 'wappsto-blanket/hooks/useRequest';
 
-const useControlState = (state, value, throttleTime = 3000) => {
+const useControlState = (state, value, throttleTime = 1000) => {
   const { request, send } = useRequest();
-  const [ input, setInput ] = useState();
+  const [ input, setInput ] = useState((state && state.data) || '');
   const [ isFocused, setIsFocused ] = useState(false);
   const isUpdating = request && request.status === 'pending';
   const stateId = state && state.meta && state.meta.id;
   const throttleTimer = useRef();
+
+  useEffect(() => {
+    return () => {
+      clearTimeout(throttleTimer.current);
+    }
+  }, []);
 
   useEffect(() => {
     if(value && !isFocused){
@@ -53,7 +59,7 @@ const useControlState = (state, value, throttleTime = 3000) => {
     throttleTimer.current = setTimeout(() => {
       updateState(data);
     }, throttleTime);
-  }, [updateState]);
+  }, [updateState, throttleTime]);
 
   return {
     input,
