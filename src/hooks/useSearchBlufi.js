@@ -114,8 +114,8 @@ const useSearchBlufi = () => {
     }
   }, [enableLocation, getAndroidLocationPermission, enableBluetooth, addDiscoveryListener]);
 
-  const init = () => {
-    BleManager.start({showAlert: false, forceLegacy: true});
+  const init = async () => {
+    await BleManager.start({showAlert: false, forceLegacy: true});
     scan();
   }
 

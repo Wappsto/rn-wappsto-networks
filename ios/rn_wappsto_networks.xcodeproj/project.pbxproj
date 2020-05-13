@@ -24,6 +24,7 @@
 		573301E15FAA48E09B64FF51 /* Feather.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 533BAA86D7A044A98C639D7C /* Feather.ttf */; };
 		58FE528630C54866986CE63A /* FontAwesome.ttf in Resources */ = {isa = PBXBuildFile; fileRef = B406AC4F9AEF4B70A4873795 /* FontAwesome.ttf */; };
 		5DCCC7BC4A594624B3470FD2 /* Ionicons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 77C6730101CB44E998CC1E89 /* Ionicons.ttf */; };
+		67B85C89246AD83900DB439B /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 67B85C88246AD83900DB439B /* GoogleService-Info.plist */; };
 		67FBC123245971DE00B1A0C1 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 67FBC122245971DE00B1A0C1 /* GoogleService-Info.plist */; };
 		7AAF5EAEDF234FA5890BB932 /* Foundation.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 9D1C7B549C5F436F85DEA832 /* Foundation.ttf */; };
 		8233911217314812BC7B4D01 /* MaterialIcons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 4F45F97152864E4C80FD60A5 /* MaterialIcons.ttf */; };
@@ -78,6 +79,7 @@
 		533BAA86D7A044A98C639D7C /* Feather.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Feather.ttf; path = "../node_modules/react-native-vector-icons/Fonts/Feather.ttf"; sourceTree = "<group>"; };
 		607EB9872E9140EEA1687CA5 /* FontAwesome5_Solid.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = FontAwesome5_Solid.ttf; path = "../node_modules/react-native-vector-icons/Fonts/FontAwesome5_Solid.ttf"; sourceTree = "<group>"; };
 		645E35F1355042D9805521D7 /* FontAwesome5_Regular.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = FontAwesome5_Regular.ttf; path = "../node_modules/react-native-vector-icons/Fonts/FontAwesome5_Regular.ttf"; sourceTree = "<group>"; };
+		67B85C88246AD83900DB439B /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		67DED93E2459915B00386B5A /* rn_wappsto_networks.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; name = rn_wappsto_networks.entitlements; path = rn_wappsto_networks/rn_wappsto_networks.entitlements; sourceTree = "<group>"; };
 		67FBC122245971DE00B1A0C1 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		6802507841FE5A54801BB575 /* libPods-rn_wappsto_networks.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-rn_wappsto_networks.a"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -196,6 +198,7 @@
 		83CBB9F61A601CBA00E9B192 = {
 			isa = PBXGroup;
 			children = (
+				67B85C88246AD83900DB439B /* GoogleService-Info.plist */,
 				13B07FAE1A68108700A75B9A /* rn_wappsto_networks */,
 				832341AE1AAA6A7D00B99B32 /* Libraries */,
 				00E356EF1AD99517003FC87E /* rn_wappsto_networksTests */,
@@ -357,6 +360,7 @@
 					};
 					13B07F861A680F5B00A75B9A = {
 						DevelopmentTeam = P23A93J5F9;
+						ProvisioningStyle = Automatic;
 					};
 					2D02E47A1E0B4A5D006451C7 = {
 						CreatedOnToolsVersion = 8.2.1;
@@ -420,6 +424,7 @@
 				F083B1B29C194AAF909AA1D0 /* MaterialCommunityIcons.ttf in Resources */,
 				8233911217314812BC7B4D01 /* MaterialIcons.ttf in Resources */,
 				86593585FF084D88A1DEF89C /* Octicons.ttf in Resources */,
+				67B85C89246AD83900DB439B /* GoogleService-Info.plist in Resources */,
 				EED752F26AF9442D815260EF /* SimpleLineIcons.ttf in Resources */,
 				8847E760BC0D4A5BBF0608DF /* Zocial.ttf in Resources */,
 			);
@@ -775,6 +780,8 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = rn_wappsto_networks/rn_wappsto_networks.entitlements;
+				CODE_SIGN_IDENTITY = "Apple Development";
+				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEAD_CODE_STRIPPING = NO;
 				DEVELOPMENT_TEAM = P23A93J5F9;
@@ -787,6 +794,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = "org.reactjs.native.example.rn-wappsto-networks";
 				PRODUCT_NAME = rn_wappsto_networks;
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				VERSIONING_SYSTEM = "apple-generic";
 			};
 			name = Debug;
@@ -797,6 +805,8 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = rn_wappsto_networks/rn_wappsto_networks.entitlements;
+				CODE_SIGN_IDENTITY = "Apple Development";
+				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEAD_CODE_STRIPPING = YES;
 				DEVELOPMENT_TEAM = P23A93J5F9;
@@ -809,6 +819,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = "org.reactjs.native.example.rn-wappsto-networks";
 				PRODUCT_NAME = rn_wappsto_networks;
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				VERSIONING_SYSTEM = "apple-generic";
 			};
 			name = Release;
