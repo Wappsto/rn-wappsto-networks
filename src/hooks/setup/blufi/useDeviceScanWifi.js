@@ -14,7 +14,7 @@ const ERRORS = {
   GENERIC: 'generic'
 }
 
-const timeoutLimit = 5000;
+const timeoutLimit = 10000;
 const useDeviceScanWifi = (selectedDevice) => {
   const {
     loading: connectionLoading,
@@ -26,11 +26,12 @@ const useDeviceScanWifi = (selectedDevice) => {
   const [ step, setStep ] = useState(STEPS.GETDEVICEWIFILIST);
   const timeout = useRef(null);
   const success = useRef(false);
+  const error = useRef(false);
 
-  let error = Object.values(ERRORS).includes(step) || connectionError;
+  error.current = Object.values(ERRORS).includes(step) || connectionError;
   const currentStep = connectionLoading ? connectionStep : step;
   const done = step === STEPS.DONE;
-  const loading = !done && !error;
+  const loading = !done && !error.current;
 
   const removeBlufiListeners = () => {
     Blufi.onError = () => {}
@@ -40,14 +41,14 @@ const useDeviceScanWifi = (selectedDevice) => {
   const addBlufiListeners = () => {
     Blufi.onError = () => {
       clearTimeout(timeout.current);
-      if(!error){
-        error = true;
+      if(!error.current){
+        error.current = true;
         setStep(ERRORS.GENERIC);
       }
     }
 
     Blufi.onDeviceScanResult = async (status, data) => {
-      if(error){
+      if(error.current){
         return;
       }
       if(status === BlufiCallback.STATUS_SUCCESS){
@@ -99,7 +100,7 @@ const useDeviceScanWifi = (selectedDevice) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  return { loading, error, step: currentStep, scan, result };
+  return { loading, error: error.current, step: currentStep, scan, result };
 }
 
 export default useDeviceScanWifi;

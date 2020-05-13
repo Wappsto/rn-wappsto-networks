@@ -23,17 +23,18 @@ const ERRORS = {
 }
 
 let device;
-const timeoutLimit = 5000;
+const timeoutLimit = 10000;
 const useConnectToDevice = (selectedDevice) => {
   const [ step, setStep ] = useState(STEPS.CONNECT);
   const timeout = useRef(null);
   const success = useRef(false);
+  const error = useRef(false);
 
-  let error = Object.values(ERRORS).includes(step);
+  error.current = Object.values(ERRORS).includes(step);
   const connected = Blufi.connectedDevice
                   && Blufi.connectedDevice.id === selectedDevice.id
                   && device === selectedDevice.id;
-  const loading = !connected && !error;
+  const loading = !connected && !error.current;
 
   const removeBlufiListeners = () => {
     bleManagerEmitter.removeListener('BleManagerDidUpdateValueForCharacteristic', Blufi.onCustomCharacteristicChanged);
@@ -48,14 +49,14 @@ const useConnectToDevice = (selectedDevice) => {
 
     Blufi.onError = () => {
       clearTimeout(timeout.current);
-      if(!error){
-        error = true;
+      if(!error.current){
+        error.current = true;
         setStep(ERRORS.GENERIC);
       }
     }
 
     Blufi.onNegotiateSecurityResult = (status) => {
-      if(error){
+      if(error.current){
         return;
       }
       clearTimeout(timeout.current);
@@ -122,7 +123,7 @@ const useConnectToDevice = (selectedDevice) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  return { loading, error, step, connect, connected };
+  return { loading, error: error.current, step, connect, connected };
 }
 
 export default useConnectToDevice;

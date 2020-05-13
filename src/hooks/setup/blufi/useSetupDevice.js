@@ -35,11 +35,12 @@ const useSetupDevice = (selectedDevice, sendRequest, postRequest, acceptedManufa
   const networkId = useRef(null);
   const timeout = useRef(null);
   const success = useRef(false);
+  const error = useRef(false);
 
-  let error = Object.values(ERRORS).includes(step) || connectionError;
+  error.current = Object.values(ERRORS).includes(step) || connectionError;
   const currentStep = connectionLoading ? connectionStep : step;
   const done = step === STEPS.DONE;
-  const loading = !done && !error;
+  const loading = !done && !error.current;
 
   const removeBlufiListeners = () => {
     Blufi.onError = () => {}
@@ -50,14 +51,14 @@ const useSetupDevice = (selectedDevice, sendRequest, postRequest, acceptedManufa
   const addBlufiListeners = () => {
     Blufi.onError = () => {
       clearTimeout(timeout.current);
-      if(!error){
-        error = true;
+      if(!error.current){
+        error.current = true;
         setStep(ERRORS.GENERIC);
       }
     }
 
     Blufi.onReceiveCustomData = async (status, data) => {
-      if(error){
+      if(error.current){
         return;
       }
       if(status === BlufiCallback.STATUS_SUCCESS){
@@ -76,7 +77,7 @@ const useSetupDevice = (selectedDevice, sendRequest, postRequest, acceptedManufa
     }
 
     Blufi.onStatusResponse = (status) => {
-      if(error){
+      if(error.current){
         return;
       }
       if(status === BlufiCallback.STATUS_SUCCESS){
@@ -162,7 +163,7 @@ const useSetupDevice = (selectedDevice, sendRequest, postRequest, acceptedManufa
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [postRequest, acceptedManufacturerAsOwner]);
 
-  return { loading, error, step: currentStep, configure };
+  return { loading, error: error.current, step: currentStep, configure };
 }
 
 export default useSetupDevice;
