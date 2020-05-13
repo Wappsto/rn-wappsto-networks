@@ -9,7 +9,8 @@ import Timestamp from './Timestamp';
 import { cannotAccessState } from 'wappsto-blanket/util';
 import { getStateData } from '../../../util/helpers';
 import useControlState from '../../../hooks/useControlState';
-import NumericInput from 'react-native-numeric-input';
+// import NumericInput from 'react-native-numeric-input';
+import NumericInput from '../../../components/NumericInput';
 
 const styles = StyleSheet.create({
   slider:{
@@ -87,32 +88,16 @@ export const StateDataField = ({
     } else {
       stateDataField = (
         <NumericInput
-          initValue={parseFloat(input)}
-          value={parseFloat(input)}
-          valueType='real'
-          maxValue={param.max}
-          minValue={param.min}
+          defaultValue={input + ''}
+          value={input + ''}
+          max={param.max}
+          min={param.min}
           step={param.step}
           onFocus={() => setIsFocused(true)}
           onBlur={() => setIsFocused(false)}
-          extraTextInputProps={{
-            onSubmitEditing: updateStateFromInput
-          }}
-          onChange={(data) => !isFocused && throttledUpdateState(data)}
-          editable={!isUpdating}
-          rounded={theme.variables.NumericInputRounded}
-          inputStyle={{
-            backgroundColor:theme.variables.NumericInputBackground,
-            maxHeight:'100%',
-            borderLeftWidth:0,
-            borderRightWidth:0
-          }}
-          textColor={theme.variables.NumericInputTextColor}
-          iconStyle={{color:theme.variables.NumericInputButtonTextColor}}
-          rightButtonBackgroundColor={theme.variables.NumericInputButtonBackground}
-          leftButtonBackgroundColor={theme.variables.NumericInputButtonBackground}
-          upDownButtonsBackgroundColor={theme.variables.NumericInputButtonBackground}
-          borderColor={theme.variables.NumericInputBorder}
+          onSubmitEditing={updateStateFromInput}
+          onChange={setInput}
+          onButtonClick={throttledUpdateState}
         />
       );
     }

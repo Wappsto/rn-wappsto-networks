@@ -1,7 +1,8 @@
-import React from 'react';
+import React, { useCallback, useState } from 'react';
 import { StyleSheet, View, Text, TextInput, TouchableOpacity } from 'react-native';
 import Icon from 'react-native-vector-icons/Feather';
 import theme from '../theme/themeExport';
+import { useTranslation, CapitalizeFirst } from '../translations';
 
 const styles = StyleSheet.create({
   numericInput:{
@@ -52,19 +53,60 @@ const styles = StyleSheet.create({
   }
 });
 
-const Input = React.memo(({
+const NumericInput = React.memo(({
   inputRef,
   label,
-  value,
   style,
-  disabled,
+  validationError,
+  defaultValue,
+  value,
+  max,
+  min,
+  step,
+  onFocus,
   onBlur,
   onSubmitEditing,
-  onChangeText,
-  validationError,
-  showPassword,
-  toggleShowPassword
+  onChange,
+  onButtonClick,
+  disabled,
 }) => {
+  const { t } = useTranslation();
+  const [ warning, setWarning ] = useState(false);
+
+  const updateWarning = useCallback((value) => {
+    if(min !== null && min !== undefined && !isNaN(min)){
+      if(parseFloat(value) < parseFloat(min)){
+        setWarning('min');
+        return;
+      }
+    }
+    if(max !== null && max !== undefined && !isNaN(max)){
+      if(value > parseFloat(max)){
+        setWarning('max');
+        return;
+      }
+    }
+    if(warning) {
+      setWarning(false);
+    }
+  }, [min, max, warning]);
+
+  const onChangeText = useCallback((text) => {
+    onChange(text);
+    updateWarning(text);
+  }, [onChange, updateWarning]);
+
+  const onLeftButtonClick = useCallback(() => {
+    const newValue = parseFloat(value) - (parseFloat(step) || 1);
+    onButtonClick(newValue);
+    updateWarning(newValue);
+  }, [value, step, updateWarning, onButtonClick]);
+
+  const onRightButtonClick = useCallback(() => {
+    const newValue = parseFloat(value) + (parseFloat(step) || 1);
+    onButtonClick(newValue);
+    updateWarning(newValue);
+  }, [value, step, updateWarning, onButtonClick]);
 
   return (
     <>
@@ -73,7 +115,9 @@ const Input = React.memo(({
       }
       <View style={[styles.numericInput, validationError && styles.inputError]}>
         <TouchableOpacity
+          disabled={disabled}
           style={styles.button}
+          onPress={onLeftButtonClick}
         >
           <Icon
             style={styles.icon}
@@ -84,18 +128,22 @@ const Input = React.memo(({
             ref={inputRef}
             style={[styles.input, style]}
             selectionColor={theme.variables.inputSelectionColor}
+            defaultValue={defaultValue}
             value={value}
-            disabled={disabled}
-            autoCorrect={false}
-            keyboardType={'numbers-and-punctuation'}
-            returnKeyType={'done'}
-            onChangeText={onChangeText}
-            onSubmitEditing={onSubmitEditing}
+            onFocus={onFocus}
             onBlur={onBlur}
+            onSubmitEditing={onSubmitEditing}
+            onChangeText={onChangeText}
+            editable={!disabled}
+            autoCorrect={false}
+            keyboardType='number-pad'
+            returnKeyType='done'
             validationError={validationError}
           />
           <TouchableOpacity
+            disabled={disabled}
             style={styles.button}
+            onPress={onRightButtonClick}
           >
             <Icon
               style={styles.icon}
@@ -103,11 +151,14 @@ const Input = React.memo(({
             />
           </TouchableOpacity>
         </View>
-        {validationError &&
+        {!!validationError &&
           <Text style={styles.inputValidationError}>{validationError}</Text>
+        }
+        {!!warning &&
+          <Text style={styles.inputValidationError}>{CapitalizeFirst(t('warning.' + warning))}</Text>
         }
     </>
   );
 });
 
-export default Input;
+export default NumericInput;
