@@ -102,7 +102,8 @@ const LoginScreen = React.memo(({ navigation }) => {
     appleSignIn,
     postRequest,
     onCheckRecaptcha,
-    loading
+    loading,
+    connected
   } = useSignIn(navigation);
 
   const moveToTACScreen = useCallback(() => {
@@ -116,6 +117,12 @@ const LoginScreen = React.memo(({ navigation }) => {
   return (
     <SafeAreaView style={theme.common.container}>
       <StatusBar backgroundColor={theme.variables.statusBarBgLight} barStyle={theme.variables.statusBarColorDark} />
+      {!connected && (
+        <Text
+          style={[theme.common.toastFullWidth, theme.common.warningPanel]}
+          content={CapitalizeFirst(t('error:internetConnectionLost'))}
+        />
+      )}
       <ScrollView>
         <LoginScreen.Header />
         <View style={theme.common.contentContainer}>
@@ -199,8 +206,8 @@ const LoginScreen = React.memo(({ navigation }) => {
               disabled={!canTPSignIn}
               style={[
                 styles.signinButton,
-                !canTPSignIn && theme.common.disabled,
-                styles.googleColor
+                styles.googleColor,
+                !canTPSignIn && theme.common.disabled
               ]}
               onPress={googleSignIn}
             >
@@ -217,8 +224,8 @@ const LoginScreen = React.memo(({ navigation }) => {
               disabled={!canTPSignIn}
               style={[
                 styles.signinButton,
-                !canTPSignIn && theme.common.disabled,
-                styles.facebookColor
+                styles.facebookColor,
+                !canTPSignIn && theme.common.disabled
               ]}
               onPress={facebookSignIn}
             >

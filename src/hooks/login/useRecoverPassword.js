@@ -36,6 +36,7 @@ const useRecoverPassword = () => {
     loading,
     emailError,
     setEmailBlurred,
+    connected
   }
 }
 

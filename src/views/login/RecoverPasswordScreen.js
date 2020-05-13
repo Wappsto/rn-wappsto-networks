@@ -21,7 +21,7 @@ const RecoverScreen = React.memo(({ navigation }) => {
     request,
     loading,
     emailError,
-    setEmailBlurred,
+    setEmailBlurred
   } = useRecoverPassword();
 
   const navigateToLogin = useCallback(() => {

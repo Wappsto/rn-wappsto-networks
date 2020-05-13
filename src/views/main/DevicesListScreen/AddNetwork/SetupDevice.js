@@ -9,7 +9,6 @@ import useSetupDevice from '../../../../hooks/setup/blufi/useSetupDevice';
 import Icon from 'react-native-vector-icons/Feather';
 import image from '../../../../theme/images';
 
-
 const styles = StyleSheet.create({
   progressIcon:{
     marginRight: 10

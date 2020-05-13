@@ -286,7 +286,8 @@ const useSignIn = (navigation) => {
     postRequest,
     loading,
     showRecaptcha,
-    onCheckRecaptcha
+    onCheckRecaptcha,
+    connected
   }
 }
 

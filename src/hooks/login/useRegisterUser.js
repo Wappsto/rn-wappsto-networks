@@ -130,7 +130,8 @@ const useRegisterUser = (navigation) => {
     canRegister,
     register,
     request,
-    loading
+    loading,
+    connected
   };
 }
 
