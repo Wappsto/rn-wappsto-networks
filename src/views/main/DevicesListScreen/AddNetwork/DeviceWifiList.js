@@ -2,7 +2,7 @@ import React from 'react';
 import { View, ActivityIndicator, StyleSheet, TouchableOpacity, Image } from 'react-native';
 import Text from '../../../../components/Text';
 import Button from '../../../../components/Button';
-import useDeviceScanWifi from '../../../../hooks/useDeviceScanWifi';
+import useDeviceScanWifi from '../../../../hooks/setup/blufi/useDeviceScanWifi';
 import { useTranslation, CapitalizeFirst } from '../../../../translations';
 import theme from '../../../../theme/themeExport';
 import image from '../../../../theme/images';

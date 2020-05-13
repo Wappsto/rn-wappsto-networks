@@ -8,7 +8,7 @@ import BarcodeMask from 'react-native-barcode-mask';
 import RequestError from '../../../../components/RequestError';
 import theme from '../../../../theme/themeExport';
 import { useTranslation, CapitalizeFirst, CapitalizeEach } from '../../../../translations';
-import useAddNetworkForm from '../../../../hooks/useAddNetworkForm';
+import useAddNetworkForm from '../../../../hooks/setup/useAddNetworkForm';
 
 const styles = StyleSheet.create({
   qrCodeScannerWrapper: {

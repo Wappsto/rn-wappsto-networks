@@ -12,7 +12,7 @@ import useVisible from 'wappsto-blanket/hooks/useVisible';
 import { iotNetworkListAdd } from '../../../../util/params';
 import ConfirmAddManufacturerNetwork from './ConfirmAddManufacturerNetwork';
 import BackHandlerView from './BackHandlerView';
-import useAddNetwork from '../../../../hooks/useAddNetwork';
+import useAddNetwork from '../../../../hooks/setup/useAddNetwork';
 import BleManager from 'react-native-ble-manager';
 import Blufi from '../../../../BlufiLib';
 

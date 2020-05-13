@@ -1,7 +1,7 @@
 import { useState, useEffect, useRef } from 'react';
 import useConnectToDevice from './useConnectToDevice';
-import Blufi from '../BlufiLib';
-import { BlufiCallback } from '../BlufiLib/util/params';
+import Blufi from '../../../BlufiLib';
+import { BlufiCallback } from '../../../BlufiLib/util/params';
 import { isUUID } from 'wappsto-redux/util/helpers';
 
 const STEPS = {
@@ -62,7 +62,7 @@ const useSetupDevice = (selectedDevice, sendRequest, postRequest, acceptedManufa
       }
       if(status === BlufiCallback.STATUS_SUCCESS){
         clearTimeout(timeout.current);
-        networkId.current = "42514bd9-0ca0-4a7d-b852-7b94bd3da07d"; //data.toString();
+        networkId.current = data.toString();
         if(!isUUID(networkId.current)){
           // message is not a uuid
           setStep(ERRORS.FAILEDNOTUUID);

@@ -1,10 +1,10 @@
 import { useEffect, useState, useCallback } from 'react';
 import { Platform, PermissionsAndroid, NativeModules, NativeEventEmitter } from 'react-native';
 import BleManager from 'react-native-ble-manager';
-import { BlufiParameter } from '../BlufiLib/util/params';
-import { config } from '../configureWappstoRedux';
+import { BlufiParameter } from '../../../BlufiLib/util/params';
+import { config } from '../../../configureWappstoRedux';
 import LocationServicesDialogBox from 'react-native-android-location-services-dialog-box';
-import { useTranslation, CapitalizeFirst } from '../translations';
+import { useTranslation, CapitalizeFirst } from '../../../translations';
 
 const BleManagerModule = NativeModules.BleManager;
 const bleManagerEmitter = new NativeEventEmitter(BleManagerModule);
@@ -54,12 +54,10 @@ const useSearchBlufi = () => {
 
   const getAndroidLocationPermission = useCallback(async () => {
     if (Platform.Version >= 23) {
-      try{
-        await PermissionsAndroid.check(PermissionsAndroid.PERMISSIONS.ACCESS_COARSE_LOCATION);
-      } catch(e){
-        try{
-          await PermissionsAndroid.request(PermissionsAndroid.PERMISSIONS.ACCESS_COARSE_LOCATION);
-        } catch(err){
+      let granted = await PermissionsAndroid.check(PermissionsAndroid.PERMISSIONS.ACCESS_COARSE_LOCATION);
+      if(!granted){
+        granted = await PermissionsAndroid.request(PermissionsAndroid.PERMISSIONS.ACCESS_COARSE_LOCATION);
+        if(!granted){
           throw PermissionError.LOCATION;
         }
       }

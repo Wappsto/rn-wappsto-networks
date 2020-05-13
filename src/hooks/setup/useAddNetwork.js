@@ -3,7 +3,7 @@ import useRequest from 'wappsto-blanket/hooks/useRequest';
 import { removeRequest } from 'wappsto-redux/actions/request';
 import { makeItemSelector } from 'wappsto-redux/selectors/items';
 import { useSelector, useDispatch } from 'react-redux';
-import { manufacturerAsOwnerErrorCode } from '../util/params';
+import { manufacturerAsOwnerErrorCode } from '../../util/params';
 
 const skipErrorCodes = [manufacturerAsOwnerErrorCode];
 const useAddNetwork = (iotNetworkListAdd, maoShow, maoHide) => {

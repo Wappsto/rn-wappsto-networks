@@ -1,6 +1,6 @@
 import { useState, useEffect, useCallback } from 'react';
 import { isUUID } from 'wappsto-redux/util/helpers';
-import { manufacturerAsOwnerErrorCode } from '../util/params';
+import { manufacturerAsOwnerErrorCode } from '../../util/params';
 
 const useAddNetworkForm = (sendRequest, postRequest, acceptedManufacturerAsOwner, onDone) => {
   const [ inputValue, setInputValue ] = useState('');

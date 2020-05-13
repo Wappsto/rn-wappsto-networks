@@ -9,7 +9,7 @@ import theme from '../../theme/themeExport';
 import RequestError from '../../components/RequestError';
 import ReCaptcha from '../../components/ReCaptcha';
 import Popup from '../../components/Popup';
-import useRegisterUser from '../../hooks/useRegisterUser';
+import useRegisterUser from '../../hooks/login/useRegisterUser';
 
 const RegisterScreen = React.memo(({ navigation }) => {
   const { t } = useTranslation();

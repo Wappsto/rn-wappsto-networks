@@ -3,7 +3,7 @@ import Input from '../../../../components/Input';
 import Text from '../../../../components/Text';
 import Button from '../../../../components/Button';
 import { useTranslation, CapitalizeFirst } from '../../../../translations';
-import useConfigureWifi from '../../../../hooks/useConfigureWifi';
+import useConfigureWifi from '../../../../hooks/setup/blufi/useConfigureWifi';
 
 const ConfigureWifi = React.memo(({ next, previous, ssid, setSsid, password, setPassword }) => {
   const { t } = useTranslation();
