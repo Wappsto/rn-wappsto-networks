@@ -312,8 +312,6 @@ PODS:
     - React
   - react-native-netinfo (4.7.0):
     - React
-  - react-native-network-info (5.2.1):
-    - React
   - react-native-randombytes (3.5.3):
     - React
   - react-native-safe-area-context (0.6.4):
@@ -406,7 +404,6 @@ DEPENDENCIES:
   - react-native-camera (from `../node_modules/react-native-camera`)
   - react-native-fbsdk (from `../node_modules/react-native-fbsdk`)
   - "react-native-netinfo (from `../node_modules/@react-native-community/netinfo`)"
-  - react-native-network-info (from `../node_modules/react-native-network-info`)
   - react-native-randombytes (from `../node_modules/react-native-randombytes`)
   - react-native-safe-area-context (from `../node_modules/react-native-safe-area-context`)
   - "react-native-slider (from `../node_modules/@react-native-community/slider`)"
@@ -495,8 +492,6 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native-fbsdk"
   react-native-netinfo:
     :path: "../node_modules/@react-native-community/netinfo"
-  react-native-network-info:
-    :path: "../node_modules/react-native-network-info"
   react-native-randombytes:
     :path: "../node_modules/react-native-randombytes"
   react-native-safe-area-context:
@@ -588,7 +583,6 @@ SPEC CHECKSUMS:
   react-native-camera: 33db8f7b774b32f3583be9376d05ed583154815b
   react-native-fbsdk: c35d42169e64aaf66f01713c1e18d0674f7f6519
   react-native-netinfo: ddaca8bbb9e6e914b1a23787ccb879bc642931c9
-  react-native-network-info: d1290ffc0bd0709e11436f5b8d7f605dcc5c4530
   react-native-randombytes: 3638d24759d67c68f6ccba60c52a7a8a8faa6a23
   react-native-safe-area-context: 52342d2d80ea8faadd0ffa76d83b6051f20c5329
   react-native-slider: e51492f1264d882a8815b71c5870f8978e52887d
@@ -615,6 +609,6 @@ SPEC CHECKSUMS:
   RNVectorIcons: 0bb4def82230be1333ddaeee9fcba45f0b288ed4
   Yoga: f2a7cd4280bfe2cca5a7aed98ba0eb3d1310f18b
 
-PODFILE CHECKSUM: 086a919f3fb5f16b1cdfb667678673f774838a9f
+PODFILE CHECKSUM: 6a2b78d1afc98e547342bb13b3322f6d69d8dedd
 
-COCOAPODS: 1.8.4
+COCOAPODS: 1.9.1

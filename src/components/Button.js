@@ -122,6 +122,7 @@ const Button = React.memo(({
 
   return (
     <TouchableOpacity
+      disabled={disabled}
       style={[
         styles.button,
         {

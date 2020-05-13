@@ -81,6 +81,25 @@ const Blufi = {
     }
   },
 
+  requestDeviceWifiScan() {
+    if(!this.connectedDevice){
+      console.error('Blufi: no connected device');
+      return;
+    }
+    const type = getTypeValue(BlufiParameter.Type.Ctrl.PACKAGE_VALUE, BlufiParameter.Type.Ctrl.SUBTYPE_GET_WIFI_LIST);
+    let request;
+    try {
+      request = post(mEncrypted, mChecksum, mRequireAck, type, null);
+    } catch (e) {
+      Log.w(TAG, 'post requestDeviceWifiScan interrupted');
+      request = false;
+    }
+
+    if (!request) {
+        onDeviceScanResult(BlufiCallback.CODE_WRITE_DATA_FAILED, []);
+    }
+  },
+
   negotiateSecurity(){
     if(!this.connectedDevice){
       console.error('Blufi: no connected device');
@@ -89,7 +108,7 @@ const Blufi = {
     return _negotiateSecurity();
   },
 
-  onCharacteristicChanged(data) {
+  onCharacteristicChanged(data){
     const parse = parseNotification(data);
     if (parse < 0) {
       onError(BlufiCallback.CODE_INVALID_NOTIFICATION);
@@ -97,6 +116,10 @@ const Blufi = {
       parseBlufiNotifyData(notification);
       notification = {};
     }
+  },
+
+  onCustomCharacteristicChanged({ value }){
+    Blufi.onCharacteristicChanged(value);
   },
 
   reset(){
@@ -169,7 +192,9 @@ function toHex(byteArray) {
 //----------------------------------------------------------------------------------------------------------
 
 async function gattWrite(data) {
-  await BleManager.write(Blufi.connectedDevice.id, BlufiParameter.UUID_SERVICE, BlufiParameter.UUID_WRITE_CHARACTERISTIC, data);
+  if(Blufi.connectedDevice && Blufi.connectedDevice.id){
+    await BleManager.write(Blufi.connectedDevice.id, BlufiParameter.UUID_SERVICE, BlufiParameter.UUID_WRITE_CHARACTERISTIC, data);
+  }
 }
 
 async function receiveAck(sequence) {
@@ -268,11 +293,11 @@ async function postContainData(encrypt, checksum, requireAck, type, data) {
   return true;
 }
 
-function post(encrypt, checksum, requireAck, type, data) {
+async function post(encrypt, checksum, requireAck, type, data) {
   if (data === null || data.length === 0) {
-    return postNonData(encrypt, checksum, requireAck, type);
+    return await postNonData(encrypt, checksum, requireAck, type);
   } else {
-    return postContainData(encrypt, checksum, requireAck, type, data);
+    return await postContainData(encrypt, checksum, requireAck, type, data);
   }
 }
 
@@ -523,28 +548,26 @@ function parseWifiState(data) {
 }
 
 function parseWifiScanList(data) {
-  // List < BlufiScanResult > result = new LinkedList < > ();
-  //
-  // ByteArrayInputStream dataReader = new ByteArrayInputStream(data);
-  // while (dataReader.available() > 0) {
-  //   int length = dataReader.read() & 0xff;
-  //   byte rssi = (byte) dataReader.read();
-  //   byte[] ssidBytes = new byte[length - 1];
-  //   int ssidRead = dataReader.read(ssidBytes, 0, ssidBytes.length);
-  //   if (ssidRead != ssidBytes.length) {
-  //     Log.w(TAG, 'Parse WifiScan failed');
-  //     break;
-  //   }
-  //
-  //   BlufiScanResult sr = new BlufiScanResult();
-  //   sr.setType(BlufiScanResult.TYPE_WIFI);
-  //   sr.setRssi(rssi);
-  //   String ssid = new String(ssidBytes);
-  //   sr.setSsid(ssid);
-  //   result.add(sr);
-  // }
-  //
-  // onDeviceScanResult(BlufiCallback.STATUS_SUCCESS, result);
+  const result = [];
+  const dataReader = new ByteArrayInputStream(data);
+  while (dataReader.available() > 0) {
+    const length = dataReader.read() & 0xff;
+    const rssi = dataReader.read();
+    const ssidBytes = Buffer.alloc(length - 1);
+    const ssidRead = dataReader.read(ssidBytes, 0, ssidBytes.length);
+    if (ssidRead !== ssidBytes.length) {
+      Log.w(TAG, 'Parse WifiScan failed');
+      break;
+    }
+
+    const scanResult = {};
+    scanResult.type = 0x01;
+    scanResult.rssi = rssi;
+    scanResult.ssid = ssidBytes.toString();
+    result.push(scanResult);
+  }
+
+  onDeviceScanResult(BlufiCallback.STATUS_SUCCESS, result);
 }
 
 function parseDataData(subType, data) {

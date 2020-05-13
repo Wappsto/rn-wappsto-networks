@@ -3,7 +3,7 @@ import { Image, View, Text as RNtext, Linking, TouchableOpacity, ActivityIndicat
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { AppleButton } from '@invertase/react-native-apple-authentication';
 import { useTranslation, CapitalizeFirst, CapitalizeEach } from '../../translations';
-import useSignIn from '../../hooks/useSignIn';
+import useSignIn from '../../hooks/login/useSignIn';
 import RequestError from '../../components/RequestError';
 import ReCaptcha from '../../components/ReCaptcha';
 import Input from '../../components/Input';

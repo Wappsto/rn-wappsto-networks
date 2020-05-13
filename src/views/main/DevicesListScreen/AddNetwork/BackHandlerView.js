@@ -1,5 +1,9 @@
 import React from 'react';
+<<<<<<< HEAD
 import { ScrollView, View, StyleSheet } from 'react-native';
+=======
+import { ScrollView, View } from 'react-native';
+>>>>>>> get-wifi-list-from-device
 import { SafeAreaView } from 'react-native-safe-area-context';
 import Button from '../../../../components/Button';
 import Icon from 'react-native-vector-icons/Feather';

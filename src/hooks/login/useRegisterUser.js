@@ -1,7 +1,7 @@
 import { useState, useRef, useCallback, useEffect } from 'react';
-import { isEmail } from '../util/helpers';
+import { isEmail } from '../../util/helpers';
 import useRequest from 'wappsto-blanket/hooks/useRequest';
-import useConnected from './useConnected';
+import useConnected from '../useConnected';
 
 const useRegisterUser = (navigation) => {
   const [ username, setUsername ] = useState('');

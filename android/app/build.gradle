@@ -185,7 +185,6 @@ dependencies {
     implementation project(':react-native-fbsdk')
     implementation project(':react-native-webview')
     implementation project(':react-native-safe-area-context')
-    implementation project(':react-native-network-info')
     implementation project(':react-native-ble-manager')
     implementation project(':@react-native-community_slider')
     implementation project(':react-native-vector-icons')

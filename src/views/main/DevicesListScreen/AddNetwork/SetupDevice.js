@@ -1,11 +1,15 @@
 import React from 'react';
+<<<<<<< HEAD
 import { Image, View, ActivityIndicator, StyleSheet } from 'react-native';
+=======
+import { Image, View, ActivityIndicator } from 'react-native';
+>>>>>>> get-wifi-list-from-device
 import Text from '../../../../components/Text';
 import Button from '../../../../components/Button';
 import { useTranslation, CapitalizeFirst } from '../../../../translations';
 import theme from '../../../../theme/themeExport';
 import RequestError from '../../../../components/RequestError';
-import useSetupDevice from '../../../../hooks/useSetupDevice';
+import useSetupDevice from '../../../../hooks/setup/blufi/useSetupDevice';
 import Icon from 'react-native-vector-icons/Feather';
 import image from '../../../../theme/images';
 
