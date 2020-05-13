@@ -171,6 +171,8 @@
       "foundWifi": "found Wifi",
       "selectWifi": "select Wifi",
       "scanAgain": "scan again",
+      "or": "or",
+      "putOwnWifi": "setup manually",
       "progress": {
         "connect": "connecting to the IoT device",
         "initNotification": "initializing notification listener",

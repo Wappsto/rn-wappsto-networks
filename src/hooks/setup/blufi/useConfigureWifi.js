@@ -6,10 +6,12 @@ const wifiPasswordStorageKey = 'wifiPassword';
 const useConfigureWifi = (ssid, setSsid, password, setPassword) => {
   const [ showPassword, setShowPassword ] = useState(false);
   const passwordInputRef = useRef();
+  const savedSsid = useRef('');
+  const savedPasswords = useRef({});
 
   const save = useCallback(() => {
     AsyncStorage.setItem(wifiSsidStorageKey, ssid);
-    AsyncStorage.setItem(wifiPasswordStorageKey, password);
+    AsyncStorage.setItem(wifiPasswordStorageKey, JSON.stringify({ [ssid]: password }));
     setShowPassword(false);
   }, [ssid, password]);
 
@@ -31,6 +33,10 @@ const useConfigureWifi = (ssid, setSsid, password, setPassword) => {
     if(type === 'ssid'){
       currentText = ssid;
       set = setSsid;
+      const sp = savedPasswords.current[text];
+      if(sp){
+        setPassword(sp);
+      }
     } else {
       currentText = password;
       set = setPassword;
@@ -44,17 +50,19 @@ const useConfigureWifi = (ssid, setSsid, password, setPassword) => {
 
   const init = async () => {
     try {
-      const savedSsid = await AsyncStorage.getItem(wifiSsidStorageKey);
+      setPassword('');
+      savedSsid.current = await AsyncStorage.getItem(wifiSsidStorageKey);
       if(!ssid){
-        setSsid(savedSsid);
+        setSsid(savedSsid.current);
       }
 
-      const passwords = await AsyncStorage.getItem(wifiPasswordStorageKey);
-      if(passwords[ssid]){
-        setPassword(passwords[ssid]);
+      savedPasswords.current = await AsyncStorage.getItem(wifiPasswordStorageKey);
+      savedPasswords.current = JSON.parse(savedPasswords.current);
+      if(savedPasswords.current[ssid]){
+        setPassword(savedPasswords.current[ssid]);
       }
     } catch (e) {
-
+      savedPasswords.current = {};
     }
   }
 
