@@ -9,6 +9,7 @@ import Button from './Button';
 import Icon from 'react-native-vector-icons/Feather';
 import { useTranslation, CapitalizeFirst } from '../translations';
 import useUser from '../hooks/useUser';
+import VersionNumber from 'react-native-version-number';
 
 const styles = StyleSheet.create({
   container:{
@@ -33,6 +34,12 @@ const styles = StyleSheet.create({
   logoutBtn:{
     marginBottom: 20,
     marginLeft: 5
+  },
+  bottomInfo: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginRight: 20,
+    justifyContent: 'space-between'
   }
 });
 const DrawerMenu = React.memo((props) => {
@@ -77,15 +84,20 @@ const DrawerMenu = React.memo((props) => {
         </View>
         <DrawerNavigatorItems {...props} />
       </ScrollView>
-      <Button
-        type='link'
-        color='primary'
-        align='left'
-        bold
-        onPress={logout}
-        style={styles.logoutBtn}
-        text={CapitalizeFirst(t('logout'))}
-      />
+      <View style={styles.bottomInfo}>
+        <Button
+          type='link'
+          color='primary'
+          align='left'
+          bold
+          onPress={logout}
+          style={styles.logoutBtn}
+          text={CapitalizeFirst(t('logout'))}
+        />
+        <Text
+          content={VersionNumber.appVersion}
+        />
+      </View>
     </SafeAreaView>
   );
 });
