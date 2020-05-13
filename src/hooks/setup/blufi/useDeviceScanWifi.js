@@ -2,6 +2,7 @@ import { useState, useEffect, useRef } from 'react';
 import useConnectToDevice from './useConnectToDevice';
 import Blufi from '../../../BlufiLib';
 import { BlufiCallback } from '../../../BlufiLib/util/params';
+import usePrevious from 'wappsto-blanket/hooks/usePrevious';
 
 const STEPS = {
   GETDEVICEWIFILIST: 'getDeviceWifiList',
@@ -22,6 +23,7 @@ const useDeviceScanWifi = (selectedDevice) => {
     step: connectionStep,
     connect,
     connected } = useConnectToDevice(selectedDevice);
+  const prevConnected = usePrevious(connected);
   const [ result, setResult ] = useState([]);
   const [ step, setStep ] = useState(STEPS.GETDEVICEWIFILIST);
   const timeout = useRef(null);
@@ -83,7 +85,7 @@ const useDeviceScanWifi = (selectedDevice) => {
   }
 
   useEffect(() => {
-    if(connected){
+    if(prevConnected === false && connected){
       getDeviceWifiList();
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps

@@ -3,6 +3,7 @@ import useConnectToDevice from './useConnectToDevice';
 import Blufi from '../../../BlufiLib';
 import { BlufiCallback } from '../../../BlufiLib/util/params';
 import { isUUID } from 'wappsto-redux/util/helpers';
+import usePrevious from 'wappsto-blanket/hooks/usePrevious';
 
 const STEPS = {
   RETRIEVE: 'retrieve',
@@ -31,6 +32,7 @@ const useSetupDevice = (selectedDevice, sendRequest, postRequest, acceptedManufa
     step: connectionStep,
     connect,
     connected } = useConnectToDevice(selectedDevice);
+  const prevConnected = usePrevious(connected);
   const [ step, setStep ] = useState(STEPS.RETRIEVE);
   const networkId = useRef(null);
   const timeout = useRef(null);
@@ -129,7 +131,7 @@ const useSetupDevice = (selectedDevice, sendRequest, postRequest, acceptedManufa
   }
 
   useEffect(() => {
-    if(connected){
+    if(prevConnected === false && connected){
       configure();
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
