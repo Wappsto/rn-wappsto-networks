@@ -25,7 +25,9 @@ const ERRORS = {
 }
 
 const timeoutLimit = 10000;
-const useSetupDevice = (selectedDevice, sendRequest, postRequest, acceptedManufacturerAsOwner, ssid, password) => {
+const useSetupDevice = (selectedDevice, addNetworkHandler, wifiFields) => {
+  const { sendRequest, request, acceptedManufacturerAsOwner } = addNetworkHandler;
+  const { ssid, password } = wifiFields;
   const {
     loading: connectionLoading,
     error: connectionError,
@@ -151,10 +153,10 @@ const useSetupDevice = (selectedDevice, sendRequest, postRequest, acceptedManufa
   }, []);
 
   useEffect(() => {
-    if(step === STEPS.ADDNETWORK && postRequest){
-      if(postRequest.status === 'success'){
+    if(step === STEPS.ADDNETWORK && request){
+      if(request.status === 'success'){
         sendWifiData();
-      } else if(postRequest.status === 'error'){
+      } else if(request.status === 'error'){
         if(acceptedManufacturerAsOwner === false){
           setStep(ERRORS.REJECTEDMANUFACTURERASOWNER);
         } else {
@@ -163,7 +165,7 @@ const useSetupDevice = (selectedDevice, sendRequest, postRequest, acceptedManufa
       }
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [postRequest, acceptedManufacturerAsOwner]);
+  }, [request, acceptedManufacturerAsOwner]);
 
   return { loading, error: error.current, step: currentStep, configure };
 }

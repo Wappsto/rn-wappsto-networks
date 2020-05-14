@@ -13,6 +13,7 @@ import { iotNetworkListAdd } from '../../../../util/params';
 import ConfirmAddManufacturerNetwork from './ConfirmAddManufacturerNetwork';
 import BackHandlerView from './BackHandlerView';
 import useAddNetwork from '../../../../hooks/setup/useAddNetwork';
+import useWifiFields from '../../../../hooks/setup/blufi/useWifiFields';
 import BleManager from 'react-native-ble-manager';
 import Blufi from '../../../../BlufiLib';
 
@@ -20,20 +21,13 @@ const BleManagerModule = NativeModules.BleManager;
 const bleManagerEmitter = new NativeEventEmitter(BleManagerModule);
 
 const Content = React.memo(({ visible, hide, show }) => {
-  const [ ssid, setSsid ] = useState('');
-  const [ password, setPassword ] = useState('');
+  const wifiFields = useWifiFields();
   const [ selectedDevice, setSelectedDevice ] = useState();
   const [ maoVisible, maoShow, maoHide ] = useVisible(false);
   const [ step, setStep ] = useState(0);
-  const {
-    setAcceptedManufacturerAsOwner,
-    sendRequest,
-    request,
-    acceptManufacturerAsOwner,
-    refuseManufacturerAsOwner,
-    acceptedManufacturerAsOwner,
-    skipErrorCodes
-  } = useAddNetwork(iotNetworkListAdd, maoShow, maoHide);
+  const addNetworkHandler = useAddNetwork(iotNetworkListAdd, maoShow, maoHide);
+
+  const { setAcceptedManufacturerAsOwner } = addNetworkHandler;
 
   const disconnectAndHide = useCallback(() => {
     if(selectedDevice){
@@ -101,7 +95,7 @@ const Content = React.memo(({ visible, hide, show }) => {
 
   return (
     <>
-      <ConfirmAddManufacturerNetwork visible={maoVisible} accept={acceptManufacturerAsOwner} reject={refuseManufacturerAsOwner} />
+      <ConfirmAddManufacturerNetwork visible={maoVisible} accept={addNetworkHandler.acceptManufacturerAsOwner} reject={addNetworkHandler.refuseManufacturerAsOwner} />
       <Modal
         transparent={true}
         visible={visible}
@@ -114,14 +108,8 @@ const Content = React.memo(({ visible, hide, show }) => {
               setStep={setStep}
               selectedDevice={selectedDevice}
               setSelectedDevice={setSelectedDevice}
-              ssid={ssid}
-              setSsid={setSsid}
-              password={password}
-              setPassword={setPassword}
-              sendRequest={sendRequest}
-              postRequest={request}
-              skipCodes={skipErrorCodes}
-              acceptedManufacturerAsOwner={acceptedManufacturerAsOwner}
+              wifiFields={wifiFields}
+              addNetworkHandler={addNetworkHandler}
               />
           </BackHandlerView>
       </Modal>

@@ -38,12 +38,12 @@ const styles = StyleSheet.create({
   }
 });
 
-const DeviceWifiList = React.memo(({ next, previous, setSsid, selectedDevice }) => {
+const DeviceWifiList = React.memo(({ next, previous, selectedDevice, wifiFields }) => {
   const { t } = useTranslation();
   const { loading, error, step, scan, result } = useDeviceScanWifi(selectedDevice);
 
   const selectSsid = (ssid) => {
-    setSsid(ssid);
+    wifiFields.setSsid(ssid);
     next();
   };
 

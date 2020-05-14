@@ -5,9 +5,9 @@ import Button from '../../../../components/Button';
 import { useTranslation, CapitalizeFirst } from '../../../../translations';
 import useConfigureWifi from '../../../../hooks/setup/blufi/useConfigureWifi';
 
-const ConfigureWifi = React.memo(({ next, previous, ssid, setSsid, password, setPassword }) => {
+const ConfigureWifi = React.memo(({ next, previous, wifiFields }) => {
   const { t } = useTranslation();
-  const { showPassword, toggleShowPassword, handleTextChange, passwordInputRef, moveToPasswordField } = useConfigureWifi(ssid, setSsid, password, setPassword);
+  const { showPassword, toggleShowPassword, handleTextChange, passwordInputRef, moveToPasswordField } = useConfigureWifi(wifiFields);
 
   return (
     <>
@@ -24,7 +24,7 @@ const ConfigureWifi = React.memo(({ next, previous, ssid, setSsid, password, set
         onChangeText={ssidText =>
           handleTextChange(ssidText, 'ssid')
         }
-        value={ssid}
+        value={wifiFields.ssid}
         autoCapitalize='none'
         onSubmitEditing={moveToPasswordField}
         returnKeyType='next'
@@ -35,7 +35,7 @@ const ConfigureWifi = React.memo(({ next, previous, ssid, setSsid, password, set
         onChangeText={passwordText =>
           handleTextChange(passwordText, 'password')
         }
-        value={password}
+        value={wifiFields.password}
         textContentType='password'
         secureTextEntry={!showPassword}
         autoCapitalize='none'

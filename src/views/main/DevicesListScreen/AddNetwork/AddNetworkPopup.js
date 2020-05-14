@@ -28,7 +28,7 @@ const styles = StyleSheet.create({
   },
 });
 
-const AddNetwork = React.memo(({ postRequest, sendRequest, skipCodes, acceptedManufacturerAsOwner, hide }) => {
+const AddNetwork = React.memo(({ addNetworkHandler, hide }) => {
   const { t } = useTranslation();
   const {
     inputValue,
@@ -41,7 +41,7 @@ const AddNetwork = React.memo(({ postRequest, sendRequest, skipCodes, acceptedMa
     addNetwork,
     loading,
     canAdd
-  } = useAddNetworkForm(sendRequest, postRequest, acceptedManufacturerAsOwner, hide);
+  } = useAddNetworkForm(addNetworkHandler, hide);
 
   return (
     <>
@@ -107,7 +107,7 @@ const AddNetwork = React.memo(({ postRequest, sendRequest, skipCodes, acceptedMa
       {loading && (
         <ActivityIndicator size='large'  color={theme.variables.spinnerColor} />
       )}
-      <RequestError request={postRequest} skipCodes={skipCodes} />
+      <RequestError request={addNetworkHandler.request} skipCodes={addNetworkHandler.skipErrorCodes} />
       <Button
         disabled={!canAdd}
         display='block'

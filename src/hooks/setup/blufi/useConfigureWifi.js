@@ -3,7 +3,8 @@ import AsyncStorage from '@react-native-community/async-storage';
 
 const wifiSsidStorageKey = 'wifiSSID';
 const wifiPasswordStorageKey = 'wifiPassword';
-const useConfigureWifi = (ssid, setSsid, password, setPassword) => {
+const useConfigureWifi = (wifiFields) => {
+  const { ssid, setSsid, password, setPassword } = wifiFields;
   const [ showPassword, setShowPassword ] = useState(false);
   const passwordInputRef = useRef();
   const savedSsid = useRef('');

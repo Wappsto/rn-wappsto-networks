@@ -2,7 +2,8 @@ import { useState, useEffect, useCallback } from 'react';
 import { isUUID } from 'wappsto-redux/util/helpers';
 import { manufacturerAsOwnerErrorCode } from '../../util/params';
 
-const useAddNetworkForm = (sendRequest, postRequest, acceptedManufacturerAsOwner, onDone) => {
+const useAddNetworkForm = (addNetworkHandler, onDone) => {
+  const { sendRequest, request, acceptedManufacturerAsOwner } = addNetworkHandler;
   const [ inputValue, setInputValue ] = useState('');
   const [ isScanning, setIsScanning ] = useState(false);
   const [ didScan, setDidScan ] = useState(false);
@@ -31,17 +32,17 @@ const useAddNetworkForm = (sendRequest, postRequest, acceptedManufacturerAsOwner
   }, [inputValue, addNetwork]);
 
   useEffect(() => {
-    if(postRequest){
-      if(postRequest.status === 'success'){
+    if(request){
+      if(request.status === 'success'){
         if(onDone){
           onDone();
         }
-      } else if(postRequest.status !== 'pending' && (postRequest.status !== 'error' || postRequest.json.code !== manufacturerAsOwnerErrorCode)){
+      } else if(request.status !== 'pending' && (request.status !== 'error' || request.json.code !== manufacturerAsOwnerErrorCode)){
         setLoading(false);
       }
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [postRequest]);
+  }, [request]);
 
   useEffect(() => {
     if(acceptedManufacturerAsOwner === false){
