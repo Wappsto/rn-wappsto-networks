@@ -30,13 +30,13 @@ const TermsAndConditionsScreen = React.memo(({ navigation }) => {
         <CheckBox
           checked={checked}
           onPress={toggleChecked}
-          text={CapitalizeFirst(t('loginAndRegistration.button.readAndAcceptTerms'))}
+          text={CapitalizeFirst(t('account:readAndAcceptTerms'))}
         />
         <Button
           disabled={!checked}
           color={checked ? 'primary' : 'disabled'}
           onPress={navigateToRegisterScreen}
-          text={CapitalizeFirst(t('loginAndRegistration.button.continue'))}
+          text={CapitalizeFirst(t('account:continue'))}
         />
       </View>
     </Screen>
@@ -46,7 +46,7 @@ const TermsAndConditionsScreen = React.memo(({ navigation }) => {
 TermsAndConditionsScreen.navigationOptions = ({ screenProps: { t } }) => {
   return {
     ...theme.headerStyle,
-    title: CapitalizeEach(t('loginAndRegistration.termsTitle'))
+    title: CapitalizeEach(t('pageTitle.terms'))
   };
 };
 
