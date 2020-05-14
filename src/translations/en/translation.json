@@ -1,11 +1,27 @@
 {
+  "genericButton":{
+    "back": "back",
+    "cancel": "cancel",
+    "create": "create",
+    "delete": "delete",
+    "done": "done",
+    "edit": "edit",
+    "next": "next",
+    "no": "no",
+    "ok": "ok",
+    "yes": "yes",
+    "refresh": "refresh",
+    "reload": "reload",
+    "save": "save",
+    "send":"send"
+  },
   "currentState": "current state",
   "desiredState": "desired state",
   "device": "device",
   "device_plural": "device",
   "networkDescription": {
     "name": "name",
-    "uuid": "uuid"
+    "uuid": "device ID (UUID)"
   },
   "deviceDescription": {
     "description": "description",
@@ -14,7 +30,7 @@
     "name": "name",
     "product": "product",
     "serial": "serial",
-    "uuid": "uuid",
+    "uuid": "thing ID (UUID)",
     "version": "version"
   },
   "deleteConfirmationQuestion": "Are you sure you want to delete?",
@@ -25,15 +41,20 @@
   "logout": "logout",
   "network": "network",
   "network_plural": "network",
+  "appTitle": "Wappsto Networks",
   "pageTitle": {
     "account": "account",
+    "changePassword": "change password",
+    "changeUsername": "change email",
+    "changeUserDetails": "change personal details",
+    "recoverPassword": "recover password",
     "main": "devices",
-    "settings": "settings"
+    "settings": "settings",
+    "register": "register an account",
+    "terms": "terms & conditions"
   },
   "prototype": "prototype",
   "prototype_plural": "prototypes",
-  "refresh": "refresh",
-  "reload": "reload",
   "state": "state",
   "state_plural": "state",
   "statusMessage": {
@@ -73,61 +94,12 @@
     "string": "string",
     "type": "type",
     "unit": "unit",
-    "uuid": "UUID",
+    "uuid": "ID (UUID)",
     "xsd": "XSD"
   },
-  "yes": "yes",
-  "no": "no",
   "cannotAccess": {
     "not_shared": "You do not have permission to access the data",
     "not_paid": "You do not have enough money to access the data"
-  },
-  "done": "done",
-  "delete": "delete",
-  "cancel": "cancel",
-  "next": "next",
-  "accountDetails": {
-    "email": "email",
-    "firstName": "first name",
-    "lastName": "last name",
-    "nickname": "nickname",
-    "phone": "phone",
-    "uuid": "UUID"
-  },
-  "loginAndRegistration": {
-    "appTitle": "Wappsto Networks",
-    "loginWithEmail": "login with email",
-    "chooseSignInOption": "or select sign-in option below",
-    "termsTitle": "terms & conditions",
-    "registerTitle": "Register an account",
-    "registrationText": "Please enter the following information to create an account.",
-    "registrationConfirmationText": "In a moment you will receive an email with a link to confirm the registration.",
-    "recoverPasswordTitle": "recover password",
-    "recoverPasswordText": "Please enter the following information to recover password.",
-    "recoverPasswordSuccessText": "we have sent you an email with the link. Follow instructions provided in the link to recover your password.",
-    "button": {
-      "createAccount": "create an account",
-      "recoverPassword": "recover password",
-      "logIn": "log in",
-      "privacyNotice": "Privacy",
-      "signInWithFacebook": "sign in with Facebook",
-      "signInWithGoogle": "sign in with Google",
-      "termsAndConditions": "Terms & Conditions",
-      "readAndAcceptTerms": "I have read and accept the terms and conditions.",
-      "continue": "continue",
-      "register": "register",
-      "ok": "ok"
-    },
-    "label": {
-      "username": "Email",
-      "password": "password",
-      "repeatPassword": "confirm password"
-    },
-    "validation": {
-      "password": "password is required",
-      "repeatPassword": "passwords do not match",
-      "username": "missing or invalid email"
-    }
   },
   "onboarding": {
     "registrationTitle": "add device",
