@@ -44,22 +44,22 @@ const RegisterScreen = React.memo(({ navigation }) => {
           <Text
             size='p'
             align='center'
-            content={CapitalizeFirst(t('loginAndRegistration.registrationConfirmationText'))}
+            content={CapitalizeFirst(t('account:registrationConfirmation'))}
           />
           <Button
             color='success'
             onPress={hideSuccessPopup}
-            text={CapitalizeFirst(t('loginAndRegistration.button.ok'))}
+            text={CapitalizeFirst(t('genericButton.ok'))}
           />
         </Popup>
         <View style={theme.common.contentContainer}>
           <Text
             size='p'
             align='center'
-            content={CapitalizeFirst(t('loginAndRegistration.registrationText'))}
+            content={CapitalizeFirst(t('account:registrationInfo'))}
           />
           <Input
-            label={CapitalizeFirst(t('loginAndRegistration.label.username'))}
+            label={CapitalizeFirst(t('account:username'))}
             style={usernameError && theme.common.error}
             onChangeText={usernameText =>
               handleTextChange(usernameText, 'username')
@@ -72,11 +72,11 @@ const RegisterScreen = React.memo(({ navigation }) => {
             keyboardType='email-address'
             returnKeyType='next'
             disabled={loading}
-            validationError={usernameError && CapitalizeFirst(t('loginAndRegistration.validation.username'))}
+            validationError={usernameError && CapitalizeFirst(t('account:validation.username'))}
           />
           <Input
             inputRef={passwordInputRef}
-            label={CapitalizeFirst(t('loginAndRegistration.label.password'))}
+            label={CapitalizeFirst(t('account:password'))}
             style={passwordError && theme.common.error}
             onChangeText={passwordText =>
               handleTextChange(passwordText, 'password')
@@ -89,11 +89,11 @@ const RegisterScreen = React.memo(({ navigation }) => {
             returnKeyType='done'
             onSubmitEditing={() => moveToNextField('password')}
             disabled={loading}
-            validationError={passwordError && CapitalizeFirst(t('loginAndRegistration.validation.password'))}
+            validationError={passwordError && CapitalizeFirst(t('account:validation.password'))}
           />
           <Input
             inputRef={repeatPasswordInputRef}
-            label={CapitalizeFirst(t('loginAndRegistration.label.repeatPassword'))}
+            label={CapitalizeFirst(t('account:repeatPassword'))}
             onChangeText={repeatPasswordText =>
               handleTextChange(repeatPasswordText, 'repeatPassword')
             }
@@ -105,7 +105,7 @@ const RegisterScreen = React.memo(({ navigation }) => {
             returnKeyType='done'
             onSubmitEditing={register}
             disabled={loading}
-            validationError={repeatPasswordError && CapitalizeFirst(t('loginAndRegistration.validation.repeatPassword'))}
+            validationError={repeatPasswordError && CapitalizeFirst(t('account:validation.repeatPassword'))}
           />
           <ReCaptcha onCheck={onCheckRecaptcha} recaptchaRef={recaptchaRef} />
           {loading && (
@@ -117,7 +117,7 @@ const RegisterScreen = React.memo(({ navigation }) => {
             color={!canRegister ? 'disabled' : 'primary'}
             onPress={register}
             display='block'
-            text={CapitalizeFirst(t('loginAndRegistration.button.register'))}
+            text={CapitalizeFirst(t('account:register'))}
           />
         </View>
       </ScrollView>
@@ -128,7 +128,7 @@ const RegisterScreen = React.memo(({ navigation }) => {
 RegisterScreen.navigationOptions = ({ screenProps: { t } }) => {
   return {
     ...theme.headerStyle,
-    title: CapitalizeFirst(t('loginAndRegistration.registerTitle'))
+    title: CapitalizeFirst(t('pageTitle.register'))
   };
 };
 

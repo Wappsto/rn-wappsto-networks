@@ -129,7 +129,7 @@ const LoginScreen = React.memo(({ navigation }) => {
           <Text
             size='p'
             align='center'
-            content={CapitalizeFirst(t('loginAndRegistration.loginWithEmail'))}
+            content={CapitalizeFirst(t('account:loginWithEmail'))}
           />
           <View style={theme.common.card}>
             <Input
@@ -137,7 +137,7 @@ const LoginScreen = React.memo(({ navigation }) => {
                 handleTextChange(usernameText, 'username')
               }
               value={username}
-              label={CapitalizeFirst(t('loginAndRegistration.label.username'))}
+              label={CapitalizeFirst(t('account:username'))}
               textContentType='emailAddress'
               autoCapitalize='none'
               onSubmitEditing={moveToPasswordField}
@@ -151,7 +151,7 @@ const LoginScreen = React.memo(({ navigation }) => {
                 handleTextChange(passwordText, 'password')
               }
               value={password}
-              label={CapitalizeFirst(t('loginAndRegistration.label.password'))}
+              label={CapitalizeFirst(t('account:password'))}
               textContentType='password'
               autoCapitalize='none'
               returnKeyType='done'
@@ -174,7 +174,7 @@ const LoginScreen = React.memo(({ navigation }) => {
               onPress={checkAndSignIn}
               display='block'
               color={!canSignIn ? 'disabled' : 'primary'}
-              text={CapitalizeFirst(t('loginAndRegistration.button.logIn'))}
+              text={CapitalizeFirst(t('account:logIn'))}
             />
           <View style={styles.formLinkButtons}>
             <Button
@@ -182,7 +182,7 @@ const LoginScreen = React.memo(({ navigation }) => {
               onPress={moveToRecoverPasswordScreen}
               type='link'
               color={loading ? 'disabled' : 'primary'}
-              text={CapitalizeFirst(t('loginAndRegistration.button.recoverPassword'))}
+              text={CapitalizeFirst(t('account:recoverPassword'))}
             />
             <Text content='|'/>
             <Button
@@ -190,7 +190,7 @@ const LoginScreen = React.memo(({ navigation }) => {
               onPress={moveToTACScreen}
               type='link'
               color={loading ? 'disabled' : 'primary'}
-              text={CapitalizeFirst(t('loginAndRegistration.button.createAccount'))}
+              text={CapitalizeFirst(t('account:createAccount'))}
             />
             </View>
           </View>
@@ -198,7 +198,7 @@ const LoginScreen = React.memo(({ navigation }) => {
           <Text
             size='p'
             align='center'
-            content={t('loginAndRegistration.chooseSignInOption')}
+            content={t('account:chooseSignInOption')}
           />
 
           <View style={theme.common.card}>
@@ -217,7 +217,7 @@ const LoginScreen = React.memo(({ navigation }) => {
                   source={require('../../../assets/images/login/google_logo.png')} style={styles.signinButtonImage}/>
               </View>
               <RNtext style={styles.signinButtonText}>
-                {CapitalizeFirst(t('loginAndRegistration.button.signInWithGoogle'))}
+                {CapitalizeFirst(t('account:signInWithGoogle'))}
               </RNtext>
             </TouchableOpacity>
             <TouchableOpacity
@@ -235,7 +235,7 @@ const LoginScreen = React.memo(({ navigation }) => {
                   source={require('../../../assets/images/login/f_logo_RGB-White_58.png')} style={styles.signinButtonImage}/>
               </View>
               <RNtext style={styles.signinButtonText}>
-                {CapitalizeFirst(t('loginAndRegistration.button.signInWithFacebook'))}
+                {CapitalizeFirst(t('account:signInWithFacebook'))}
               </RNtext>
             </TouchableOpacity>
             {
@@ -273,7 +273,7 @@ LoginScreen.Header = () => {
         <Image resizeMode='contain' style={styles.headerImage} source={defaultImages.loginAndRegistration.header} />
       }
       <RNtext style={styles.appTitle}>
-        {CapitalizeEach(t('loginAndRegistration.appTitle'))}
+        {CapitalizeEach(t('appTitle'))}
       </RNtext>
     </View>
   );
@@ -283,7 +283,7 @@ LoginScreen.Footer = () => {
   const { t } = useTranslation();
   return (
     <OpenURLButton url='https://www.seluxit.com/privacy'>
-      {CapitalizeFirst(t('loginAndRegistration.button.privacyNotice'))}
+      {CapitalizeFirst(t('account:privacyNotice'))}
     </OpenURLButton>
   );
 }

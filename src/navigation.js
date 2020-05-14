@@ -16,12 +16,16 @@ let components = {
   DevicesListScreen: require('./views/main/DevicesListScreen').default,
   DeviceScreen: require('./views/main/DeviceScreen').default,
   AccountScreen: require('./views/main/AccountScreen').default,
+  ChangeUserDetailsScreen: require('./views/main/AccountScreen/ChangeUserDetailsScreen').default,
+  ChangeUsernameScreen: require('./views/main/AccountScreen/ChangeUsernameScreen').default,
+  ChangePasswordScreen: require('./views/main/AccountScreen/ChangePasswordScreen').default,
   DrawerMenu: require('./components/DrawerMenu').default,
+  RecoverPasswordScreen: require('./views/login/RecoverPasswordScreen').default,
   LoginStackScreen: function(){
     return createStackNavigator({
       LoginScreen: require('./views/login/LoginScreen').default,
       RegisterScreen: require('./views/login/RegisterScreen').default,
-      RecoverPasswordScreen: require('./views/login/RecoverPasswordScreen').default,
+      RecoverPasswordScreen: {screen: this.RecoverPasswordScreen},
     //  TermsAndConditionsScreen: require('./views/login/TermsAndConditionsScreen').default
     });
   },
@@ -34,7 +38,11 @@ let components = {
   },
   AccountStackScreen: function() {
     return createStackNavigator({
-      AccountScreen: this.AccountScreen,
+      AccountScreen: {screen: this.AccountScreen},
+      ChangeUserDetailsScreen: {screen: this.ChangeUserDetailsScreen},
+      ChangeUsernameScreen: {screen: this.ChangeUsernameScreen},
+      ChangePasswordScreen: {screen: this.ChangePasswordScreen},
+      RecoverPasswordScreen: {screen: this.RecoverPasswordScreen}
     });
   },
   MainScreen: function() {

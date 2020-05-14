@@ -5,6 +5,7 @@ import { initReactI18next, useTranslation } from 'react-i18next';
 const resources = {
   en: {
     translation: require('./en/translation'),
+    account: require('./en/account'),
     error: require('./en/error'),
   },
   da: {
@@ -32,6 +33,17 @@ i18next
     react: {
       useSuspense: false,
     },
+    interpolation: {
+      format: function(value, format, lng) {
+        if (format === 'CapitalizeFirst') {
+          return CapitalizeFirst(value);
+        }
+        if (format === 'Uppercase') {
+          return Uppercase(value);
+        }
+        return value;
+      }
+    }
   });
 
 const handleLocalizationChange = a => {
@@ -55,5 +67,4 @@ export function CapitalizeEach(str) {
 export function Uppercase(str) {
   return str.toUpperCase();
 }
-
 export { useTranslation };

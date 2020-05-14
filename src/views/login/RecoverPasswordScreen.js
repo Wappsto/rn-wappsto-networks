@@ -34,23 +34,21 @@ const RecoverScreen = React.memo(({ navigation }) => {
         <Popup visible={(request && request.status === 'success') || false} onRequestClose={emptyFunc} hide={emptyFunc} hideCloseIcon>
           <Text
             size='p'
-            align='center'
-            content={CapitalizeFirst(t('loginAndRegistration.recoverPasswordSuccessText'))}
+            content={CapitalizeFirst(t('account:recoverPasswordConfirmation'))}
           />
           <Button
             color='success'
             onPress={navigateToLogin}
-            text={CapitalizeFirst(t('loginAndRegistration.button.ok'))}
+            text={CapitalizeFirst(t('genericButton.ok'))}
           />
         </Popup>
         <View style={theme.common.contentContainer}>
           <Text
             size='p'
-            align='center'
-            content={CapitalizeFirst(t('loginAndRegistration.recoverPasswordText'))}
+            content={CapitalizeFirst(t('account:recoverPasswordInfo'))}
           />
           <Input
-            label={CapitalizeFirst(t('loginAndRegistration.label.username'))}
+            label={CapitalizeFirst(t('account:email'))}
             style={emailError && theme.common.error}
             onChangeText={setEmail}
             value={email}
@@ -59,9 +57,9 @@ const RecoverScreen = React.memo(({ navigation }) => {
             autoCapitalize='none'
             onSubmitEditing={recoverPassword}
             keyboardType='email-address'
-            returnKeyType='next'
+            returnKeyType='done'
             disabled={loading}
-            validationError={emailError && CapitalizeFirst(t('loginAndRegistration.validation.username'))}
+            validationError={emailError && CapitalizeFirst(t('account:validation.username'))}
           />
           {loading && (
             <ActivityIndicator size='large' color={theme.variables.spinnerColor} />
@@ -72,7 +70,7 @@ const RecoverScreen = React.memo(({ navigation }) => {
             color={!canRecoverPassword ? 'disabled' : 'primary'}
             onPress={recoverPassword}
             display='block'
-            text={CapitalizeFirst(t('loginAndRegistration.button.recoverPassword'))}
+            text={CapitalizeFirst(t('genericButton.send'))}
           />
         </View>
       </ScrollView>
@@ -83,7 +81,7 @@ const RecoverScreen = React.memo(({ navigation }) => {
 RecoverScreen.navigationOptions = ({ screenProps: { t } }) => {
   return {
     ...theme.headerStyle,
-    title: CapitalizeFirst(t('loginAndRegistration.recoverPasswordTitle'))
+    title: CapitalizeFirst(t('pageTitle.recoverPassword'))
   };
 };
 

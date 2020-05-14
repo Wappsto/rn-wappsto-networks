@@ -24,6 +24,13 @@ const styles = StyleSheet.create({
     borderBottomColor: theme.variables.lightGray,
     borderBottomWidth: theme.variables.borderWidth
   },
+  row:{
+    flexDirection:'row',
+    justifyContent:'space-between',
+    alignItems: 'flex-end',
+    marginBottom: 20,
+    marginHorizontal: 5
+  },
   userImage: {
     backgroundColor:theme.variables.lightGray,
     width: 35,
@@ -34,12 +41,6 @@ const styles = StyleSheet.create({
   logoutBtn:{
     marginBottom: 20,
     marginLeft: 5
-  },
-  bottomInfo: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    marginRight: 20,
-    justifyContent: 'space-between'
   }
 });
 const DrawerMenu = React.memo((props) => {
@@ -84,17 +85,17 @@ const DrawerMenu = React.memo((props) => {
         </View>
         <DrawerNavigatorItems {...props} />
       </ScrollView>
-      <View style={styles.bottomInfo}>
+      <View style={styles.row}>
         <Button
           type='link'
           color='primary'
           align='left'
           bold
           onPress={logout}
-          style={styles.logoutBtn}
           text={CapitalizeFirst(t('logout'))}
         />
         <Text
+          color='secondary'
           content={VersionNumber.appVersion}
         />
       </View>

@@ -79,7 +79,7 @@ const useUser = (navigation) => {
     }
   }
 
-  return { user, name, logout, request };
+  return { user, name, logout, request, session };
 }
 
 export default useUser;
