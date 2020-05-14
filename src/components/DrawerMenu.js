@@ -23,16 +23,19 @@ const styles = StyleSheet.create({
     borderBottomColor: theme.variables.lightGray,
     borderBottomWidth: theme.variables.borderWidth
   },
+  row:{
+    flexDirection:'row',
+    justifyContent:'space-between',
+    alignItems: 'flex-end',
+    marginBottom: 20,
+    marginHorizontal: 5
+  },
   userImage: {
     backgroundColor:theme.variables.lightGray,
     width: 35,
     height: 35,
     borderRadius: 20,
     margin: 8,
-  },
-  logoutBtn:{
-    marginBottom: 20,
-    marginLeft: 5
   }
 });
 const DrawerMenu = React.memo((props) => {
@@ -77,15 +80,20 @@ const DrawerMenu = React.memo((props) => {
         </View>
         <DrawerNavigatorItems {...props} />
       </ScrollView>
-      <Button
-        type='link'
-        color='primary'
-        align='left'
-        bold
-        onPress={logout}
-        style={styles.logoutBtn}
-        text={CapitalizeFirst(t('logout'))}
-      />
+      <View style={styles.row}>
+        <Button
+          type='link'
+          color='primary'
+          align='left'
+          bold
+          onPress={logout}
+          text={CapitalizeFirst(t('logout'))}
+        />
+        <Text
+          color='secondary'
+          content='v 1.2.2'
+        />
+      </View>
     </SafeAreaView>
   );
 });
