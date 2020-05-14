@@ -9,11 +9,11 @@ const useConfigureWifi = (ssid, setSsid, password, setPassword) => {
   const savedSsid = useRef('');
   const savedPasswords = useRef({});
 
-  const save = useCallback(() => {
+  const save = () => {
     AsyncStorage.setItem(wifiSsidStorageKey, ssid);
     AsyncStorage.setItem(wifiPasswordStorageKey, JSON.stringify({ [ssid]: password }));
     setShowPassword(false);
-  }, [ssid, password]);
+  };
 
   const toggleShowPassword = useCallback(() => {
     setShowPassword(sp => !sp);
@@ -68,10 +68,11 @@ const useConfigureWifi = (ssid, setSsid, password, setPassword) => {
 
   useEffect(() => {
     init();
+    return save;
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  return { save, showPassword, toggleShowPassword, handleTextChange, passwordInputRef, moveToPasswordField };
+  return { showPassword, toggleShowPassword, handleTextChange, passwordInputRef, moveToPasswordField };
 }
 
 export default useConfigureWifi;

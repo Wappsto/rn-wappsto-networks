@@ -1,4 +1,4 @@
-import React, { useCallback } from 'react';
+import React from 'react';
 import Input from '../../../../components/Input';
 import Text from '../../../../components/Text';
 import Button from '../../../../components/Button';
@@ -7,11 +7,7 @@ import useConfigureWifi from '../../../../hooks/setup/blufi/useConfigureWifi';
 
 const ConfigureWifi = React.memo(({ next, previous, ssid, setSsid, password, setPassword }) => {
   const { t } = useTranslation();
-  const { save, showPassword, toggleShowPassword, handleTextChange, passwordInputRef, moveToPasswordField } = useConfigureWifi(ssid, setSsid, password, setPassword);
-  const saveAndMove = useCallback(() => {
-    save();
-    next();
-  }, [save, next]);
+  const { showPassword, toggleShowPassword, handleTextChange, passwordInputRef, moveToPasswordField } = useConfigureWifi(ssid, setSsid, password, setPassword);
 
   return (
     <>
@@ -43,14 +39,14 @@ const ConfigureWifi = React.memo(({ next, previous, ssid, setSsid, password, set
         textContentType='password'
         secureTextEntry={!showPassword}
         autoCapitalize='none'
-        onSubmitEditing={saveAndMove}
+        onSubmitEditing={next}
         showPassword={showPassword}
         toggleShowPassword={toggleShowPassword}
       />
       <Button
         display='block'
         color='primary'
-        onPress={saveAndMove}
+        onPress={next}
         text={CapitalizeFirst(t('onboarding.wifiConfig.sendButton'))}
       />
     </>
