@@ -12,7 +12,7 @@ const styles = StyleSheet.create({
   }
 });
 
-const ConfirmationPopup = React.memo(({ visible, accept, reject, title, description, acceptText }) => {
+const ConfirmationPopup = React.memo(({ visible, accept, reject, title, description, rejectText, acceptText }) => {
   const { t } = useTranslation();
 
   return (
@@ -32,7 +32,7 @@ const ConfirmationPopup = React.memo(({ visible, accept, reject, title, descript
           type='link'
           onPress={reject}
           align='left'
-          text={CapitalizeFirst(t('no'))}
+          text={rejectText || CapitalizeFirst(t('no'))}
         />
         <Button
           type='link'
