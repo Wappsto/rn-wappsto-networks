@@ -25,7 +25,7 @@ const ERRORS = {
 }
 
 const timeoutLimit = 10000;
-const useSetupDevice = (selectedDevice, addNetworkHandler, wifiFields) => {
+const useSetupDevice = (selectedDevice, addNetworkHandler, wifiFields, autoConfigure) => {
   const { sendRequest, request, acceptedManufacturerAsOwner } = addNetworkHandler;
   const { ssid, password } = wifiFields;
   const {
@@ -140,7 +140,7 @@ const useSetupDevice = (selectedDevice, addNetworkHandler, wifiFields) => {
   }
 
   useEffect(() => {
-    if(prevConnected === false && connected){
+    if(prevConnected === false && connected && autoConfigure){
       configure();
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
