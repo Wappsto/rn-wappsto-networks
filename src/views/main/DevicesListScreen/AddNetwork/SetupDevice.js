@@ -45,7 +45,7 @@ const SetupDevice = React.memo(({ hide, wifiFields, selectedDevice, addNetworkHa
             <ActivityIndicator size='small'  color={theme.variables.spinnerColor} style={styles.progressIcon} />
             <Text
               style={styles.progressIcon}
-              content={CapitalizeFirst(t('onboarding.wifiSetup.progress.' + step))}
+              content={CapitalizeFirst(t('onboarding.progress.' + step))}
             />
           </View>
         </>
@@ -69,7 +69,7 @@ const SetupDevice = React.memo(({ hide, wifiFields, selectedDevice, addNetworkHa
             <View>
               <Text
                 color={error ? 'error' : 'success'}
-                content={ error && CapitalizeFirst(t('onboarding.wifiSetup.error.' + step))}
+                content={ error && CapitalizeFirst(t('onboarding.error.' + step))}
               />
               <RequestError request={addNetworkHandler.request} skipCodes={addNetworkHandler.skipErrorCodes} />
               <Text

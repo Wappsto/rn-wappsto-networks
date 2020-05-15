@@ -137,6 +137,31 @@
         "location": "Location is required to find nearby devices."
       }
     },
+    "progress": {
+      "connect": "connecting to the IoT device",
+      "initNotification": "initializing notification listener",
+      "negotiateSecurity": "negotiating security with the IoT device",
+      "getDeviceWifiList": "getting wifi list from the device",
+      "retrieve": "retrieving device information",
+      "sendWifiData": "sending WiFi data",
+      "waitDeviceConnect": "waiting for the IoT device to connect",
+      "addNetwork": "registering IoT device in the cloud"
+    },
+    "error": {
+      "failedConnect": "failed to connect to the device.",
+      "failedInitNotification": "failed to initialize notification listener.",
+      "failedNegotiateSecurity": "failed to negotiate security with the device.",
+      "failedNegotiateSecurityTimeout": "the device did not send back the security key.",
+      "failedGetDeviceWifiList": "failed to get Wifi list from the device",
+      "failedGetDeviceWifiListTimeout": "failed to get Wifi list from the device(device did not answer)",
+      "failedRetrieve": "failed to retrieve device information.",
+      "failedRetrieveTimeout": "failed to comunicate with the device.",
+      "failedNotUuid": "wrong UUID was received from the device.",
+      "failedSendWifiData": "failed to send WiFi data.",
+      "rejectedManufacturerAsOwner": "Device was not registered to your account since you have rejected device data sharing with the manufacturer of the device.",
+      "rserror": "",
+      "generic": "something went wrong."
+    },
     "wifiScan": {
       "scanInProgress": "Getting device wifi list",
       "noWifiFound": "No Wifi were found",
@@ -145,22 +170,9 @@
       "scanAgain": "scan again",
       "or": "or",
       "putOwnWifi": "setup manually",
-      "progress": {
-        "connect": "connecting to the IoT device",
-        "initNotification": "initializing notification listener",
-        "negotiateSecurity": "negotiating security with the IoT device",
-        "getDeviceWifiList": "getting wifi list from the device"
-      },
       "error": {
         "title": "WiFi scan failed",
-        "description": "you can close the setup flow and try again.",
-        "failedConnect": "failed to connect to the device.",
-        "failedInitNotification": "failed to initialize notification listener.",
-        "failedNegotiateSecurity": "failed to negotiate security with the device.",
-        "failedNegotiateSecurityTimeout": "the device did not send back the security key.",
-        "failedGetDeviceWifiList": "failed to get Wifi list from the device",
-        "failedGetDeviceWifiListTimeout": "failed to get Wifi list from the device(device did not answer)",
-        "generic": "something went wrong."
+        "description": "you can close the setup flow and try again."
       }
     },
     "wifiConfig": {
@@ -174,12 +186,6 @@
     },
     "wifiSetup": {
       "setupInProgress": "setting up",
-      "progress": {
-        "retrieve": "retrieving device information",
-        "sendWifiData": "sending WiFi data",
-        "waitDeviceConnect": "waiting for the IoT device to connect",
-        "addNetwork": "registering IoT device in the cloud"
-      },
       "success": {
         "title": "your device is set up and added to your list.",
         "description": "you can now finish the setup and go to device list view.",
@@ -188,14 +194,7 @@
       "error": {
         "title": "WiFi setup failed",
         "description": "you can close the setup flow and try again.",
-        "flowButton": "close",
-        "failedRetrieve": "failed to retrieve device information.",
-        "failedRetrieveTimeout": "failed to comunicate with the device.",
-        "failedNotUuid": "wrong UUID was received from the device.",
-        "failedSendWifiData": "failed to send WiFi data.",
-        "rejectedManufacturerAsOwner": "Device was not registered to your account since you have rejected device data sharing with the manufacturer of the device.",
-        "rserror": "",
-        "generic": "something went wrong."
+        "flowButton": "close"
       }
     }
   }
