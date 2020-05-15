@@ -37,8 +37,6 @@ const useConnectToDevice = (selectedDevice) => {
   const loading = !connected && !error.current;
 
   const removeBlufiListeners = () => {
-    bleManagerEmitter.removeListener('BleManagerDidUpdateValueForCharacteristic', Blufi.onCustomCharacteristicChanged);
-    bleManagerEmitter.removeListener('BleManagerDisconnectPeripheral', Blufi.reset);
     Blufi.onError = () => {}
     Blufi.onNegotiateSecurityResult = () => {}
   }
