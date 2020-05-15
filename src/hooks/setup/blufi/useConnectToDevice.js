@@ -22,7 +22,7 @@ const ERRORS = {
   GENERIC: 'generic'
 }
 
-let device;
+let deviceId;
 const timeoutLimit = 10000;
 const useConnectToDevice = (selectedDevice) => {
   const [ step, setStep ] = useState(STEPS.CONNECT);
@@ -33,7 +33,7 @@ const useConnectToDevice = (selectedDevice) => {
   error.current = Object.values(ERRORS).includes(step);
   const connected = Blufi.connectedDevice
                   && Blufi.connectedDevice.id === selectedDevice.id
-                  && device === selectedDevice.id;
+                  && deviceId === selectedDevice.id;
   const loading = !connected && !error.current;
 
   const removeBlufiListeners = () => {
@@ -61,7 +61,7 @@ const useConnectToDevice = (selectedDevice) => {
       }
       clearTimeout(timeout.current);
       if(status === BlufiCallback.STATUS_SUCCESS){
-        device = selectedDevice.id;
+        deviceId = selectedDevice.id;
         success.current = true;
         clearTimeout(timeout.current);
         setStep(STEPS.CONNECTED);
@@ -105,8 +105,8 @@ const useConnectToDevice = (selectedDevice) => {
   const connect = (force) => {
     if(selectedDevice && selectedDevice.id && (force || !loading)){
       addBlufiListeners();
-      if(!device || !Blufi.connectedDevice || Blufi.connectedDevice.id !== device.id || Blufi.connectedDevice.id !== selectedDevice.id){
-        device = null;
+      if(!deviceId || !Blufi.connectedDevice || Blufi.connectedDevice.id !== deviceId || Blufi.connectedDevice.id !== selectedDevice.id){
+        deviceId = null;
         initConnection();
       }
     }
