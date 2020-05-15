@@ -26,7 +26,7 @@ const styles = StyleSheet.create({
   }
 });
 
-const SetupDevice = React.memo(({ next, hide, wifiFields, selectedDevice, addNetworkHandler }) => {
+const SetupDevice = React.memo(({ hide, wifiFields, selectedDevice, addNetworkHandler }) => {
   const { t } = useTranslation();
   const { loading, error, step } = useSetupDevice(selectedDevice, addNetworkHandler, wifiFields);
   return (

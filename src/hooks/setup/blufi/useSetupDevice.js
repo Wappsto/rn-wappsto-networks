@@ -42,7 +42,7 @@ const useSetupDevice = (selectedDevice, addNetworkHandler, wifiFields) => {
   const error = useRef(false);
 
   error.current = Object.values(ERRORS).includes(step) || connectionError;
-  const currentStep = connectionLoading ? connectionStep : step;
+  const currentStep = (connectionLoading || connectionError) ? connectionStep : step;
   const done = step === STEPS.DONE;
   const loading = !done && !error.current;
 
