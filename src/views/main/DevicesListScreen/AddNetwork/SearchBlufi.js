@@ -40,7 +40,7 @@ const styles = StyleSheet.create({
   }
 });
 
-const SearchBlufi = ({ next, previous, hide, setSelectedDevice }) => {
+const SearchBlufi = ({ next, setSelectedDevice }) => {
   const { t } = useTranslation();
   const { devices, scan, scanning, error, permissionError } = useSearchBlufi();
   const handleDevicePress = useCallback((item) => {

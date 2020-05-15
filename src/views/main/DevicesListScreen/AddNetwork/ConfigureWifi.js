@@ -5,7 +5,7 @@ import Button from '../../../../components/Button';
 import { useTranslation, CapitalizeFirst } from '../../../../translations';
 import useConfigureWifi from '../../../../hooks/setup/blufi/useConfigureWifi';
 
-const ConfigureWifi = React.memo(({ next, previous, wifiFields }) => {
+const ConfigureWifi = React.memo(({ next, wifiFields }) => {
   const { t } = useTranslation();
   const { showPassword, toggleShowPassword, handleTextChange, passwordInputRef, moveToPasswordField } = useConfigureWifi(wifiFields);
 

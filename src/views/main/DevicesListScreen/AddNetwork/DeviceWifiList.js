@@ -38,7 +38,7 @@ const styles = StyleSheet.create({
   }
 });
 
-const DeviceWifiList = React.memo(({ next, previous, selectedDevice, wifiFields }) => {
+const DeviceWifiList = React.memo(({ next, selectedDevice, wifiFields }) => {
   const { t } = useTranslation();
   const { loading, error, step, scan, result } = useDeviceScanWifi(selectedDevice);
 

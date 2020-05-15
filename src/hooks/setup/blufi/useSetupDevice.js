@@ -167,7 +167,7 @@ const useSetupDevice = (selectedDevice, addNetworkHandler, wifiFields) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [request, acceptedManufacturerAsOwner]);
 
-  return { loading, error: error.current, step: currentStep, configure };
+  return { loading, error: error.current, step: currentStep, configure, request: addNetworkHandler.request };
 }
 
 export default useSetupDevice;
