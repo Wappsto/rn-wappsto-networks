@@ -1,11 +1,7 @@
 import { useState, useEffect, useRef } from 'react';
-import { NativeModules, NativeEventEmitter } from 'react-native';
 import BleManager from 'react-native-ble-manager';
 import Blufi from '../../../BlufiLib';
 import { BlufiParameter, BlufiCallback } from '../../../BlufiLib/util/params';
-
-const BleManagerModule = NativeModules.BleManager;
-const bleManagerEmitter = new NativeEventEmitter(BleManagerModule);
 
 const STEPS = {
   CONNECT: 'connect',
@@ -42,9 +38,6 @@ const useConnectToDevice = (selectedDevice) => {
   }
 
   const addBlufiListeners = () => {
-    bleManagerEmitter.addListener('BleManagerDidUpdateValueForCharacteristic', Blufi.onCustomCharacteristicChanged);
-    bleManagerEmitter.addListener('BleManagerDisconnectPeripheral', Blufi.reset);
-
     Blufi.onError = () => {
       clearTimeout(timeout.current);
       if(!error.current){
