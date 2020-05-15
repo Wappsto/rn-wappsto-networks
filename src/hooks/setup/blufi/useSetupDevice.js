@@ -46,6 +46,12 @@ const useSetupDevice = (selectedDevice, addNetworkHandler, wifiFields) => {
   const done = step === STEPS.DONE;
   const loading = !done && !error.current;
 
+  const reset = () => {
+    clearTimeout(timeout.current);
+    networkId.current = null;
+    success.current = false;
+  }
+
   const removeBlufiListeners = () => {
     Blufi.onError = () => {}
     Blufi.onReceiveCustomData = async (status, data) => {}
@@ -109,6 +115,7 @@ const useSetupDevice = (selectedDevice, addNetworkHandler, wifiFields) => {
 
   const startConfigure = async () => {
     try{
+      reset();
       addBlufiListeners();
       setStep(STEPS.RETRIEVE);
       Blufi.postCustomData('network_id');
@@ -145,9 +152,7 @@ const useSetupDevice = (selectedDevice, addNetworkHandler, wifiFields) => {
     }
     return () => {
       removeBlufiListeners();
-      clearTimeout(timeout.current);
-      networkId.current = null;
-      success.current = false;
+      reset();
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
@@ -167,7 +172,14 @@ const useSetupDevice = (selectedDevice, addNetworkHandler, wifiFields) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [request, acceptedManufacturerAsOwner]);
 
-  return { loading, error: error.current, step: currentStep, configure, request: addNetworkHandler.request };
+  return {
+    configure,
+    loading,
+    error: error.current,
+    step: currentStep,
+    request: addNetworkHandler.request,
+    networkId: networkId.current
+  };
 }
 
 export default useSetupDevice;

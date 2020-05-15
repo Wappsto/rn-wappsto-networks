@@ -103,9 +103,9 @@ const useConnectToDevice = (selectedDevice) => {
   }
 
   const connect = (force) => {
-    if(selectedDevice && (force || !loading)){
+    if(selectedDevice && selectedDevice.id && (force || !loading)){
       addBlufiListeners();
-      if(!Blufi.connectedDevice || Blufi.connectedDevice.id !== selectedDevice.id){
+      if(!device || !Blufi.connectedDevice || Blufi.connectedDevice.id !== device.id || Blufi.connectedDevice.id !== selectedDevice.id){
         device = null;
         initConnection();
       }
