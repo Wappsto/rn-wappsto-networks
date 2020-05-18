@@ -26,7 +26,7 @@ let components = {
       LoginScreen: require('./views/login/LoginScreen').default,
       RegisterScreen: require('./views/login/RegisterScreen').default,
       RecoverPasswordScreen: {screen: this.RecoverPasswordScreen},
-    //  TermsAndConditionsScreen: require('./views/login/TermsAndConditionsScreen').default
+      TermsAndConditionsScreen: require('./views/login/TermsAndConditionsScreen').default
     });
   },
 
