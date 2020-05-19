@@ -562,7 +562,7 @@ function parseWifiScanList(data) {
 
     const scanResult = {};
     scanResult.type = 0x01;
-    scanResult.rssi = rssi;
+    scanResult.rssi = (rssi > 0x7F) ? rssi - 0x100 : rssi;
     scanResult.ssid = ssidBytes.toString();
     result.push(scanResult);
   }
