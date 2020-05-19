@@ -79,7 +79,7 @@
 	<key>NSCameraUsageDescription</key>
 	<string>We want to use your camera to scan the QR code</string>
 	<key>NSLocationWhenInUseUsageDescription</key>
-	<string></string>
+	<string>Location is required for Bluetooth scan</string>
 	<key>UIAppFonts</key>
 	<array>
 		<string>AntDesign.ttf</string>
@@ -114,6 +114,6 @@
 	<key>UIViewControllerBasedStatusBarAppearance</key>
 	<false/>
 	<key>NSBluetoothAlwaysUsageDescription</key>
-	<string>for BLE scan</string>
+	<string>to discover nearby devices</string>
 </dict>
 </plist>
