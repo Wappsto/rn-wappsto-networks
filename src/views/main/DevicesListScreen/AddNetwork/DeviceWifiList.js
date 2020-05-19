@@ -67,7 +67,7 @@ const DeviceWifiList = React.memo(({ next, selectedDevice, wifiFields }) => {
             <ActivityIndicator size='small' color={theme.variables.spinnerColor} style={{marginRight: 10}} />
             <Text
               style={{flex:1}}
-              content={CapitalizeFirst(t('onboarding.wifiScan.progress.' + step))}
+              content={CapitalizeFirst(t('onboarding.progress.' + step))}
             />
           </View>
         </>
@@ -84,7 +84,7 @@ const DeviceWifiList = React.memo(({ next, selectedDevice, wifiFields }) => {
           }
           <Text
             color='error'
-            content={CapitalizeFirst(t('onboarding.wifiScan.error.' + step))}
+            content={CapitalizeFirst(t('onboarding.error.' + step))}
           />
         </>
       }

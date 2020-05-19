@@ -1,6 +1,6 @@
 import React, { useState, useCallback, useEffect } from 'react';
 import PopupButton from '../../../../components/PopupButton';
-import { Modal, NativeModules, NativeEventEmitter } from 'react-native';
+import { Modal } from 'react-native';
 import theme from '../../../../theme/themeExport';
 import SelectChoice from './SelectChoice';
 import SearchBlufi from './SearchBlufi';
@@ -14,11 +14,7 @@ import ConfirmAddManufacturerNetwork from './ConfirmAddManufacturerNetwork';
 import BackHandlerView from './BackHandlerView';
 import useAddNetwork from '../../../../hooks/setup/useAddNetwork';
 import useWifiFields from '../../../../hooks/setup/blufi/useWifiFields';
-import BleManager from 'react-native-ble-manager';
-import Blufi from '../../../../BlufiLib';
-
-const BleManagerModule = NativeModules.BleManager;
-const bleManagerEmitter = new NativeEventEmitter(BleManagerModule);
+import useInitBlufi from '../../../../hooks/setup/blufi/useInitBlufi';
 
 const Content = React.memo(({ visible, hide, show }) => {
   const wifiFields = useWifiFields();
@@ -27,15 +23,9 @@ const Content = React.memo(({ visible, hide, show }) => {
   const [ step, setStep ] = useState(0);
   const addNetworkHandler = useAddNetwork(iotNetworkListAdd, maoShow, maoHide);
 
-  const { setAcceptedManufacturerAsOwner } = addNetworkHandler;
+  useInitBlufi();
 
-  const disconnectAndHide = useCallback(() => {
-    if(selectedDevice){
-      BleManager.disconnect(selectedDevice.id);
-    }
-    Blufi.reset();
-    hide();
-  }, [selectedDevice, hide]);
+  const { setAcceptedManufacturerAsOwner } = addNetworkHandler;
 
   const next = useCallback(() => {
     setStep(s => {
@@ -60,13 +50,6 @@ const Content = React.memo(({ visible, hide, show }) => {
       setAcceptedManufacturerAsOwner(null);
     }
   }, [visible, setAcceptedManufacturerAsOwner]);
-
-  useEffect(() => {
-    bleManagerEmitter.addListener('BleManagerDisconnectPeripheral', Blufi.reset);
-    return () => {
-      bleManagerEmitter.removeListener('BleManagerDisconnectPeripheral', Blufi.reset);
-    }
-  }, []);
 
   let Step = null;
   switch (step) {
@@ -99,11 +82,11 @@ const Content = React.memo(({ visible, hide, show }) => {
       <Modal
         transparent={true}
         visible={visible}
-        hide={disconnectAndHide}
+        hide={hide}
         onRequestClose={handleBack}>
-          <BackHandlerView hide={disconnectAndHide} handleBack={handleBack}>
+          <BackHandlerView hide={hide} handleBack={handleBack}>
             <Step
-              hide={disconnectAndHide}
+              hide={hide}
               next={next}
               setStep={setStep}
               selectedDevice={selectedDevice}

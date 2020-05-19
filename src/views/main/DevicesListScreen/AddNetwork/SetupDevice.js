@@ -28,7 +28,7 @@ const styles = StyleSheet.create({
 
 const SetupDevice = React.memo(({ hide, wifiFields, selectedDevice, addNetworkHandler }) => {
   const { t } = useTranslation();
-  const { loading, error, step } = useSetupDevice(selectedDevice, addNetworkHandler, wifiFields);
+  const { loading, error, step } = useSetupDevice(selectedDevice, addNetworkHandler, wifiFields, true);
   return (
     <>
       {loading ?
@@ -45,7 +45,7 @@ const SetupDevice = React.memo(({ hide, wifiFields, selectedDevice, addNetworkHa
             <ActivityIndicator size='small'  color={theme.variables.spinnerColor} style={styles.progressIcon} />
             <Text
               style={styles.progressIcon}
-              content={CapitalizeFirst(t('onboarding.wifiSetup.progress.' + step))}
+              content={CapitalizeFirst(t('onboarding.progress.' + step))}
             />
           </View>
         </>
@@ -69,7 +69,7 @@ const SetupDevice = React.memo(({ hide, wifiFields, selectedDevice, addNetworkHa
             <View>
               <Text
                 color={error ? 'error' : 'success'}
-                content={ error && CapitalizeFirst(t('onboarding.wifiSetup.error.' + step))}
+                content={ error && CapitalizeFirst(t('onboarding.error.' + step))}
               />
               <RequestError request={addNetworkHandler.request} skipCodes={addNetworkHandler.skipErrorCodes} />
               <Text
