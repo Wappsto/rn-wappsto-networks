@@ -132,7 +132,9 @@ const useSetupDevice = (selectedDevice, addNetworkHandler, wifiFields, autoConfi
   const configure = async (force) => {
     if(force || !loading){
       if(!connected) {
-        connect();
+        if(!connectionLoading){
+          connect();
+        }
       } else {
         startConfigure();
       }
