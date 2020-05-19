@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect } from 'react';
-import { View, Text as RNtext, Image, TouchableOpacity, StyleSheet, ActivityIndicator } from 'react-native';
+import { View, Image, TouchableOpacity, StyleSheet, ActivityIndicator } from 'react-native';
 import { useTranslation, CapitalizeFirst } from '../../../../translations';
 import theme from '../../../../theme/themeExport';
 import image from '../../../../theme/images';
@@ -31,9 +31,6 @@ const styles = StyleSheet.create({
     maxWidth: 28,
     maxHeight: 28
   },
-  deviceText:{
-    maxWidth:'90%'
-  },
   deviceSignalQualityIconWrapper:{
     alignItems: 'center',
     justifyContent: 'center'
@@ -41,6 +38,9 @@ const styles = StyleSheet.create({
   deviceSignalQualityIcon:{
     width: 15,
     height: 15
+  },
+  id:{
+    fontSize: 11
   }
 });
 
@@ -92,16 +92,17 @@ const SearchBlufi = ({ next, setSelectedDevice }) => {
                 <Image resizeMode='contain' source={image.onboarding.deviceIcon} style={styles.deviceImage}/>
               </View>
             }
-            <RNtext numberOfLines={2} style={styles.deviceText}>
+            <View>
               <Text
                 bold
-                content={device.name ? device.name : CapitalizeFirst(t('onboarding.deviceDiscovery.unknownName')) + ' '}
+                content={(device.name ? device.name : CapitalizeFirst(t('onboarding.deviceDiscovery.unknownName'))) + ' '}
               />
               <Text
+                style={styles.id}
                 color='secondary'
                 content={device.id}
               />
-            </RNtext>
+            </View>
           </View>
           {image.onboarding.rssiSignalIcon &&
             <View style={styles.deviceSignalQualityIconWrapper}>

@@ -16,19 +16,17 @@ const styles = StyleSheet.create({
     borderRadius: theme.variables.borderRadiusBase,
     borderWidth: theme.variables.borderWidth,
     borderColor: theme.variables.cardBorderColor,
-    paddingHorizontal: 10,
-    paddingVertical: 10,
+    paddingHorizontal: 12,
+    paddingVertical: 12,
     marginBottom: 10,
   },
   signalImageWrapper:{
-    width: 30,
-    height: 30,
-    marginRight:8,
+    marginLeft:8,
     alignItems:'center'
   },
   signalImage:{
-    width: 28,
-    height: 28
+    width: 20,
+    height: 20
   }
 });
 
@@ -42,9 +40,11 @@ const DeviceWifiList = React.memo(({ next, selectedDevice, wifiFields }) => {
   };
 
   const signalQuality = (rssi) => {
-    if (rssi >= 200){
+    if (rssi >= -50){
+      return image.onboarding.wifiSignalIcon.excellent;
+    } else if (rssi < -50 && rssi >= -60){
       return image.onboarding.wifiSignalIcon.good;
-    } else if (rssi > 150 && rssi < 200){
+    } else if (rssi < -60 && rssi >= -70){
       return image.onboarding.wifiSignalIcon.fair;
     }
     return image.onboarding.wifiSignalIcon.poor;
