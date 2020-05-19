@@ -13,12 +13,13 @@ const styles = StyleSheet.create({
   deviceItem:{
     flexDirection: 'row',
     alignItems: 'center',
+    justifyContent: 'space-between',
     backgroundColor: theme.variables.cardBgColor,
     borderRadius: theme.variables.borderRadiusBase,
     borderWidth: theme.variables.borderWidth,
     borderColor: theme.variables.cardBorderColor,
-    paddingHorizontal: 10,
-    paddingVertical: 10,
+    paddingHorizontal: 12,
+    paddingVertical: 8,
     marginBottom: 10,
   },
   deviceImageWrapper:{
@@ -32,6 +33,14 @@ const styles = StyleSheet.create({
   },
   deviceText:{
     maxWidth:'90%'
+  },
+  deviceSignalQualityIconWrapper:{
+    alignItems: 'center',
+    justifyContent: 'center'
+  },
+  deviceSignalQualityIcon:{
+    width: 15,
+    height: 15
   }
 });
 
@@ -50,6 +59,17 @@ const SearchBlufi = ({ next, setSelectedDevice }) => {
     Blufi.reset();
   }, []);
 
+  const signalQuality = (rssi) => {
+    if (rssi >= -50){
+      return image.onboarding.rssiSignalIcon.excellent;
+    } else if (rssi < -50 && rssi >= -60){
+      return image.onboarding.rssiSignalIcon.good;
+    } else if (rssi < -60 && rssi >= -70){
+      return image.onboarding.rssiSignalIcon.fair;
+    }
+    return image.onboarding.rssiSignalIcon.poor;
+  };
+
   return (
     <>
       {devices.length !== 0 &&
@@ -66,21 +86,28 @@ const SearchBlufi = ({ next, setSelectedDevice }) => {
       }
       {devices.map(device => (
         <TouchableOpacity key={device.id} onPress={() => handleDevicePress(device)} style={styles.deviceItem}>
-          {image.onboarding.deviceIcon &&
-            <View style={styles.deviceImageWrapper}>
-              <Image resizeMode='contain' source={image.onboarding.deviceIcon} style={styles.deviceImage}/>
+          <View style={theme.common.row}>
+            {image.onboarding.deviceIcon &&
+              <View style={styles.deviceImageWrapper}>
+                <Image resizeMode='contain' source={image.onboarding.deviceIcon} style={styles.deviceImage}/>
+              </View>
+            }
+            <RNtext numberOfLines={2} style={styles.deviceText}>
+              <Text
+                bold
+                content={device.name ? device.name : CapitalizeFirst(t('onboarding.deviceDiscovery.unknownName')) + ' '}
+              />
+              <Text
+                color='secondary'
+                content={device.id}
+              />
+            </RNtext>
+          </View>
+          {image.onboarding.rssiSignalIcon &&
+            <View style={styles.deviceSignalQualityIconWrapper}>
+              <Image resizeMode='contain' source={signalQuality(device.rssi)} style={styles.deviceSignalQualityIcon}/>
             </View>
           }
-          <RNtext numberOfLines={2} style={styles.deviceText}>
-            <Text
-              bold
-              content={device.name ? device.name : CapitalizeFirst(t('onboarding.deviceDiscovery.unknownName')) + ' '}
-            />
-            <Text
-              color='secondary'
-              content={device.id}
-            />
-          </RNtext>
         </TouchableOpacity>
       ))}
 
