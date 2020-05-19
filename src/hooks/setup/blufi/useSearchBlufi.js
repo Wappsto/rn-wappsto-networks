@@ -68,8 +68,8 @@ const useSearchBlufi = () => {
     try{
       await LocationServicesDialogBox.checkLocationServicesIsEnabled({
         message: CapitalizeFirst(t('onboarding.deviceDiscovery.locationPermissionMessage')),
-        ok: CapitalizeFirst(t('yes')),
-        cancel: CapitalizeFirst(t('no')),
+        ok: CapitalizeFirst(t('genericButton.yes')),
+        cancel: CapitalizeFirst(t('genericButton.no')),
         enableHighAccuracy: true, // true => GPS AND NETWORK PROVIDER, false => GPS OR NETWORK PROVIDER
         showDialog: true, // false => Opens the Location access page directly
         openLocationServices: true, // false => Directly catch method is called if location services are turned off

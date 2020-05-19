@@ -32,13 +32,13 @@ const ConfirmationPopup = React.memo(({ visible, accept, reject, title, descript
           type='link'
           onPress={reject}
           align='left'
-          text={rejectText || CapitalizeFirst(t('no'))}
+          text={rejectText || CapitalizeFirst(t('genericButton.no'))}
         />
         <Button
           type='link'
           onPress={accept}
           color='alert'
-          text={acceptText || CapitalizeFirst(t('yes'))}
+          text={acceptText || CapitalizeFirst(t('genericButton.yes'))}
         />
       </View>
     </Popup>

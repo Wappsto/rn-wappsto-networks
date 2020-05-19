@@ -43,7 +43,7 @@ const List = React.memo(({
                 onPress={refresh}
                 type='link'
                 color='primary'
-                text={CapitalizeFirst(t('refresh'))}
+                text={CapitalizeFirst(t('genericButton.refresh'))}
               />
             </>
           )

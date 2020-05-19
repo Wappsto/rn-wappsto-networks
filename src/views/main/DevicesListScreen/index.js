@@ -66,7 +66,7 @@ const NetworkDetails = React.memo(({ network, style }) => {
           color='alert'
           onPress={showDeleteConfirmation}
           request={request}
-          text={CapitalizeFirst(t('delete'))}
+          text={CapitalizeFirst(t('genericButton.delete'))}
           icon='trash-2'
         />
       </Popup>

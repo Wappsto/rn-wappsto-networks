@@ -113,7 +113,7 @@ const AddNetwork = React.memo(({ addNetworkHandler, hide }) => {
         display='block'
         color={canAdd ? 'primary' : 'disabled'}
         onPress={addNetwork}
-        text={CapitalizeFirst(t('add'))}
+        text={CapitalizeFirst(t('genericButton.add'))}
       />
     </>
   );

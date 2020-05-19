@@ -23,7 +23,7 @@ const BackHandlerView = React.memo(({ handleBack, hide, children }) => {
         <Button
           onPress={hide}
           type='link'
-          text={CapitalizeFirst(t('cancel'))}
+          text={CapitalizeFirst(t('genericButton.cancel'))}
         />
       </View>
       <ScrollView>
