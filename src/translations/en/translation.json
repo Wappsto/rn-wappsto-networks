@@ -131,6 +131,7 @@
       "foundDevices": "found devices",
       "selectDevice": "Select device you want to configure from the list below.",
       "noDevicesFound": "No devices were found",
+      "unknownName": "unknown",
       "locationPermissionMessage": "<h2 style='color: #0af13e'>Use Location ?</h2>This app wants to change your device settings:<br/><br/>Use Location",
       "permissionError": {
         "bluetooth": "Bluetooth is required to find nearby devices.",

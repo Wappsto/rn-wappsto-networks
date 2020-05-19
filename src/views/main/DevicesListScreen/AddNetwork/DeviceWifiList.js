@@ -11,6 +11,7 @@ const styles = StyleSheet.create({
   deviceItem:{
     flexDirection: 'row',
     alignItems: 'center',
+    justifyContent: 'space-between',
     backgroundColor: theme.variables.cardBgColor,
     borderRadius: theme.variables.borderRadiusBase,
     borderWidth: theme.variables.borderWidth,
@@ -19,21 +20,15 @@ const styles = StyleSheet.create({
     paddingVertical: 10,
     marginBottom: 10,
   },
-  deviceImageWrapper:{
-    width: 36,
-    height: 36,
-    padding: 3,
-    marginRight:10,
-    alignItems:'center',
-    borderWidth: theme.variables.borderWidth,
-    borderColor: theme.variables.borderColor,
-    borderRadius: theme.variables.borderRadiusBase
+  signalImageWrapper:{
+    width: 30,
+    height: 30,
+    marginRight:8,
+    alignItems:'center'
   },
-  deviceImage:{
-    width: 36,
-    height: 36,
-    maxWidth: 28,
-    maxHeight: 28
+  signalImage:{
+    width: 28,
+    height: 28
   }
 });
 
@@ -107,19 +102,19 @@ const DeviceWifiList = React.memo(({ next, selectedDevice, wifiFields }) => {
           />
           {result.map((wifi, index) => (
             <TouchableOpacity key={index} onPress={() => selectSsid(wifi.ssid)} style={styles.deviceItem}>
-              {image.onboarding.wifiSignalIcon &&
-                <View style={styles.deviceImageWrapper}>
-                  <Image
-                    resizeMode='contain'
-                    source={() => signalQuality(wifi.rssi)}
-                    style={styles.deviceImage}
-                  />
-                </View>
-              }
               <Text
                 bold
                 content={wifi.ssid}
               />
+              {image.onboarding.wifiSignalIcon &&
+                <View style={styles.signalImageWrapper}>
+                  <Image
+                    resizeMode='contain'
+                    source={signalQuality(wifi.rssi)}
+                    style={styles.signalImage}
+                  />
+                </View>
+              }
             </TouchableOpacity>
           ))}
         </>
