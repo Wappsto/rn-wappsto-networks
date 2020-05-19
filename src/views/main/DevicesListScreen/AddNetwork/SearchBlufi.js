@@ -19,24 +19,19 @@ const styles = StyleSheet.create({
     borderColor: theme.variables.cardBorderColor,
     paddingHorizontal: 10,
     paddingVertical: 10,
-    marginBottom: 25,
-  },
-  deviceName: {
-    fontWeight: 'bold'
+    marginBottom: 10,
   },
   deviceImageWrapper:{
-    width: 36,
-    height: 36,
-    padding: 3,
-    marginRight:10,
-    alignItems:'center',
-    borderWidth: theme.variables.borderWidth,
-    borderColor: theme.variables.borderColor,
-    borderRadius: theme.variables.borderRadiusBase
+    maxHeight: 36,
+    marginRight:8,
+    alignItems:'center'
   },
   deviceImage:{
     maxWidth: 28,
     maxHeight: 28
+  },
+  deviceText:{
+    maxWidth:'90%'
   }
 });
 
@@ -76,12 +71,11 @@ const SearchBlufi = ({ next, setSelectedDevice }) => {
               <Image resizeMode='contain' source={image.onboarding.deviceIcon} style={styles.deviceImage}/>
             </View>
           }
-          <RNtext>
+          <RNtext numberOfLines={2} style={styles.deviceText}>
             <Text
-              content={device.name}
-              style={styles.deviceName}
+              bold
+              content={device.name ? device.name : CapitalizeFirst(t('onboarding.deviceDiscovery.unknownName')) + ' '}
             />
-            {' '}
             <Text
               color='secondary'
               content={device.id}

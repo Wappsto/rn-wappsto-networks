@@ -17,10 +17,7 @@ const styles = StyleSheet.create({
     borderColor: theme.variables.cardBorderColor,
     paddingHorizontal: 10,
     paddingVertical: 10,
-    marginBottom: 25,
-  },
-  deviceName: {
-    fontWeight: 'bold'
+    marginBottom: 10,
   },
   deviceImageWrapper:{
     width: 36,
@@ -33,6 +30,8 @@ const styles = StyleSheet.create({
     borderRadius: theme.variables.borderRadiusBase
   },
   deviceImage:{
+    width: 36,
+    height: 36,
     maxWidth: 28,
     maxHeight: 28
   }
@@ -45,6 +44,15 @@ const DeviceWifiList = React.memo(({ next, selectedDevice, wifiFields }) => {
   const selectSsid = (ssid) => {
     wifiFields.setSsid(ssid);
     next();
+  };
+
+  const signalQuality = (rssi) => {
+    if (rssi >= 200){
+      return image.onboarding.wifiSignalIcon.good;
+    } else if (rssi > 150 && rssi < 200){
+      return image.onboarding.wifiSignalIcon.fair;
+    }
+    return image.onboarding.wifiSignalIcon.poor;
   };
 
   return (
@@ -71,7 +79,7 @@ const DeviceWifiList = React.memo(({ next, selectedDevice, wifiFields }) => {
             content={CapitalizeFirst(t('onboarding.wifiScan.error.title'))}
           />
           {
-            image.onboarding.wifiSetupError && image.onboarding.wifiSetupSuccess  &&
+            image.onboarding.wifiSetupError &&
             <Image resizeMode='contain' source={image.onboarding.wifiSetupError} style={theme.common.image}/>
           }
           <Text
@@ -99,14 +107,18 @@ const DeviceWifiList = React.memo(({ next, selectedDevice, wifiFields }) => {
           />
           {result.map((wifi, index) => (
             <TouchableOpacity key={index} onPress={() => selectSsid(wifi.ssid)} style={styles.deviceItem}>
-              {image.onboarding.deviceIcon &&
+              {image.onboarding.wifiSignalIcon &&
                 <View style={styles.deviceImageWrapper}>
-                  <Image resizeMode='contain' source={image.onboarding.deviceIcon} style={styles.deviceImage}/>
+                  <Image
+                    resizeMode='contain'
+                    source={() => signalQuality(wifi.rssi)}
+                    style={styles.deviceImage}
+                  />
                 </View>
               }
               <Text
+                bold
                 content={wifi.ssid}
-                style={styles.deviceName}
               />
             </TouchableOpacity>
           ))}
@@ -121,7 +133,6 @@ const DeviceWifiList = React.memo(({ next, selectedDevice, wifiFields }) => {
         />
       }
       <Text
-        style={{ marginTop: 30 }}
         size='p'
         align='center'
         content={t('onboarding.wifiScan.or')}
@@ -129,7 +140,6 @@ const DeviceWifiList = React.memo(({ next, selectedDevice, wifiFields }) => {
       <Button
         onPress={next}
         type='link'
-        color='primary'
         text={CapitalizeFirst(t('onboarding.wifiScan.putOwnWifi'))}
       />
     </>
