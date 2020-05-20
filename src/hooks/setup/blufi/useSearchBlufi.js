@@ -67,13 +67,13 @@ const useSearchBlufi = () => {
   const enableLocation = useCallback(async () => {
     try{
       await LocationServicesDialogBox.checkLocationServicesIsEnabled({
-        message: CapitalizeFirst(t('onboarding.deviceDiscovery.locationPermissionMessage')),
-        ok: CapitalizeFirst(t('genericButton.yes')),
-        cancel: CapitalizeFirst(t('genericButton.no')),
+        message: CapitalizeFirst(t('onboarding.deviceDiscovery.permissionRequired.location')),
+        ok: CapitalizeFirst(t('onboarding.deviceDiscovery.goToSettings')),
+        cancel: CapitalizeFirst(t('genericButton.cancel')),
         enableHighAccuracy: true, // true => GPS AND NETWORK PROVIDER, false => GPS OR NETWORK PROVIDER
         showDialog: true, // false => Opens the Location access page directly
         openLocationServices: true, // false => Directly catch method is called if location services are turned off
-        preventOutSideTouch: false, // true => To prevent the location services window from closing when it is clicked outside
+        preventOutSideTouch: true, // true => To prevent the location services window from closing when it is clicked outside
         preventBackClick: false, // true => To prevent the location services popup from closing when it is clicked back button
         providerListener: false, // true ==> Trigger locationProviderStatusChange listener when the location state changes
       });

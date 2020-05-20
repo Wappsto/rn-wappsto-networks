@@ -17,6 +17,7 @@ const ConfigureWifi = React.memo(({ next, wifiFields }) => {
       />
       <Text
         size='p'
+        color='secondary'
         content={CapitalizeFirst(t('onboarding.wifiConfig.intro')) + ' ' +  CapitalizeFirst(t('onboarding.wifiConfig.warning5Ghz'))}
         />
       <Input

@@ -106,8 +106,8 @@
     "configurationTitle": "configure",
     "option": {
       "register": "register",
-      "registerAndSetupWifi": "register & setup WiFi",
-      "setupWifi": "setup WiFi"
+      "registerAndSetupWifi": "register & setup Wi-Fi",
+      "setupWifi": "setup Wi-Fi"
     },
     "claiming": {
       "addNetworkTitle": "add an IoT device",
@@ -132,19 +132,19 @@
       "selectDevice": "Select device you want to configure from the list below.",
       "noDevicesFound": "No devices were found",
       "unknownName": "unknown",
-      "locationPermissionMessage": "<h2 style='color: #0af13e'>Use Location ?</h2>This app wants to change your device settings:<br/><br/>Use Location",
-      "permissionError": {
-        "bluetooth": "Bluetooth is required to find nearby devices.",
-        "location": "Location is required to find nearby devices."
+      "goToSettings": "go to settings",
+      "permissionRequired": {
+        "bluetooth": "Enable Bluetooth to continue. Bluetooth is required to find nearby devices.",
+        "location": "Enable location to continue. Location is required to find nearby devices."
       }
     },
     "progress": {
-      "connect": "connecting to the IoT device",
+      "connect": "connecting to the IoT device ",
       "initNotification": "initializing notification listener",
       "negotiateSecurity": "negotiating security with the IoT device",
-      "getDeviceWifiList": "getting wifi list from the device",
+      "getDeviceWifiList": "getting Wi-Fi list from the device",
       "retrieve": "retrieving device information",
-      "sendWifiData": "sending WiFi data",
+      "sendWifiData": "sending Wi-Fi data",
       "waitDeviceConnect": "waiting for the IoT device to connect",
       "addNetwork": "registering IoT device in the cloud"
     },
@@ -153,36 +153,37 @@
       "failedInitNotification": "failed to initialize notification listener.",
       "failedNegotiateSecurity": "failed to negotiate security with the device.",
       "failedNegotiateSecurityTimeout": "the device did not send back the security key.",
-      "failedGetDeviceWifiList": "failed to get Wifi list from the device",
-      "failedGetDeviceWifiListTimeout": "failed to get Wifi list from the device(device did not answer)",
+      "failedGetDeviceWifiList": "failed to get Wi-Fi list from the device",
+      "failedGetDeviceWifiListTimeout": "failed to get Wi-Fi list from the device(device did not answer)",
       "failedRetrieve": "failed to retrieve device information.",
       "failedRetrieveTimeout": "failed to comunicate with the device.",
       "failedNotUuid": "wrong UUID was received from the device.",
-      "failedSendWifiData": "failed to send WiFi data.",
+      "failedSendWifiData": "failed to send Wi-Fi data.",
       "rejectedManufacturerAsOwner": "Device was not registered to your account since you have rejected device data sharing with the manufacturer of the device.",
       "rserror": "",
       "generic": "something went wrong."
     },
     "wifiScan": {
-      "scanInProgress": "Getting device wifi list",
-      "noWifiFound": "No Wifi were found",
-      "foundWifi": "found Wifi",
-      "selectWifi": "select Wifi",
+      "scanInProgress": "retrieving Wi-Fi network list",
+      "noWifiFound": "no Wi-Fi networks were found. If your Wi-Fi access point is hidden, try manual setup",
+      "foundWifi": "Wi-Fi networks discovered by your device",
+      "selectWifi": "select an access points you want your IoT device to connect to",
       "scanAgain": "scan again",
-      "or": "or",
-      "putOwnWifi": "setup manually",
+      "scanningInProgressInfo":"your IoT device is scanning for nearby Wi-Fi networks. Please wait...",
+      "hiddenNetworkInfo": "your Wi-Fi network is 'hidden'?",
+      "manualSetup": "go to manual setup",
       "error": {
-        "title": "WiFi scan failed",
+        "title": "Wi-Fi scan failed",
         "description": "you can close the setup flow and try again."
       }
     },
     "wifiConfig": {
-      "title": "configure WiFi",
-      "intro": "to setup WiFi on your IoT device, please, enter required details below.",
-      "warning5Ghz": "Please, keep in mind that WiFi setup may not be supported on 5GHz networks.",
+      "title": "configure Wi-Fi",
+      "intro": "to setup Wi-Fi on your IoT device, please, enter required details below.",
+      "warning5Ghz": "Please, keep in mind that Wi-Fi setup may not be supported on 5GHz networks.",
       "settingUp": "setting up",
-      "ssidLabel": "WiFi network",
-      "passwordLabel": "WiFi password",
+      "ssidLabel": "Wi-Fi network",
+      "passwordLabel": "Wi-Fi password",
       "sendButton": "configure",
     },
     "wifiSetup": {
@@ -193,7 +194,7 @@
         "flowButton": "finish"
       },
       "error": {
-        "title": "WiFi setup failed",
+        "title": "Wi-Fi setup failed",
         "description": "you can close the setup flow and try again.",
         "flowButton": "close"
       }

@@ -27,6 +27,21 @@ const styles = StyleSheet.create({
   signalImage:{
     width: 20,
     height: 20
+  },
+  spinner:{
+    marginRight: 10
+  },
+  progressText:{
+    flex:1
+  },
+  panel:{
+    borderColor: '#ccc',
+    borderWidth: 0.4,
+    paddingVertical:50,
+    paddingHorizontal:10
+  },
+  hiddenButtonWrapper:{
+    marginTop:50
   }
 });
 
@@ -58,10 +73,14 @@ const DeviceWifiList = React.memo(({ next, selectedDevice, wifiFields }) => {
             size='h3'
             content={CapitalizeFirst(t('onboarding.wifiScan.scanInProgress'))}
           />
-          <View style={theme.common.row}>
-            <ActivityIndicator size='small' color={theme.variables.spinnerColor} style={{marginRight: 10}} />
+          <Text
+          size='p'
+          content={CapitalizeFirst(t('onboarding.wifiScan.scanningInProgressInfo'))}
+          />
+          <View style={[theme.common.row, styles.panel]}>
+            <ActivityIndicator size='small' color={theme.variables.spinnerColor} style={styles.spinner} />
             <Text
-              style={{flex:1}}
+              style={styles.progressText}
               content={CapitalizeFirst(t('onboarding.progress.' + step))}
             />
           </View>
@@ -127,16 +146,19 @@ const DeviceWifiList = React.memo(({ next, selectedDevice, wifiFields }) => {
           text={CapitalizeFirst(t('onboarding.wifiScan.scanAgain'))}
         />
       }
-      <Text
-        size='p'
-        align='center'
-        content={t('onboarding.wifiScan.or')}
-      />
-      <Button
-        onPress={next}
-        type='link'
-        text={CapitalizeFirst(t('onboarding.wifiScan.putOwnWifi'))}
-      />
+      <View style={styles.hiddenButtonWrapper}>
+        <Text
+          size='p'
+          align='center'
+          color='secondary'
+          content={CapitalizeFirst(t('onboarding.wifiScan.hiddenNetworkInfo'))}
+        />
+        <Button
+          onPress={next}
+          type='link'
+          text={CapitalizeFirst(t('onboarding.wifiScan.manualSetup'))}
+        />
+      </View>
     </>
   );
 });
