@@ -46,7 +46,7 @@ const styles = StyleSheet.create({
 
 const SearchBlufi = ({ next, setSelectedDevice }) => {
   const { t } = useTranslation();
-  const { devices, scan, scanning, error, permissionError } = useSearchBlufi();
+  const { devices, canScan, scan, scanning, error, permissionError, PermissionError, openSettings } = useSearchBlufi();
   const handleDevicePress = useCallback((item) => {
     setSelectedDevice(item);
     next();
@@ -131,7 +131,7 @@ const SearchBlufi = ({ next, setSelectedDevice }) => {
           </>
         :
           <>
-            {devices.length === 0 &&
+            {!error && devices.length === 0 &&
               <>
                 {
                   image.onboarding.devicesNotFound &&
@@ -144,30 +144,41 @@ const SearchBlufi = ({ next, setSelectedDevice }) => {
                 />
               </>
             }
-            <Button
-              onPress={scan}
-              type='link'
-              color='primary'
-              text={CapitalizeFirst(t('onboarding.deviceDiscovery.scanAgain'))}
-            />
+            {error && devices.length === 0 &&
+              <Text
+                size='p'
+                align='center'
+                color='error'
+                content={CapitalizeFirst(t('onboarding.deviceDiscovery.scanError'))}
+              />
+            }
+            {canScan &&
+              <Button
+                onPress={scan}
+                type='link'
+                color='primary'
+                text={CapitalizeFirst(t('onboarding.deviceDiscovery.scanAgain'))}
+              />
+            }
           </>
       }
-
-      {error &&
-        <Text
-          size='p'
-          align='center'
-          color='error'
-          content={CapitalizeFirst(t('onboarding.deviceDiscovery.scanError'))}
-        />
-      }
       {permissionError &&
-        <Text
-          size='p'
-          align='center'
-          color='error'
-          content={CapitalizeFirst(t('onboarding.deviceDiscovery.permissionRequired.' + permissionError))}
-        />
+        <>
+          <Text
+            size='p'
+            align='center'
+            color='error'
+            content={CapitalizeFirst(t('onboarding.deviceDiscovery.permissionError.' + permissionError))}
+          />
+          {permissionError === PermissionError.BLUETOOTH_UNAUTHORIZED &&
+            <Button
+              onPress={openSettings}
+              type='link'
+              color='primary'
+              text={CapitalizeFirst(t('onboarding.deviceDiscovery.openSettings'))}
+            />
+          }
+        </>
       }
     </>
   )

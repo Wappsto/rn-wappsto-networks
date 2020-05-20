@@ -115,5 +115,7 @@
 	<false/>
 	<key>NSBluetoothAlwaysUsageDescription</key>
 	<string>to discover nearby devices</string>
+	<key>NSBluetoothPeripheralUsageDescription</key>
+	<string>to discover nearby devices</string>
 </dict>
 </plist>
