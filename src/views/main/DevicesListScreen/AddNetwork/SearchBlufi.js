@@ -144,20 +144,20 @@ const SearchBlufi = ({ next, setSelectedDevice }) => {
                 />
               </>
             }
-            {error && devices.length === 0 &&
-              <Text
-                size='p'
-                align='center'
-                color='error'
-                content={CapitalizeFirst(t('onboarding.deviceDiscovery.scanError'))}
-              />
-            }
             {canScan &&
               <Button
                 onPress={scan}
                 type='link'
                 color='primary'
                 text={CapitalizeFirst(t('onboarding.deviceDiscovery.scanAgain'))}
+              />
+            }
+            {error && devices.length === 0 &&
+              <Text
+                size='p'
+                align='center'
+                color='error'
+                content={CapitalizeFirst(t('onboarding.deviceDiscovery.scanError'))}
               />
             }
           </>

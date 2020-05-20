@@ -25,7 +25,6 @@ const useSearchBlufi = () => {
   const [ scanning, setScanning ] = useState(true);
   const [ devices, setDevices ] = useState([]);
   const [ canScan, setCanScan ] = useState(true);
-  const promise = useRef();
 
   const removeDiscoveryListener = useCallback(() => {
     bleManagerEmitter.removeAllListeners('BleManagerDiscoverPeripheral');
@@ -60,12 +59,9 @@ const useSearchBlufi = () => {
 
   const getAndroidLocationPermission = useCallback(async () => {
     if (Platform.Version >= 23) {
-      let granted = await PermissionsAndroid.check(PermissionsAndroid.PERMISSIONS.ACCESS_COARSE_LOCATION);
-      if(!granted){
-        granted = await PermissionsAndroid.request(PermissionsAndroid.PERMISSIONS.ACCESS_COARSE_LOCATION);
-        if(!granted){
-          throw PermissionError.LOCATION;
-        }
+      const result = await request(PERMISSIONS.ANDROID.ACCESS_COARSE_LOCATION);
+      if(result !== RESULTS.GRANTED){
+        throw PermissionError.LOCATION;
       }
     }
   }, []);
@@ -110,15 +106,8 @@ const useSearchBlufi = () => {
     try {
       await BleManager.enableBluetooth();
     } catch (e) {
-      throw PermissionError.BLUETOOTH;
+      throw PermissionError.BLUETOOTH_OFF;
     }
-  }, []);
-
-  const checkBluetooth = useCallback(() => {
-    return new Promise((resolve, reject) => {
-      promise.current = {resolve, reject};
-      BleManager.checkState();
-    })
   }, []);
 
   const scan = useCallback(async () => {
@@ -137,51 +126,36 @@ const useSearchBlufi = () => {
       } else {
         await enableBluetoothIOS();
       }
-      await checkBluetooth();
       setScanning(true);
       BleManager.scan([BlufiParameter.UUID_SERVICE], 15, false);
     } catch(e){
       if(typeof e === 'string'){
-        setCanScan(false);
+        if(Platform.OS === 'ios'){
+          setCanScan(false);
+        }
         setPermissionError(e);
       }
       setScanning(false);
       setError(true);
     }
-  }, [canScan, enableLocation, getAndroidLocationPermission, enableBluetoothIOS, enableBluetoothAndroid, checkBluetooth, addDiscoveryListener]);
+  }, [canScan, enableLocation, getAndroidLocationPermission, enableBluetoothIOS, enableBluetoothAndroid, addDiscoveryListener]);
 
   const init = async () => {
     await BleManager.start({showAlert: false, forceLegacy: true});
     scan();
   }
 
-  // listen to location status
-  useEffect(() => {
-    if(Platform.OS === 'android'){
-      DeviceEventEmitter.addListener('locationProviderStatusChange', function(status) { // only trigger when "providerListener" is enabled
-        setCanScan(status.enabled);
-      });
-      return () => {
-        LocationServicesDialogBox.stopListener();
-      }
-    }
-  }, []);
-
   // listen to bluetooth status
   useEffect(() => {
     const listener = ({ state }) => {
-      const isOn = state === 'on' ? true : false
-      setCanScan(isOn);
+      const isOn = ['on', 'turning_on'].includes(state) ? true : false
+      if(Platform.OS === 'ios'){
+        setCanScan(isOn);
+      }
       if(isOn){
-        if(promise.current){
-          promise.current.resolve();
-        }
         setPermissionError();
         setError(false);
       } else {
-        if(promise.current){
-          promise.current.reject(PermissionError.BLUETOOTH_OFF);
-        }
         setPermissionError(PermissionError.BLUETOOTH_OFF);
         if(scanning){
           setScanning(false);
@@ -205,7 +179,6 @@ const useSearchBlufi = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  console.log({canScan, scan, error, permissionError, scanning});
   return { canScan, scan, error, permissionError, PermissionError, scanning, devices, openSettings: Linking.openSettings };
 }
 
