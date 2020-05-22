@@ -126,7 +126,7 @@
       "rescanQRCode": "tap here to scan again",
       "scanSuccessMessage":"QR code scanned",
       "uuidLabel": "device UUID",
-      "claimBtn": "add"
+      "claimNetworkBtn": "add"
     },
     "deviceDiscovery": {
       "lookingForDevices": "looking for devices",

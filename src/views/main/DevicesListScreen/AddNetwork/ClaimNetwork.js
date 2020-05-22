@@ -61,12 +61,12 @@ const AddNetwork = React.memo(({ addNetworkHandler, hide }) => {
       <Text
         size='h3'
         align='center'
-        content={CapitalizeFirst(t('onboarding.claiming.claimNetworkTitle'))}
+        content={CapitalizeFirst(t('onboarding.claimNetwork.claimNetworkTitle'))}
       />
       <Text
         size='p'
         color='secondary'
-        content={CapitalizeFirst(t('onboarding.claiming.claimNetworkInfo'))}
+        content={CapitalizeFirst(t('onboarding.claimNetwork.claimNetworkInfo'))}
       />
       <View style={styles.qrCodeScannerWrapper}>
         {isScanning ? (
@@ -78,20 +78,20 @@ const AddNetwork = React.memo(({ addNetworkHandler, hide }) => {
             notAuthorizedView={
               <View style={styles.cameraCapture}>
                 <Text
-                  content={CapitalizeFirst(t('onboarding.claiming.cameraPermission.denied'))}
+                  content={CapitalizeFirst(t('onboarding.claimNetwork.cameraPermission.denied'))}
                 />
               </View>
             }
             pendingAuthorizationView={
               <View style={styles.cameraCapture}>
                 <Text
-                  content={CapitalizeFirst(t('onboarding.claiming.cameraPermission.pending'))}
+                  content={CapitalizeFirst(t('onboarding.claimNetwork.cameraPermission.pending'))}
                 />
               </View>
             }
             androidCameraPermissionOptions={{
-              title: CapitalizeFirst(t('onboarding.claiming.cameraPermission.title')),
-              message: CapitalizeFirst(t('onboarding.claiming.cameraPermission.message')),
+              title: CapitalizeFirst(t('onboarding.claimNetwork.cameraPermission.title')),
+              message: CapitalizeFirst(t('onboarding.claimNetwork.cameraPermission.message')),
             }}>
             <BarcodeMask
               width='100%'
@@ -115,24 +115,24 @@ const AddNetwork = React.memo(({ addNetworkHandler, hide }) => {
                   />
                   <Text
                     color={theme.variables.success}
-                    content={CapitalizeFirst(t('onboarding.claiming.scanSuccessMessage'))}
+                    content={CapitalizeFirst(t('onboarding.claimNetwork.scanSuccessMessage'))}
                   />
                 </View>
                 <Text
                   color='secondary'
-                  content={CapitalizeFirst(t('onboarding.claiming.rescanQRCode'))}
+                  content={CapitalizeFirst(t('onboarding.claimNetwork.rescanQRCode'))}
                 />
               </>
             :
               <Text
-                content={CapitalizeFirst(t('onboarding.claiming.scanQRCode'))}
+                content={CapitalizeFirst(t('onboarding.claimNetwork.scanQRCode'))}
               />
           }
           </TouchableOpacity>
         )}
       </View>
       <Input
-        label={CapitalizeFirst(t('onboarding.claiming.uuidLabel'))}
+        label={CapitalizeFirst(t('onboarding.claimNetwork.uuidLabel'))}
         onChangeText={text => setInputValue(text)}
         value={inputValue}
         autoCapitalize='none'
@@ -143,7 +143,7 @@ const AddNetwork = React.memo(({ addNetworkHandler, hide }) => {
       <Text
         size={12}
         color='secondary'
-        content={CapitalizeFirst(t('onboarding.claiming.enterUUID'))}
+        content={CapitalizeFirst(t('onboarding.claimNetwork.enterUUID'))}
       />
       {loading && (
         <ActivityIndicator size='large' color={theme.variables.spinnerColor} />
@@ -155,7 +155,7 @@ const AddNetwork = React.memo(({ addNetworkHandler, hide }) => {
         color={canAdd ? 'primary' : 'disabled'}
         onPress={addNetwork}
         style={styles.button}
-        text={CapitalizeFirst(t('onboarding.claiming.claimNetworkBtn'))}
+        text={CapitalizeFirst(t('onboarding.claimNetwork.claimNetworkBtn'))}
       />
     </>
   );
