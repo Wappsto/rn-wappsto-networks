@@ -110,9 +110,9 @@
       "registerAndSetupWifi": "register & setup Wi-Fi",
       "setupWifi": "setup Wi-Fi"
     },
-    "claiming": {
-      "addNetworkTitle": "add an IoT device",
-      "addNetworkInfo": "To add an IoT device to your list, provide its unique identifier (UUID, 36-characters).\n\nUse camera to scan the code printed on your device.",
+    "claimNetwork": {
+      "claimNetworkTitle": "add an IoT device",
+      "claimNetworkInfo": "To add an IoT device to your list, provide its unique identifier (UUID, 36-characters).\n\nUse camera to scan the code printed on your device.",
       "enterUUID": "if QR code scanning doesn't work for you, enter the identifier  in the field above.",
       "addManufacturerNetworkTitle": "Warning",
       "manufacturerAsOwnerWarning": "the manufacturer of this device has full access to this device data. Do you want to add this device to your account?",
@@ -126,7 +126,7 @@
       "rescanQRCode": "tap here to scan again",
       "scanSuccessMessage":"QR code scanned",
       "uuidLabel": "device UUID",
-      "addBtn": "add"
+      "claimBtn": "add"
     },
     "deviceDiscovery": {
       "lookingForDevices": "looking for devices",

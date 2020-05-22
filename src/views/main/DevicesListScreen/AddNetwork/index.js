@@ -7,7 +7,7 @@ import SearchBlufi from './SearchBlufi';
 import DeviceWifiList from './DeviceWifiList';
 import ConfigureWifi from './ConfigureWifi';
 import SetupDevice from './SetupDevice';
-import AddNetworkPopup from './AddNetworkPopup';
+import ClaimNetwork from './ClaimNetwork';
 import useVisible from 'wappsto-blanket/hooks/useVisible';
 import { iotNetworkListAdd } from '../../../../util/params';
 import ConfirmAddManufacturerNetwork from './ConfirmAddManufacturerNetwork';
@@ -57,7 +57,7 @@ const Content = React.memo(({ visible, hide, show }) => {
       Step = SelectChoice;
       break;
     case 1:
-      Step = AddNetworkPopup;
+      Step = ClaimNetwork;
       break;
     case 2:
       Step = SearchBlufi;

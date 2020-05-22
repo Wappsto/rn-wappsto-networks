@@ -8,7 +8,7 @@ import Button from '../../../../components/Button';
 import Input from '../../../../components/Input';
 import RequestError from '../../../../components/RequestError';
 import theme from '../../../../theme/themeExport';
-import { useTranslation, CapitalizeFirst, CapitalizeEach } from '../../../../translations';
+import { useTranslation, CapitalizeFirst } from '../../../../translations';
 import useAddNetworkForm from '../../../../hooks/setup/useAddNetworkForm';
 
 const styles = StyleSheet.create({
@@ -61,12 +61,12 @@ const AddNetwork = React.memo(({ addNetworkHandler, hide }) => {
       <Text
         size='h3'
         align='center'
-        content={CapitalizeFirst(t('onboarding.claiming.addNetworkTitle'))}
+        content={CapitalizeFirst(t('onboarding.claiming.claimNetworkTitle'))}
       />
       <Text
         size='p'
         color='secondary'
-        content={CapitalizeFirst(t('onboarding.claiming.addNetworkInfo'))}
+        content={CapitalizeFirst(t('onboarding.claiming.claimNetworkInfo'))}
       />
       <View style={styles.qrCodeScannerWrapper}>
         {isScanning ? (
@@ -155,7 +155,7 @@ const AddNetwork = React.memo(({ addNetworkHandler, hide }) => {
         color={canAdd ? 'primary' : 'disabled'}
         onPress={addNetwork}
         style={styles.button}
-        text={CapitalizeFirst(t('onboarding.claiming.addBtn'))}
+        text={CapitalizeFirst(t('onboarding.claiming.claimNetworkBtn'))}
       />
     </>
   );
