@@ -16,7 +16,7 @@
       "4005": "failed to open websocket"
     }
   },
-  "300084": "username or password does not match.",
+  "300084": "username and password do not match.",
   "400006": "you don't have permission to access this device ID.",
   "9900032": "invalid action!",
   "9900145": "the IoT device with provided ID is not found",
