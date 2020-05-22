@@ -12,6 +12,7 @@
     "yes": "yes",
     "refresh": "refresh",
     "reload": "reload",
+    "remove": "remove",
     "save": "save",
     "send":"send"
   },
@@ -111,25 +112,28 @@
     },
     "claiming": {
       "addNetworkTitle": "add an IoT device",
-      "addNetworkInfo": "To add an IoT device to your list, you need to provide a 36-character long unique identifier (UUID).\n\nUse QR-scanner to scan the code printed on your device (e.g. Porcupine) or enter it manually in the field below.",
+      "addNetworkInfo": "To add an IoT device to your list, provide its unique identifier (UUID, 36-characters).\n\nUse camera to scan the code printed on your device.",
+      "enterUUID": "if QR code scanning doesn't work for you, enter the identifier  in the field above.",
       "addManufacturerNetworkTitle": "Warning",
+      "manufacturerAsOwnerWarning": "the manufacturer of this device has full access to this device data. Do you want to add this device to your account?",
       "cameraPermission": {
         "denied": "camera not authorized",
-        "message": "we need your permission to get access to the camera and scan the QR code",
         "pending": "waiting for camera",
-        "title": "your permission to use phone camera is required in order to be able to scan QR code"
+        "title": "camera permission is required",
+        "message": "the app needs access to phone camera to scan the QR code"
       },
-      "manufacturerAsOwnerWarning": "the manufacturer of this device has full access. Do you really want to add this device to your account?",
-      "scanQRCode": "tap to scan QR code",
-      "rescanQRCode": "QR code scanned, tap to scan again",
-      "uuidLabel": "device UUID"
+      "scanQRCode": "tap here to scan QR code",
+      "rescanQRCode": "tap here to scan again",
+      "scanSuccessMessage":"QR code scanned",
+      "uuidLabel": "device UUID",
+      "addBtn": "add"
     },
     "deviceDiscovery": {
       "lookingForDevices": "looking for devices",
       "scanAgain": "search again",
       "scanError": "failed to find devices",
-      "foundDevices": "found devices",
-      "selectDevice": "Select device you want to configure from the list below.",
+      "foundDevices": "devices nearby",
+      "selectDevice": "select your IoT device",
       "noDevicesFound": "No devices were found",
       "unknownName": "unknown",
       "goToSettings": "go to settings",
@@ -139,14 +143,14 @@
       }
     },
     "progress": {
-      "connect": "connecting to the IoT device ",
+      "connect": "connecting to the IoT device",
       "initNotification": "initializing notification listener",
       "negotiateSecurity": "negotiating security with the IoT device",
       "getDeviceWifiList": "getting Wi-Fi list from the device",
       "retrieve": "retrieving device information",
       "sendWifiData": "sending Wi-Fi data",
       "waitDeviceConnect": "waiting for the IoT device to connect",
-      "addNetwork": "registering IoT device in the cloud"
+      "addNetwork": "registering the IoT device in the cloud"
     },
     "error": {
       "failedConnect": "failed to connect to the device.",

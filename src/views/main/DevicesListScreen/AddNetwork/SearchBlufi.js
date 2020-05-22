@@ -76,6 +76,7 @@ const SearchBlufi = ({ next, setSelectedDevice }) => {
         <>
           <Text
             size='h3'
+            align='center'
             content={CapitalizeFirst(t('onboarding.deviceDiscovery.foundDevices'))}
           />
           <Text

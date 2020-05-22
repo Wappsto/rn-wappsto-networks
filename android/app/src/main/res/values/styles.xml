@@ -7,4 +7,8 @@
         <item name="android:colorControlHighlight">@color/primaryDark</item>
         <item name="colorAccent">@color/primaryDark</item>
     </style>
+    <style name="AlertDialogCustom" parent="@android:style/Theme.Dialog">
+        <item name="android:textColor">@color/textColor</item>
+        <item name="android:windowBackground">@color/backgroundColor</item>
+    </style>
 </resources>

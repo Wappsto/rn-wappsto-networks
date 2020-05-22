@@ -13,6 +13,7 @@ const ConfigureWifi = React.memo(({ next, wifiFields }) => {
     <>
       <Text
         size='h3'
+        align='center'
         content={CapitalizeFirst(t('onboarding.wifiConfig.title'))}
       />
       <Text

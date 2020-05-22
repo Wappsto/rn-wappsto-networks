@@ -1,5 +1,6 @@
 import React from 'react';
 import { View, ActivityIndicator, StyleSheet, TouchableOpacity, Image } from 'react-native';
+import Icon from 'react-native-vector-icons/Feather';
 import Text from '../../../../components/Text';
 import Button from '../../../../components/Button';
 import useDeviceScanWifi from '../../../../hooks/setup/blufi/useDeviceScanWifi';
@@ -42,7 +43,16 @@ const styles = StyleSheet.create({
   },
   hiddenButtonWrapper:{
     marginTop:50
-  }
+  },
+  inlineIcon:{
+    marginRight:8
+  },
+  statusMessage:{
+    alignItems: 'center',
+    justifyContent: 'center',
+    flexDirection:'row',
+    marginBottom:30
+  },
 });
 
 const DeviceWifiList = React.memo(({ next, selectedDevice, wifiFields }) => {
@@ -71,6 +81,7 @@ const DeviceWifiList = React.memo(({ next, selectedDevice, wifiFields }) => {
         <>
           <Text
             size='h3'
+            align='center'
             content={CapitalizeFirst(t('onboarding.wifiScan.scanInProgress'))}
           />
           <Text
@@ -90,16 +101,26 @@ const DeviceWifiList = React.memo(({ next, selectedDevice, wifiFields }) => {
         <>
           <Text
             size='h3'
+            align='center'
             content={CapitalizeFirst(t('onboarding.wifiScan.error.title'))}
           />
           {
             image.onboarding.wifiSetupError &&
             <Image resizeMode='contain' source={image.onboarding.wifiSetupError} style={theme.common.image}/>
           }
-          <Text
-            color='error'
-            content={CapitalizeFirst(t('onboarding.error.' + step))}
-          />
+          <View style={styles.statusMessage}>
+            <Icon
+              name='x-circle'
+              size={18}
+              color={theme.variables.alert}
+              style={styles.inlineIcon}
+            />
+            <Text
+              color='error'
+              align='center'
+              content={CapitalizeFirst(t('onboarding.error.' + step))}
+            />
+          </View>
         </>
       }
       {!loading && !error && result.length === 0 &&

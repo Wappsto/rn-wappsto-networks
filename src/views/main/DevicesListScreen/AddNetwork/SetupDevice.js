@@ -35,6 +35,7 @@ const SetupDevice = React.memo(({ hide, wifiFields, selectedDevice, addNetworkHa
         <>
           <Text
             size='h3'
+            align='center'
             content={CapitalizeFirst(t('onboarding.wifiSetup.setupInProgress'))}
           />
           {
@@ -53,6 +54,7 @@ const SetupDevice = React.memo(({ hide, wifiFields, selectedDevice, addNetworkHa
         <>
           <Text
             size='h3'
+            align='center'
             content={CapitalizeFirst(t(error ? 'onboarding.wifiSetup.error.title' : 'onboarding.wifiSetup.success.title'))}
           />
           {
