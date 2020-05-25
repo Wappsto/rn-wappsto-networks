@@ -25,7 +25,7 @@ const RecoverScreen = React.memo(({ navigation }) => {
   } = useRecoverPassword();
 
   const navigateToLogin = useCallback(() => {
-    navigation.navigate('LoginScreen');
+    navigation.goBack();
   }, [navigation]);
 
   return (
