@@ -35,6 +35,7 @@
   "registrationInfo": "Please enter the following information to create an account.",
   "registrationConfirmation": "Check your email to follow further instructions.",
   "changeUserDetailsSuccess": "User details changed successfully",
+  "changePasswordSuccess": "Password changed successfully",
   "validation": {
     "password": "password is required",
     "repeatPassword": "passwords do not match",
