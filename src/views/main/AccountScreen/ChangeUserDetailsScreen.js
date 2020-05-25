@@ -28,7 +28,7 @@ const ChangeUserDetailsScreen = React.memo(() => {
         />
       </Popup>
       <Input
-        value={userDetails.first_name}
+        value={userDetails.firstname}
         label={CapitalizeFirst(t('account:firstName'))}
         returnKeyType='next'
         onChangeText={userDetails.setFirstname}
@@ -36,7 +36,7 @@ const ChangeUserDetailsScreen = React.memo(() => {
       />
       <Input
         inputRef={userDetails.lastnameRef}
-        value={userDetails.last_name}
+        value={userDetails.lastname}
         label={CapitalizeFirst(t('account:lastName'))}
         returnKeyType='next'
         onChangeText={userDetails.setLastname}
