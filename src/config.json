@@ -1,0 +1,15 @@
+{
+  "baseUrl": "https://qa.wappsto.com/services",
+  "serviceVersion": {
+    "default": "2.0",
+    "user": "2.1"
+  },
+  "stream": {
+    "name": "wappsto-native-2.0",
+    "subscription": ["/network"],
+    "version": "2.0"
+  },
+  "firebaseWebClientId": "733864116078-nd9f0902lv71pi4qe5jpbisiagjs9gg0.apps.googleusercontent.com",
+  "blufiFilter": ["blu"],
+  "recaptchaKey": "6Ld1xrIUAAAAAMooWJqcqmVqh4ph5D2DFChZdAzG"
+}

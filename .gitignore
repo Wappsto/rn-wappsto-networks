@@ -62,5 +62,3 @@ buck-out/
 # Firebase Configuration
 google-services.json
 GoogleService-Info.plist
-
-src/config.json
