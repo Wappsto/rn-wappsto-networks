@@ -34,6 +34,7 @@
   "deleteAccountInfo": "you can request your account termination. Once you send the request, we will send you an email with the link. Follow the link to confirm your account deletion.",
   "registrationInfo": "Please enter the following information to create an account.",
   "registrationConfirmation": "Check your email to follow further instructions.",
+  "changeUserDetailsSuccess": "User details changed successfully",
   "validation": {
     "password": "password is required",
     "repeatPassword": "passwords do not match",

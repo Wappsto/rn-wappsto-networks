@@ -26,8 +26,8 @@ const useChangeEmail = () => {
   const usernameError = usernameBlurred && !isEmail(username);
   const passwordError = passwordBlurred && !password;
   const newUsernameError = newUsernameBlurred && !isEmail(newUsername);
-  const canUpdate = connected && userId && isEmail(username) && password && isEmail(newUsername);
   const loading =  request && request.status === 'pending';
+  const canUpdate = connected && userId && isEmail(username) && password && isEmail(newUsername) && !loading;
 
   const moveToField = useCallback((field) => {
     if(field && field.current && field.current.focus){

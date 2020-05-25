@@ -10,7 +10,6 @@ import { useTranslation, CapitalizeFirst, CapitalizeEach } from '../../../transl
 import useChangeEmail from '../../../hooks/account/useChangeEmail';
 
 const ChangeUsernameScreen = React.memo(() => {
-  // fix translations
   const { t } = useTranslation();
   const changeEmailHandler = useChangeEmail();
 
@@ -74,6 +73,7 @@ const ChangeUsernameScreen = React.memo(() => {
         display='block'
         text={CapitalizeFirst(t('genericButton.send'))}
         disabled={!changeEmailHandler.canUpdate}
+        onPress={changeEmailHandler.update}
       />
       <RequestError request={changeEmailHandler.request} />
     </ScrollView>
