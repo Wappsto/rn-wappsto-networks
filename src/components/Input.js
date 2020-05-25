@@ -65,7 +65,7 @@ const Input = React.memo(({
 
   return (
     <>
-      {label &&
+      {!!label &&
         <Text style={styles.label}>{label}</Text>
       }
       <View>
@@ -95,7 +95,7 @@ const Input = React.memo(({
             size={14}
           />
         }
-        {validationError &&
+        {!!validationError &&
           <Text style={styles.inputValidationError}>{validationError}</Text>
         }
       </View>
