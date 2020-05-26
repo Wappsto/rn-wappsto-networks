@@ -75,3 +75,11 @@ import {name as appName} from './app.json';
 
 AppRegistry.registerComponent(appName, () => App);
 ```
+
+# Components
+
+## KeyboardAvoidingView
+
+This component adds styling and properties required for it to work on iOS.
+It is important that KeyboardAvoidingView is placed **before** ScrollView and **after** SafeAreaView (if applicable).
+**offset** is required to be set for the views that use navigation.

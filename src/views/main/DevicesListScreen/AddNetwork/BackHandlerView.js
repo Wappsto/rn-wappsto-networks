@@ -1,6 +1,7 @@
 import React from 'react';
 import { ScrollView, View, StyleSheet } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import KeyboardAvoidingView from '../../../../components/KeyboardAvoidingView';
 import Button from '../../../../components/Button';
 import Icon from 'react-native-vector-icons/Feather';
 import theme from '../../../../theme/themeExport';
@@ -26,11 +27,13 @@ const BackHandlerView = React.memo(({ handleBack, hide, children }) => {
           text={CapitalizeFirst(t('genericButton.cancel'))}
         />
       </View>
+        <KeyboardAvoidingView>
       <ScrollView>
         <View style={theme.common.fullScreenModalContent}>
-          {children}
+            {children}
         </View>
       </ScrollView>
+    </KeyboardAvoidingView>
     </SafeAreaView>
   );
 });
