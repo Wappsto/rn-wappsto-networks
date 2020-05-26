@@ -5,9 +5,10 @@ const styles = StyleSheet.create({
   content:{flex:1, justifyContent: 'flex-end'}
 });
 
-const KeyboardAvoidingView = React.memo(({children }) => {
+const KeyboardAvoidingView = React.memo(({offset, children }) => {
   return (
     <RNKeyboardAvoidingView
+      keyboardVerticalOffset={offset}
       behavior={Platform.OS === 'ios' ? 'padding' : 'null'}
       style={styles.container}
     >

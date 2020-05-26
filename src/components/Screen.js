@@ -1,5 +1,7 @@
 import React from 'react';
 import { View, TouchableOpacity, StyleSheet, StatusBar } from 'react-native';
+import { useHeaderHeight } from 'react-navigation-stack';
+import KeyboardAvoidingView from './KeyboardAvoidingView';
 import { status } from 'wappsto-redux/actions/stream';
 import { useTranslation, CapitalizeFirst } from '../translations';
 import theme from '../theme/themeExport';
@@ -19,6 +21,7 @@ const styles = StyleSheet.create({
 });
 
 const Screen = React.memo(({ style, children }) => {
+  const headerHeight = useHeaderHeight();
   const { t } = useTranslation();
   const { stream, reconnectStream, message } = useStreamStatus();
   const connected = useConnected();
@@ -49,7 +52,9 @@ const Screen = React.memo(({ style, children }) => {
           )}
         </View>
       )}
-      {children}
+      <KeyboardAvoidingView offset={headerHeight}>
+        {children}
+      </KeyboardAvoidingView>
     </View>
   );
 });
