@@ -6,6 +6,7 @@ import { useTranslation, CapitalizeFirst, CapitalizeEach } from '../../translati
 import useSignIn from '../../hooks/login/useSignIn';
 import RequestError from '../../components/RequestError';
 import ReCaptcha from '../../components/ReCaptcha';
+import KeyboardAvoidingView from '../../components/KeyboardAvoidingView';
 import Input from '../../components/Input';
 import Text from '../../components/Text';
 import Button from '../../components/Button';
@@ -79,6 +80,15 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     color:theme.variables.primary
   },
+  section:{
+    marginBottom:20
+  },
+  seperator:{
+    borderWidth: 0.2,
+    borderColor: theme.variables.borderColor,
+    marginBottom:40,
+    marginTop: 20
+  },
   googleColor: {backgroundColor: '#4285F4'},
   facebookColor: {backgroundColor: '#4267B2'}
 });
@@ -123,137 +133,141 @@ const LoginScreen = React.memo(({ navigation }) => {
           content={CapitalizeFirst(t('error:internetConnectionLost'))}
         />
       )}
-      <ScrollView>
-        <LoginScreen.Header />
-        <View style={theme.common.contentContainer}>
-          <Text
-            size='p'
-            align='center'
-            content={CapitalizeFirst(t('account:loginWithEmail'))}
-          />
-          <View style={theme.common.card}>
-            <Input
-              onChangeText={usernameText =>
-                handleTextChange(usernameText, 'username')
-              }
-              value={username}
-              label={CapitalizeFirst(t('account:username'))}
-              textContentType='emailAddress'
-              autoCapitalize='none'
-              onSubmitEditing={moveToPasswordField}
-              keyboardType='email-address'
-              returnKeyType='next'
-              disabled={loading}
+      <KeyboardAvoidingView>
+        <ScrollView>
+          <LoginScreen.Header />
+          <View style={theme.common.contentContainer}>
+            <Text
+              size='p'
+              align='center'
+              content={CapitalizeFirst(t('account:loginWithEmail'))}
             />
-            <Input
-              inputRef={passwordInputRef}
-              onChangeText={passwordText =>
-                handleTextChange(passwordText, 'password')
-              }
-              value={password}
-              label={CapitalizeFirst(t('account:password'))}
-              textContentType='password'
-              autoCapitalize='none'
-              returnKeyType='done'
-              showPassword={showPassword}
-              secureTextEntry={!showPassword}
-              toggleShowPassword={toggleShowPassword}
-              onSubmitEditing={checkAndSignIn}
-              disabled={loading}
-            />
-            {loading && (
-              <ActivityIndicator size='large' color={theme.variables.spinnerColor} />
-            )}
+            <View style={styles.section}>
+              <Input
+                onChangeText={usernameText =>
+                  handleTextChange(usernameText, 'username')
+                }
+                value={username}
+                label={CapitalizeFirst(t('account:username'))}
+                textContentType='emailAddress'
+                autoCapitalize='none'
+                onSubmitEditing={moveToPasswordField}
+                keyboardType='email-address'
+                returnKeyType='next'
+                disabled={loading}
+              />
+              <Input
+                inputRef={passwordInputRef}
+                onChangeText={passwordText =>
+                  handleTextChange(passwordText, 'password')
+                }
+                value={password}
+                label={CapitalizeFirst(t('account:password'))}
+                textContentType='password'
+                autoCapitalize='none'
+                returnKeyType='done'
+                showPassword={showPassword}
+                secureTextEntry={!showPassword}
+                toggleShowPassword={toggleShowPassword}
+                onSubmitEditing={checkAndSignIn}
+                disabled={loading}
+              />
+              {loading && (
+                <ActivityIndicator size='large' color={theme.variables.spinnerColor} />
+              )}
 
-            <ReCaptcha onCheck={onCheckRecaptcha} recaptchaRef={recaptchaRef} />
+              <ReCaptcha onCheck={onCheckRecaptcha} recaptchaRef={recaptchaRef} />
 
-            <RequestError request={postRequest} />
-            <Button
-              disabled={!canSignIn}
-              style={!canSignIn && theme.common.disabled}
-              onPress={checkAndSignIn}
-              display='block'
-              color={!canSignIn ? 'disabled' : 'primary'}
-              text={CapitalizeFirst(t('account:logIn'))}
-            />
-          <View style={styles.formLinkButtons}>
-            <Button
-              disabled={loading}
-              onPress={moveToRecoverPasswordScreen}
-              type='link'
-              color={loading ? 'disabled' : 'primary'}
-              text={CapitalizeFirst(t('account:recoverPassword'))}
-            />
-            <Text content='|'/>
-            <Button
-              disabled={loading}
-              onPress={moveToTACScreen}
-              type='link'
-              color={loading ? 'disabled' : 'primary'}
-              text={CapitalizeFirst(t('account:createAccount'))}
-            />
+              <RequestError request={postRequest} />
+              <Button
+                disabled={!canSignIn}
+                style={!canSignIn && theme.common.disabled}
+                onPress={checkAndSignIn}
+                display='block'
+                color={!canSignIn ? 'disabled' : 'primary'}
+                text={CapitalizeFirst(t('account:logIn'))}
+              />
+            <View style={styles.formLinkButtons}>
+              <Button
+                disabled={loading}
+                onPress={moveToRecoverPasswordScreen}
+                type='link'
+                color={loading ? 'disabled' : 'primary'}
+                text={CapitalizeFirst(t('account:recoverPassword'))}
+              />
+              <Text content='|'/>
+              <Button
+                disabled={loading}
+                onPress={moveToTACScreen}
+                type='link'
+                color={loading ? 'disabled' : 'primary'}
+                text={CapitalizeFirst(t('account:createAccount'))}
+              />
+              </View>
             </View>
-          </View>
 
-          <Text
-            size='p'
-            align='center'
-            content={t('account:chooseSignInOption')}
-          />
+            <View style={styles.seperator}/>
 
-          <View style={theme.common.card}>
-            <TouchableOpacity
-              disabled={!canTPSignIn}
-              style={[
-                styles.signinButton,
-                styles.googleColor,
-                !canTPSignIn && theme.common.disabled
-              ]}
-              onPress={googleSignIn}
-            >
-              <View style={styles.GoogleSigninButtonWrapper}>
-                <Image
-                  resizeMode='contain'
-                  source={require('../../../assets/images/login/google_logo.png')} style={styles.signinButtonImage}/>
-              </View>
-              <RNtext style={styles.signinButtonText}>
-                {CapitalizeFirst(t('account:signInWithGoogle'))}
-              </RNtext>
-            </TouchableOpacity>
-            <TouchableOpacity
-              disabled={!canTPSignIn}
-              style={[
-                styles.signinButton,
-                styles.facebookColor,
-                !canTPSignIn && theme.common.disabled
-              ]}
-              onPress={facebookSignIn}
-            >
-              <View style={styles.FacebookSigninButtonWrapper}>
-                <Image
-                  resizeMode='contain'
-                  source={require('../../../assets/images/login/f_logo_RGB-White_58.png')} style={styles.signinButtonImage}/>
-              </View>
-              <RNtext style={styles.signinButtonText}>
-                {CapitalizeFirst(t('account:signInWithFacebook'))}
-              </RNtext>
-            </TouchableOpacity>
-            {
-              Platform.OS === 'ios' &&
-              <AppleButton
-                buttonStyle={AppleButton.Style.WHITE}
-                buttonType={AppleButton.Type.SIGN_IN}
+            <Text
+              size='p'
+              align='center'
+              content={t('account:chooseSignInOption')}
+            />
+
+            <View style={styles.section}>
+              <TouchableOpacity
+                disabled={!canTPSignIn}
                 style={[
                   styles.signinButton,
+                  styles.googleColor,
                   !canTPSignIn && theme.common.disabled
                 ]}
-                onPress={appleSignIn}
-              />
-            }
+                onPress={googleSignIn}
+              >
+                <View style={styles.GoogleSigninButtonWrapper}>
+                  <Image
+                    resizeMode='contain'
+                    source={require('../../../assets/images/login/google_logo.png')} style={styles.signinButtonImage}/>
+                </View>
+                <RNtext style={styles.signinButtonText}>
+                  {CapitalizeFirst(t('account:signInWithGoogle'))}
+                </RNtext>
+              </TouchableOpacity>
+              <TouchableOpacity
+                disabled={!canTPSignIn}
+                style={[
+                  styles.signinButton,
+                  styles.facebookColor,
+                  !canTPSignIn && theme.common.disabled
+                ]}
+                onPress={facebookSignIn}
+              >
+                <View style={styles.FacebookSigninButtonWrapper}>
+                  <Image
+                    resizeMode='contain'
+                    source={require('../../../assets/images/login/f_logo_RGB-White_58.png')} style={styles.signinButtonImage}/>
+                </View>
+                <RNtext style={styles.signinButtonText}>
+                  {CapitalizeFirst(t('account:signInWithFacebook'))}
+                </RNtext>
+              </TouchableOpacity>
+              {
+                Platform.OS === 'ios' &&
+                <AppleButton
+                  buttonStyle={AppleButton.Style.WHITE}
+                  buttonType={AppleButton.Type.SIGN_IN}
+                  style={[
+                    styles.signinButton,
+                    !canTPSignIn && theme.common.disabled
+                  ]}
+                  onPress={appleSignIn}
+                />
+              }
+            </View>
           </View>
-        </View>
-        <LoginScreen.Footer />
-      </ScrollView>
+          <LoginScreen.Footer />
+        </ScrollView>
+      </KeyboardAvoidingView>
     </SafeAreaView>
   );
 });
