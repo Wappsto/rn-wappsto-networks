@@ -86,7 +86,7 @@ const RegisterScreen = React.memo(({ navigation }) => {
             textContentType='password'
             secureTextEntry={true}
             autoCapitalize='none'
-            returnKeyType='done'
+            returnKeyType='next'
             onSubmitEditing={() => moveToNextField('password')}
             disabled={loading}
             validationError={passwordError && CapitalizeFirst(t('account:validation.password'))}

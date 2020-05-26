@@ -55,6 +55,9 @@ const styles = StyleSheet.create({
   appleColor: {
     backgroundColor: '#fff',
     color:'#000'
+  },
+  id:{
+    maxWidth:'90%'
   }
 });
 
@@ -112,6 +115,7 @@ const AccountScreen = React.memo(({navigation}) => {
               <Text
                 color='secondary'
                 content={user.meta.id}
+                style={styles.id}
               />
               <Button
                 type='link'

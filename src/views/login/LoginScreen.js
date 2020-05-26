@@ -84,7 +84,7 @@ const styles = StyleSheet.create({
     marginBottom:20
   },
   seperator:{
-    borderWidth: 0.2,
+    borderWidth: 0.3,
     borderColor: theme.variables.borderColor,
     marginBottom:40,
     marginTop: 20
