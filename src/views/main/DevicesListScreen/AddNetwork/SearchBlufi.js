@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect } from 'react';
-import { View, Image, TouchableOpacity, StyleSheet, ActivityIndicator } from 'react-native';
+import { View, Image, TouchableOpacity, StyleSheet, Platform, ActivityIndicator } from 'react-native';
 import { useTranslation, CapitalizeFirst } from '../../../../translations';
 import theme from '../../../../theme/themeExport';
 import image from '../../../../theme/images';
@@ -98,11 +98,13 @@ const SearchBlufi = ({ next, setSelectedDevice }) => {
                 bold
                 content={(device.name ? device.name : CapitalizeFirst(t('onboarding.deviceDiscovery.unknownName'))) + ' '}
               />
-              <Text
-                style={styles.id}
-                color='secondary'
-                content={device.id}
-              />
+              {Platform.OS === 'ios' ? null :
+                <Text
+                  style={styles.id}
+                  color='secondary'
+                  content={device.id}
+                />
+              }
             </View>
           </View>
           {image.onboarding.rssiSignalIcon &&

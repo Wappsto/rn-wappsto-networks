@@ -73,7 +73,7 @@ export function generateStyles(c = {}) {
         backgroundColor: variables.modalBgColor,
       },
       fullScreenModalContent: {
-        padding: 20,
+        padding: 10,
         flex:2
       },
       seperator: {
