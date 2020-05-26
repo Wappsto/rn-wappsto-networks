@@ -1,4 +1,5 @@
 import React, { useState, useCallback, useEffect } from 'react';
+import { StatusBar } from 'react-native';
 import PopupButton from '../../../../components/PopupButton';
 import { Modal } from 'react-native';
 import theme from '../../../../theme/themeExport';
@@ -78,6 +79,7 @@ const Content = React.memo(({ visible, hide, show }) => {
 
   return (
     <>
+      <StatusBar backgroundColor={theme.variables.statusBarBgLight} barStyle={theme.variables.statusBarColorDark} />
       <ConfirmAddManufacturerNetwork visible={maoVisible} accept={addNetworkHandler.acceptManufacturerAsOwner} reject={addNetworkHandler.refuseManufacturerAsOwner} />
       <Modal
         transparent={true}
