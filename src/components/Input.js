@@ -1,17 +1,18 @@
 import React from 'react';
-import { StyleSheet, View, Text, TextInput } from 'react-native';
+import { StyleSheet, View, TextInput } from 'react-native';
+import Text from './Text';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import theme from '../theme/themeExport';
 
 const styles = StyleSheet.create({
   input: {
     width: '100%',
-    height: Math.round(theme.variables.inputTextSize * 1.5) + 20,
     fontSize: theme.variables.inputTextSize,
     fontFamily: theme.variables.fontFamily,
     color: theme.variables.inputTextColor,
-    marginBottom: theme.variables.defaultFontSize,
-    paddingHorizontal: 10,
+    marginBottom: 2,
+    paddingHorizontal: 5,
+    paddingVertical: 10,
     backgroundColor: theme.variables.inputBg,
     borderColor: theme.variables.inputBorderColor,
     borderWidth: theme.variables.borderWidth,
@@ -21,16 +22,7 @@ const styles = StyleSheet.create({
     borderColor: theme.variables.alert,
     color: theme.variables.alert
   },
-  inputValidationError: {
-    color: theme.variables.alert,
-    fontFamily: theme.variables.fontFamily,
-    marginTop: Math.round(theme.variables.defaultFontSize * 0.8) * -1,
-    marginBottom: theme.variables.defaultFontSize
-  },
   label: {
-    color: theme.variables.textColor,
-    fontFamily: theme.variables.fontFamily,
-    fontSize: theme.variables.defaultFontSize,
     lineHeight: Math.round(theme.variables.defaultFontSize * 1.5)
   },
   passwordVisibilityButton: {
@@ -41,51 +33,41 @@ const styles = StyleSheet.create({
     paddingVertical: 10,
     paddingHorizontal: 16
   },
+  inputWrapper: {
+    width:'100%',
+    marginBottom: theme.variables.defaultFontSize
+  }
 });
 
 const Input = React.memo(({
   inputRef,
   label,
-  value,
   style,
+  value,
   disabled,
-  placeholder,
-  textContentType,
-  secureTextEntry,
-  keyboardType,
-  autoCapitalize,
-  returnKeyType,
-  onBlur,
-  onSubmitEditing,
-  onChangeText,
-  validationError,
   showPassword,
-  toggleShowPassword
+  toggleShowPassword,
+  validationError,
+  ...props
 }) => {
 
   return (
     <>
       {!!label &&
-        <Text style={styles.label}>{label}</Text>
+        <Text
+          style={styles.label}
+          content={label}
+        />
       }
-      <View>
+      <View style={styles.inputWrapper}>
         <TextInput
+          {...props}
           ref={inputRef}
           style={[styles.input, validationError && styles.inputError, style]}
           selectionColor={theme.variables.inputSelectionColor}
           value={value}
           editable={!disabled}
-          autoCapitalize={autoCapitalize}
-          textContentType={textContentType}
           autoCorrect={false}
-          keyboardType={keyboardType}
-          returnKeyType={returnKeyType}
-          secureTextEntry={secureTextEntry}
-          onChangeText={onChangeText}
-          onSubmitEditing={onSubmitEditing}
-          placeholder={placeholder}
-          onBlur={onBlur}
-          validationError={validationError}
         />
         {toggleShowPassword &&
           <Icon
@@ -96,7 +78,7 @@ const Input = React.memo(({
           />
         }
         {!!validationError &&
-          <Text style={styles.inputValidationError}>{validationError}</Text>
+          <Text color='error' content={validationError}/>
         }
       </View>
     </>

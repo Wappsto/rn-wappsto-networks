@@ -23,7 +23,7 @@ const styles = StyleSheet.create({
     borderWidth: theme.variables.borderWidth,
     borderColor: theme.variables.popupBorderColor,
     backgroundColor: theme.variables.popupBackground,
-    margin: 20,
+    margin: 10,
     padding: 20,
   },
   closeButton: {

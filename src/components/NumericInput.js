@@ -1,5 +1,6 @@
 import React, { useCallback, useState } from 'react';
-import { StyleSheet, View, Text, TextInput, TouchableOpacity } from 'react-native';
+import { StyleSheet, View, TextInput, TouchableOpacity } from 'react-native';
+import Text from './Text';
 import Icon from 'react-native-vector-icons/Feather';
 import theme from '../theme/themeExport';
 import { useTranslation, CapitalizeFirst } from '../translations';
@@ -10,7 +11,7 @@ const styles = StyleSheet.create({
     borderWidth: theme.variables.borderWidth,
     borderRadius: theme.variables.borderRadiusBase,
     borderColor: theme.variables.buttonBg,
-    marginBottom: theme.variables.defaultFontSize,
+    marginVertical: 2,
     maxWidth:'95%',
     alignSelf:'center',
     height: Math.round(theme.variables.inputTextSize * 1.5) + 20,
@@ -24,7 +25,11 @@ const styles = StyleSheet.create({
     color: theme.variables.inputTextColor,
     paddingHorizontal: 5,
     backgroundColor: theme.variables.inputBg,
-        height: '100%',
+    height: '100%',
+  },
+  inputError: {
+    borderColor: theme.variables.alert,
+    color: theme.variables.alert
   },
   button:{
     width: 50,
@@ -34,22 +39,6 @@ const styles = StyleSheet.create({
   },
   icon:{
     color: theme.variables.buttonColor
-  },
-  inputError: {
-    borderColor: theme.variables.alert,
-    color: theme.variables.alert
-  },
-  inputValidationError: {
-    color: theme.variables.alert,
-    fontFamily: theme.variables.fontFamily,
-    marginTop: Math.round(theme.variables.defaultFontSize * 0.8) * -1,
-    marginBottom: theme.variables.defaultFontSize
-  },
-  label: {
-    color: theme.variables.textColor,
-    fontFamily: theme.variables.fontFamily,
-    fontSize: theme.variables.defaultFontSize,
-    lineHeight: Math.round(theme.variables.defaultFontSize * 1.5)
   }
 });
 
@@ -76,13 +65,13 @@ const NumericInput = React.memo(({
   const updateWarning = useCallback((value) => {
     if(min !== null && min !== undefined && !isNaN(min)){
       if(parseFloat(value) < parseFloat(min)){
-        setWarning('min');
+        setWarning(['validation.wrongMinNumber', { number: min }]);
         return;
       }
     }
     if(max !== null && max !== undefined && !isNaN(max)){
       if(value > parseFloat(max)){
-        setWarning('max');
+        setWarning(['validation.wrongMaxNumber', { number: max }]);
         return;
       }
     }
@@ -97,13 +86,13 @@ const NumericInput = React.memo(({
   }, [onChange, updateWarning]);
 
   const onLeftButtonClick = useCallback(() => {
-    const newValue = parseFloat(value) - (parseFloat(step) || 1);
+    const newValue = (parseFloat(value) || 0) - (parseFloat(step) || 0);
     onButtonClick(newValue);
     updateWarning(newValue);
   }, [value, step, updateWarning, onButtonClick]);
 
   const onRightButtonClick = useCallback(() => {
-    const newValue = parseFloat(value) + (parseFloat(step) || 1);
+    const newValue = (parseFloat(value) || 0) + (parseFloat(step) || 0);
     onButtonClick(newValue);
     updateWarning(newValue);
   }, [value, step, updateWarning, onButtonClick]);
@@ -111,7 +100,9 @@ const NumericInput = React.memo(({
   return (
     <>
       {label &&
-        <Text style={styles.label}>{label}</Text>
+        <Text
+          content={label}
+        />
       }
       <View style={[styles.numericInput, validationError && styles.inputError]}>
         <TouchableOpacity
@@ -130,15 +121,13 @@ const NumericInput = React.memo(({
             selectionColor={theme.variables.inputSelectionColor}
             defaultValue={defaultValue}
             value={value}
-            onFocus={onFocus}
-            onBlur={onBlur}
             onSubmitEditing={onSubmitEditing}
             onChangeText={onChangeText}
             editable={!disabled}
+            textAlign={'center'}
             autoCorrect={false}
             keyboardType='number-pad'
             returnKeyType='done'
-            validationError={validationError}
           />
           <TouchableOpacity
             disabled={disabled}
@@ -151,11 +140,11 @@ const NumericInput = React.memo(({
             />
           </TouchableOpacity>
         </View>
-        {!!validationError &&
-          <Text style={styles.inputValidationError}>{validationError}</Text>
-        }
         {!!warning &&
-          <Text style={styles.inputValidationError}>{CapitalizeFirst(t('warning.' + warning))}</Text>
+          <Text
+            color='warning'
+            content={CapitalizeFirst(t(...warning))}
+          />
         }
     </>
   );

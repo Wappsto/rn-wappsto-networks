@@ -16,6 +16,10 @@
     "save": "save",
     "send":"send"
   },
+  "validation":{
+    "wrongMinNumber": "inserted number should larger than {{number}}",
+    "wrongMaxNumber": "inserted number should be smaller than {{number}}"
+  },
   "currentState": "current state",
   "desiredState": "desired state",
   "device": "device",
