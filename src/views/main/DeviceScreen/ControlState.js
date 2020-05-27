@@ -9,8 +9,8 @@ import Timestamp from './Timestamp';
 import { cannotAccessState } from 'wappsto-blanket/util';
 import { getStateData } from '../../../util/helpers';
 import useControlState from '../../../hooks/useControlState';
-// import NumericInput from 'react-native-numeric-input';
 import NumericInput from '../../../components/NumericInput';
+import Input from '../../../components/Input';
 
 const styles = StyleSheet.create({
   slider:{
@@ -19,6 +19,13 @@ const styles = StyleSheet.create({
   dataWrapper:{
     alignItems: 'center',
     marginBottom: 15
+  },
+  textMargin:{
+    marginBottom:20
+  },
+  row: {
+    flexDirection: 'row',
+    justifyContent: 'space-between'
   }
 });
 
@@ -38,10 +45,9 @@ export const StateDataField = ({
   let stateDataField = null;
   if (value.hasOwnProperty('string')) {
     stateDataField = (
-      <TextInput
+      <Input
         onFocus={() => setIsFocused(true)}
         onBlur={() => setIsFocused(false)}
-        style={theme.common.input}
         value={input}
         maxLength={value.string.max}
         onSubmitEditing={updateStateFromInput}
@@ -103,12 +109,11 @@ export const StateDataField = ({
     }
   } else if (value.hasOwnProperty('blob')) {
     stateDataField = (
-      <TextInput
+      <Input
         onFocus={() => setIsFocused(true)}
         onBlur={() => setIsFocused(false)}
         multiline={true}
         numberOfLines={10}
-        style={theme.common.input}
         value={input}
         maxLength={value.blob.max}
         onSubmitEditing={updateStateFromInput}
@@ -118,12 +123,11 @@ export const StateDataField = ({
     );
   } else if (value.hasOwnProperty('xml')) {
     stateDataField = (
-      <TextInput
+      <Input
         onFocus={() => setIsFocused(true)}
         onBlur={() => setIsFocused(false)}
         multiline={true}
         numberOfLines={10}
-        style={theme.common.input}
         value={input}
         maxLength={value.xml.max}
         onSubmitEditing={updateStateFromInput}
@@ -141,7 +145,12 @@ const ControlState = React.memo(({ state, value }) => {
 
   return (
     <View>
-      <Text color='secondary' content={CapitalizeFirst(t('desiredState'))}/>
+      <View style={styles.row}>
+        <Text bold color='secondary' style={styles.textMargin} content={CapitalizeFirst(t('desiredState'))}/>
+        {!cannotAccessState(state) &&
+          <Timestamp timestamp={state.timestamp}/>
+        }
+      </View>
       {
         cannotAccessState(state) ?
         (
@@ -152,7 +161,6 @@ const ControlState = React.memo(({ state, value }) => {
               <StateDataField {...controlStateController} value={value}/>
             </View>
             <RequestError request={controlStateController.request} />
-            <Timestamp timestamp={state.timestamp}/>
           </>
         )
       }

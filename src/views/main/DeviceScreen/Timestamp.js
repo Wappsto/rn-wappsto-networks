@@ -8,7 +8,7 @@ const Timestamp = React.memo(({ timestamp }) => {
     <Text
       color='secondary'
       size={12}
-      content={CapitalizeFirst(t('lastUpdated'))  + ': ' + new Date(timestamp).toLocaleString()}
+      content={new Date(timestamp).toLocaleString()}
     />
   );
 });

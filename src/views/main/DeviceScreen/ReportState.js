@@ -18,6 +18,13 @@ const styles = StyleSheet.create({
   text:{
     textAlign: 'center',
     marginBottom: 15
+  },
+  textMargin:{
+    marginBottom:20
+  },
+  row: {
+    flexDirection: 'row',
+    justifyContent: 'space-between'
   }
 });
 
@@ -48,15 +55,17 @@ const ReportState = React.memo(({ state, value }) => {
   const { t } = useTranslation();
   return (
     <View>
-      <Text color='secondary' content={CapitalizeFirst(t('currentState'))}/>
+      <View style={styles.row}>
+        <Text bold color='secondary' style={styles.textMargin} content={CapitalizeFirst(t('currentState'))}/>
+        {!cannotAccessState(state) &&
+          <Timestamp timestamp={state.timestamp}/>
+        }
+      </View>
       {
         cannotAccessState(state) ? (
           <Text content={CapitalizeFirst(t('cannotAccess.' + state.status_payment))} />
         ) : (
-          <>
-            {content(state, value)}
-            <Timestamp timestamp={state.timestamp}/>
-          </>
+          content(state, value)
         )
       }
 

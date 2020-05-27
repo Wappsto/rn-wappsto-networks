@@ -4,6 +4,8 @@ import Popup from '../../../components/Popup';
 import Text from '../../../components/Text';
 import { useTranslation, CapitalizeFirst } from '../../../translations';
 
+const exist = (num) => num !== undefined && num !== null && !isNaN(num);
+
 const  getValueType = (value, t) => {
   if (value) {
     if (value.hasOwnProperty('blob')) {
@@ -24,13 +26,13 @@ const  getValueType = (value, t) => {
       return {
         view: (
           <>
-            {!!value.number.min &&
+            {exist(value.number.min) &&
               <Text content={CapitalizeFirst(t('valueDescription.min')) + ': ' + value.number.min} />
             }
-            {!!value.number.max &&
+            {exist(value.number.max) &&
               <Text content={CapitalizeFirst(t('valueDescription.max')) + ': ' + value.number.max} />
             }
-            {!!value.number.step &&
+            {exist(value.number.step) &&
               <Text content={CapitalizeFirst(t('valueDescription.stepSize')) + ': ' + value.number.step} />
             }
             {!!value.number.unit &&
