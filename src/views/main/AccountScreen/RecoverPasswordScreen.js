@@ -1,5 +1,6 @@
 import React from 'react';
 import { ScrollView } from 'react-native';
+import Screen from '../../../components/Screen';
 import Text from '../../../components/Text';
 import Button from '../../../components/Button';
 import Input from '../../../components/Input';
@@ -13,21 +14,23 @@ const RecoverPassword = React.memo(() => {
   const { request, session } = useUser();
 
   return (
-    <ScrollView style={[theme.common.container, theme.common.contentContainer]}>
-      <Text
-        size='p'
-        content={CapitalizeFirst(t('account:recoverPasswordInfo'))}
-      />
-      <Input
-        value={session.username}
-        label={CapitalizeFirst(t('account:email'))}
-      />
-      <Button
-        display='block'
-        text={CapitalizeFirst(t('genericButton.send'))}
-      />
-      <RequestError request={request} />
-    </ScrollView>
+    <Screen>
+      <ScrollView style={theme.common.contentContainer}>
+        <Text
+          size='p'
+          content={CapitalizeFirst(t('account:recoverPasswordInfo'))}
+        />
+        <Input
+          value={session.username}
+          label={CapitalizeFirst(t('account:email'))}
+        />
+        <Button
+          display='block'
+          text={CapitalizeFirst(t('genericButton.send'))}
+        />
+        <RequestError request={request} />
+      </ScrollView>
+    </Screen>
   );
 });
 
