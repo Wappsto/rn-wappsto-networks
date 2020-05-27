@@ -1,11 +1,6 @@
 import {use as reduxUse, configureStore} from 'wappsto-redux';
 
-let config;
-try {
-  config = require('./config.json');
-} catch (e) {
-  config = {};
-}
+let config = require('./config.json');
 
 reduxUse(config);
 

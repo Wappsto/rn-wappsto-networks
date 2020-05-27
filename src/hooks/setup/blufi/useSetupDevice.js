@@ -149,7 +149,7 @@ const useSetupDevice = (selectedDevice, addNetworkHandler, wifiFields, autoConfi
   }, [connected]);
 
   useEffect(() => {
-    if(!success.current){
+    if(!success.current && autoConfigure){
       configure(true);
     }
     return () => {
