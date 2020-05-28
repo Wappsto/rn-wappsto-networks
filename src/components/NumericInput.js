@@ -1,5 +1,5 @@
 import React, { useCallback, useState } from 'react';
-import { StyleSheet, View, TextInput, TouchableOpacity } from 'react-native';
+import { StyleSheet, View, TextInput, TouchableOpacity, Platform } from 'react-native';
 import Text from './Text';
 import Icon from 'react-native-vector-icons/Feather';
 import theme from '../theme/themeExport';
@@ -96,7 +96,6 @@ const NumericInput = React.memo(({
     onButtonClick(newValue);
     updateWarning(newValue);
   }, [value, step, updateWarning, onButtonClick]);
-
   return (
     <>
       {label &&
@@ -126,7 +125,7 @@ const NumericInput = React.memo(({
             editable={!disabled}
             textAlign={'center'}
             autoCorrect={false}
-            keyboardType='number-pad'
+            keyboardType={Platform.OS === 'ios' ? 'numbers-and-punctuation' : 'number-pad'}
             returnKeyType='done'
           />
           <TouchableOpacity
