@@ -141,8 +141,11 @@
       "noDevicesFound": "No devices were found",
       "unknownName": "unknown",
       "goToSettings": "go to settings",
-      "permissionRequired": {
-        "bluetooth": "Enable Bluetooth to continue. Bluetooth is required to find nearby devices.",
+      "permissionError": {
+        "bluetoothGeneric": "Enable Bluetooth to continue. Bluetooth is required to find nearby devices.",
+        "bluetoothUnauthorized":"$t(onboarding.deviceDiscovery.permissionError.bluetoothGeneric)",
+        "bluetoothNotSupported":"This feature requires Bluetooth yet your phone does not support it.",
+        "bluetoothOff":"$t(onboarding.deviceDiscovery.permissionError.bluetoothGeneric)",
         "location": "Enable location to continue. Location is required to find nearby devices."
       }
     },
