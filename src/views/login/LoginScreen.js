@@ -10,6 +10,7 @@ import KeyboardAvoidingView from '../../components/KeyboardAvoidingView';
 import Input from '../../components/Input';
 import Text from '../../components/Text';
 import Button from '../../components/Button';
+import LanguageButton from '../../components/LanguageButton';
 import theme from '../../theme/themeExport';
 import defaultImages from '../../theme/images';
 
@@ -135,6 +136,7 @@ const LoginScreen = React.memo(({ navigation }) => {
       )}
       <KeyboardAvoidingView>
         <ScrollView>
+          <LanguageButton />
           <LoginScreen.Header />
           <View style={theme.common.contentContainer}>
             <Text
