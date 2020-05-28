@@ -35,12 +35,11 @@ const RequestError = React.memo(({ request, skipCodes = [], autoHide = true }) =
   }, [visible]);
 
   if (request && visible) {
-    let message, extra;
+    let message;
     if (request.json && request.json.code) {
       message = t('error:' + request.json.code, request.json.data);
       if (message === request.json.code.toString()) {
-        message = t('error:generic');
-        extra = request.json.code + ': ' + request.json.message;
+        message = request.json.code + ': ' + request.json.message;
       }
     } else if (request.responseStatus) {
       message = t('error:status.' + request.responseStatus);
@@ -51,7 +50,7 @@ const RequestError = React.memo(({ request, skipCodes = [], autoHide = true }) =
       <Text
         size='p'
         color='error'
-        content={CapitalizeFirst(message) + (extra ? '\n' + extra : '')}
+        content={CapitalizeFirst(message)}
       />
     );
   }
