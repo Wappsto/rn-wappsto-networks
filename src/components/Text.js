@@ -57,24 +57,24 @@ const Title = React.memo(({
   };
 
   const textColor = (color)=>{
-      switch(color) {
-        case 'primary':
-          return {color: theme.variables.primary};
-        case 'secondary':
-          return {color: theme.variables.textSecondary};
-        case 'success':
-          return {color: theme.variables.textSuccess};
-        case 'warning':
-          return {color: theme.variables.textWarning};
-        case 'error':
-          return {color: theme.variables.textError};
-        case 'inverse':
-          return {color: theme.variables.textInverse};
-        case 'disabled':
-          return {color: theme.variables.disabled};
-        default:
-          return {color: color};
-      }
+    switch(color) {
+      case 'primary':
+        return {color: theme.variables.primary};
+      case 'secondary':
+        return {color: theme.variables.textSecondary};
+      case 'success':
+        return {color: theme.variables.textSuccess};
+      case 'warning':
+        return {color: theme.variables.textWarning};
+      case 'error':
+        return {color: theme.variables.textError};
+      case 'inverse':
+        return {color: theme.variables.textInverse};
+      case 'disabled':
+        return {color: theme.variables.disabled};
+      default:
+        return {color: color};
+    }
   };
   return (
     <RNtext

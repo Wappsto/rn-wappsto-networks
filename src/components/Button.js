@@ -60,11 +60,13 @@ const Button = React.memo(({
   align,
   type,
   request,
-  disabled,
-  display
+  display,
+  ...props
 }) => {
   const textColor = () =>{
-    if(color){
+    if(props.disabled){
+      return {color: theme.variables.disabled};
+    } else if(color){
       if(type === 'link' || type === 'outlined'){
         switch(color) {
           case 'primary':
@@ -88,41 +90,51 @@ const Button = React.memo(({
 
   const colorStyle = () => {
     if(type === 'outlined'){
-      switch(color) {
-        case 'primary':
-          return {borderColor: theme.variables.primary};
-        case 'secondary':
-          return {borderColor: theme.variables.secondary};
-        case 'success':
-          return {borderColor: theme.variables.success};
-        case 'alert':
-          return {borderColor: theme.variables.alert};
-        case 'disabled':
-          return {borderColor: theme.variables.disabled};
-        default:
-          return {borderColor: theme.variables.textColor};
+      if(props.disabled){
+        return {borderColor: theme.variables.disabled};
+      } else if (color){
+        switch(color) {
+          case 'primary':
+            return {borderColor: theme.variables.primary};
+          case 'secondary':
+            return {borderColor: theme.variables.secondary};
+          case 'success':
+            return {borderColor: theme.variables.success};
+          case 'alert':
+            return {borderColor: theme.variables.alert};
+          case 'disabled':
+            return {borderColor: theme.variables.disabled};
+          default:
+            return {borderColor: color};
+        }
+      } else {
+        return {borderColor: theme.variables.textColor};
       }
     } else if (!type){
-      switch(color) {
-        case 'primary':
-          return {backgroundColor: theme.variables.primary};
-        case 'secondary':
-          return {backgroundColor: theme.variables.secondary};
-        case 'success':
-          return {backgroundColor: theme.variables.success};
-        case 'alert':
-          return {backgroundColor: theme.variables.alert};
-        case 'disabled':
-          return {backgroundColor: theme.variables.disabled};
-        default:
-          return {};
+      if(props.disabled){
+        return {backgroundColor: theme.variables.disabled};
+      } else if (color) {
+        switch(color) {
+          case 'primary':
+            return {backgroundColor: theme.variables.primary};
+          case 'secondary':
+            return {backgroundColor: theme.variables.secondary};
+          case 'success':
+            return {backgroundColor: theme.variables.success};
+          case 'alert':
+            return {backgroundColor: theme.variables.alert};
+          case 'disabled':
+            return {backgroundColor: theme.variables.disabled};
+          default:
+            return {backgroundColor: color};
+        }
       }
     }
   };
 
   return (
     <TouchableOpacity
-      disabled={disabled}
+      {...props}
       style={[
         styles.button,
         {
@@ -136,7 +148,7 @@ const Button = React.memo(({
         {
           'block': {width: '100%'}
         }[display],
-        color && colorStyle(),
+        colorStyle(),
         style
       ]}
       onPress={onPress}

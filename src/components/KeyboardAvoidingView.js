@@ -1,8 +1,13 @@
 import React from 'react';
 import {View, KeyboardAvoidingView as RNKeyboardAvoidingView, StyleSheet, Platform } from 'react-native';
 const styles = StyleSheet.create({
-  container: {flex:1},
-  content:{flex:1, justifyContent: 'flex-end'}
+  container: {
+    flex:1
+  },
+  content:{
+    flex:1,
+    justifyContent: 'flex-end'
+  }
 });
 
 const KeyboardAvoidingView = React.memo(({offset, children }) => {
