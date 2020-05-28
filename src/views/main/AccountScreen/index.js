@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { Clipboard, View, Image, StyleSheet, ScrollView, ActivityIndicator } from 'react-native';
 import Screen from '../../../components/Screen';
 import Text from '../../../components/Text';

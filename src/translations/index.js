@@ -10,6 +10,7 @@ const resources = {
   },
   da: {
     translation: require('./da/translation'),
+    account: require('./da/account'),
     error: require('./da/error'),
   },
 };
