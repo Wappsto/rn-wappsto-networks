@@ -10,7 +10,7 @@ import theme from './theme/themeExport';
 import store from './configureWappstoRedux';
 import { useTranslation } from './translations';
 
-let dependencies = ['LoginStackScreen', 'MainStackScreen', 'AccountStackScreen', 'MainScreen', 'SwitchNavigator', 'AppContainer', 'App'];
+let dependencies = ['ComponentStackShowcase','LoginStackScreen', 'MainStackScreen', 'AccountStackScreen', 'MainScreen', 'SwitchNavigator', 'AppContainer', 'App'];
 
 let components = {
   SplashScreen: require('./views/SplashScreen').default,
@@ -30,7 +30,13 @@ let components = {
       TermsAndConditionsScreen: require('./views/login/TermsAndConditionsScreen').default
     });
   },
-
+  ComponentStackShowcase: function(){
+    return createStackNavigator({
+      ComponentShowcase: require('./views/ComponentShowcase').default,
+      ButtonShowcase: require('./views/ComponentShowcase/Button').default,
+      TextInputShowcase: require('./views/ComponentShowcase/TextInput').default
+    });
+  },
   MainStackScreen: function() {
     return createStackNavigator({
       DevicesListScreen: {screen: this.DevicesListScreen},
@@ -65,6 +71,7 @@ let components = {
   },
   SwitchNavigator: function() {
     return createSwitchNavigator({
+    //  ComponentStackShowcase: {screen: this.ComponentStackShowcase},
       SplashScreen: {screen: this.SplashScreen},
       LoginStackScreen: {screen: this.LoginStackScreen},
       MainScreen: {screen: this.MainScreen},
