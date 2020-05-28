@@ -41,6 +41,10 @@ const styles = StyleSheet.create({
   logoutBtn:{
     marginBottom: 20,
     marginLeft: 5
+  },
+  versionNr:{
+    fontSize: 12,
+    margin:10
   }
 });
 const DrawerMenu = React.memo((props) => {
@@ -95,8 +99,9 @@ const DrawerMenu = React.memo((props) => {
           text={CapitalizeFirst(t('logout'))}
         />
         <Text
+          style={styles.versionNr}
           color='secondary'
-          content={VersionNumber.appVersion}
+          content={'v' + VersionNumber.appVersion}
         />
       </View>
     </SafeAreaView>
