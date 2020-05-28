@@ -20,6 +20,7 @@ import ConfirmationPopup from '../../../components/ConfirmationPopup';
 import ItemDeleteIndicator from '../../../components/ItemDeleteIndicator';
 import useDeleteItem from '../../../hooks/useDeleteItem';
 import useDeleteItemRequest from '../../../hooks/useDeleteItemRequest';
+import RequestError from '../../../components/RequestError';
 
 const styles = StyleSheet.create({
   listHeader: {
@@ -61,6 +62,7 @@ const NetworkDetails = React.memo(({ network, style }) => {
         />
         <Text size='h4' content={network.name}/>
         <Text content={CapitalizeEach(t('networkDescription.uuid')) + ': ' + network.meta.id}/>
+        <RequestError request={request} />
         <Button
           type='outline'
           color='alert'
