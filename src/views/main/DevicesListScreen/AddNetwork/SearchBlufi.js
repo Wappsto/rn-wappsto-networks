@@ -178,7 +178,7 @@ const SearchBlufi = ({ next, setSelectedDevice }) => {
               onPress={openSettings}
               type='link'
               color='primary'
-              text={CapitalizeFirst(t('onboarding.deviceDiscovery.openSettings'))}
+              text={CapitalizeFirst(t('onboarding.deviceDiscovery.goToSettings'))}
             />
           }
         </>
