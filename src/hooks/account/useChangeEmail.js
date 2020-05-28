@@ -1,33 +1,24 @@
-import { useState, useRef, useCallback, useEffect, useContext } from 'react';
+import { useCallback } from 'react';
 import useRequest from 'wappsto-blanket/hooks/useRequest';
 import useConnected from '../useConnected';
 import useUser from '../useUser';
-import { NavigationContext } from 'react-navigation';
+import useField from '../useField';
 import { isEmail } from '../../util/helpers';
+import useRequestSuccessPopup from './useRequestSuccessPopup';
 
 const useChangeEmail = () => {
-  const navigation = useContext(NavigationContext);
   const { user, session } = useUser();
-  const [ username, setUsername ] = useState(session.username);
-  const [ password, setPassword ] = useState('');
-  const [ newUsername, setNewUsername ] = useState('');
-  const passwordRef = useRef();
-  const newUsernameRef = useRef();
-  const [ usernameBlurred, setUsernameBlurred ] = useState(false);
-  const [ passwordBlurred, setPasswordBlurred ] = useState(false);
-  const [ newUsernameBlurred, setNewUsernameBlurred ] = useState(false);
-  const [ showPassword, setShowPassword ] = useState(false);
-  const [ successVisible, setSuccessVisible ] = useState(false);
+  const usernameField = useField(session.username, isEmail);
+  const passwordField = useField();
+  const newUsernameField = useField('', isEmail);
 
   const connected = useConnected();
   const { send, request } = useRequest();
+  const requestSuccessHandler = useRequestSuccessPopup(request);
   const userId = user && user.meta && user.meta.id;
 
-  const usernameError = usernameBlurred && !isEmail(username);
-  const passwordError = passwordBlurred && !password;
-  const newUsernameError = newUsernameBlurred && !isEmail(newUsername);
   const loading =  request && request.status === 'pending';
-  const canUpdate = connected && userId && isEmail(username) && password && isEmail(newUsername) && !loading;
+  const canUpdate = connected && userId && isEmail(usernameField.text) && passwordField.text && isEmail(newUsernameField.text) && !loading;
 
   const moveToField = useCallback((field) => {
     if(field && field.current && field.current.focus){
@@ -35,10 +26,9 @@ const useChangeEmail = () => {
     }
   }, []);
 
-  const toggleShowPassword = useCallback(() => {
-    setShowPassword(sp => !sp);
-  }, []);
-
+  const username = usernameField.text;
+  const newUsername = newUsernameField.text;
+  const password = passwordField.text;
   const update = useCallback(() => {
     if(canUpdate){
       send({
@@ -53,47 +43,16 @@ const useChangeEmail = () => {
     }
   }, [canUpdate, send, username, password, newUsername, userId]);
 
-  const onUsernameBlur = useCallback(() => { setUsernameBlurred(true) }, []);
-  const onPasswordBlur = useCallback(() => { setPasswordBlurred(true) }, []);
-  const onNewUsernameBlur = useCallback(() => { setNewUsernameBlurred(true) }, []);
-
-  const hideSuccessPopup = useCallback(() => {
-    setSuccessVisible(false);
-    navigation.goBack();
-  }, [navigation]);
-
-  useEffect(() => {
-    if(request){
-      if(request.status === 'success'){
-        setSuccessVisible(true);
-      }
-    }
-  }, [request]);
-
   return {
-    username,
-    setUsername,
-    password,
-    setPassword,
-    newUsername,
-    setNewUsername,
-    onUsernameBlur,
-    onPasswordBlur,
-    onNewUsernameBlur,
-    passwordRef,
-    newUsernameRef,
-    usernameError,
-    passwordError,
-    newUsernameError,
+    usernameField,
+    passwordField,
+    newUsernameField,
     moveToField,
     canUpdate,
     update,
     request,
     loading,
-    showPassword,
-    toggleShowPassword,
-    successVisible,
-    hideSuccessPopup
+    ...requestSuccessHandler
   }
 }
 
