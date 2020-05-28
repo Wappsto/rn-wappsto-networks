@@ -1,19 +1,17 @@
-import { useState, useRef, useCallback, useEffect, useContext } from 'react';
+import { useState, useRef, useCallback } from 'react';
 import useRequest from 'wappsto-blanket/hooks/useRequest';
 import useConnected from '../useConnected';
 import useUser from '../useUser';
-import { NavigationContext } from 'react-navigation';
 import { isEmail } from '../../util/helpers';
+import useRequestSuccessPopup from './useRequestSuccessPopup';
 
 const useChangeUserDetails = () => {
-  const navigation = useContext(NavigationContext);
   const { user } = useUser();
   const [ firstname, setFirstname ] = useState((user && user.first_name) || '');
   const [ lastname, setLastname ] = useState((user && user.last_name) || '');
   const [ nickname, setNickname ] = useState((user && user.nickname) || '');
   const [ email, setEmail ] = useState((user && user.email) || '');
   const [ phone, setPhone ] = useState((user && user.phone) || '');
-  const [ successVisible, setSuccessVisible ] = useState(false);
   const [ emailBlurred, setEmailBlurred ] = useState(false);
 
   const lastnameRef = useRef();
@@ -23,6 +21,7 @@ const useChangeUserDetails = () => {
 
   const connected = useConnected();
   const { send, request } = useRequest();
+  const requestSuccessHandler = useRequestSuccessPopup(request);
   const userId = user && user.meta && user.meta.id;
 
   const emailError = emailBlurred && email && !isEmail(email);
@@ -34,11 +33,6 @@ const useChangeUserDetails = () => {
       field.current.focus();
     }
   }, []);
-
-  const hideSuccessPopup = useCallback(() => {
-    setSuccessVisible(false);
-    navigation.goBack();
-  }, [navigation]);
 
   const update = useCallback(() => {
     if(canUpdate){
@@ -57,14 +51,6 @@ const useChangeUserDetails = () => {
   }, [canUpdate, send, firstname, lastname, nickname, email, phone, userId]);
 
   const onEmailBlur = useCallback(() => { setEmailBlurred(true) }, []);
-
-  useEffect(() => {
-    if(request){
-      if(request.status === 'success'){
-        setSuccessVisible(true);
-      }
-    }
-  }, [request]);
 
   return {
     firstname,
@@ -88,8 +74,7 @@ const useChangeUserDetails = () => {
     update,
     request,
     loading,
-    successVisible,
-    hideSuccessPopup
+    ...requestSuccessHandler
   }
 }
 

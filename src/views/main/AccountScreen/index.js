@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, { useState, useEffect } from 'react';
 import { Clipboard, View, Image, StyleSheet, ScrollView, ActivityIndicator } from 'react-native';
 import Screen from '../../../components/Screen';
 import Text from '../../../components/Text';
@@ -10,6 +10,8 @@ import ConfirmationPopup from '../../../components/ConfirmationPopup';
 import { useTranslation, CapitalizeFirst, CapitalizeEach } from '../../../translations';
 import Icon from 'react-native-vector-icons/Feather';
 import useUser from '../../../hooks/useUser';
+import useDeleteAccount from '../../../hooks/account/useDeleteAccount';
+import Popup from '../../../components/Popup';
 
 const styles = StyleSheet.create({
   item: {
@@ -61,11 +63,61 @@ const styles = StyleSheet.create({
   }
 });
 
+const DeleteAccount = React.memo(({ setButtonsDisabled }) => {
+  const { t } = useTranslation();
+  const {
+    canDelete,
+    request,
+    loading,
+    successVisible,
+    hideSuccessPopup,
+    confirmationPopupVisible,
+    showConfirmationPopup,
+    hideConfirmationPopup,
+    confirmDelete
+  } = useDeleteAccount(setButtonsDisabled);
+
+  return (
+    <View style={[styles.item, styles.deleteAccount]}>
+      <ConfirmationPopup
+        visible={confirmationPopupVisible}
+        title={CapitalizeFirst(t('account:deleteAccountTitle'))}
+        description={CapitalizeFirst(t('account:deleteAccountInfo'))}
+        rejectText={CapitalizeFirst(t('genericButton.cancel'))}
+        acceptText={CapitalizeFirst(t('genericButton.send'))}
+        accept={confirmDelete}
+        reject={hideConfirmationPopup}
+        />
+      <Popup visible={successVisible} onRequestClose={hideSuccessPopup} hide={hideSuccessPopup} hideCloseIcon>
+        <Text
+          size='p'
+          align='center'
+          content={CapitalizeFirst(t('account:deleteAccountSuccess'))}
+        />
+        <Button
+          color='success'
+          onPress={hideSuccessPopup}
+          text={CapitalizeFirst(t('genericButton.ok'))}
+        />
+      </Popup>
+      {loading && <ActivityIndicator size='large' color={theme.variables.spinnerColor} />}
+      <RequestError request={request} />
+      <Button
+        type='link'
+        color='alert'
+        onPress={showConfirmationPopup}
+        text={CapitalizeFirst(t('account:deleteAccount'))}
+        disabled={!canDelete}
+      />
+    </View>
+  )
+});
+
 const AccountScreen = React.memo(({navigation}) => {
   const { t } = useTranslation();
   const { user, request, session } = useUser();
   const signedWithEmail = session.provider === 'email' ? true : false;
-  const [ showConfirmationPopup, setShowConfirmationPopup ] = useState(false);
+  const [ buttonsDisabled, setButtonsDisabled ] = useState(false);
 
   return (
     <Screen>
@@ -105,6 +157,7 @@ const AccountScreen = React.memo(({navigation}) => {
               color='primary'
               onPress={() => navigation.navigate('ChangeUserDetailsScreen', {})}
               icon='edit-3'
+              disabled={buttonsDisabled}
             />
             <View style={styles.item}>
               <Text
@@ -123,6 +176,7 @@ const AccountScreen = React.memo(({navigation}) => {
                   color='primary'
                   onPress={() =>  Clipboard.setString(user.meta.id)}
                   icon='copy'
+                  disabled={buttonsDisabled}
                 />
               </View>
             </View>
@@ -143,6 +197,7 @@ const AccountScreen = React.memo(({navigation}) => {
                     color='primary'
                     onPress={() => navigation.navigate('ChangeUsernameScreen', {})}
                     icon='edit-3'
+                    disabled={buttonsDisabled}
                   />
                 }
               </View>
@@ -164,25 +219,11 @@ const AccountScreen = React.memo(({navigation}) => {
                     color='primary'
                     onPress={() => navigation.navigate(signedWithEmail ? 'ChangePasswordScreen' : 'RecoverPasswordScreen', {})}
                     icon='edit-3'
+                    disabled={buttonsDisabled}
                   />
                 </View>
             </View>
-            <ConfirmationPopup
-              visible={showConfirmationPopup}
-              title={CapitalizeFirst(t('account:deleteAccountTitle'))}
-              description={CapitalizeFirst(t('account:deleteAccountInfo'))}
-              rejectText={CapitalizeFirst(t('genericButton.cancel'))}
-              acceptText={CapitalizeFirst(t('genericButton.send'))}
-              accept={() => setShowConfirmationPopup(false)}
-            />
-            <View style={[styles.item, styles.deleteAccount]}>
-              <Button
-                type='link'
-                color='alert'
-                onPress={() => setShowConfirmationPopup(true)}
-                text={CapitalizeFirst(t('account:deleteAccount'))}
-              />
-            </View>
+            <DeleteAccount setButtonsDisabled={setButtonsDisabled} />
           </>
         ) : request && request.status === 'pending' ? (
             <ActivityIndicator size='large' color={theme.variables.spinnerColor} />

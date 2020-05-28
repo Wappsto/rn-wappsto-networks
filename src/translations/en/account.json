@@ -32,6 +32,7 @@
   "changeUsernameConfirmation": "you will receive a link to confirm new email and apply the change.",
   "deleteAccountTitle": "delete account",
   "deleteAccountInfo": "you can request your account termination. Once you send the request, we will send you an email with the link. Follow the link to confirm your account deletion.",
+  "deleteAccountSuccess": "an email was sent to you, please follow the instructions.",
   "registrationInfo": "Please enter the following information to create an account.",
   "registrationConfirmation": "Check your email to follow further instructions.",
   "changeUserDetailsSuccess": "User details changed successfully",
