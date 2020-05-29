@@ -5,7 +5,7 @@ import { BlufiCallback } from '../../../BlufiLib/util/params';
 import { isUUID } from 'wappsto-redux/util/helpers';
 import usePrevious from 'wappsto-blanket/hooks/usePrevious';
 
-const STEPS = {
+export const STEPS = {
   RETRIEVE: 'retrieve',
   SENDWIFIDATA: 'sendWifiData',
   WAITDEVICECONNECT: 'waitDeviceConnect',
@@ -177,6 +177,7 @@ const useSetupDevice = (selectedDevice, addNetworkHandler, wifiFields, autoConfi
   return {
     configure,
     loading,
+    setStep,
     error: error.current,
     step: currentStep,
     request: addNetworkHandler.request,

@@ -1,49 +1,57 @@
 import { useState, useCallback, useEffect, useMemo } from 'react';
 import useRequest from 'wappsto-blanket/hooks/useRequest';
-import { removeRequest } from 'wappsto-redux/actions/request';
 import { makeItemSelector } from 'wappsto-redux/selectors/items';
-import { useSelector, useDispatch } from 'react-redux';
+import { useSelector } from 'react-redux';
 import { manufacturerAsOwnerErrorCode } from '../../util/params';
 
 const skipErrorCodes = [manufacturerAsOwnerErrorCode];
 const useAddNetwork = (iotNetworkListAdd, maoShow, maoHide) => {
-  const { request, send, removeR } = useRequest();
+  const { request, send, removeRequest } = useRequest();
   const [ networkId, setNetworkId ] = useState();
+  const [ body, setBody ] = useState({});
   const [ acceptedManufacturerAsOwner, setAcceptedManufacturerAsOwner ] = useState(true);
   const getItem = useMemo(makeItemSelector, []);
-  const dispatch = useDispatch();
 
   const addToList = useSelector(state => getItem(state, iotNetworkListAdd));
-  const sendRequest = useCallback((id, body = {}) => {
-    setNetworkId(id);
-    send({
-      method: 'POST',
-      url: '/network/' + id,
-      query: {
-        verbose: true
-      },
-      body
-    });
+
+  const sendR = useCallback((id, b = {}) => {
+    if(!id){
+      id = networkId;
+      b = body;
+    }
+    if(id){
+      send({
+        method: 'POST',
+        url: '/network/' + id,
+        query: {
+          verbose: true
+        },
+        body: b
+      });
+    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [networkId, body]);
+
+  const sendRequest = useCallback((id, body = {}) => {
+    if(id){
+      setNetworkId(id);
+      setBody(body);
+    }
+    sendR(id, body);
+  }, [sendR]);
 
   const acceptManufacturerAsOwner = useCallback(() => {
     setAcceptedManufacturerAsOwner(true);
     maoHide();
-    send({
-      method: 'POST',
-      url: '/network/' + networkId,
-      query: {
-        verbose: true
-      },
-      body: {
-        meta: {
-          accept_manufacturer_as_owner: true
-        }
+    setBody({
+      ...body,
+      meta: {
+        accept_manufacturer_as_owner: true
       }
     });
+    sendR();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [networkId]);
+  }, [networkId, body]);
 
   const refuseManufacturerAsOwner = useCallback(() => {
     setAcceptedManufacturerAsOwner(false);
@@ -56,7 +64,7 @@ const useAddNetwork = (iotNetworkListAdd, maoShow, maoHide) => {
       if(request.status === 'error' && request.json.code === manufacturerAsOwnerErrorCode){
         maoShow();
       } else if(request.status === 'success'){
-        dispatch(removeRequest(request.id));
+        removeRequest();
         if(addToList){
           addToList(request.json && request.json.meta.id);
         }
@@ -73,7 +81,7 @@ const useAddNetwork = (iotNetworkListAdd, maoShow, maoHide) => {
     refuseManufacturerAsOwner,
     acceptedManufacturerAsOwner,
     skipErrorCodes,
-    removeRequest: removeR
+    removeRequest
   };
 }
 

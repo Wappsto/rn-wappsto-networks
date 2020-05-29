@@ -30,7 +30,7 @@ const useConnectToDevice = (selectedDevice) => {
   const connected = Blufi.connectedDevice
                   && Blufi.connectedDevice.id === selectedDevice.id
                   && deviceId === selectedDevice.id;
-  const loading = !connected && !error.current;
+  const loading = selectedDevice && !connected && !error.current;
 
   const removeBlufiListeners = () => {
     Blufi.onError = () => {}
