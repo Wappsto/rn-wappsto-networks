@@ -1,5 +1,5 @@
 {
-  "genericButton":{
+  "genericButton": {
     "back": "back DANISHHHHHHHHHHHHHHHHHHHH",
     "cancel": "cancel DANISHHHHHHHHHHHHHHHHHHHH",
     "create": "create DANISHHHHHHHHHHHHHHHHHHHH",
@@ -14,9 +14,9 @@
     "reload": "reload DANISHHHHHHHHHHHHHHHHHHHH",
     "remove": "remove DANISHHHHHHHHHHHHHHHHHHHH",
     "save": "save DANISHHHHHHHHHHHHHHHHHHHH",
-    "send":"send DANISHHHHHHHHHHHHHHHHHHHH"
+    "send": "send DANISHHHHHHHHHHHHHHHHHHHH"
   },
-  "validation":{
+  "validation": {
     "wrongMinNumber": "inserted number should larger than {{number}} DANISHHHHHHHHHHHHHHHHHHHH",
     "wrongMaxNumber": "inserted number should be smaller than {{number}} DANISHHHHHHHHHHHHHHHHHHHH"
   },
@@ -128,7 +128,7 @@
       },
       "scanQRCode": "tap here to scan QR code DANISHHHHHHHHHHHHHHHHHHHH",
       "rescanQRCode": "tap here to scan again DANISHHHHHHHHHHHHHHHHHHHH",
-      "scanSuccessMessage":"QR code scanned DANISHHHHHHHHHHHHHHHHHHHH",
+      "scanSuccessMessage": "QR code scanned DANISHHHHHHHHHHHHHHHHHHHH",
       "uuidLabel": "device UUID DANISHHHHHHHHHHHHHHHHHHHH",
       "claimNetworkBtn": "add DANISHHHHHHHHHHHHHHHHHHHH"
     },
@@ -141,9 +141,12 @@
       "noDevicesFound": "No devices were found DANISHHHHHHHHHHHHHHHHHHHH",
       "unknownName": "unknown DANISHHHHHHHHHHHHHHHHHHHH",
       "goToSettings": "go to settings DANISHHHHHHHHHHHHHHHHHHHH",
-      "permissionRequired": {
-        "bluetooth": "Enable Bluetooth to continue. Bluetooth is required to find nearby devices. DANISHHHHHHHHHHHHHHHHHHHH",
-        "location": "Enable location to continue. Location is required to find nearby devices. DANISHHHHHHHHHHHHHHHHHHHH"
+      "permissionError": {
+        "location": "Enable location to continue. Location is required to find nearby devices.",
+        "bluetoothUnauthorized": "$t(onboarding.deviceDiscovery.permissionError.bluetoothGeneric)",
+        "bluetoothOff": "$t(onboarding.deviceDiscovery.permissionError.bluetoothGeneric)",
+        "bluetoothNotSupported": "$t(onboarding.deviceDiscovery.permissionError.bluetoothGeneric)",
+        "bluetoothGeneric": "$t(onboarding.deviceDiscovery.permissionError.bluetoothGeneric)"
       }
     },
     "progress": {
@@ -168,7 +171,7 @@
       "failedNotUuid": "wrong UUID was received from the device. DANISHHHHHHHHHHHHHHHHHHHH",
       "failedSendWifiData": "failed to send Wi-Fi data. DANISHHHHHHHHHHHHHHHHHHHH",
       "rejectedManufacturerAsOwner": "Device was not registered to your account since you have rejected device data sharing with the manufacturer of the device. DANISHHHHHHHHHHHHHHHHHHHH",
-      "rserror": " DANISHHHHHHHHHHHHHHHHHHHH",
+      "rserror": "",
       "generic": "something went wrong. DANISHHHHHHHHHHHHHHHHHHHH"
     },
     "wifiScan": {
@@ -177,7 +180,7 @@
       "foundWifi": "Wi-Fi networks discovered by your device DANISHHHHHHHHHHHHHHHHHHHH",
       "selectWifi": "select an access points you want your IoT device to connect to DANISHHHHHHHHHHHHHHHHHHHH",
       "scanAgain": "scan again DANISHHHHHHHHHHHHHHHHHHHH",
-      "scanningInProgressInfo":"your IoT device is scanning for nearby Wi-Fi networks. Please wait... DANISHHHHHHHHHHHHHHHHHHHH",
+      "scanningInProgressInfo": "your IoT device is scanning for nearby Wi-Fi networks. Please wait... DANISHHHHHHHHHHHHHHHHHHHH",
       "hiddenNetworkInfo": "your Wi-Fi network is 'hidden'? DANISHHHHHHHHHHHHHHHHHHHH",
       "manualSetup": "go to manual setup DANISHHHHHHHHHHHHHHHHHHHH",
       "error": {
@@ -192,7 +195,7 @@
       "settingUp": "setting up DANISHHHHHHHHHHHHHHHHHHHH",
       "ssidLabel": "Wi-Fi network DANISHHHHHHHHHHHHHHHHHHHH",
       "passwordLabel": "Wi-Fi password DANISHHHHHHHHHHHHHHHHHHHH",
-      "sendButton": "configure DANISHHHHHHHHHHHHHHHHHHHH",
+      "sendButton": "configure DANISHHHHHHHHHHHHHHHHHHHH"
     },
     "wifiSetup": {
       "setupInProgress": "setting up DANISHHHHHHHHHHHHHHHHHHHH",

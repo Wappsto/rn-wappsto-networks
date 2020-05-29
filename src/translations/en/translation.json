@@ -1,5 +1,5 @@
 {
-  "genericButton":{
+  "genericButton": {
     "back": "back",
     "cancel": "cancel",
     "create": "create",
@@ -14,9 +14,9 @@
     "reload": "reload",
     "remove": "remove",
     "save": "save",
-    "send":"send"
+    "send": "send"
   },
-  "validation":{
+  "validation": {
     "wrongMinNumber": "inserted number should larger than {{number}}",
     "wrongMaxNumber": "inserted number should be smaller than {{number}}"
   },
@@ -128,7 +128,7 @@
       },
       "scanQRCode": "tap here to scan QR code",
       "rescanQRCode": "tap here to scan again",
-      "scanSuccessMessage":"QR code scanned",
+      "scanSuccessMessage": "QR code scanned",
       "uuidLabel": "device UUID",
       "claimNetworkBtn": "add"
     },
@@ -143,9 +143,9 @@
       "goToSettings": "go to settings",
       "permissionError": {
         "bluetoothGeneric": "Enable Bluetooth to continue. Bluetooth is required to find nearby devices.",
-        "bluetoothUnauthorized":"$t(onboarding.deviceDiscovery.permissionError.bluetoothGeneric)",
-        "bluetoothNotSupported":"This feature requires Bluetooth yet your phone does not support it.",
-        "bluetoothOff":"$t(onboarding.deviceDiscovery.permissionError.bluetoothGeneric)",
+        "bluetoothUnauthorized": "$t(onboarding.deviceDiscovery.permissionError.bluetoothGeneric)",
+        "bluetoothNotSupported": "This feature requires Bluetooth yet your phone does not support it.",
+        "bluetoothOff": "$t(onboarding.deviceDiscovery.permissionError.bluetoothGeneric)",
         "location": "Enable location to continue. Location is required to find nearby devices."
       }
     },
@@ -180,7 +180,7 @@
       "foundWifi": "Wi-Fi networks discovered by your device",
       "selectWifi": "select an access points you want your IoT device to connect to",
       "scanAgain": "scan again",
-      "scanningInProgressInfo":"your IoT device is scanning for nearby Wi-Fi networks. Please wait...",
+      "scanningInProgressInfo": "your IoT device is scanning for nearby Wi-Fi networks. Please wait...",
       "hiddenNetworkInfo": "your Wi-Fi network is 'hidden'?",
       "manualSetup": "go to manual setup",
       "error": {
@@ -195,7 +195,7 @@
       "settingUp": "setting up",
       "ssidLabel": "Wi-Fi network",
       "passwordLabel": "Wi-Fi password",
-      "sendButton": "configure",
+      "sendButton": "configure"
     },
     "wifiSetup": {
       "setupInProgress": "setting up",
