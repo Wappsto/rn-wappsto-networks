@@ -10,11 +10,8 @@ const useConfigureWifi = (wifiFields) => {
   const { ssid, setSsid, password, setPassword } = wifiFields;
   const [ showPassword, setShowPassword ] = useState(false);
   const passwordInputRef = useRef();
-  const toSave = useRef({});
 
   const save = () => {
-    savedSsid = toSave.current.ssid;
-    savedPasswords[toSave.current.ssid] = toSave.current.password;
     AsyncStorage.setItem(wifiSsidStorageKey, savedSsid);
     AsyncStorage.setItem(wifiPasswordStorageKey, JSON.stringify(savedPasswords));
     setShowPassword(false);
@@ -85,13 +82,9 @@ const useConfigureWifi = (wifiFields) => {
   }, []);
 
   useEffect(() => {
-    for(let key in wifiFields){
-      const val = wifiFields[key];
-      if(val.constructor !== Function){
-        toSave.current[key] = val;
-      }
-    }
-  }, [wifiFields]);
+    savedSsid = ssid;
+    savedPasswords[savedSsid] = password;
+  }, [ssid, password]);
 
   return { showPassword, toggleShowPassword, handleTextChange, passwordInputRef, moveToPasswordField };
 }
