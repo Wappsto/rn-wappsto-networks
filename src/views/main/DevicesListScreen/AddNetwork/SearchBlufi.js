@@ -44,7 +44,7 @@ const styles = StyleSheet.create({
   }
 });
 
-const SearchBlufi = ({ next, setSelectedDevice }) => {
+const SearchBlufi = ({ next, selectedDevice, setSelectedDevice }) => {
   const { t } = useTranslation();
   const { devices, canScan, scan, scanning, error, permissionError, PermissionError, openSettings } = useSearchBlufi();
   const handleDevicePress = useCallback((item) => {
@@ -57,6 +57,10 @@ const SearchBlufi = ({ next, setSelectedDevice }) => {
       BleManager.disconnect(Blufi.connectedDevice.id);
     }
     Blufi.reset();
+    if(selectedDevice){
+      setSelectedDevice();
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const signalQuality = (rssi) => {
