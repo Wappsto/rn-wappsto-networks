@@ -1,18 +1,22 @@
 import { useEffect, useState, useRef, useCallback } from 'react';
 import AsyncStorage from '@react-native-community/async-storage';
 
+let savedSsid = '';
+let savedPasswords = {};
+let loadedSavedData = false;
 const wifiSsidStorageKey = 'wifiSSID';
 const wifiPasswordStorageKey = 'wifiPassword';
 const useConfigureWifi = (wifiFields) => {
   const { ssid, setSsid, password, setPassword } = wifiFields;
   const [ showPassword, setShowPassword ] = useState(false);
   const passwordInputRef = useRef();
-  const savedSsid = useRef('');
-  const savedPasswords = useRef({});
+  const toSave = useRef({});
 
   const save = () => {
-    AsyncStorage.setItem(wifiSsidStorageKey, ssid);
-    AsyncStorage.setItem(wifiPasswordStorageKey, JSON.stringify({ [ssid]: password }));
+    savedSsid = toSave.current.ssid;
+    savedPasswords[toSave.current.ssid] = toSave.current.password;
+    AsyncStorage.setItem(wifiSsidStorageKey, savedSsid);
+    AsyncStorage.setItem(wifiPasswordStorageKey, JSON.stringify(savedPasswords));
     setShowPassword(false);
   };
 
@@ -51,20 +55,27 @@ const useConfigureWifi = (wifiFields) => {
 
   const init = async () => {
     try {
-      setPassword('');
-      savedSsid.current = await AsyncStorage.getItem(wifiSsidStorageKey);
+      if(!loadedSavedData){
+        savedSsid = await AsyncStorage.getItem(wifiSsidStorageKey);
+      }
+      if(savedSsid !== ssid){
+        setPassword('');
+      }
       if(!ssid){
-        setSsid(savedSsid.current);
+        setSsid(savedSsid);
       }
 
-      savedPasswords.current = await AsyncStorage.getItem(wifiPasswordStorageKey);
-      savedPasswords.current = JSON.parse(savedPasswords.current);
-      if(savedPasswords.current[ssid]){
-        setPassword(savedPasswords.current[ssid]);
+      if(!loadedSavedData){
+        savedPasswords = await AsyncStorage.getItem(wifiPasswordStorageKey);
+        savedPasswords = JSON.parse(savedPasswords);
+      }
+      if(savedPasswords[ssid]){
+        setPassword(savedPasswords[ssid]);
       }
     } catch (e) {
-      savedPasswords.current = {};
+      savedPasswords = {};
     }
+    loadedSavedData = true;
   }
 
   useEffect(() => {
@@ -72,6 +83,15 @@ const useConfigureWifi = (wifiFields) => {
     return save;
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
+  useEffect(() => {
+    for(let key in wifiFields){
+      const val = wifiFields[key];
+      if(val.constructor !== Function){
+        toSave.current[key] = val;
+      }
+    }
+  }, [wifiFields]);
 
   return { showPassword, toggleShowPassword, handleTextChange, passwordInputRef, moveToPasswordField };
 }

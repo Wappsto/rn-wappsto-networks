@@ -3,11 +3,13 @@ import { isUUID } from 'wappsto-redux/util/helpers';
 import { manufacturerAsOwnerErrorCode } from '../../util/params';
 
 const useAddNetworkForm = (addNetworkHandler, onDone) => {
-  const { sendRequest, request, acceptedManufacturerAsOwner } = addNetworkHandler;
+  const { sendRequest, request, acceptedManufacturerAsOwner, removeRequest } = addNetworkHandler;
   const [ inputValue, setInputValue ] = useState('');
   const [ isScanning, setIsScanning ] = useState(false);
   const [ didScan, setDidScan ] = useState(false);
   const [ loading, setLoading ] = useState(false);
+
+  const canAdd = isUUID(inputValue) && !loading;
 
   const onRead = useCallback(event => {
     const qrText = (event.data.split('+')[0] || '').trim();
@@ -50,6 +52,11 @@ const useAddNetworkForm = (addNetworkHandler, onDone) => {
     }
   }, [acceptedManufacturerAsOwner]);
 
+  useEffect(() => {
+    removeRequest();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
   return {
     inputValue,
     setInputValue,
@@ -60,7 +67,7 @@ const useAddNetworkForm = (addNetworkHandler, onDone) => {
     onSubmitEditing,
     addNetwork,
     loading,
-    canAdd: isUUID(inputValue) && !loading
+    canAdd
   };
 }
 

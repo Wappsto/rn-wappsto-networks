@@ -7,7 +7,7 @@ import { manufacturerAsOwnerErrorCode } from '../../util/params';
 
 const skipErrorCodes = [manufacturerAsOwnerErrorCode];
 const useAddNetwork = (iotNetworkListAdd, maoShow, maoHide) => {
-  const { request, send } = useRequest();
+  const { request, send, removeR } = useRequest();
   const [ networkId, setNetworkId ] = useState();
   const [ acceptedManufacturerAsOwner, setAcceptedManufacturerAsOwner ] = useState(true);
   const getItem = useMemo(makeItemSelector, []);
@@ -72,7 +72,8 @@ const useAddNetwork = (iotNetworkListAdd, maoShow, maoHide) => {
     acceptManufacturerAsOwner,
     refuseManufacturerAsOwner,
     acceptedManufacturerAsOwner,
-    skipErrorCodes
+    skipErrorCodes,
+    removeRequest: removeR
   };
 }
 
