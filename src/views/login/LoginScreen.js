@@ -87,8 +87,7 @@ const styles = StyleSheet.create({
   seperator:{
     borderWidth: 0.3,
     borderColor: theme.variables.borderColor,
-    marginBottom:40,
-    marginTop: 20
+    marginBottom:30
   },
   googleColor: {backgroundColor: '#4285F4'},
   facebookColor: {backgroundColor: '#4267B2'}

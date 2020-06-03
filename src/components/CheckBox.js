@@ -7,12 +7,16 @@ import Text from '../components/Text';
 const styles = StyleSheet.create({
   checkbox: {
     marginRight: 10,
-    marginBottom: 20
+  },
+  container:{
+    marginVertical: 20,
+    flexDirection: 'row',
+    alignItems: 'center'
   }
 });
 
 const CheckBox = ({ checked, onPress, style, textStyle, size = 30, color = theme.variables.primary, text = '', ...props}) => (
-  <TouchableOpacity style={[theme.common.row, style]} onPress={onPress} {...props}>
+  <TouchableOpacity style={[styles.container, style]} onPress={onPress} {...props}>
     <Icon
       size={size}
       style={styles.checkbox}
