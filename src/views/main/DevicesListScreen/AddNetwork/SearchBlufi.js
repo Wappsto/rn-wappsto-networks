@@ -92,9 +92,13 @@ const SearchBlufi = ({ next, selectedDevice, setSelectedDevice }) => {
       {devices.map(device => (
         <TouchableOpacity key={device.id} onPress={() => handleDevicePress(device)} style={styles.deviceItem}>
           <View style={theme.common.row}>
-            {image.onboarding.deviceIcon &&
+            {image.onboarding.deviceIcon && device.name && image.onboarding.deviceIcon[device.name.split('-')[0].toLowerCase()] &&
               <View style={styles.deviceImageWrapper}>
-                <Image resizeMode='contain' source={image.onboarding.deviceIcon} style={styles.deviceImage}/>
+                <Image
+                  resizeMode='contain'
+                  source={image.onboarding.deviceIcon[device.name.split('-')[0].toLowerCase()]}
+                  style={styles.deviceImage}
+                />
               </View>
             }
             <View>

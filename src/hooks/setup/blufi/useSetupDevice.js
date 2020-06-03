@@ -25,7 +25,7 @@ const ERRORS = {
 }
 
 const timeoutLimit = 10000;
-const useSetupDevice = (selectedDevice, addNetworkHandler, wifiFields, autoConfigure, isBlufi) => {
+const useSetupDevice = (selectedDevice, addNetworkHandler, wifiFields, autoConfigure, isBlufi = true) => {
   const { sendRequest, request, acceptedManufacturerAsOwner } = addNetworkHandler;
   const { ssid, password } = wifiFields;
   const {

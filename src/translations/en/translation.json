@@ -166,6 +166,7 @@
       "failedNegotiateSecurityTimeout": "the device did not send back the security key.",
       "failedGetDeviceWifiList": "failed to get Wi-Fi list from the device",
       "failedGetDeviceWifiListTimeout": "failed to get Wi-Fi list from the device(device did not answer)",
+      "failedWaitDeviceConnect": "didn't receive device connection confirmation (timeout)",
       "failedRetrieve": "failed to retrieve device information.",
       "failedRetrieveTimeout": "failed to comunicate with the device.",
       "failedNotUuid": "wrong UUID was received from the device.",

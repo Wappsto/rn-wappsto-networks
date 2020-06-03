@@ -13,7 +13,9 @@ useImages({
     wifiSetup: require('../assets/images/placeholder.png'),
     wifiSetupSuccess: require('../assets/images/placeholder.png'),
 		wifiSetupError: require('../assets/images/placeholder.png'),
-		deviceIcon: require('../assets/images/placeholder.png'),
+		deviceIcon:{
+			'blufi_device': require('../assets/images/placeholder.png')
+		},
 		wifiSignalIcon: {
 			excellent:require('../assets/images/onboarding/wifiSignal/excellent.png'),
 			good:require('../assets/images/onboarding/wifiSignal/good.png'),
