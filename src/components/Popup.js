@@ -20,10 +20,10 @@ const styles = StyleSheet.create({
     backgroundColor: theme.variables.popupOverlayColor
   },
   popupContent: {
+    width:'95%',
     borderWidth: theme.variables.borderWidth,
     borderColor: theme.variables.popupBorderColor,
     backgroundColor: theme.variables.popupBackground,
-    margin: 10,
     padding: 20,
   },
   closeButton: {

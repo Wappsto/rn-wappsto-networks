@@ -12,6 +12,7 @@
   "newPassword": "new password",
   "repeatPassword": "repeat password",
   "createAccount": "create an account",
+  "continue": "continue",
   "recoverPassword": "recover password",
   "logIn": "log in",
   "signInWithFacebook": "sign in with Facebook",

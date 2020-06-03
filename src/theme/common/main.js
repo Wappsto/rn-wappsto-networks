@@ -53,7 +53,7 @@ export function generateStyles(c = {}) {
         color: variables.primary
       },
       contentContainer: {
-        paddingHorizontal: 15,
+        paddingHorizontal: 10,
         paddingTop: 20
       },
       primaryColor:{

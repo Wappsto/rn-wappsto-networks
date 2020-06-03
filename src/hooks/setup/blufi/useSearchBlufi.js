@@ -69,7 +69,7 @@ const useSearchBlufi = () => {
   const enableLocation = useCallback(async () => {
     try{
       await LocationServicesDialogBox.checkLocationServicesIsEnabled({
-        message: CapitalizeFirst(t('onboarding.deviceDiscovery.permissionRequired.location')),
+        message: CapitalizeFirst(t('onboarding.deviceDiscovery.permissionError.location')),
         ok: CapitalizeFirst(t('onboarding.deviceDiscovery.goToSettings')),
         cancel: CapitalizeFirst(t('genericButton.cancel')),
         enableHighAccuracy: true, // true => GPS AND NETWORK PROVIDER, false => GPS OR NETWORK PROVIDER
