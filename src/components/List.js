@@ -1,11 +1,19 @@
 import React from 'react';
-import { View, FlatList, ActivityIndicator } from 'react-native';
+import { View, FlatList, ActivityIndicator, StyleSheet } from 'react-native';
 import RequestError from './RequestError';
 import theme from '../theme/themeExport';
 import Text from '../components/Text';
 import Button from '../components/Button';
 import { useTranslation, CapitalizeFirst } from '../translations';
 import usePageList from '../hooks/usePageList';
+
+const styles = StyleSheet.create({
+  centered:{
+    alignItems:'center',
+    marginTop: 30,
+    justifyContent: 'center'
+  }
+});
 
 const List = React.memo(({
   name,
@@ -32,13 +40,18 @@ const List = React.memo(({
         ListEmptyComponent={
           (!request || request.status !== 'pending') && (
             <>
-              <Text
-                size='p'
-                align='center'
-                color='secondary'
-                content={CapitalizeFirst(t('noData'))}
-                style={theme.common.spaceAround}
-              />
+              { request.status !== 'error' &&
+                <Text
+                  size='p'
+                  align='center'
+                  color='secondary'
+                  content={CapitalizeFirst(t('noData'))}
+                  style={theme.common.spaceAround}
+                />
+              }
+              <View style={styles.centered}>
+                <RequestError request={request} autoHide={false} />
+              </View>
               <Button
                 onPress={refresh}
                 type='link'
@@ -66,7 +79,6 @@ const List = React.memo(({
           ) : null
         }
       />
-      <RequestError request={request} />
     </View>
   );
 });
