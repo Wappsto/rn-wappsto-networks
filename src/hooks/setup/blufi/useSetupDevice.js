@@ -25,7 +25,7 @@ const ERRORS = {
 }
 
 const timeoutLimit = 10000;
-const useSetupDevice = (selectedDevice, addNetworkHandler, wifiFields, autoConfigure) => {
+const useSetupDevice = (selectedDevice, addNetworkHandler, wifiFields, autoConfigure, isBlufi) => {
   const { sendRequest, request, acceptedManufacturerAsOwner } = addNetworkHandler;
   const { ssid, password } = wifiFields;
   const {
@@ -162,7 +162,12 @@ const useSetupDevice = (selectedDevice, addNetworkHandler, wifiFields, autoConfi
   useEffect(() => {
     if(step === STEPS.ADDNETWORK && request){
       if(request.status === 'success'){
-        sendWifiData();
+        if(isBlufi){
+          sendWifiData();
+        } else {
+          success.current = true;
+          setStep(STEPS.DONE);
+        }
       } else if(request.status === 'error'){
         if(acceptedManufacturerAsOwner === false){
           setStep(ERRORS.REJECTEDMANUFACTURERASOWNER);
