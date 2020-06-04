@@ -15,7 +15,7 @@ const styles = StyleSheet.create({
     fontFamily: theme.variables.fontFamily,
     color: theme.variables.inputTextColor,
     marginVertical: 2,
-    paddingHorizontal: 5,
+    paddingHorizontal: 8,
     paddingVertical: 10,
     backgroundColor: theme.variables.inputBg,
     borderColor: theme.variables.inputBorderColor,
@@ -35,9 +35,8 @@ const styles = StyleSheet.create({
   },
   passwordVisibilityButton: {
     position: 'absolute',
-    lineHeight: Math.round(theme.variables.inputTextSize * 1.5),
     right: 0,
-    paddingVertical: 10,
+    paddingVertical: 20,
     paddingHorizontal: 16
   }
 });
