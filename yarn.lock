@@ -6453,9 +6453,9 @@ walker@^1.0.7, walker@~1.0.5:
   dependencies:
     makeerror "1.0.x"
 
-wappsto-blanket@^0.1.4:
-  version "0.1.4"
-  resolved "https://registry.yarnpkg.com/wappsto-blanket/-/wappsto-blanket-0.1.4.tgz#0ee96f41f923f34aa4053d597bca6b54d4819d71"
+wappsto-blanket@^0.1.5:
+  version "0.1.5"
+  resolved "https://registry.yarnpkg.com/wappsto-blanket/-/wappsto-blanket-0.1.5.tgz#2c15d3a788c5590230747d098352b8b85322a3a1"
 
 wappsto-redux@^3.0.10:
   version "3.0.10"
