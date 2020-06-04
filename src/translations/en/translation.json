@@ -1,4 +1,16 @@
 {
+  "appTitle": "Wappsto Networks",
+  "pageTitle": {
+    "account": "account",
+    "changePassword": "change password",
+    "changeUsername": "change email",
+    "changeUserDetails": "change personal details",
+    "recoverPassword": "recover password",
+    "main": "devices",
+    "settings": "settings",
+    "register": "register an account",
+    "terms": "terms & conditions"
+  },
   "genericButton": {
     "back": "back",
     "cancel": "cancel",
@@ -46,18 +58,6 @@
   "logout": "logout",
   "network": "network",
   "network_plural": "network",
-  "appTitle": "Wappsto Networks",
-  "pageTitle": {
-    "account": "account",
-    "changePassword": "change password",
-    "changeUsername": "change email",
-    "changeUserDetails": "change personal details",
-    "recoverPassword": "recover password",
-    "main": "devices",
-    "settings": "settings",
-    "register": "register an account",
-    "terms": "terms & conditions"
-  },
   "prototype": "prototype",
   "prototype_plural": "prototypes",
   "state": "state",

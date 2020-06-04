@@ -1,16 +1,18 @@
 import React from 'react';
 import useLanguageButton from '../hooks/useLanguageButton';
 import Button from './Button';
+import { useTranslation, CapitalizeFirst } from '../translations';
 
 const LanguageButton = React.memo(() => {
+  const { t } = useTranslation();
   const { changeLanguage, showLanguageButton } = useLanguageButton();
   if(!showLanguageButton){
     return null;
   }
   return (
     <>
-      <Button text='en' onPress={() => changeLanguage('en')}/>
-      <Button text='da' onPress={() => changeLanguage('da')}/>
+      <Button text={CapitalizeFirst(t('languages:en'))} onPress={() => changeLanguage('en')}/>
+      <Button text={CapitalizeFirst(t('languages:da'))} onPress={() => changeLanguage('da')}/>
     </>
   )
 });

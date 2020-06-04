@@ -7,11 +7,13 @@ const resources = {
     translation: require('./en/translation'),
     account: require('./en/account'),
     error: require('./en/error'),
+    languages: require('./en/languages')
   },
   da: {
     translation: require('./da/translation'),
     account: require('./da/account'),
     error: require('./da/error'),
+    languages: require('./da/languages')
   },
 };
 
