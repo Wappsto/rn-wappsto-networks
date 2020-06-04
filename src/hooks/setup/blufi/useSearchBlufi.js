@@ -123,8 +123,11 @@ const useSearchBlufi = () => {
         await getAndroidLocationPermission();
         await enableLocation();
         await enableBluetoothAndroid();
-      } else {
-        await enableBluetoothIOS();
+      } else if(Platform.OS === 'ios'){
+        const version = Platform.Version.split('.')[0];
+        if(version >= 13){
+          await enableBluetoothIOS();
+        }
       }
       setScanning(true);
       BleManager.scan([BlufiParameter.UUID_SERVICE], 15, false);
