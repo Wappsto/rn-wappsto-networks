@@ -165,6 +165,7 @@ const useSetupDevice = (selectedDevice, addNetworkHandler, wifiFields, autoConfi
         if(isBlufi){
           sendWifiData();
         } else {
+          networkId.current = request.json && request.json.meta && request.json.meta.id;
           success.current = true;
           setStep(STEPS.DONE);
         }
