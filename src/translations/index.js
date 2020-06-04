@@ -1,6 +1,9 @@
 import * as RNLocalize from 'react-native-localize';
 import i18next from 'i18next';
 import { initReactI18next, useTranslation } from 'react-i18next';
+import AsyncStorage from '@react-native-community/async-storage';
+
+const langueStorageKey = 'langueStorageKey';
 
 const resources = {
   en: {
@@ -19,10 +22,18 @@ const resources = {
 
 const languageDetector = {
   type: 'languageDetector',
-  async: false,
-  detect: () => RNLocalize.getLocales()[0].languageCode,
+  async: true,
+  detect: async (callback) => {
+    let lng;
+    try{
+      lng = await AsyncStorage.getItem(langueStorageKey);
+    } catch(e){
+
+    }
+    callback(lng || RNLocalize.getLocales()[0].languageCode);
+  },
   init: () => {},
-  cacheUserLanguage: () => {},
+  cacheUserLanguage: (lng) => AsyncStorage.setItem(langueStorageKey, lng),
 };
 
 i18next
