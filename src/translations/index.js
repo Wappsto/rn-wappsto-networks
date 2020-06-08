@@ -15,8 +15,7 @@ const resources = {
   da: {
     translation: require('./da/translation'),
     account: require('./da/account'),
-    error: require('./da/error'),
-    languages: require('./da/languages')
+    error: require('./da/error')
   },
 };
 
