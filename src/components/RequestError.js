@@ -3,7 +3,7 @@ import Text from '../components/Text';
 import usePrevious from 'wappsto-blanket/hooks/usePrevious';
 import {useTranslation, CapitalizeFirst} from '../translations';
 
-const RequestError = React.memo(({ request, skipCodes = [], autoHide = true }) => {
+const RequestError = React.memo(({ request, skipCodes = [], warning, autoHide = true }) => {
   const { t } = useTranslation();
   const prevRequest = usePrevious(request);
   const [ visible, setVisible ] = useState(false);
@@ -49,7 +49,7 @@ const RequestError = React.memo(({ request, skipCodes = [], autoHide = true }) =
     return (
       <Text
         size='p'
-        color='error'
+        color={warning ? 'warning' : 'error'}
         content={CapitalizeFirst(message)}
       />
     );

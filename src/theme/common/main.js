@@ -54,7 +54,8 @@ export function generateStyles(c = {}) {
       },
       contentContainer: {
         paddingHorizontal: 10,
-        paddingTop: 20
+        paddingTop: 20,
+        paddingBottom: 20
       },
       primaryColor:{
         color: variables.primary
@@ -71,10 +72,6 @@ export function generateStyles(c = {}) {
         flexDirection: 'column',
         justifyContent: 'space-around',
         backgroundColor: variables.modalBgColor,
-      },
-      fullScreenModalContent: {
-        padding: 10,
-        flex:2
       },
       seperator: {
         marginVertical: 20,

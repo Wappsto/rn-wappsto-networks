@@ -29,7 +29,7 @@ const BackHandlerView = React.memo(({ handleBack, hide, children }) => {
       </View>
         <KeyboardAvoidingView>
       <ScrollView>
-        <View style={theme.common.fullScreenModalContent}>
+        <View style={theme.common.contentContainer}>
             {children}
         </View>
       </ScrollView>
