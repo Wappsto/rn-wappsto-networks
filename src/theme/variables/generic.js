@@ -220,10 +220,10 @@ export function generateVariables(v = {}) {
       return this.white;
     },
     get switchTrackColor() {
-      return this.primaryDark;
-    },
-    get switchTrackColorInverse() {
       return this.mediumGray;
+    },
+    get switchTrackColorEnabled() {
+      return this.primaryDark;
     },
 
     // other
