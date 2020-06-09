@@ -1,6 +1,8 @@
 const fs = require('fs');
 
 module.exports = {
+  projectNameSplitter: '^',
+
   createDirectory(name){
     if (!this.directoryExists(name)){
       fs.mkdirSync(name);

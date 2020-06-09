@@ -3,7 +3,7 @@ const Files = require('./files');
 const { parse } = require('json2csv');
 const paths = process.argv.slice(2);
 
-const projectNameSplitter = '^';
+const projectNameSplitter = Files.projectNameSplitter;
 const result = {};
 paths.forEach(path => {
   let projectName = '';
@@ -32,9 +32,11 @@ function addJSON(language, json, prefix, projectName){
       const k = prefix + key;
       const v = json[key];
       if(!result[k]){
-        result[k] = { key: projectNameSplitter + projectName + projectNameSplitter + k };
+        const projectPath = projectName ? projectNameSplitter + projectName + projectNameSplitter : '';
+        result[k] = { key: projectPath + k };
       } else if(!result[k].key.includes(projectName)){
-        result[k].key = projectNameSplitter + projectName + result[k].key;
+        const projectPath = projectName ? projectNameSplitter + projectName : '';
+        result[k].key = projectPath + result[k].key;
       }
       result[k][language] = v;
     } else {

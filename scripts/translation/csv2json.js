@@ -1,13 +1,12 @@
-const Path = require('path');
 const Files = require('./files');
-const csv2json = require("csvtojson");
+const csv2json = require('csvtojson');
 const paths = process.argv.slice(2);
 const del = require('del');
 
 const result = {};
 const csvPath = paths.shift();
 
-const projectNameSplitter = '^';
+const projectNameSplitter = Files.projectNameSplitter;
 csv2json()
 .fromFile(csvPath)
 .then((json)=>{
