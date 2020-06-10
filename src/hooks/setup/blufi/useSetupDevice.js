@@ -172,13 +172,13 @@ const useSetupDevice = (selectedDevice, addNetworkHandler, wifiFields, autoConfi
       } else if(request.status === 'error'){
         if(acceptedManufacturerAsOwner === false){
           setStep(ERRORS.REJECTEDMANUFACTURERASOWNER);
-        } else {
+        } else if(acceptedManufacturerAsOwner === true){
           setStep(ERRORS.RSERROR);
         }
       }
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [request]);
+  }, [request, acceptedManufacturerAsOwner]);
 
   return {
     configure,

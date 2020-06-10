@@ -5,11 +5,11 @@ import { useSelector } from 'react-redux';
 import { manufacturerAsOwnerErrorCode } from '../../util/params';
 
 const skipErrorCodes = [manufacturerAsOwnerErrorCode];
-const useAddNetwork = (iotNetworkListAdd, maoShow, maoHide) => {
+const useAddNetwork = (iotNetworkListAdd, maoShow, maoHide, autoAccept = null) => {
   const { request, send, removeRequest } = useRequest();
   const [ networkId, setNetworkId ] = useState();
   const [ body, setBody ] = useState({});
-  const [ acceptedManufacturerAsOwner, setAcceptedManufacturerAsOwner ] = useState(true);
+  const [ acceptedManufacturerAsOwner, setAcceptedManufacturerAsOwner ] = useState(autoAccept);
   const getItem = useMemo(makeItemSelector, []);
 
   const addToList = useSelector(state => getItem(state, iotNetworkListAdd));
@@ -35,21 +35,31 @@ const useAddNetwork = (iotNetworkListAdd, maoShow, maoHide) => {
   const sendRequest = useCallback((id, body = {}) => {
     if(id){
       setNetworkId(id);
-      setBody(body);
+      let b = {...body};
+      if(acceptedManufacturerAsOwner){
+        b = {
+          ...b,
+          meta: {
+            accept_manufacturer_as_owner: true
+          }
+        };
+      }
+      setBody(b);
     }
     sendR(id, body);
-  }, [sendR]);
+  }, [sendR, acceptedManufacturerAsOwner]);
 
   const acceptManufacturerAsOwner = useCallback(() => {
     setAcceptedManufacturerAsOwner(true);
-    maoHide();
-    setBody({
+    maoHide()
+    const b = {
       ...body,
       meta: {
         accept_manufacturer_as_owner: true
       }
-    });
-    sendR();
+    };
+    setBody(b);
+    sendR(networkId, b);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [networkId, body]);
 
@@ -65,6 +75,7 @@ const useAddNetwork = (iotNetworkListAdd, maoShow, maoHide) => {
         maoShow();
       } else if(request.status === 'success'){
         removeRequest();
+        setAcceptedManufacturerAsOwner(autoAccept);
         if(addToList){
           addToList(request.json && request.json.meta.id);
         }

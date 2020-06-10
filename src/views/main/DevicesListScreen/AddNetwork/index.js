@@ -16,7 +16,7 @@ import BackHandlerView from './BackHandlerView';
 import useAddNetwork from '../../../../hooks/setup/useAddNetwork';
 import useWifiFields from '../../../../hooks/setup/blufi/useWifiFields';
 import useInitBlufi from '../../../../hooks/setup/blufi/useInitBlufi';
-import Blufi from '../../../BlufiLib';
+import Blufi from '../../../../BlufiLib';
 import BleManager from 'react-native-ble-manager';
 
 const Content = React.memo(({ visible, hide, show }) => {
