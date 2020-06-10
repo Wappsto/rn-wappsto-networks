@@ -61,7 +61,7 @@ const useAddNetwork = (iotNetworkListAdd, maoShow, maoHide) => {
 
   useEffect(() => {
     if(request){
-      if(request.status === 'error' && request.json.code === manufacturerAsOwnerErrorCode){
+      if(request.status === 'error' && request.json && request.json.code === manufacturerAsOwnerErrorCode){
         maoShow();
       } else if(request.status === 'success'){
         removeRequest();

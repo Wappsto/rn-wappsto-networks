@@ -96,6 +96,7 @@ const NumericInput = React.memo(({
     onButtonClick(newValue);
     updateWarning(newValue);
   }, [value, step, updateWarning, onButtonClick]);
+
   return (
     <>
       {label &&
@@ -118,8 +119,8 @@ const NumericInput = React.memo(({
             ref={inputRef}
             style={[styles.input, style]}
             selectionColor={theme.variables.inputSelectionColor}
-            defaultValue={defaultValue}
-            value={value}
+            defaultValue={defaultValue + ''}
+            value={value + ''}
             onSubmitEditing={onSubmitEditing}
             onChangeText={onChangeText}
             editable={!disabled}

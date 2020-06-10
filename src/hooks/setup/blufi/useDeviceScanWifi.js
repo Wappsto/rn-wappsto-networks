@@ -9,9 +9,10 @@ const STEPS = {
   DONE: 'done'
 }
 
-const ERRORS = {
+export const ERRORS = {
   FAILEDGETDEVICEWIFILIST: 'failedGetDeviceWifiList',
   FAILEDGETDEVICEWIFILISTTIMEOUT: 'failedGetDeviceWifiListTimeout',
+  DEVICEBUSY: 'DEVICEBUSY', //when device does not want to answer because it received wrong ssid/password
   GENERIC: 'generic'
 }
 
@@ -22,6 +23,7 @@ const useDeviceScanWifi = (selectedDevice) => {
     error: connectionError,
     step: connectionStep,
     connect,
+    disconnect,
     connected } = useConnectToDevice(selectedDevice);
   const prevConnected = usePrevious(connected);
   const [ result, setResult ] = useState([]);
@@ -49,29 +51,32 @@ const useDeviceScanWifi = (selectedDevice) => {
       }
     }
 
-    Blufi.onDeviceScanResult = async (status, data) => {
+    Blufi.onDeviceScanResult = async (status, data, tError) => {
       if(error.current){
         return;
       }
       if(status === BlufiCallback.STATUS_SUCCESS){
         success.current = true;
-        clearTimeout(timeout.current);
         setStep(STEPS.DONE);
         setResult(data.sort((a,b) => b.rssi - a.rssi));
+      } else if(tError && tError.includes('133')){
+        setStep(ERRORS.DEVICEBUSY);
+        disconnect();
       } else {
         setStep(ERRORS.FAILEDGETDEVICEWIFILIST);
       }
+      clearTimeout(timeout.current);
     }
   }
 
   const getDeviceWifiList = () => {
     addBlufiListeners();
     setStep(STEPS.GETDEVICEWIFILIST);
-    Blufi.requestDeviceWifiScan();
     timeout.current = setTimeout(() => {
       // device did not send back network id
       setStep(ERRORS.FAILEDGETDEVICEWIFILISTTIMEOUT);
     }, timeoutLimit);
+    Blufi.requestDeviceWifiScan();
   }
 
   const scan = async (force) => {

@@ -3,7 +3,7 @@ import { View, ActivityIndicator, StyleSheet, TouchableOpacity, Image } from 're
 import Icon from 'react-native-vector-icons/Feather';
 import Text from '../../../../components/Text';
 import Button from '../../../../components/Button';
-import useDeviceScanWifi from '../../../../hooks/setup/blufi/useDeviceScanWifi';
+import useDeviceScanWifi, { ERRORS } from '../../../../hooks/setup/blufi/useDeviceScanWifi';
 import { useTranslation, CapitalizeFirst } from '../../../../translations';
 import theme from '../../../../theme/themeExport';
 import image from '../../../../theme/images';
@@ -74,6 +74,10 @@ const DeviceWifiList = React.memo(({ next, selectedDevice, wifiFields }) => {
     }
     return image.onboarding.wifiSignalIcon.poor;
   };
+
+  if(error && step === ERRORS.DEVICEBUSY){
+    next();
+  }
 
   return (
     <>

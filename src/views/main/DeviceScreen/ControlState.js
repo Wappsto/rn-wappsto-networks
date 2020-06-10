@@ -94,8 +94,8 @@ export const StateDataField = ({
     } else {
       stateDataField = (
         <NumericInput
-          defaultValue={input + ''}
-          value={input + ''}
+          defaultValue={input}
+          value={input}
           max={param.max}
           min={param.min}
           step={param.step}

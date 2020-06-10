@@ -178,7 +178,7 @@ const useSetupDevice = (selectedDevice, addNetworkHandler, wifiFields, autoConfi
       }
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [request, acceptedManufacturerAsOwner]);
+  }, [request]);
 
   return {
     configure,

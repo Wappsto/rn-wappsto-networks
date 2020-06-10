@@ -54,15 +54,16 @@ const Blufi = {
     });
   },
 
-  postCustomData(data){
+  async postCustomData(data){
     if(!this.connectedDevice){
       console.error('Blufi: no connected device');
       return;
     }
-    _postCustomData(data);
+    const status = await _postCustomData(data);
+    return status;
   },
 
-  requestDeviceVersion(){
+  async requestDeviceVersion(){
     if(!this.connectedDevice){
       console.error('Blufi: no connected device');
       return;
@@ -70,7 +71,7 @@ const Blufi = {
     const type = getTypeValue(BlufiParameter.Type.Ctrl.PACKAGE_VALUE, BlufiParameter.Type.Ctrl.SUBTYPE_GET_VERSION);
     let request;
     try {
-        request = post(mEncrypted, mChecksum, false, type, null);
+        request = await post(mEncrypted, mChecksum, false, type, null);
     } catch (e) {
         Log.w(TAG, 'post requestDeviceVersion interrupted');
         request = false;
@@ -81,22 +82,23 @@ const Blufi = {
     }
   },
 
-  requestDeviceWifiScan() {
+  async requestDeviceWifiScan() {
     if(!this.connectedDevice){
       console.error('Blufi: no connected device');
       return;
     }
     const type = getTypeValue(BlufiParameter.Type.Ctrl.PACKAGE_VALUE, BlufiParameter.Type.Ctrl.SUBTYPE_GET_WIFI_LIST);
-    let request;
+    let request, error;
     try {
-      request = post(mEncrypted, mChecksum, mRequireAck, type, null);
+      request = await post(mEncrypted, mChecksum, mRequireAck, type, null);
     } catch (e) {
       Log.w(TAG, 'post requestDeviceWifiScan interrupted');
+      error = e;
       request = false;
     }
 
     if (!request) {
-        onDeviceScanResult(BlufiCallback.CODE_WRITE_DATA_FAILED, []);
+      onDeviceScanResult(BlufiCallback.CODE_WRITE_DATA_FAILED, [], error);
     }
   },
 

@@ -93,6 +93,13 @@ const useConnectToDevice = (selectedDevice) => {
     }
   }
 
+  const disconnect = () => {
+    if(Blufi.connectedDevice){
+      BleManager.disconnect(Blufi.connectedDevice.id);
+    }
+    Blufi.reset();
+  }
+
   const connect = (force) => {
     if(selectedDevice && selectedDevice.id && (force || !loading)){
       addBlufiListeners();
@@ -114,7 +121,7 @@ const useConnectToDevice = (selectedDevice) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  return { loading, error: error.current, step, connect, connected };
+  return { loading, error: error.current, step, connect, disconnect, connected };
 }
 
 export default useConnectToDevice;
