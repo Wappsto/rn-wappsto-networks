@@ -33,20 +33,20 @@ const useAddNetwork = (iotNetworkListAdd, maoShow, maoHide, autoAccept = null) =
   }, [networkId, body]);
 
   const sendRequest = useCallback((id, body = {}) => {
+    let b = {...body};
+    if(acceptedManufacturerAsOwner){
+      b = {
+        ...b,
+        meta: {
+          accept_manufacturer_as_owner: true
+        }
+      };
+    }
     if(id){
       setNetworkId(id);
-      let b = {...body};
-      if(acceptedManufacturerAsOwner){
-        b = {
-          ...b,
-          meta: {
-            accept_manufacturer_as_owner: true
-          }
-        };
-      }
       setBody(b);
     }
-    sendR(id, body);
+    sendR(id, b);
   }, [sendR, acceptedManufacturerAsOwner]);
 
   const acceptManufacturerAsOwner = useCallback(() => {
