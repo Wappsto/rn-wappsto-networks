@@ -7,7 +7,6 @@ import {
   TouchableWithoutFeedback,
   StatusBar
 } from 'react-native';
-
 import { SafeAreaView } from 'react-native-safe-area-context';
 import Icon from 'react-native-vector-icons/Feather';
 import theme from '../theme/themeExport';
@@ -21,11 +20,15 @@ const styles = StyleSheet.create({
     backgroundColor: theme.variables.popupOverlayColor
   },
   popupContent: {
+    backgroundColor: theme.variables.popupBackground,
+    paddingHorizontal: 20,
+    paddingVertical: 10
+  },
+  popupContentWithBorder: {
     width:'95%',
     borderWidth: theme.variables.borderWidth,
     borderColor: theme.variables.popupBorderColor,
-    backgroundColor: theme.variables.popupBackground,
-    padding: 20,
+    paddingVertical: 20
   },
   closeButton: {
     padding: 10,
@@ -35,18 +38,19 @@ const styles = StyleSheet.create({
   }
 });
 
-const Popup = React.memo(({ animationType, visible, hide, onRequestClose, contentStyle, children, hideCloseIcon }) => {
+const Popup = React.memo(({ fullScreen, animationType, visible, hide, onRequestClose, contentStyle, children, hideCloseIcon }) => {
   return (
     <Modal
       transparent={true}
       visible={visible}
-      onRequestClose={onRequestClose}>
+      onRequestClose={onRequestClose}
+    >
       <TouchableWithoutFeedback onPress={hide}>
         <View style={styles.popupOverlay}>
-          <SafeAreaView style={theme.common.container}>
+          <SafeAreaView>
             <StatusBar backgroundColor={color(theme.variables.statusBarBgDark).darken(0.5)} barStyle={theme.variables.statusBarColorLight} />
             <TouchableWithoutFeedback>
-              <View style={[styles.popupContent, contentStyle]}>
+              <View style={[styles.popupContent, (!fullScreen && styles.popupContentWithBorder), contentStyle]}>
                 {children}
                 <TouchableOpacity
                   onPress={hide}
