@@ -1,5 +1,5 @@
 import React, { useCallback, useState } from 'react';
-import { StyleSheet, View, TextInput, TouchableOpacity, Platform } from 'react-native';
+import { StyleSheet, View, TextInput, TouchableOpacity, Platform, ActivityIndicator } from 'react-native';
 import Text from './Text';
 import Icon from 'react-native-vector-icons/Feather';
 import theme from '../theme/themeExport';
@@ -17,6 +17,9 @@ const styles = StyleSheet.create({
     height: Math.round(theme.variables.inputTextSize * 1.5) + 20,
     overflow:'hidden'
   },
+  numericInputDisabled: {
+    borderColor: theme.variables.disabled,
+  },
   input: {
     minWidth:100,
     maxWidth: '80%',
@@ -31,6 +34,9 @@ const styles = StyleSheet.create({
     borderColor: theme.variables.alert,
     color: theme.variables.alert
   },
+  inputDisabled: {
+    color: theme.variables.disabled
+  },
   button:{
     width: 50,
     alignItems: 'center',
@@ -39,6 +45,13 @@ const styles = StyleSheet.create({
   },
   icon:{
     color: theme.variables.buttonColor
+  },
+  spinner: {
+    top:0,
+    bottom:0,
+    left:0,
+    right:0,
+    position: 'absolute'
   }
 });
 
@@ -58,6 +71,7 @@ const NumericInput = React.memo(({
   onChange,
   onButtonClick,
   disabled,
+  isUpdating
 }) => {
   const { t } = useTranslation();
   const [ warning, setWarning ] = useState(false);
@@ -104,10 +118,10 @@ const NumericInput = React.memo(({
           content={label}
         />
       }
-      <View style={[styles.numericInput, validationError && styles.inputError]}>
+      <View style={[styles.numericInput, validationError && styles.inputError, disabled && styles.numericInputDisabled]}>
         <TouchableOpacity
           disabled={disabled}
-          style={styles.button}
+          style={[styles.button, disabled ? theme.common.disabled : {}]}
           onPress={onLeftButtonClick}
         >
           <Icon
@@ -117,7 +131,7 @@ const NumericInput = React.memo(({
         </TouchableOpacity>
           <TextInput
             ref={inputRef}
-            style={[styles.input, style]}
+            style={[styles.input, disabled && styles.inputDisabled, style]}
             selectionColor={theme.variables.inputSelectionColor}
             defaultValue={defaultValue + ''}
             value={value + ''}
@@ -131,7 +145,7 @@ const NumericInput = React.memo(({
           />
           <TouchableOpacity
             disabled={disabled}
-            style={styles.button}
+            style={[styles.button, disabled && theme.common.disabled]}
             onPress={onRightButtonClick}
           >
             <Icon
@@ -139,6 +153,7 @@ const NumericInput = React.memo(({
               name={'plus'}
             />
           </TouchableOpacity>
+          {isUpdating && <ActivityIndicator style={styles.spinner} color={theme.variables.spinnerColor}/>}
         </View>
         {!!warning &&
           <Text
