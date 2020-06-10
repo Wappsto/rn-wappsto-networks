@@ -36,8 +36,12 @@ const styles = StyleSheet.create({
   passwordVisibilityButton: {
     position: 'absolute',
     right: 0,
-    paddingVertical: 20,
-    paddingHorizontal: 16
+    justifyContent:'center',
+    height:'100%'
+  },
+  passwordVisibilityIcon: {
+    paddingHorizontal: 14,
+    paddingVertical: 14
   }
 });
 
@@ -74,13 +78,15 @@ const Input = React.memo(({
           toggleShowPassword={toggleShowPassword}
         />
         {toggleShowPassword &&
-          <Icon
-            style={styles.passwordVisibilityButton}
-            color={validationError ? theme.variables.alert : disabled ? theme.variables.disabled : theme.variables.inputTextColor}
-            name={showPassword ? 'eye-slash' : 'eye'}
-            onPress={toggleShowPassword}
-            size={14}
-          />
+          <View style={styles.passwordVisibilityButton}>
+            <Icon
+              color={validationError ? theme.variables.alert : disabled ? theme.variables.disabled : theme.variables.inputTextColor}
+              name={showPassword ? 'eye-slash' : 'eye'}
+              onPress={toggleShowPassword}
+              style={styles.passwordVisibilityIcon}
+              size={14}
+            />
+          </View>
         }
         {!!validationError &&
           <Text
