@@ -44,7 +44,7 @@ const styles = StyleSheet.create({
   }
 });
 
-const SearchBlufi = ({ next, selectedDevice, setSelectedDevice }) => {
+const SearchBlufi = ({ next, selectedDevice, setSelectedDevice, connectToDevice }) => {
   const { t } = useTranslation();
   const { devices, canScan, scan, scanning, error, permissionError, PermissionError, openSettings } = useSearchBlufi();
   const handleDevicePress = useCallback((item) => {
@@ -53,10 +53,7 @@ const SearchBlufi = ({ next, selectedDevice, setSelectedDevice }) => {
   }, [next, setSelectedDevice]);
 
   useEffect(() => {
-    if(Blufi.connectedDevice){
-      BleManager.disconnect(Blufi.connectedDevice.id);
-    }
-    Blufi.reset();
+    connectToDevice.disconnect();
     if(selectedDevice){
       setSelectedDevice();
     }
