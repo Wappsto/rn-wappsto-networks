@@ -25,7 +25,7 @@ const ERRORS = {
 }
 
 const timeoutLimit = 10000;
-const useSetupDevice = (selectedDevice, addNetworkHandler, wifiFields, autoConfigure, isBlufi = true) => {
+const useSetupDevice = (connectToDevice, addNetworkHandler, wifiFields, autoConfigure, isBlufi = true) => {
   const { sendRequest, request, acceptedManufacturerAsOwner } = addNetworkHandler;
   const { ssid, password } = wifiFields;
   const {
@@ -33,7 +33,7 @@ const useSetupDevice = (selectedDevice, addNetworkHandler, wifiFields, autoConfi
     error: connectionError,
     step: connectionStep,
     connect,
-    connected } = useConnectToDevice(selectedDevice);
+    connected } = connectToDevice;
   const prevConnected = usePrevious(connected);
   const [ step, setStep ] = useState(STEPS.RETRIEVE);
   const networkId = useRef(null);
@@ -143,7 +143,7 @@ const useSetupDevice = (selectedDevice, addNetworkHandler, wifiFields, autoConfi
 
   useEffect(() => {
     if(prevConnected === false && connected && autoConfigure){
-      configure();
+      configure(true);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [connected]);

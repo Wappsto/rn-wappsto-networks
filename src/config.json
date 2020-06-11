@@ -10,7 +10,7 @@
     "version": "2.0"
   },
   "firebaseWebClientId": "733864116078-nd9f0902lv71pi4qe5jpbisiagjs9gg0.apps.googleusercontent.com",
-  "blufiFilter": [],
+  "blufiFilter": ["blu"],
   "recaptchaKey": "6Ld1xrIUAAAAAMooWJqcqmVqh4ph5D2DFChZdAzG",
   "showLanguageButton": false
 }

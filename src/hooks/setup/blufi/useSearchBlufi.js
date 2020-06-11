@@ -1,5 +1,5 @@
-import { useEffect, useState, useCallback, useRef } from 'react';
-import { Platform, PermissionsAndroid, NativeModules, NativeEventEmitter, DeviceEventEmitter, Linking } from 'react-native';
+import { useEffect, useState, useCallback } from 'react';
+import { Platform, NativeModules, NativeEventEmitter, Linking } from 'react-native';
 import BleManager from 'react-native-ble-manager';
 import { BlufiParameter } from '../../../BlufiLib/util/params';
 import { config } from '../../../configureWappstoRedux';

@@ -94,8 +94,10 @@ const useConnectToDevice = (selectedDevice) => {
   }
 
   const disconnect = () => {
-    if(Blufi.connectedDevice){
-      BleManager.disconnect(Blufi.connectedDevice.id);
+    setStep(STEPS.CONNECT);
+    success.current = false;
+    if(selectedDevice && selectedDevice.id){
+      BleManager.disconnect(selectedDevice.id);
     }
     Blufi.reset();
   }
@@ -109,6 +111,13 @@ const useConnectToDevice = (selectedDevice) => {
       }
     }
   }
+
+  useEffect((selectedDevice) => {
+    if(!success.current){
+      connect(true);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [selectedDevice]);
 
   useEffect(() => {
     if(!success.current){

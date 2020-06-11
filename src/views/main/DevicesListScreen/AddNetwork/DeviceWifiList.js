@@ -55,9 +55,9 @@ const styles = StyleSheet.create({
   },
 });
 
-const DeviceWifiList = React.memo(({ next, selectedDevice, wifiFields }) => {
+const DeviceWifiList = React.memo(({ next, connectToDevice, wifiFields }) => {
   const { t } = useTranslation();
-  const { loading, error, step, scan, result } = useDeviceScanWifi(selectedDevice);
+  const { loading, error, step, scan, result } = useDeviceScanWifi(connectToDevice);
 
   const selectSsid = (ssid) => {
     wifiFields.setSsid(ssid);

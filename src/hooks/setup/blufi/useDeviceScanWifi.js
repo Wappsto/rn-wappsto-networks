@@ -17,14 +17,14 @@ export const ERRORS = {
 }
 
 const timeoutLimit = 10000;
-const useDeviceScanWifi = (selectedDevice) => {
+const useDeviceScanWifi = (connectToDevice) => {
   const {
     loading: connectionLoading,
     error: connectionError,
     step: connectionStep,
     connect,
     disconnect,
-    connected } = useConnectToDevice(selectedDevice);
+    connected } = connectToDevice;
   const prevConnected = usePrevious(connected);
   const [ result, setResult ] = useState([]);
   const [ step, setStep ] = useState(STEPS.GETDEVICEWIFILIST);

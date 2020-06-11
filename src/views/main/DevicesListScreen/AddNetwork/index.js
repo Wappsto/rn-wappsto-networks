@@ -16,8 +16,7 @@ import BackHandlerView from './BackHandlerView';
 import useAddNetwork from '../../../../hooks/setup/useAddNetwork';
 import useWifiFields from '../../../../hooks/setup/blufi/useWifiFields';
 import useInitBlufi from '../../../../hooks/setup/blufi/useInitBlufi';
-import Blufi from '../../../../BlufiLib';
-import BleManager from 'react-native-ble-manager';
+import useConnectToDevice from '../../../../hooks/setup/blufi/useConnectToDevice';
 
 const Content = React.memo(({ visible, hide, show }) => {
   const wifiFields = useWifiFields();
@@ -25,6 +24,7 @@ const Content = React.memo(({ visible, hide, show }) => {
   const [ maoVisible, maoShow, maoHide ] = useVisible(false);
   const [ step, setStep ] = useState(0);
   const addNetworkHandler = useAddNetwork(iotNetworkListAdd, maoShow, maoHide);
+  const connectToDevice = useConnectToDevice(selectedDevice);
 
   useInitBlufi();
 
@@ -51,11 +51,9 @@ const Content = React.memo(({ visible, hide, show }) => {
     if(!visible){
       setStep(0);
       setAcceptedManufacturerAsOwner(null);
-      if(Blufi.connectedDevice){
-        BleManager.disconnect(Blufi.connectedDevice.id);
-      }
-      Blufi.reset();
+      connectToDevice.disconnect();
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [visible, setAcceptedManufacturerAsOwner]);
 
   let Step = null;
@@ -101,6 +99,7 @@ const Content = React.memo(({ visible, hide, show }) => {
               setSelectedDevice={setSelectedDevice}
               wifiFields={wifiFields}
               addNetworkHandler={addNetworkHandler}
+              connectToDevice={connectToDevice}
               />
           </BackHandlerView>
       </Modal>
