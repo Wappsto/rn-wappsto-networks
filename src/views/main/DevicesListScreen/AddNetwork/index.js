@@ -51,6 +51,7 @@ const Content = React.memo(({ visible, hide, show }) => {
     if(!visible){
       setStep(0);
       setAcceptedManufacturerAsOwner(null);
+      setSelectedDevice(null);
       connectToDevice.disconnect();
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
