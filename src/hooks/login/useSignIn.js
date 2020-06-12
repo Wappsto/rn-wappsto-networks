@@ -239,7 +239,7 @@ const useSignIn = (navigation) => {
         userLogged(request);
       } else if(request.status === 'error'){
         errorNumber.current++;
-        if(errorNumber.current > 3 || (request.json && request.json.code === 9900007)){
+        if(errorNumber.current > 2 || (request.json && request.json.code === 9900007)){
           if(!showRecaptcha){
             setShowRecaptcha(true);
           }
