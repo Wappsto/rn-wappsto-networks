@@ -16,7 +16,7 @@ export const ERRORS = {
   GENERIC: 'generic'
 }
 
-const timeoutLimit = 10000;
+const timeoutLimit = 20000;
 const useDeviceScanWifi = (connectToDevice) => {
   const {
     loading: connectionLoading,
