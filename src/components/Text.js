@@ -28,7 +28,8 @@ const Title = React.memo(({
   align,
   title,
   color,
-  content
+  content,
+  ...props
 }) => {
   const fontSize = () => {
     switch(size) {
@@ -78,6 +79,7 @@ const Title = React.memo(({
   };
   return (
     <RNtext
+      {...props}
       style={[
         styles.text,
         title && styles.title,

@@ -20,6 +20,9 @@ const styles = StyleSheet.create({
     flex: 1,
     flexDirection: 'row',
     alignItems: 'center',
+    paddingHorizontal:10,
+    paddingTop:30,
+    paddingBottom:20,
     marginVertical:4,
     borderBottomColor: theme.variables.lightGray,
     borderBottomWidth: theme.variables.borderWidth
@@ -37,6 +40,10 @@ const styles = StyleSheet.create({
     height: 35,
     borderRadius: 20,
     margin: 8,
+  },
+  userName:{
+    flex:1,
+    marginLeft:8
   },
   logoutBtn:{
     marginBottom: 20,
@@ -78,11 +85,14 @@ const DrawerMenu = React.memo((props) => {
               <Icon
                 name='user'
                 color={theme.variables.drawerMenuText}
-                style={theme.common.spaceAround}
+
                 size={20}
               />
             )}
             <Text
+              ellipsizeMode='middle'
+              numberOfLines={1}
+              style={styles.userName}
               content={name}
             />
           <RequestError request={request} />
