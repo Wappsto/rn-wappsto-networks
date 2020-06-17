@@ -4,6 +4,7 @@ import Blufi from '../../../BlufiLib';
 import { BlufiCallback } from '../../../BlufiLib/util/params';
 import { isUUID } from 'wappsto-redux/util/helpers';
 import usePrevious from 'wappsto-blanket/hooks/usePrevious';
+import { manufacturerAsOwnerErrorCode } from '../../../util/params';
 
 export const STEPS = {
   RETRIEVE: 'retrieve',
@@ -170,9 +171,13 @@ const useSetupDevice = (connectToDevice, addNetworkHandler, wifiFields, autoConf
           setStep(STEPS.DONE);
         }
       } else if(request.status === 'error'){
-        if(acceptedManufacturerAsOwner === false){
-          setStep(ERRORS.REJECTEDMANUFACTURERASOWNER);
-        } else if(acceptedManufacturerAsOwner === true){
+        if(request.json && request.json.code === manufacturerAsOwnerErrorCode){
+          if(acceptedManufacturerAsOwner === false){
+            setStep(ERRORS.REJECTEDMANUFACTURERASOWNER);
+          } else if(acceptedManufacturerAsOwner === true){
+            setStep(ERRORS.RSERROR);
+          }
+        } else {
           setStep(ERRORS.RSERROR);
         }
       }
