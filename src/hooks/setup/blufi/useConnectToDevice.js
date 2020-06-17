@@ -95,6 +95,7 @@ const useConnectToDevice = (selectedDevice) => {
 
   const disconnect = () => {
     setStep(STEPS.CONNECT);
+    deviceId = null;
     success.current = false;
     if(selectedDevice && selectedDevice.id){
       BleManager.disconnect(selectedDevice.id);
@@ -106,7 +107,7 @@ const useConnectToDevice = (selectedDevice) => {
     if(selectedDevice && selectedDevice.id && (force || !loading)){
       addBlufiListeners();
       if(!deviceId || !Blufi.connectedDevice || Blufi.connectedDevice.id !== deviceId || Blufi.connectedDevice.id !== selectedDevice.id){
-        deviceId = null;
+        disconnect();
         initConnection();
       }
     }
