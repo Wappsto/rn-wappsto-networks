@@ -142,7 +142,7 @@ const AccountScreen = React.memo(({navigation}) => {
                 size='p'
                 color='secondary'
                 align='center'
-                content={(!!user.first_name && user.first_name) + ' ' + (!!user.last_name && user.last_name) }
+                content={(user.first_name && user.first_name) + ' ' + (user.last_name && user.last_name) }
               />
             :
               <Text
@@ -247,7 +247,7 @@ AccountScreen.navigationOptions = ({ navigation, screenProps: { t } }) => {
   return {
     ...theme.headerStyle,
     title: CapitalizeEach(t('pageTitle.account')),
-    headerLeft: <MenuButton navigation={navigation} />,
+    headerLeft: () => <MenuButton navigation={navigation} />,
   };
 };
 

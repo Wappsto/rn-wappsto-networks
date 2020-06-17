@@ -48,7 +48,7 @@ DeviceScreen.navigationOptions = ({navigation}) => {
   return {
     ...theme.headerStyle,
     title: navigation.getParam('title', ''),
-    headerRight: <DeviceDetails navigation={navigation} />
+    headerRight: () => <DeviceDetails navigation={navigation} />
   };
 };
 

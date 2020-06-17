@@ -164,8 +164,8 @@ DevicesListScreen.navigationOptions = ({ navigation, screenProps: { t } }) => {
   return {
     ...theme.headerStyle,
     title: CapitalizeEach(t('pageTitle.main')),
-    headerLeft: <MenuButton navigation={navigation} />,
-    headerRight: <AddNetwork navigation={navigation} />,
+    headerLeft: () => <MenuButton navigation={navigation} />,
+    headerRight: () => <AddNetwork navigation={navigation} />,
   };
 };
 
