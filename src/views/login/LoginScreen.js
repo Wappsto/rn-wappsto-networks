@@ -275,7 +275,8 @@ const LoginScreen = React.memo(({ navigation }) => {
 
 LoginScreen.navigationOptions = ({ screenProps: { t } }) => {
   return {
-    headerShown: false
+    headerShown: false,
+    title: CapitalizeFirst(t('pageTitle.login'))
   };
 };
 

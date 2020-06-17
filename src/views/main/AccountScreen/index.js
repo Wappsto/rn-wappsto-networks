@@ -137,12 +137,21 @@ const AccountScreen = React.memo(({navigation}) => {
                 source={{uri: user.provider[0].picture}}
               />
             )}
-            <Text
-              size='p'
-              color='secondary'
-              align='center'
-              content={!!user.first_name && user.first_name + !!user.last_name && user.last_name + !!user.nickname && user.nickname }
-            />
+            {(user.first_name || user.last_name) ?
+              <Text
+                size='p'
+                color='secondary'
+                align='center'
+                content={(!!user.first_name && user.first_name) + ' ' + (!!user.last_name && user.last_name) }
+              />
+            :
+              <Text
+                size='p'
+                color='secondary'
+                align='center'
+                content={CapitalizeFirst(t('account:namePlaceholder'))}
+              />
+            }
             {!signedWithEmail &&
               <Text
                 size='p'

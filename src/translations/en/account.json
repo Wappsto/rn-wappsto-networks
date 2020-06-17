@@ -10,6 +10,7 @@
   "password": "password",
   "currentPassword": "current password",
   "newPassword": "new password",
+  "namePlaceholder":"add name, surname",
   "repeatPassword": "repeat password",
   "createAccount": "create an account",
   "continue": "continue",
