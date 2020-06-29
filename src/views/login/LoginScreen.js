@@ -13,6 +13,7 @@ import Button from '../../components/Button';
 import LanguageButton from '../../components/LanguageButton';
 import theme from '../../theme/themeExport';
 import defaultImages from '../../theme/images';
+import VersionNumber from 'react-native-version-number';
 
 const OpenURLButton = ({ url, children }) => {
   const handlePress = useCallback(async () => {
@@ -298,9 +299,18 @@ LoginScreen.Header = () => {
 LoginScreen.Footer = () => {
   const { t } = useTranslation();
   return (
-    <OpenURLButton url='https://www.seluxit.com/privacy'>
-      {CapitalizeFirst(t('account:privacyNotice'))}
-    </OpenURLButton>
+    <>
+      <OpenURLButton url='https://www.seluxit.com/privacy'>
+        {CapitalizeFirst(t('account:privacyNotice'))}
+      </OpenURLButton>
+      <Text
+        style={styles.versionNr}
+        color='secondary'
+        align='center'
+        size={10}
+        content={'v' + VersionNumber.appVersion}
+      />
+    </>
   );
 }
 

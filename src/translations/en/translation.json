@@ -9,6 +9,7 @@
     "main": "devices",
     "settings": "settings",
     "register": "register an account",
+    "login":"login",
     "terms": "terms & conditions"
   },
   "genericButton": {
@@ -108,11 +109,11 @@
   },
   "onboarding": {
     "registrationTitle": "add device",
-    "configurationTitle": "configure",
+    "configurationTitle": "configure device",
     "option": {
-      "register": "register",
-      "registerAndSetupWifi": "register & setup Wi-Fi",
-      "setupWifi": "setup Wi-Fi"
+      "register": "add via QR code (UUID)",
+      "registerAndSetupWifi": "add and configure Wi-Fi",
+      "setupWifi": "Wi-Fi setup"
     },
     "claimNetwork": {
       "claimNetworkTitle": "add an IoT device",
@@ -133,10 +134,10 @@
       "claimNetworkBtn": "add"
     },
     "deviceDiscovery": {
-      "lookingForDevices": "looking for devices",
+      "lookingForDevices": "Looking for Devices",
       "scanAgain": "search again",
       "scanError": "failed to find devices",
-      "foundDevices": "devices nearby",
+      "foundDevices": "Devices Nearby",
       "selectDevice": "select your IoT device",
       "noDevicesFound": "No devices were found",
       "unknownName": "unknown",
@@ -157,7 +158,8 @@
       "retrieve": "retrieving device information",
       "sendWifiData": "sending Wi-Fi data",
       "waitDeviceConnect": "waiting for the IoT device to connect",
-      "addNetwork": "registering the IoT device in the cloud"
+      "addNetwork": "registering the IoT device in the cloud",
+      "deviceRestarting": "device is re-starting"
     },
     "error": {
       "failedConnect": "failed to connect to the device.",
@@ -176,13 +178,13 @@
       "generic": "something went wrong."
     },
     "wifiScan": {
-      "scanInProgress": "retrieving Wi-Fi network list",
+      "scanInProgress": "Retrieving Wi-Fi Network List",
       "noWifiFound": "no Wi-Fi networks were found. If your Wi-Fi access point is hidden, try manual setup",
-      "foundWifi": "Wi-Fi networks discovered by your device",
-      "selectWifi": "select an access points you want your IoT device to connect to",
+      "foundWifi": "Wi-Fi Networks Discovered by your Device",
+      "selectWifi": "select the Wi-Fi network you would like your IoT device to connect to",
       "scanAgain": "scan again",
       "scanningInProgressInfo": "your IoT device is scanning for nearby Wi-Fi networks. Please wait...",
-      "hiddenNetworkInfo": "your Wi-Fi network is 'hidden'?",
+      "hiddenNetworkInfo": "is your Wi-Fi network hidden?",
       "manualSetup": "go to manual setup",
       "error": {
         "title": "Wi-Fi scan failed",
@@ -191,22 +193,22 @@
     },
     "wifiConfig": {
       "title": "configure Wi-Fi",
-      "intro": "to setup Wi-Fi on your IoT device, please, enter required details below.",
+      "intro": "to set up Wi-Fi on your IoT device, please enter the required details below.",
       "warning5Ghz": "Please, keep in mind that Wi-Fi setup may not be supported on 5GHz networks.",
-      "settingUp": "setting up",
+      "settingUp": "Configuring Device",
       "ssidLabel": "Wi-Fi network",
       "passwordLabel": "Wi-Fi password",
       "sendButton": "configure"
     },
     "wifiSetup": {
-      "setupInProgress": "setting up",
+      "setupInProgress": "Configuring Device",
       "success": {
         "title": "your device is set up and added to your list.",
         "description": "you can now finish the setup and go to device list view.",
         "flowButton": "finish"
       },
       "error": {
-        "title": "Wi-Fi setup failed",
+        "title": "Wi-Fi Setup Failed",
         "description": "you can close the setup flow and try again.",
         "flowButton": "close"
       }
