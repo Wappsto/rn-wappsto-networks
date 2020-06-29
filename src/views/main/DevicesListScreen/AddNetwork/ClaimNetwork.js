@@ -49,6 +49,7 @@ const AddNetwork = React.memo(({ addNetworkHandler, hide }) => {
     switchView,
     isScanning,
     didScan,
+    scanError,
     onRead,
     onSubmitEditing,
     addNetwork,
@@ -131,6 +132,7 @@ const AddNetwork = React.memo(({ addNetworkHandler, hide }) => {
           </TouchableOpacity>
         )}
       </View>
+      {scanError && <Text size='p' color='error' content={CapitalizeFirst(t('onboarding.claimNetwork.' + scanError))} />}
       <Input
         label={CapitalizeFirst(t('onboarding.claimNetwork.uuidLabel'))}
         onChangeText={text => setInputValue(text)}
@@ -145,9 +147,7 @@ const AddNetwork = React.memo(({ addNetworkHandler, hide }) => {
         color='secondary'
         content={CapitalizeFirst(t('onboarding.claimNetwork.enterUUID'))}
       />
-      {loading && (
-        <ActivityIndicator size='large' color={theme.variables.spinnerColor} />
-      )}
+      {loading && <ActivityIndicator size='large' color={theme.variables.spinnerColor} /> }
       <RequestError request={addNetworkHandler.request} skipCodes={addNetworkHandler.skipErrorCodes} />
       <Button
         disabled={!canAdd}

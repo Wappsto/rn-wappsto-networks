@@ -10,7 +10,7 @@ import ConfigureWifi from './ConfigureWifi';
 import SetupDevice from './SetupDevice';
 import ClaimNetwork from './ClaimNetwork';
 import useVisible from 'wappsto-blanket/hooks/useVisible';
-import { iotNetworkListAdd } from '../../../../util/params';
+import { iotNetworkListAdd, iotNetworkAddFlow } from '../../../../util/params';
 import ConfirmAddManufacturerNetwork from './ConfirmAddManufacturerNetwork';
 import BackHandlerView from './BackHandlerView';
 import useAddNetwork from '../../../../hooks/setup/useAddNetwork';
@@ -110,7 +110,7 @@ const Content = React.memo(({ visible, hide, show }) => {
 
 const AddNetwork = React.memo(() => {
   return (
-    <PopupButton icon='plus-circle' style={theme.common.headerButton} color={theme.variables.headerColor}>
+    <PopupButton icon='plus-circle' style={theme.common.headerButton} color={theme.variables.headerColor} showItem={iotNetworkAddFlow}>
       {(visible, hide, show) => <Content visible={visible} hide={hide} show={show} />}
     </PopupButton>
   );

@@ -9,7 +9,7 @@ import DeviceItem from './DeviceItem';
 import AddNetwork from './AddNetwork';
 import theme from '../../../theme/themeExport';
 import { useTranslation, CapitalizeEach, CapitalizeFirst } from '../../../translations';
-import { iotNetworkListAdd, iotNetworkListRemove } from '../../../util/params';
+import { iotNetworkListAdd, iotNetworkListRemove, iotNetworkAddFlow } from '../../../util/params';
 import { isPrototype } from 'wappsto-blanket/util';
 import { getServiceVersion } from 'wappsto-redux/util/helpers';
 import useAppStateStream from '../../../hooks/useAppStateStream';
@@ -21,6 +21,8 @@ import ItemDeleteIndicator from '../../../components/ItemDeleteIndicator';
 import useDeleteItem from '../../../hooks/useDeleteItem';
 import useDeleteItemRequest from '../../../hooks/useDeleteItemRequest';
 import RequestError from '../../../components/RequestError';
+import { useSelector } from 'react-redux';
+import { makeItemSelector } from 'wappsto-redux/selectors/items';
 
 const styles = StyleSheet.create({
   listHeader: {
@@ -143,6 +145,9 @@ const DevicesListScreen = React.memo(({ navigation }) => {
     verbose: true
   }), []);
 
+  const getItem = useMemo(makeItemSelector, []);
+  const showAddFlow = useSelector(state => getItem(state, iotNetworkAddFlow));
+
   useAppStateStream();
   useAddNetworkStream(iotNetworkListAdd, iotNetworkListRemove);
 
@@ -153,6 +158,7 @@ const DevicesListScreen = React.memo(({ navigation }) => {
         query={query}
         addItemName={iotNetworkListAdd}
         removeItemName={iotNetworkListRemove}
+        emptyAddFlow={showAddFlow}
         page={navigation.state.routeName}
         renderItem={({ item: network }) => <ListItem network={network} navigation={navigation} />}
       />

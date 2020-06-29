@@ -131,7 +131,8 @@
       "rescanQRCode": "tap here to scan again",
       "scanSuccessMessage": "QR code scanned",
       "uuidLabel": "device UUID",
-      "claimNetworkBtn": "add"
+      "claimNetworkBtn": "add",
+      "noUUID": "failed to find UUID. Try to re-scan or enter it manualy."
     },
     "deviceDiscovery": {
       "lookingForDevices": "Looking for Devices",

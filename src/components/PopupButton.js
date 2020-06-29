@@ -1,7 +1,10 @@
-import React, { useState, useCallback } from 'react';
+import React, { useState, useCallback, useEffect } from 'react';
 import Button from '../components/Button';
+import { useDispatch } from 'react-redux';
+import { setItem } from 'wappsto-redux/actions/items';
 
-const PopupButton = React.memo(({ icon, style, color, children }) => {
+const PopupButton = React.memo(({ icon, style, color, showItem, hideItem, children }) => {
+  const dispatch = useDispatch();
   const [ modalVisible, setModalVisible ] = useState(false);
 
   const showPopup = useCallback(() => {
@@ -11,6 +14,17 @@ const PopupButton = React.memo(({ icon, style, color, children }) => {
   const hidePopup = useCallback(() => {
     setModalVisible(false);
   }, []);
+
+  useEffect(() => {
+    if(showItem){
+      dispatch(setItem(showItem, () => showPopup));
+    }
+    if(hideItem){
+      dispatch(setItem(hideItem, () => hidePopup));
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
   return (
     <>
       <Button

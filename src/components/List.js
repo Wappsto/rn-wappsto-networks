@@ -26,6 +26,8 @@ const List = React.memo(({
   renderItem,
   addItemName,
   removeItemName,
+  emptyAddFlow,
+  EmptyComponent,
   page
 }) => {
   const { t } = useTranslation();
@@ -40,24 +42,43 @@ const List = React.memo(({
         ListEmptyComponent={
           (!request || request.status !== 'pending') && (
             <>
-              { request.status !== 'error' &&
-                <Text
-                  size='p'
-                  align='center'
-                  color='secondary'
-                  content={CapitalizeFirst(t('noData'))}
-                  style={theme.common.spaceAround}
-                />
+              { request.status === 'success' && EmptyComponent && <EmptyComponent />}
+              { request.status === 'success' && !EmptyComponent &&
+                <>
+                  <Text
+                    size='p'
+                    align='center'
+                    color='secondary'
+                    content={CapitalizeFirst(t('noData'))}
+                    style={theme.common.spaceAround}
+                  />
+                  {
+                    emptyAddFlow && (
+                      <Button
+                        onPress={emptyAddFlow}
+                        type='link'
+                        color='primary'
+                        text={CapitalizeFirst(t('onboarding.claimNetwork.claimNetworkTitle'))}
+                      />
+                    )
+                  }
+                </>
               }
-              <View style={styles.centered}>
-                <RequestError request={request} autoHide={false} />
-              </View>
-              <Button
-                onPress={refresh}
-                type='link'
-                color='primary'
-                text={CapitalizeFirst(t('genericButton.refresh'))}
-              />
+              {
+                request.status === 'error' && (
+                  <>
+                    <View style={styles.centered}>
+                      <RequestError request={request} autoHide={false} />
+                    </View>
+                    <Button
+                      onPress={refresh}
+                      type='link'
+                      color='primary'
+                      text={CapitalizeFirst(t('genericButton.refresh'))}
+                    />
+                  </>
+                )
+              }
             </>
           )
         }

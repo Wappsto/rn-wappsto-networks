@@ -1,5 +1,5 @@
 import { useState, useEffect, useCallback } from 'react';
-import { isUUID } from 'wappsto-redux/util/helpers';
+import { isUUID, UUIDRegex } from 'wappsto-redux/util/helpers';
 import { manufacturerAsOwnerErrorCode } from '../../util/params';
 
 const useAddNetworkForm = (addNetworkHandler, onDone) => {
@@ -7,13 +7,19 @@ const useAddNetworkForm = (addNetworkHandler, onDone) => {
   const [ inputValue, setInputValue ] = useState('');
   const [ isScanning, setIsScanning ] = useState(false);
   const [ didScan, setDidScan ] = useState(false);
+  const [ scanError, setScanError ] = useState(false);
   const [ loading, setLoading ] = useState(false);
 
   const canAdd = isUUID(inputValue) && !loading;
 
   const onRead = useCallback(event => {
-    const qrText = (event.data.split('+')[0] || '').trim();
-    setInputValue(qrText);
+    const uuids = event.data.match(new RegExp(UUIDRegex, 'gi'));
+    if(!uuids || uuids.length === 0){
+      setScanError('noUUID');
+      setInputValue('');
+    } else {
+      setInputValue(uuids[0]);
+    }
     setIsScanning(false);
     setDidScan(true);
   }, []);
@@ -24,7 +30,12 @@ const useAddNetworkForm = (addNetworkHandler, onDone) => {
   }, [sendRequest, inputValue]);
 
   const switchView = useCallback(() => {
-    setIsScanning(v => !v);
+    setIsScanning(v => {
+      if(!v){
+        setScanError();
+      }
+      return !v;
+    });
   }, []);
 
   const onSubmitEditing = useCallback(() => {
@@ -63,6 +74,7 @@ const useAddNetworkForm = (addNetworkHandler, onDone) => {
     switchView,
     isScanning,
     didScan,
+    scanError,
     onRead,
     onSubmitEditing,
     addNetwork,
