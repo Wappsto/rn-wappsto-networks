@@ -118,6 +118,10 @@ const LoginScreen = React.memo(({ navigation }) => {
   } = useSignIn(navigation);
 
   const moveToTACScreen = useCallback(() => {
+    navigation.navigate('TermsAndConditionsScreen');
+  }, [navigation]);
+
+  const moveToRegisterScreen = useCallback(() => {
     navigation.navigate(LoginScreen.registerNavigateTo);
   }, [navigation]);
 
@@ -139,11 +143,6 @@ const LoginScreen = React.memo(({ navigation }) => {
           <LanguageButton />
           <LoginScreen.Header />
           <View style={theme.common.contentContainer}>
-            <Text
-              size='p'
-              align='center'
-              content={CapitalizeFirst(t('account:loginWithEmail'))}
-            />
             <View style={styles.section}>
               <Input
                 onChangeText={usernameText =>
@@ -186,7 +185,7 @@ const LoginScreen = React.memo(({ navigation }) => {
                 style={!canSignIn && theme.common.disabled}
                 onPress={checkAndSignIn}
                 display='block'
-                color={!canSignIn ? 'disabled' : 'primary'}
+                color='primary'
                 text={CapitalizeFirst(t('account:logIn'))}
               />
             <View style={styles.formLinkButtons}>
@@ -194,15 +193,15 @@ const LoginScreen = React.memo(({ navigation }) => {
                 disabled={loading}
                 onPress={moveToRecoverPasswordScreen}
                 type='link'
-                color={loading ? 'disabled' : 'primary'}
+                color='primary'
                 text={CapitalizeFirst(t('account:recoverPassword'))}
               />
               <Text content='|'/>
               <Button
                 disabled={loading}
-                onPress={moveToTACScreen}
+                onPress={moveToRegisterScreen}
                 type='link'
-                color={loading ? 'disabled' : 'primary'}
+                color='primary'
                 text={CapitalizeFirst(t('account:createAccount'))}
               />
               </View>
@@ -213,7 +212,8 @@ const LoginScreen = React.memo(({ navigation }) => {
             <Text
               size='p'
               align='center'
-              content={t('account:chooseSignInOption')}
+              color='secondary'
+              content={CapitalizeFirst(t('account:acceptTermsWhenSignIn.message'))}
             />
 
             <View style={styles.section}>

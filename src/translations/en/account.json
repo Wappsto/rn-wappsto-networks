@@ -24,8 +24,6 @@
   "register": "register",
   "deleteAccount": "delete account",
   "signedInWith": "signed in with {{provider, CapitalizeFirst}}",
-  "loginWithEmail": "login with email",
-  "chooseSignInOption": "or select sign-in option below",
   "recoverPasswordInfo": "we will send you an email with the link to change your password. Enter a valid email address below.",
   "recoverPasswordConfirmation": "We have send you an email with a confirmation link. Please follow the link to reset your password.",
   "changePasswordInfo": "we will send you an email with the link to change your password. Enter a valid email address below.",
@@ -43,5 +41,10 @@
     "password": "password is required",
     "repeatPassword": "passwords do not match",
     "username": "missing or invalid email"
+  },
+  "acceptTermsWhenSignIn":{
+    "message":"by signing in, you agree to our $t(account:acceptTermsWhenSignin.terms) and that you have read our $t(account:acceptTermsWhenSignin.privacy).",
+    "terms":" Terms",
+    "privacy": "Privacy Notice"
   }
 }
