@@ -44,7 +44,7 @@
   },
   "acceptTermsWhenSignIn":{
     "message":"by signing in, you agree to our $t(account:acceptTermsWhenSignIn.terms) and that you have read our $t(account:acceptTermsWhenSignIn.privacy).",
-    "terms":" Terms",
+    "terms":"Terms",
     "privacy": "Privacy Notice"
   }
 }
