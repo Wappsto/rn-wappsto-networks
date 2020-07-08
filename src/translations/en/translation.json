@@ -116,7 +116,7 @@
       "setupWifi": "Wi-Fi setup"
     },
     "claimNetwork": {
-      "claimNetworkTitle": "add an IoT device",
+      "claimNetworkTitle": "Add an IoT Device",
       "claimNetworkInfo": "To add an IoT device to your list, provide its unique identifier (UUID, 36-characters).\n\nUse camera to scan the code printed on your device.",
       "enterUUID": "if QR code scanning doesn't work for you, enter the identifier  in the field above.",
       "addManufacturerNetworkTitle": "Warning",
