@@ -35,7 +35,7 @@ const useConfigureWifi = (wifiFields) => {
     if(type === 'ssid'){
       currentText = ssid;
       set = setSsid;
-      const sp = savedPasswords.current[text];
+      const sp = savedPasswords[text];
       if(sp){
         setPassword(sp);
       }

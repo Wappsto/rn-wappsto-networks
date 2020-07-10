@@ -11,7 +11,7 @@
     "start": "react-native start",
     "test": "jest",
     "lint": "eslint .",
-    "postinstall": "./node_modules/.bin/rn-nodeify --install \"crypto,stream,events,vm\" --hack"
+    "postinstall": "node postinstall.js"
   },
   "dependencies": {
     "@invertase/react-native-apple-authentication": "^1.0.0",
