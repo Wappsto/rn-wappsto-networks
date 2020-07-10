@@ -6614,10 +6614,10 @@ wappsto-blanket@^0.1.5:
   version "0.1.5"
   resolved "https://registry.yarnpkg.com/wappsto-blanket/-/wappsto-blanket-0.1.5.tgz#2c15d3a788c5590230747d098352b8b85322a3a1"
 
-wappsto-redux@^3.1.1:
-  version "3.1.1"
-  resolved "https://registry.yarnpkg.com/wappsto-redux/-/wappsto-redux-3.1.1.tgz#849dce3bf8ec8e468ce1258a6109cf9e253808fc"
-  integrity sha512-mfMYo7zo4luqnoywmAyD3Xf1ScuxC+gAtJBZUMaiwhuv9rEoaK2Q0O7DR7z5yiigdZ4zeFPz3lPTMjxNjvn0fg==
+wappsto-redux@^3.1.2:
+  version "3.1.2"
+  resolved "https://registry.yarnpkg.com/wappsto-redux/-/wappsto-redux-3.1.2.tgz#02aa01b3e237e1d57a9b4a1ea2547ca9369ee39e"
+  integrity sha512-RAeQLQ9U6kJro/zMbiCjty5qrtUaxGUaPGCJ9ubEVa6Lz0GUTFMGhObFQzMlGFNs89alALsGUb4nUyU3XtYhXw==
   dependencies:
     deep-equal "^2.0.3"
     normalizr "^3.4.1"

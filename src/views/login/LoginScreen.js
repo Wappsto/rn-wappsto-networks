@@ -1,5 +1,5 @@
 import React, { useCallback } from 'react';
-import { Image, View, Text as RNtext, Linking, TouchableOpacity, ActivityIndicator, StyleSheet, StatusBar, ScrollView, Platform } from 'react-native';
+import { Image, View, Text as RNText, Linking, TouchableOpacity, ActivityIndicator, StyleSheet, StatusBar, ScrollView, Platform } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { AppleButton } from '@invertase/react-native-apple-authentication';
 import { useTranslation, CapitalizeFirst, CapitalizeEach } from '../../translations';
@@ -14,23 +14,6 @@ import LanguageButton from '../../components/LanguageButton';
 import theme from '../../theme/themeExport';
 import defaultImages from '../../theme/images';
 import VersionNumber from 'react-native-version-number';
-
-const OpenURLButton = ({ url, children }) => {
-  const handlePress = useCallback(async () => {
-    const supported = await Linking.canOpenURL(url);
-    if (supported) {
-      await Linking.openURL(url);
-    }
-  }, [url]);
-
-  return (
-    <Button
-      type='link'
-      onPress={handlePress}
-      text={children}
-    />
-  );
-};
 
 const styles = StyleSheet.create({
   formLinkButtons:{
@@ -88,10 +71,58 @@ const styles = StyleSheet.create({
   seperator:{
     borderWidth: 0.3,
     borderColor: theme.variables.borderColor,
-    marginBottom:30
+    marginBottom: 15
   },
   googleColor: {backgroundColor: '#4285F4'},
-  facebookColor: {backgroundColor: '#4267B2'}
+  facebookColor: {backgroundColor: '#4267B2'},
+  terms: { textAlign: 'center', margin: 20 }
+});
+
+const TermsAndConditions = React.memo(() => {
+  const { t } = useTranslation();
+  const text = CapitalizeFirst(t('account:acceptTermsWhenSignIn.message'));
+  const terms = t('account:acceptTermsWhenSignIn.terms');
+  const privacy = t('account:acceptTermsWhenSignIn.privacy');
+  const components = text.split(new RegExp('(' + terms + '|' + privacy + ')'));
+  return (
+      <RNText style={styles.terms}>
+      {
+        components.map(str => {
+          if(str === terms){
+            return (
+              <Text
+                key={str}
+                onPress={LoginScreen.onTermsPress}
+                size='p'
+                color='primary'
+                align='center'
+                content={str}/>
+            )
+          }
+          if(str === privacy){
+            return (
+              <Text
+                key={str}
+                onPress={LoginScreen.onPrivacyPress}
+                size='p'
+                color='primary'
+                align='center'
+                content={str}/>
+            )
+          }
+          return (
+            <Text
+              key={str}
+              size='p'
+              color='secondary'
+              align='center'
+              content={str}
+            />
+          );
+        })
+      }
+      </RNText>
+  )
 });
 
 const LoginScreen = React.memo(({ navigation }) => {
@@ -209,12 +240,7 @@ const LoginScreen = React.memo(({ navigation }) => {
 
             <View style={styles.seperator}/>
 
-            <Text
-              size='p'
-              align='center'
-              color='secondary'
-              content={CapitalizeFirst(t('account:acceptTermsWhenSignIn.message'))}
-            />
+            <TermsAndConditions/>
 
             <View style={styles.section}>
               <TouchableOpacity
@@ -231,9 +257,9 @@ const LoginScreen = React.memo(({ navigation }) => {
                     resizeMode='contain'
                     source={require('../../../assets/images/login/google_logo.png')} style={styles.signinButtonImage}/>
                 </View>
-                <RNtext style={styles.signinButtonText}>
+                <RNText style={styles.signinButtonText}>
                   {CapitalizeFirst(t('account:signInWithGoogle'))}
-                </RNtext>
+                </RNText>
               </TouchableOpacity>
               <TouchableOpacity
                 disabled={!canTPSignIn}
@@ -249,9 +275,9 @@ const LoginScreen = React.memo(({ navigation }) => {
                     resizeMode='contain'
                     source={require('../../../assets/images/login/f_logo_RGB-White_58.png')} style={styles.signinButtonImage}/>
                 </View>
-                <RNtext style={styles.signinButtonText}>
+                <RNText style={styles.signinButtonText}>
                   {CapitalizeFirst(t('account:signInWithFacebook'))}
-                </RNtext>
+                </RNText>
               </TouchableOpacity>
               {
                 Platform.OS === 'ios' &&
@@ -281,6 +307,12 @@ LoginScreen.navigationOptions = ({ screenProps: { t } }) => {
   };
 };
 
+//----------------------------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------
+//------------------------------------OVERRIDABLE-----------------------------------------------
+//----------------------------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------
+
 LoginScreen.Header = () => {
   const { t } = useTranslation();
   return (
@@ -289,29 +321,37 @@ LoginScreen.Header = () => {
         defaultImages.loginAndRegistration.header &&
         <Image resizeMode='contain' style={styles.headerImage} source={defaultImages.loginAndRegistration.header} />
       }
-      <RNtext style={styles.appTitle}>
+      <RNText style={styles.appTitle}>
         {CapitalizeEach(t('appTitle'))}
-      </RNtext>
+      </RNText>
     </View>
   );
 }
 
 LoginScreen.Footer = () => {
-  const { t } = useTranslation();
   return (
-    <>
-      <OpenURLButton url='https://www.seluxit.com/privacy'>
-        {CapitalizeFirst(t('account:privacyNotice'))}
-      </OpenURLButton>
-      <Text
-        style={styles.versionNr}
-        color='secondary'
-        align='center'
-        size={10}
-        content={'v' + VersionNumber.appVersion}
-      />
-    </>
+    <Text
+      style={styles.versionNr}
+      color='secondary'
+      align='center'
+      size={10}
+      content={'v' + VersionNumber.appVersion}
+    />
   );
+}
+
+const handlePress = async (url) => {
+  const supported = await Linking.canOpenURL(url);
+  if (supported) {
+    await Linking.openURL(url);
+  }
+};
+LoginScreen.onTermsPress = () => {
+  handlePress('https://www.seluxit.com');
+}
+
+LoginScreen.onPrivacyPress = () => {
+  handlePress('https://www.seluxit.com/privacy');
 }
 
 export function setHeader(comp) {
