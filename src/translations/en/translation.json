@@ -9,7 +9,7 @@
     "main": "devices",
     "settings": "settings",
     "register": "register an account",
-    "login":"login",
+    "login":"sign in",
     "terms": "terms & conditions"
   },
   "genericButton": {
