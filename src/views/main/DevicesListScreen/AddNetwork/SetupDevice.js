@@ -70,14 +70,16 @@ const SetupDevice = React.memo(({ hide, wifiFields, connectToDevice, addNetworkH
             />
             <View
               style={styles.progressMessage}>
-              <Text
-                color={error ? 'error' : 'success'}
-                content={ error && CapitalizeFirst(t('onboarding.error.' + step))}
-              />
+              { error &&
+                <Text
+                  color='error'
+                  content={CapitalizeFirst(t('onboarding.error.' + step))}
+                />
+              }
               <RequestError request={addNetworkHandler.request} skipCodes={addNetworkHandler.skipErrorCodes} />
               <Text
                 color={error ? 'error' : 'success'}
-                content={error && CapitalizeFirst(t('onboarding.wifiSetup.' + (error ? 'error' : 'success') + '.description'))}
+                content={CapitalizeFirst(t('onboarding.wifiSetup.' + (error ? 'error' : 'success') + '.description'))}
               />
             </View>
           </View>
