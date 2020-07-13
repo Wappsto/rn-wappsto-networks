@@ -22,12 +22,15 @@ let components = {
   ChangePasswordScreen: require('./views/main/AccountScreen/ChangePasswordScreen').default,
   DrawerMenu: require('./components/DrawerMenu').default,
   RecoverPasswordScreen: require('./views/login/RecoverPasswordScreen').default,
+  LoginScreen: require('./views/login/LoginScreen').default,
+  RegisterScreen: require('./views/login/RegisterScreen').default,
+  TermsAndConditionsScreen: require('./views/login/TermsAndConditionsScreen').default,
   LoginStackScreen: function(){
     return createStackNavigator({
-      LoginScreen: require('./views/login/LoginScreen').default,
-      RegisterScreen: require('./views/login/RegisterScreen').default,
+      LoginScreen: {screen: this.LoginScreen},
+      RegisterScreen: {screen: this.RegisterScreen},
       RecoverPasswordScreen: {screen: this.RecoverPasswordScreen},
-      TermsAndConditionsScreen: require('./views/login/TermsAndConditionsScreen').default
+      TermsAndConditionsScreen: {screen: this.TermsAndConditionsScreen}
     });
   },
   ComponentStackShowcase: function(){
