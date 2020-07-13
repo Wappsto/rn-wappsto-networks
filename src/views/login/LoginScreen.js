@@ -78,7 +78,7 @@ const styles = StyleSheet.create({
   terms: { textAlign: 'center', margin: 20 }
 });
 
-const TermsAndConditions = React.memo(() => {
+const TermsAndConditions = React.memo(({navigation}) => {
   const { t } = useTranslation();
   const text = CapitalizeFirst(t('account:acceptTermsWhenSignIn.message'));
   const terms = t('account:acceptTermsWhenSignIn.terms');
@@ -92,7 +92,7 @@ const TermsAndConditions = React.memo(() => {
             return (
               <Text
                 key={str}
-                onPress={LoginScreen.onTermsPress}
+                onPress={() => LoginScreen.onTermsPress(navigation)}
                 size='p'
                 color='primary'
                 align='center'
@@ -103,7 +103,7 @@ const TermsAndConditions = React.memo(() => {
             return (
               <Text
                 key={str}
-                onPress={LoginScreen.onPrivacyPress}
+                onPress={() => LoginScreen.onPrivacyPress(navigation)}
                 size='p'
                 color='primary'
                 align='center'
@@ -240,7 +240,7 @@ const LoginScreen = React.memo(({ navigation }) => {
 
             <View style={styles.seperator}/>
 
-            <TermsAndConditions/>
+            <TermsAndConditions navigation={navigation}/>
 
             <View style={styles.section}>
               <TouchableOpacity
