@@ -8,9 +8,9 @@ const wifiPasswordStorageKey = 'wifiPassword';
 
 (async function init(){
   try {
-    savedSsid = await AsyncStorage.getItem(wifiSsidStorageKey);
+    savedSsid = await AsyncStorage.getItem(wifiSsidStorageKey) || '';
     savedPasswords = await AsyncStorage.getItem(wifiPasswordStorageKey);
-    savedPasswords = JSON.parse(savedPasswords);
+    savedPasswords = JSON.parse(savedPasswords) || {};
   } catch (e) {
     savedPasswords = {};
   }
