@@ -34,11 +34,11 @@ let mReadSequence = -1;
 
 const Blufi = {
   setConnectedDevice(device){
-    this.connectedDevice = device;
+    Blufi.connectedDevice = device;
   },
 
   configure(ssid, password) {
-    if(!this.connectedDevice){
+    if(!Blufi.connectedDevice){
       console.error('Blufi: no connected device');
       return;
     }
@@ -55,7 +55,7 @@ const Blufi = {
   },
 
   async postCustomData(data){
-    if(!this.connectedDevice){
+    if(!Blufi.connectedDevice){
       console.error('Blufi: no connected device');
       return;
     }
@@ -64,7 +64,7 @@ const Blufi = {
   },
 
   async requestDeviceVersion(){
-    if(!this.connectedDevice){
+    if(!Blufi.connectedDevice){
       console.error('Blufi: no connected device');
       return;
     }
@@ -83,7 +83,7 @@ const Blufi = {
   },
 
   async requestDeviceWifiScan() {
-    if(!this.connectedDevice){
+    if(!Blufi.connectedDevice){
       console.error('Blufi: no connected device');
       return;
     }
@@ -103,7 +103,7 @@ const Blufi = {
   },
 
   negotiateSecurity(){
-    if(!this.connectedDevice){
+    if(!Blufi.connectedDevice){
       console.error('Blufi: no connected device');
       return;
     }
@@ -125,7 +125,7 @@ const Blufi = {
   },
 
   reset(){
-    this.connectedDevice = null;
+    Blufi.connectedDevice = null;
     mSendSequence = 0;
     mReadSequence = -1;
     mAck.clear();

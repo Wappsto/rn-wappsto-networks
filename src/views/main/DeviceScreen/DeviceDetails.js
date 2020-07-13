@@ -54,6 +54,7 @@ const ValueSettings = React.memo(() => {
           onPress={showDeleteConfirmation}
           icon='trash-2'
           request={request}
+          disabled={request && request.status === 'pending'}
           text={CapitalizeFirst(t('genericButton.delete'))}
         />
       </Popup>

@@ -28,7 +28,7 @@ const styles = StyleSheet.create({
 
 const SetupDevice = React.memo(({ hide, wifiFields, connectToDevice, addNetworkHandler }) => {
   const { t } = useTranslation();
-  const { loading, error, step } = useSetupDevice(connectToDevice, addNetworkHandler, wifiFields, true);
+  const { loading, error, step, configure } = useSetupDevice(connectToDevice, addNetworkHandler, wifiFields, true);
   return (
     <>
       {loading ?
@@ -76,7 +76,7 @@ const SetupDevice = React.memo(({ hide, wifiFields, connectToDevice, addNetworkH
                   content={CapitalizeFirst(t('onboarding.error.' + step))}
                 />
               }
-              <RequestError request={addNetworkHandler.request} skipCodes={addNetworkHandler.skipErrorCodes} />
+              <RequestError request={addNetworkHandler.request} skipCodes={addNetworkHandler.skipErrorCodes} autoHide={false} />
               <Text
                 color={error ? 'error' : 'success'}
                 content={CapitalizeFirst(t('onboarding.wifiSetup.' + (error ? 'error' : 'success') + '.description'))}

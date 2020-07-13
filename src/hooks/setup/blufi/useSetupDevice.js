@@ -1,10 +1,25 @@
 import { useState, useEffect, useRef } from 'react';
-import useConnectToDevice from './useConnectToDevice';
 import Blufi from '../../../BlufiLib';
 import { BlufiCallback } from '../../../BlufiLib/util/params';
 import { isUUID } from 'wappsto-redux/util/helpers';
 import usePrevious from 'wappsto-blanket/hooks/usePrevious';
 import { manufacturerAsOwnerErrorCode } from '../../../util/params';
+
+const BLUFI_STATUS = {
+  IDLE: 'idle',
+  STA_CONNECTING: 'sta_connecting',
+  STA_CONNECTED: 'sta_connected',
+  OTA_CHECKING: 'ota_checking',
+  OTA_DOWNLOADING: 'ota_downloading',
+  OTA_UPGRADING: 'ota_upgrading',
+  NTP_SYNC: 'ntp_sync',
+  WAPPSTO_DELETING: 'wappsto_deleting',
+  WAPPSTO_CONNECTING: 'wappsto_connecting',
+  WAPPSTO_CONNECTED: 'wappsto_connected',
+  WAPPSTO_READY: 'wappsto_ready',
+  UNKNOWN: 'unknown',
+  INVALID_COMMAND: 'Invalid command'
+}
 
 export const STEPS = {
   RETRIEVE: 'retrieve',
@@ -25,8 +40,10 @@ const ERRORS = {
   GENERIC: 'generic'
 }
 
+const statusPollTime = 1000;
+const addNetworkTimeout = 5000; // in case device does not support status WAPPSTO_READY, wait this time then add
 const timeoutLimit = 30000;
-const useSetupDevice = (connectToDevice, addNetworkHandler, wifiFields, autoConfigure, isBlufi = true) => {
+const useSetupDevice = (connectToDevice, addNetworkHandler, wifiFields, autoConfigure) => {
   const { sendRequest, request, acceptedManufacturerAsOwner } = addNetworkHandler;
   const { ssid, password } = wifiFields;
   const {
@@ -34,13 +51,23 @@ const useSetupDevice = (connectToDevice, addNetworkHandler, wifiFields, autoConf
     error: connectionError,
     step: connectionStep,
     connect,
-    connected } = connectToDevice;
-  const prevConnected = usePrevious(connected);
-  const [ step, setStep ] = useState(STEPS.RETRIEVE);
+    isConnected } = connectToDevice;
+  const prevConnected = usePrevious(isConnected());
+  const [ step, setStateStep ] = useState(STEPS.RETRIEVE);
   const networkId = useRef(null);
   const timeout = useRef(null);
+  const statusInterval = useRef(null);
+  const waitForStatus = useRef(true);
+  const deviceConnectedToWifi = useRef(false);
+  const withTimeout = useRef(true);
+  const refStep = useRef(step);
   const success = useRef(false);
   const error = useRef(false);
+
+  const setStep = (val) => {
+    refStep.current = val;
+    setStateStep(val);
+  }
 
   error.current = Object.values(ERRORS).includes(step) || connectionError;
   const currentStep = (connectionLoading || connectionError) ? connectionStep : step;
@@ -49,14 +76,64 @@ const useSetupDevice = (connectToDevice, addNetworkHandler, wifiFields, autoConf
 
   const reset = () => {
     clearTimeout(timeout.current);
+    clearInterval(statusInterval.current);
     networkId.current = null;
     success.current = false;
+    waitForStatus.current = true;
+    deviceConnectedToWifi.current = false;
   }
 
   const removeBlufiListeners = () => {
     Blufi.onError = () => {}
     Blufi.onReceiveCustomData = async (status, data) => {}
     Blufi.onStatusResponse = () => {}
+  }
+
+  const addNetwork = () => {
+    setStep(STEPS.ADDNETWORK);
+    sendRequest(networkId.current);
+  }
+
+  const addStatusPoll = () => {
+    let gettingStatus = false;
+    statusInterval.current = setInterval(async () => {
+      if(error.current){
+        clearInterval(statusInterval.current);
+      } else if(!isConnected()){
+        clearInterval(statusInterval.current);
+        if(deviceConnectedToWifi.current){
+          if(withTimeout.current){
+            setTimeout(addNetwork, addNetworkTimeout);
+          } else {
+            addNetwork();
+          }
+        }
+      } else if(!gettingStatus) {
+        // prevent multiple write
+        gettingStatus = true;
+        try{
+          await Blufi.postCustomData('status');
+        } catch(e){
+
+        }
+        gettingStatus = false;
+      }
+    }, statusPollTime);
+  }
+
+  const sendWifiData = async () => {
+    try{
+      setStep(STEPS.SENDWIFIDATA);
+      await Blufi.configure(ssid, password);
+      setStep(STEPS.WAITDEVICECONNECT);
+      addStatusPoll();
+      timeout.current = setTimeout(() => {
+        // device did not connect
+        setStep(ERRORS.FAILEDWAITDEVICECONNECT);
+      }, timeoutLimit);
+    } catch(e) {
+      setStep(ERRORS.FAILEDSENDWIFIDATA);
+    }
   }
 
   const addBlufiListeners = () => {
@@ -73,15 +150,28 @@ const useSetupDevice = (connectToDevice, addNetworkHandler, wifiFields, autoConf
         return;
       }
       if(status === BlufiCallback.STATUS_SUCCESS){
-        clearTimeout(timeout.current);
-        networkId.current = data.toString();
-        if(!isUUID(networkId.current)){
-          // message is not a uuid
-          setStep(ERRORS.FAILEDNOTUUID);
-          return;
+        const message = data.toString();
+        if(refStep.current === STEPS.RETRIEVE){
+          clearTimeout(timeout.current);
+          networkId.current = message;
+          if(!isUUID(networkId.current)){
+            // message is not a uuid
+            setStep(ERRORS.FAILEDNOTUUID);
+            return;
+          }
+          sendWifiData();
+        } else if(refStep.current === STEPS.WAITDEVICECONNECT){
+          if(message === BLUFI_STATUS.INVALID_COMMAND){
+            clearInterval(statusInterval.current);
+            waitForStatus.current = false;
+            if(deviceConnectedToWifi.current){
+              setTimeout(addNetwork, addNetworkTimeout);
+            }
+          } if(message.includes('wappsto') || message.includes('ota')){
+            // new version, setting this in case we miss status update
+            withTimeout.current = false;
+          }
         }
-        setStep(STEPS.ADDNETWORK);
-        sendRequest(networkId.current);
       } else {
         setStep(ERRORS.GENERIC);
       }
@@ -92,25 +182,12 @@ const useSetupDevice = (connectToDevice, addNetworkHandler, wifiFields, autoConf
         return;
       }
       if(status === BlufiCallback.STATUS_SUCCESS){
-        // Device connected!
-        success.current = true;
         clearTimeout(timeout.current);
-        setStep(STEPS.DONE);
+        deviceConnectedToWifi.current = true;
+        if(!waitForStatus.current){
+          setTimeout(addNetwork, addNetworkTimeout);
+        }
       }
-    }
-  }
-
-  const sendWifiData = async () => {
-    try{
-      setStep(STEPS.SENDWIFIDATA);
-      await Blufi.configure(ssid, password);
-      setStep(STEPS.WAITDEVICECONNECT);
-      timeout.current = setTimeout(() => {
-        // device did not connect
-        setStep(ERRORS.FAILEDWAITDEVICECONNECT);
-      }, timeoutLimit);
-    } catch(e) {
-      setStep(ERRORS.FAILEDSENDWIFIDATA);
     }
   }
 
@@ -132,7 +209,7 @@ const useSetupDevice = (connectToDevice, addNetworkHandler, wifiFields, autoConf
 
   const configure = async (force) => {
     if(force || !loading){
-      if(!connected) {
+      if(!isConnected()) {
         if(!connectionLoading){
           connect();
         }
@@ -143,11 +220,11 @@ const useSetupDevice = (connectToDevice, addNetworkHandler, wifiFields, autoConf
   }
 
   useEffect(() => {
-    if(prevConnected === false && connected && autoConfigure){
+    if(prevConnected === false && isConnected() && autoConfigure){
       configure(true);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [connected]);
+  }, [isConnected()]);
 
   useEffect(() => {
     if(!success.current && autoConfigure){
@@ -161,15 +238,11 @@ const useSetupDevice = (connectToDevice, addNetworkHandler, wifiFields, autoConf
   }, []);
 
   useEffect(() => {
-    if(step === STEPS.ADDNETWORK && request){
+    if(refStep.current === STEPS.ADDNETWORK && request){
       if(request.status === 'success'){
-        if(isBlufi){
-          sendWifiData();
-        } else {
-          networkId.current = request.json && request.json.meta && request.json.meta.id;
-          success.current = true;
-          setStep(STEPS.DONE);
-        }
+        networkId.current = request.json && request.json.meta && request.json.meta.id;
+        success.current = true;
+        setStep(STEPS.DONE);
       } else if(request.status === 'error'){
         if(request.json && request.json.code === manufacturerAsOwnerErrorCode){
           if(acceptedManufacturerAsOwner === false){
@@ -182,7 +255,6 @@ const useSetupDevice = (connectToDevice, addNetworkHandler, wifiFields, autoConf
         }
       }
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [request, acceptedManufacturerAsOwner]);
 
   return {
@@ -191,7 +263,7 @@ const useSetupDevice = (connectToDevice, addNetworkHandler, wifiFields, autoConf
     setStep,
     error: error.current,
     step: currentStep,
-    request: addNetworkHandler.request,
+    request: request,
     networkId: networkId.current
   };
 }

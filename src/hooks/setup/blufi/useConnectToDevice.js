@@ -27,10 +27,7 @@ const useConnectToDevice = (selectedDevice) => {
   const error = useRef(false);
 
   error.current = Object.values(ERRORS).includes(step);
-  const connected = Blufi.connectedDevice
-                  && Blufi.connectedDevice.id === selectedDevice.id
-                  && deviceId === selectedDevice.id;
-  const loading = selectedDevice && !connected && !error.current;
+  const loading = selectedDevice && step !== STEPS.CONNECTED;
 
   const removeBlufiListeners = () => {
     Blufi.onError = () => {}
@@ -131,7 +128,14 @@ const useConnectToDevice = (selectedDevice) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  return { loading, error: error.current, step, connect, disconnect, connected };
+  return {
+    loading, error: error.current, step, connect, disconnect,
+    isConnected() {
+      return Blufi.connectedDevice
+                      && Blufi.connectedDevice.id === selectedDevice.id
+                      && deviceId === selectedDevice.id;
+    }
+  };
 }
 
 export default useConnectToDevice;

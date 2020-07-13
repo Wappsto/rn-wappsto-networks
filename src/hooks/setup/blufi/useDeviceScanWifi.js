@@ -24,8 +24,8 @@ const useDeviceScanWifi = (connectToDevice) => {
     step: connectionStep,
     connect,
     disconnect,
-    connected } = connectToDevice;
-  const prevConnected = usePrevious(connected);
+    isConnected } = connectToDevice;
+  const prevConnected = usePrevious(isConnected());
   const [ result, setResult ] = useState([]);
   const [ step, setStep ] = useState(STEPS.GETDEVICEWIFILIST);
   const timeout = useRef(null);
@@ -81,7 +81,7 @@ const useDeviceScanWifi = (connectToDevice) => {
 
   const scan = async (force) => {
     if(force || !loading){
-      if(!connected) {
+      if(!isConnected()) {
         connect();
       } else {
         getDeviceWifiList();
@@ -90,11 +90,11 @@ const useDeviceScanWifi = (connectToDevice) => {
   }
 
   useEffect(() => {
-    if(prevConnected === false && connected){
+    if(prevConnected === false && isConnected()){
       getDeviceWifiList();
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [connected]);
+  }, [isConnected()]);
 
   useEffect(() => {
     if(!success.current){

@@ -3,9 +3,19 @@ import AsyncStorage from '@react-native-community/async-storage';
 
 let savedSsid = '';
 let savedPasswords = {};
-let loadedSavedData = false;
 const wifiSsidStorageKey = 'wifiSSID';
 const wifiPasswordStorageKey = 'wifiPassword';
+
+(async function init(){
+  try {
+    savedSsid = await AsyncStorage.getItem(wifiSsidStorageKey);
+    savedPasswords = await AsyncStorage.getItem(wifiPasswordStorageKey);
+    savedPasswords = JSON.parse(savedPasswords);
+  } catch (e) {
+    savedPasswords = {};
+  }
+})()
+
 const useConfigureWifi = (wifiFields) => {
   const { ssid, setSsid, password, setPassword } = wifiFields;
   const [ showPassword, setShowPassword ] = useState(false);
@@ -51,28 +61,10 @@ const useConfigureWifi = (wifiFields) => {
   }, [ssid, password, setSsid, setPassword]);
 
   const init = async () => {
-    try {
-      if(!loadedSavedData){
-        savedSsid = await AsyncStorage.getItem(wifiSsidStorageKey);
-      }
-      if(savedSsid !== ssid){
-        setPassword('');
-      }
-      if(!ssid){
-        setSsid(savedSsid);
-      }
-
-      if(!loadedSavedData){
-        savedPasswords = await AsyncStorage.getItem(wifiPasswordStorageKey);
-        savedPasswords = JSON.parse(savedPasswords);
-      }
-      if(savedPasswords[ssid]){
-        setPassword(savedPasswords[ssid]);
-      }
-    } catch (e) {
-      savedPasswords = {};
+    if(!ssid){
+      setSsid(savedSsid);
     }
-    loadedSavedData = true;
+    setPassword(savedPasswords[ssid || savedSsid] || '');
   }
 
   useEffect(() => {

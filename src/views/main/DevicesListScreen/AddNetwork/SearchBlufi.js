@@ -6,8 +6,6 @@ import image from '../../../../theme/images';
 import Text from '../../../../components/Text';
 import Button from '../../../../components/Button';
 import useSearchBlufi from '../../../../hooks/setup/blufi/useSearchBlufi';
-import BleManager from 'react-native-ble-manager';
-import Blufi from '../../../../BlufiLib';
 
 const styles = StyleSheet.create({
   deviceItem:{
