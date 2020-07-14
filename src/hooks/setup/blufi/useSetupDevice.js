@@ -81,6 +81,7 @@ const useSetupDevice = (connectToDevice, addNetworkHandler, wifiFields, autoConf
     success.current = false;
     waitForStatus.current = true;
     deviceConnectedToWifi.current = false;
+    withTimeout.current = true;
   }
 
   const removeBlufiListeners = () => {
@@ -107,6 +108,8 @@ const useSetupDevice = (connectToDevice, addNetworkHandler, wifiFields, autoConf
           } else {
             addNetwork();
           }
+        } else {
+          setStep(ERRORS.FAILEDWAITDEVICECONNECT);
         }
       } else if(!gettingStatus) {
         // prevent multiple write
