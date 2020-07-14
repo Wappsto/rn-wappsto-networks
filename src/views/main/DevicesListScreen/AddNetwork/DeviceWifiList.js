@@ -30,14 +30,13 @@ const styles = StyleSheet.create({
     height: 20
   },
   spinner:{
-    marginRight: 10
+    marginVertical: 15
   },
   progressText:{
     flex:1
   },
   panel:{
-    borderColor: '#ccc',
-    borderWidth: 0.4,
+    alignItems:'center',
     paddingVertical:50,
     paddingHorizontal:10
   },
@@ -89,11 +88,12 @@ const DeviceWifiList = React.memo(({ next, connectToDevice, wifiFields }) => {
             content={CapitalizeFirst(t('onboarding.wifiScan.scanInProgress'))}
           />
           <Text
-          size='p'
-          content={CapitalizeFirst(t('onboarding.wifiScan.scanningInProgressInfo'))}
+            size='p'
+            align='center'
+            content={CapitalizeFirst(t('onboarding.wifiScan.scanningInProgressInfo'))}
           />
-          <View style={[theme.common.row, styles.panel]}>
-            <ActivityIndicator size='small' color={theme.variables.spinnerColor} style={styles.spinner} />
+          <View style={styles.panel}>
+            <ActivityIndicator size='large' color={theme.variables.spinnerColor} style={styles.spinner} />
             <Text
               style={styles.progressText}
               content={CapitalizeFirst(t('onboarding.progress.' + step))}
@@ -138,6 +138,7 @@ const DeviceWifiList = React.memo(({ next, connectToDevice, wifiFields }) => {
         <>
           <Text
             size='h3'
+            align='center'
             content={CapitalizeFirst(t('onboarding.wifiScan.foundWifi'))}
           />
           <Text

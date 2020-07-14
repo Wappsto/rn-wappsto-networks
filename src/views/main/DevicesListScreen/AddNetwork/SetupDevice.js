@@ -11,7 +11,7 @@ import image from '../../../../theme/images';
 
 const styles = StyleSheet.create({
   progressIcon:{
-    marginRight: 10
+    marginVertical: 15
   },
   progressMessage:{
     flex:1
@@ -19,48 +19,61 @@ const styles = StyleSheet.create({
   responseIcon: {
     marginRight: 10
   },
+  deviceImage:{
+    maxWidth: 100,
+    maxHeight: 100,
+    alignSelf: 'center',
+    margin: 20
+  },
   response: {
     flexDirection: 'row',
     alignItems: 'center',
     marginBottom: 30
+  },
+  centeredContent: {
+    alignItems:'center'
   }
 });
 
-const SetupDevice = React.memo(({ hide, wifiFields, connectToDevice, addNetworkHandler }) => {
+const SetupDevice = React.memo(({ hide, wifiFields, connectToDevice, addNetworkHandler, selectedDevice }) => {
   const { t } = useTranslation();
   const { loading, error, step, configure } = useSetupDevice(connectToDevice, addNetworkHandler, wifiFields, true);
   return (
     <>
-      {loading ?
-        <>
-          <Text
-            size='h3'
-            align='center'
-            content={CapitalizeFirst(t('onboarding.wifiSetup.setupInProgress'))}
+      <Text
+        size='h3'
+        align='center'
+        content={loading ? CapitalizeFirst(t('onboarding.wifiSetup.setupInProgress')) : CapitalizeFirst(t(error ? 'onboarding.wifiSetup.error.title' : 'onboarding.wifiSetup.success.title'))}
+      />
+      { (loading && image.onboarding.wifiSetup) ?
+          <Image
+            resizeMode='contain'
+            source={image.onboarding.wifiSetup}
+            style={theme.common.image}
           />
-          {
-            image.onboarding.wifiSetup &&
-            <Image resizeMode='contain' source={image.onboarding.wifiSetup} style={theme.common.image}/>
-          }
-          <View style={theme.common.row}>
-            <ActivityIndicator size='small'  color={theme.variables.spinnerColor} style={styles.progressIcon} />
+        : ((image.onboarding.wifiSetupError && image.onboarding.wifiSetupSuccess)  ?
+          <Image resizeMode='contain' source={error ? image.onboarding.wifiSetupError : image.onboarding.wifiSetupSuccess} style={theme.common.image}/>
+        : (
+          image.onboarding.deviceIcon &&
+          selectedDevice.name &&
+          image.onboarding.deviceIcon[selectedDevice.name.split('-')[0].toLowerCase()] &&
+            <Image
+              resizeMode='contain'
+              source={image.onboarding.deviceIcon[selectedDevice.name.split('-')[0].toLowerCase()]}
+              style={styles.deviceImage}
+            />
+        ))
+      }
+      {loading ?
+          <View style={styles.centeredContent}>
+            <ActivityIndicator size='large'  color={theme.variables.spinnerColor} style={styles.progressIcon} />
             <Text
               style={styles.progressMessage}
               content={CapitalizeFirst(t('onboarding.progress.' + step))}
             />
           </View>
-        </>
         :
         <>
-          <Text
-            size='h3'
-            align='center'
-            content={CapitalizeFirst(t(error ? 'onboarding.wifiSetup.error.title' : 'onboarding.wifiSetup.success.title'))}
-          />
-          {
-            image.onboarding.wifiSetupError && image.onboarding.wifiSetupSuccess  &&
-            <Image resizeMode='contain' source={error ? image.onboarding.wifiSetupError : image.onboarding.wifiSetupSuccess} style={theme.common.image}/>
-          }
           <View style={styles.response}>
             <Icon
               name={error ? 'alert-triangle' : 'check-circle' }
