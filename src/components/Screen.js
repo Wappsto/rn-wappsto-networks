@@ -9,6 +9,7 @@ import Text from './Text';
 import useCurrentPage from '../hooks/useCurrentPage';
 import useConnected from '../hooks/useConnected';
 import useStreamStatus from '../hooks/useStreamStatus';
+import { config } from '../configureWappstoRedux';
 
 const styles = StyleSheet.create({
   container:{
@@ -26,8 +27,8 @@ const Screen = React.memo(({ style, children }) => {
   const { stream, reconnectStream, message } = useStreamStatus();
   const connected = useConnected();
   useCurrentPage();
+  const showStream = connected && stream && stream.status !== 2 && !config.hideStreamNotification;
 
-  const showStream = connected && stream && stream.status !== 2;
   return (
     <View style={[styles.container, style]}>
       <StatusBar backgroundColor={theme.variables.statusBarBgDark} barStyle={theme.variables.statusBarColorLight} />
