@@ -5,7 +5,8 @@ import {
   StyleSheet,
   TouchableOpacity,
   TouchableWithoutFeedback,
-  StatusBar
+  StatusBar,
+  ScrollView
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import Icon from 'react-native-vector-icons/Feather';
@@ -39,6 +40,7 @@ const styles = StyleSheet.create({
 });
 
 const Popup = React.memo(({ fullScreen, animationType, visible, hide, onRequestClose, contentStyle, children, hideCloseIcon }) => {
+  const Wrapper = fullScreen ? ScrollView : React.Fragment;
   return (
     <Modal
       transparent={true}
@@ -47,6 +49,7 @@ const Popup = React.memo(({ fullScreen, animationType, visible, hide, onRequestC
     >
       <TouchableWithoutFeedback onPress={hide}>
         <View style={styles.popupOverlay}>
+        <Wrapper>
           <SafeAreaView>
             <StatusBar backgroundColor={color(theme.variables.statusBarBgDark).darken(0.5)} barStyle={theme.variables.statusBarColorLight} />
             <TouchableWithoutFeedback>
@@ -62,6 +65,7 @@ const Popup = React.memo(({ fullScreen, animationType, visible, hide, onRequestC
               </View>
             </TouchableWithoutFeedback>
           </SafeAreaView>
+          </Wrapper>
         </View>
       </TouchableWithoutFeedback>
     </Modal>
