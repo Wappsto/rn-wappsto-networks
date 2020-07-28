@@ -1,6 +1,6 @@
 {
   "name": "rn-wappsto-networks",
-  "version": "0.0.1",
+  "version": "1.5.2",
   "private": true,
   "scripts": {
     "ran": "react-native run-android",
@@ -31,7 +31,7 @@
     "react-native": "0.61.5",
     "react-native-android-location-services-dialog-box": "^2.8.2",
     "react-native-barcode-mask": "^1.1.0",
-    "react-native-ble-manager": "^7.2.0",
+    "react-native-ble-manager": "^7.3.1",
     "react-native-camera": "^3.8.0",
     "react-native-crypto": "^2.2.0",
     "react-native-fbsdk": "^1.1.2",
