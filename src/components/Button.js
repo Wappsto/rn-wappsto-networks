@@ -65,26 +65,26 @@ const Button = React.memo(({
 }) => {
   const textColor = () =>{
     if(props.disabled){
-      return {color: theme.variables.disabled};
+      return theme.variables.disabled;
     } else if(color){
       if(type === 'link' || type === 'outlined'){
         switch(color) {
           case 'primary':
-            return {color: theme.variables.primary};
+            return theme.variables.primary;
           case 'secondary':
-            return {color: theme.variables.secondary};
+            return theme.variables.secondary;
           case 'success':
-            return {color: theme.variables.success};
+            return theme.variables.success;
           case 'alert':
-            return {color: theme.variables.alert};
+            return theme.variables.alert;
           case 'disabled':
-            return {color: theme.variables.disabled};
+            return theme.variables.disabled;
           default:
-            return {color: color};
+            return color;
         }
       }
     } else {
-      return {color: theme.variables.textColor};
+      return theme.variables.textColor;
     }
   };
 
@@ -157,7 +157,7 @@ const Button = React.memo(({
         <Icon
           style={[
             text ? styles.iconWithText : styles.icon,
-            type && textColor()
+            type && {color: textColor()}
           ]}
           name={icon}
         />
@@ -166,17 +166,17 @@ const Button = React.memo(({
         <ActivityIndicator
           style={[
             text ? styles.iconWithText : styles.icon,
-            type && textColor()
+            {color: textColor()}
           ]}
           size='small'
-          color={type && textColor()}
+          color={type ? textColor() : theme.variables.buttonColor}
         />
       }
       {text &&
         <Text style={[
           styles.text,
-          type && textColor(),
-          bold && (theme.variables.fontFamilyBold ? {fontFamily:theme.variables.fontFamilyBold } : styles.textBold)
+          bold && (theme.variables.fontFamilyBold ? {fontFamily:theme.variables.fontFamilyBold } : styles.textBold),
+          type && {color: textColor()}
         ]}>{text}</Text>
       }
     </TouchableOpacity>

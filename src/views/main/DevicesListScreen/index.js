@@ -66,10 +66,11 @@ const NetworkDetails = React.memo(({ network, style }) => {
         <Text content={CapitalizeEach(t('networkDescription.uuid')) + ': ' + network.meta.id}/>
         <RequestError request={request} />
         <Button
-          type='outline'
+          type='outlined'
           color='alert'
           onPress={showDeleteConfirmation}
           request={request}
+          disabled={request && request.status === 'pending'}
           text={CapitalizeFirst(t('genericButton.delete'))}
           icon='trash-2'
         />
