@@ -22,7 +22,7 @@ const useConfigureWifi = (wifiFields) => {
   const passwordInputRef = useRef();
 
   const save = () => {
-    AsyncStorage.setItem(wifiSsidStorageKey, savedSsid);
+    AsyncStorage.setItem(wifiSsidStorageKey, savedSsid || '');
     AsyncStorage.setItem(wifiPasswordStorageKey, JSON.stringify(savedPasswords));
     setShowPassword(false);
   };
@@ -62,7 +62,7 @@ const useConfigureWifi = (wifiFields) => {
 
   const init = async () => {
     if(!ssid){
-      setSsid(savedSsid);
+      setSsid(savedSsid || '');
     }
     setPassword(savedPasswords[ssid || savedSsid] || '');
   }
