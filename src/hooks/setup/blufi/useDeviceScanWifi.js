@@ -1,5 +1,4 @@
 import { useState, useEffect, useRef } from 'react';
-import useConnectToDevice from './useConnectToDevice';
 import Blufi from '../../../BlufiLib';
 import { BlufiCallback } from '../../../BlufiLib/util/params';
 import usePrevious from 'wappsto-blanket/hooks/usePrevious';
