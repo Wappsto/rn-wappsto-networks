@@ -46,6 +46,10 @@ const ValueComponent = React.memo(({ item, navigation }) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [item]);
 
+  if(!item.meta || item.meta.error){
+    return null;
+  }
+
   return (
     <View style={styles.itemPanel}>
       <View style={styles.itemHeader}>

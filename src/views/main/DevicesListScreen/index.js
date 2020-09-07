@@ -128,6 +128,9 @@ const ItemContent = React.memo(({ network, navigation }) => {
 
 const ListItem = React.memo(({ network, navigation }) => {
   const request = useDeleteItemRequest(network);
+  if(!network.meta || network.meta.error){
+    return null;
+  }
   return (
     <View style={styles.listItem}>
       <ItemDeleteIndicator request={request} />

@@ -12,7 +12,7 @@ const styles = StyleSheet.create({
   }
 });
 
-const ConfirmationPopup = React.memo(({ visible, accept, reject, title, description, rejectText, acceptText }) => {
+const ConfirmationPopup = React.memo(({ visible, accept, reject, title, description, rejectText, acceptText, acceptDisabled, children }) => {
   const { t } = useTranslation();
 
   return (
@@ -27,6 +27,7 @@ const ConfirmationPopup = React.memo(({ visible, accept, reject, title, descript
         color='secondary'
         content={description ? description : CapitalizeFirst(t('deleteConfirmationDescription'))}
       />
+      {children}
       <View style={styles.btnGroup}>
         <Button
           type='link'
@@ -38,6 +39,7 @@ const ConfirmationPopup = React.memo(({ visible, accept, reject, title, descript
           type='link'
           onPress={accept}
           color='alert'
+          disabled={acceptDisabled}
           text={acceptText || CapitalizeFirst(t('genericButton.yes'))}
         />
       </View>

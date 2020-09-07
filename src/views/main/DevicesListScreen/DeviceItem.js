@@ -52,7 +52,7 @@ const DeviceItem = React.memo(({ navigation, id, isPrototype }) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [device]);
 
-  if(!device || !device.meta || !device.meta.id){
+  if(!device || !device.meta || !device.meta.id || device.meta.error){
     return null;
   }
   return (

@@ -12,6 +12,7 @@ import Icon from 'react-native-vector-icons/Feather';
 import useUser from '../../../hooks/useUser';
 import useDeleteAccount from '../../../hooks/account/useDeleteAccount';
 import Popup from '../../../components/Popup';
+import Input from '../../../components/Input';
 
 const styles = StyleSheet.create({
   item: {
@@ -74,7 +75,10 @@ const DeleteAccount = React.memo(({ setButtonsDisabled }) => {
     confirmationPopupVisible,
     showConfirmationPopup,
     hideConfirmationPopup,
-    confirmDelete
+    confirmDelete,
+    canConfirmDelete,
+    username,
+    setUsername
   } = useDeleteAccount(setButtonsDisabled);
 
   return (
@@ -87,7 +91,21 @@ const DeleteAccount = React.memo(({ setButtonsDisabled }) => {
         acceptText={CapitalizeFirst(t('genericButton.send'))}
         accept={confirmDelete}
         reject={hideConfirmationPopup}
-        />
+        acceptDisabled={!canConfirmDelete}
+      >
+        <View style={styles.section}>
+          <Input
+            onChangeText={setUsername}
+            value={username}
+            label={CapitalizeFirst(t('account:username'))}
+            textContentType='emailAddress'
+            autoCapitalize='none'
+            keyboardType='email-address'
+            returnKeyType='next'
+            disabled={loading}
+          />
+        </View>
+      </ConfirmationPopup>
       <Popup visible={successVisible} onRequestClose={hideSuccessPopup} hide={hideSuccessPopup} hideCloseIcon>
         <Text
           size='p'
@@ -189,28 +207,28 @@ const AccountScreen = React.memo(({navigation}) => {
                 />
               </View>
             </View>
-            <View style={styles.item}>
-              <Text
-                size={14}
-                bold
-                content={CapitalizeFirst(t('account:username'))}
-              />
-              <View style={styles.row}>
+            {signedWithEmail &&
+              <View style={styles.item}>
                 <Text
-                  color='secondary'
-                  content={session.username}
+                  size={14}
+                  bold
+                  content={CapitalizeFirst(t('account:username'))}
                 />
-                {signedWithEmail &&
-                  <Button
-                    type='link'
-                    color='primary'
-                    onPress={() => navigation.navigate('ChangeUsernameScreen', {})}
-                    icon='edit-3'
-                    disabled={buttonsDisabled}
+                <View style={styles.row}>
+                  <Text
+                    color='secondary'
+                    content={session.username}
                   />
-                }
+                    <Button
+                      type='link'
+                      color='primary'
+                      onPress={() => navigation.navigate('ChangeUsernameScreen', {})}
+                      icon='edit-3'
+                      disabled={buttonsDisabled}
+                    />
+                </View>
               </View>
-            </View>
+            }
 
             <View style={styles.item}>
               <Text

@@ -25,7 +25,7 @@ const DeviceScreen = React.memo(({ navigation }) => {
   useUnmountRemoveItem(selectedDeviceName);
   useUndefinedBack(device, navigation);
 
-  if(!device || !device.meta || !device.meta.id){
+  if(!device || !device.meta || !device.meta.id || device.meta.error){
     return null;
   }
   const url = '/device/' + device.meta.id + '/value';

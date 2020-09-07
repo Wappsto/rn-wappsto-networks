@@ -33,15 +33,17 @@ const StatesComponent = React.memo(({ value }) => {
 
   const reportState = states.find(s => s.type === 'Report');
   const controlState = states.find(s => s.type === 'Control');
+  const haveReportState = reportState && reportState.meta && !reportState.meta.error;
+  const haveControlState = controlState && controlState.meta && !controlState.meta.error;
 
   return (
     <View>
       {states.length !== 0 ? (
         <>
           <View style={{padding:15}}>
-            {reportState && <ReportState value={value} state={reportState} />}
-            {reportState && controlState && <View style={theme.common.seperator} />}
-            {controlState && <ControlState value={value} state={controlState} />}
+            {haveReportState && <ReportState value={value} state={reportState} />}
+            {haveReportState && haveControlState && <View style={theme.common.seperator} />}
+            {haveControlState && <ControlState value={value} state={controlState} />}
           </View>
         </>
       ) : (
