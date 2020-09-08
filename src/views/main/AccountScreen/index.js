@@ -93,7 +93,7 @@ const DeleteAccount = React.memo(({ setButtonsDisabled }) => {
         reject={hideConfirmationPopup}
         acceptDisabled={!canConfirmDelete}
       >
-        <View style={styles.section}>
+        <View>
           <Input
             onChangeText={setUsername}
             value={username}
