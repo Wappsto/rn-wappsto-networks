@@ -84,13 +84,13 @@ const Content = React.memo(({ visible, hide, show }) => {
 
   return (
     <>
-      <StatusBar backgroundColor={theme.variables.statusBarBgLight} barStyle={theme.variables.statusBarColorDark} />
       <Modal
         transparent={true}
         visible={visible}
         hide={hide}
         onRequestClose={handleBack}>
           <BackHandlerView hide={hide} handleBack={handleBack}>
+            <StatusBar backgroundColor={theme.variables.statusBarBgLight} barStyle={theme.variables.statusBarColorDark} />
             <ConfirmAddManufacturerNetwork visible={maoVisible} accept={addNetworkHandler.acceptManufacturerAsOwner} reject={addNetworkHandler.refuseManufacturerAsOwner} />
             <Step
               hide={hide}
