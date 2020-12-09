@@ -12,7 +12,7 @@ import useStorageSession from 'rn-wappsto-networks/src/hooks/useStorageSession';
 import { useSelector } from 'react-redux';
 import { getSession } from 'wappsto-redux/selectors/session';
 
-let dependencies = ['ComponentStackShowcase','LoginStackScreen', 'MainStackScreen', 'AccountStackScreen', 'MainScreen', 'SwitchNavigator', 'AppContainer', 'App'];
+let dependencies = ['ComponentStackShowcase','LoginStackScreen', 'MainStackScreen', 'AccountStackScreen', 'MainScreen', 'MainDrawerScreen', 'RootRouter'];
 
 const createScreen = (Nav, name, comp) => {
   let options;
@@ -64,8 +64,8 @@ let components = {
     const MainStack = createStackNavigator();
     const MainStackScreen = () => (
       <MainStack.Navigator>
-        {createScreen(MainStack, 'DevicesListScreen', this.DevicesListScreen)}
-        {createScreen(MainStack, 'DeviceScreen', this.DeviceScreen)}
+        {createScreen(MainStack, 'DevicesListScreen', components.DevicesListScreen)}
+        {createScreen(MainStack, 'DeviceScreen', components.DeviceScreen)}
       </MainStack.Navigator>
     )
     return MainStackScreen;
@@ -93,50 +93,54 @@ let components = {
             fontFamily: theme.variables.fontFamily
           },
         }}
-        drawerContent={this.DrawerMenu}>
-        <MainDrawer.Screen name='main' component={this.MainStackScreen}/>
+        drawerContent={(props) => <components.DrawerMenu {...props} />}>
+        <MainDrawer.Screen name='main' component={components.MainStackScreen}/>
+        <MainDrawer.Screen name='account' component={components.AccountStackScreen}/>
       </MainDrawer.Navigator>
     )
     return MainDrawerScreen;
   },
   RootRouter: function() {
-    const { session: storageSession, status } = useStorageSession();
-    const [ isValidSession, setIsValidSession ] = useState('pending');
-    const session = useSelector(getSession);
+    const RootRouter = () => {
+      const { session: storageSession, status } = useStorageSession();
+      const [ isValidSession, setIsValidSession ] = useState('pending');
+      const session = useSelector(getSession);
 
-    const handleCachedSession = (isValid) => {
-      if(!isValid){
-        setIsValidSession('error');
+      const handleCachedSession = (isValid) => {
+        if(!isValid){
+          setIsValidSession('error');
+        }
+      }
+
+      useMemo(() => {
+        if(session && session.valid !== false){
+          setIsValidSession('success');
+        } else if(isValidSession !== 'pending'){
+          setIsValidSession('error');
+        }
+      }, [session, isValidSession]);
+
+      switch(isValidSession){
+        case 'success':
+          return <components.MainDrawerScreen />
+        case 'error':
+          return <components.LoginStackScreen />
+        case 'pending':
+          return (
+            <>
+              <components.SplashScreen/>
+              <components.SessionVerifier
+                status={status}
+                session={storageSession}
+                onResult={handleCachedSession}
+              />
+            </>
+          )
+        default:
+          return null;
       }
     }
-
-    useMemo(() => {
-      if(session && session.valid !== false){
-        setIsValidSession('success');
-      } else if(isValidSession !== 'pending'){
-        setIsValidSession('error');
-      }
-    }, [session, isValidSession]);
-
-    switch(isValidSession){
-      case 'success':
-        return <components.MainDrawerScreen />
-      case 'error':
-        return <components.LoginStackScreen />
-      case 'pending':
-        return (
-          <>
-            <components.SplashScreen/>
-            <components.SessionVerifier
-              status={status}
-              session={storageSession}
-              onResult={handleCachedSession}
-            />
-          </>
-        )
-      default:
-        return null;
-    }
+    return RootRouter;
   },
 
   // helper function
