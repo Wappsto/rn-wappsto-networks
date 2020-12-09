@@ -27,11 +27,10 @@ const List = React.memo(({
   addItemName,
   removeItemName,
   emptyAddFlow,
-  EmptyComponent,
-  page
+  EmptyComponent
 }) => {
   const { t } = useTranslation();
-  const { items, request, refresh, canLoadMore, loadMore } = usePageList(name, url, query, addItemName, removeItemName, page);
+  const { items, request, refresh, canLoadMore, loadMore } = usePageList(name, url, query, addItemName, removeItemName);
 
   return (
     <View style={style || theme.common.container}>

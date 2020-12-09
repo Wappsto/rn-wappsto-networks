@@ -48,7 +48,7 @@ const useAddNetworkForm = (addNetworkHandler, onDone) => {
     if(request){
       if(request.status === 'success'){
         if(onDone){
-          onDone();
+          onDone(inputValue);
         }
       } else if(request.status !== 'pending' && (request.status !== 'error' || request.json.code !== manufacturerAsOwnerErrorCode)){
         setLoading(false);

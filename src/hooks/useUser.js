@@ -11,7 +11,7 @@ import { config } from '../configureWappstoRedux';
 import { userFetched, userGetRequest } from '../util/params';
 import AsyncStorage from '@react-native-community/async-storage';
 
-const useUser = (navigation) => {
+const useUser = () => {
   const dispatch = useDispatch();
   const session = useSelector(getSession);
   const user = useSelector(getUserData);
@@ -51,11 +51,10 @@ const useUser = (navigation) => {
     if (config.stream) {
       dispatch(closeStream(config.stream.name));
     }
-    sendDelete({ method: 'DELETE', url: '/session/' + session.meta.id });
+    sendDelete({ method: 'DELETE', url: '/session/' + session?.meta?.id });
     dispatch(removeSession());
     AsyncStorage.removeItem('session');
-    navigation.navigate('LoginScreen');
-  }, [navigation, sendDelete, session.meta.id, dispatch]);
+  }, [sendDelete, session, dispatch]);
 
   let name = '';
   if (user) {

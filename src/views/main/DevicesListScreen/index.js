@@ -140,15 +140,14 @@ const ListItem = React.memo(({ network, navigation }) => {
   )
 });
 
+const query = {
+  expand: 1,
+  limit: 10,
+  order_by: getServiceVersion('network') === '' ? 'created' : 'meta.created',
+  from_last: true,
+  verbose: true
+};
 const DevicesListScreen = React.memo(({ navigation }) => {
-  const query = useMemo(() => ({
-    expand: 1,
-    limit: 10,
-    order_by: getServiceVersion('network') === '' ? 'created' : 'meta.created',
-    from_last: true,
-    verbose: true
-  }), []);
-
   const getItem = useMemo(makeItemSelector, []);
   const showAddFlow = useSelector(state => getItem(state, iotNetworkAddFlow));
 
@@ -163,14 +162,13 @@ const DevicesListScreen = React.memo(({ navigation }) => {
         addItemName={iotNetworkListAdd}
         removeItemName={iotNetworkListRemove}
         emptyAddFlow={showAddFlow}
-        page={navigation.state.routeName}
         renderItem={({ item: network }) => <ListItem network={network} navigation={navigation} />}
       />
     </Screen>
   );
 });
 
-DevicesListScreen.navigationOptions = ({ navigation, screenProps: { t } }) => {
+DevicesListScreen.navigationOptions = ({ navigation, t }) => {
   return {
     ...theme.headerStyle,
     title: CapitalizeEach(t('pageTitle.main')),

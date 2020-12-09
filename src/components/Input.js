@@ -6,11 +6,10 @@ import theme from '../theme/themeExport';
 
 const styles = StyleSheet.create({
   inputWrapper: {
-    width:'100%',
+    flex:1,
     marginBottom: theme.variables.defaultFontSize
   },
   input: {
-    width: '100%',
     fontSize: theme.variables.inputTextSize,
     fontFamily: theme.variables.fontFamily,
     color: theme.variables.inputTextColor,
@@ -52,6 +51,7 @@ const Input = React.memo(({
   value,
   disabled,
   showPassword,
+  inputWrapperStyle,
   toggleShowPassword,
   validationError,
   ...props
@@ -62,10 +62,10 @@ const Input = React.memo(({
       {!!label &&
         <Text
           content={label}
-          color={validationError ? 'error' : disabled ? 'disabled' : ''}
+          color={disabled ? 'disabled' : ''}
         />
       }
-      <View style={styles.inputWrapper}>
+      <View style={[styles.inputWrapper, inputWrapperStyle]}>
         <TextInput
           {...props}
           ref={inputRef}

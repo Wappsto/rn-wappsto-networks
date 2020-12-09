@@ -80,9 +80,9 @@ const ValueComponent = React.memo(({ item, navigation }) => {
   );
 });
 
-ValueComponent.navigationOptions = ({navigation}) => {
+ValueComponent.navigationOptions = ({ route }) => {
   return {
-    title: navigation.getParam('title', ''),
+    title: route.params.title || '',
   };
 };
 

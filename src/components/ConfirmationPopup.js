@@ -8,7 +8,8 @@ import { useTranslation, CapitalizeFirst } from '../translations';
 const styles = StyleSheet.create({
   btnGroup: {
     flexDirection: 'row',
-    justifyContent: 'space-between'
+    justifyContent: 'space-between',
+    marginTop: 40
   }
 });
 

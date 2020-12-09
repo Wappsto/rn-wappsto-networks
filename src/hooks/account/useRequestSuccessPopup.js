@@ -1,8 +1,8 @@
-import { useState, useCallback, useEffect, useContext } from 'react';
-import { NavigationContext } from 'react-navigation';
+import { useState, useCallback, useEffect } from 'react';
+import { useNavigation } from '@react-navigation/native';
 
 const useRequestSuccessPopup = (request) => {
-  const navigation = useContext(NavigationContext);
+  const navigation = useNavigation();
   const [ successVisible, setSuccessVisible ] = useState(false);
 
   const hideSuccessPopup = useCallback(() => {

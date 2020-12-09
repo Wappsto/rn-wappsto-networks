@@ -37,17 +37,15 @@ const DeviceScreen = React.memo(({ navigation }) => {
         url={url}
         query={query}
         renderItem={({item}) => <Value item={item} />}
-        page={navigation.state.routeName}
       />
     </Screen>
   );
 });
 
-DeviceScreen.navigationOptions = ({navigation}) => {
-
+DeviceScreen.navigationOptions = ({ navigation, route }) => {
   return {
     ...theme.headerStyle,
-    title: navigation.getParam('title', ''),
+    title: route.params.title || '',
     headerRight: () => <DeviceDetails navigation={navigation} />
   };
 };

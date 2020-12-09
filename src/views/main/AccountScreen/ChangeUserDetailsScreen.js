@@ -87,10 +87,10 @@ const ChangeUserDetailsScreen = React.memo(() => {
   );
 });
 
-ChangeUserDetailsScreen.navigationOptions = ({ navigation, screenProps: { t } }) => {
+ChangeUserDetailsScreen.navigationOptions = ({ route, t }) => {
   return {
     ...theme.headerStyle,
-    title: navigation.getParam('title', CapitalizeEach(t('pageTitle.changeUserDetails')))
+    title: route.params.title || CapitalizeEach(t('pageTitle.changeUserDetails'))
   };
 };
 

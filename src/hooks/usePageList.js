@@ -9,14 +9,17 @@ import { config } from '../configureWappstoRedux';
 import { currentPage } from '../util/params';
 import schemas from 'wappsto-redux/util/schemas';
 import useAppState from './useAppState';
+import { useRoute } from '@react-navigation/native';
 
-const usePageList = (name, url, query, addItemName, removeItemName, page) => {
+const usePageList = (name, url, query, addItemName, removeItemName) => {
   const dispatch = useDispatch();
   const getStream = useMemo(makeStreamSelector, []);
   const stream = useSelector(state => getStream(state, config.stream && config.stream.name));
   const { items, request, refresh, loadMore, canLoadMore, addItem, removeItem } = useList({ name, url, query, resetOnEmpty: true });
   const getItem = useMemo(makeItemSelector, []);
   const currPage = useSelector(state => getItem(state, currentPage));
+  const route = useRoute();
+  const page = route.name;
 
   useEffect(() => {
     if(addItemName){

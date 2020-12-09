@@ -78,7 +78,7 @@ const RecoverScreen = React.memo(({ navigation }) => {
   );
 });
 
-RecoverScreen.navigationOptions = ({ screenProps: { t } }) => {
+RecoverScreen.navigationOptions = ({ t }) => {
   return {
     ...theme.headerStyle,
     title: CapitalizeFirst(t('pageTitle.recoverPassword'))

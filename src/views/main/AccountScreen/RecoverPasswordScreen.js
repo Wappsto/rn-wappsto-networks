@@ -34,10 +34,10 @@ const RecoverPassword = React.memo(() => {
   );
 });
 
-RecoverPassword.navigationOptions = ({ navigation, screenProps: { t } }) => {
+RecoverPassword.navigationOptions = ({ route, t }) => {
   return {
     ...theme.headerStyle,
-    title: navigation.getParam('title', CapitalizeEach(t('pageTitle.recoverPassword')))
+    title: route.params.title || CapitalizeEach(t('pageTitle.recoverPassword'))
   };
 };
 

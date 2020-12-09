@@ -34,7 +34,7 @@ const ChangeUsernameScreen = React.memo(() => {
           content={CapitalizeFirst(t('account:changeUsernameInfo'))}
         />
         <Input
-          label={CapitalizeFirst(t('account:username'))}
+          label={CapitalizeFirst(t('account:currentUsername'))}
           autoCapitalize='none'
           returnKeyType='next'
           value={changeEmailHandler.usernameField.text}
@@ -83,10 +83,10 @@ const ChangeUsernameScreen = React.memo(() => {
   );
 });
 
-ChangeUsernameScreen.navigationOptions = ({ navigation, screenProps: { t } }) => {
+ChangeUsernameScreen.navigationOptions = ({ route, t }) => {
   return {
     ...theme.headerStyle,
-    title: navigation.getParam('title', CapitalizeEach(t('pageTitle.changeUsername')))
+    title: route.params.title || CapitalizeEach(t('pageTitle.changeUsername'))
   };
 };
 

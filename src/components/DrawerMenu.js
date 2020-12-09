@@ -1,6 +1,6 @@
 import React from 'react';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { DrawerNavigatorItems } from 'react-navigation-drawer';
+import { DrawerItemList } from '@react-navigation/drawer';
 import { View, StyleSheet, ScrollView, Image, ActivityIndicator } from 'react-native';
 import RequestError from './RequestError';
 import theme from '../theme/themeExport';
@@ -62,7 +62,10 @@ const DrawerMenu = React.memo((props) => {
       props.descriptors[view].options = {};
     }
     if(!props.descriptors[view].options.drawerLabel){
-      props.descriptors[view].options.drawerLabel = CapitalizeFirst(t('pageTitle.' + view));
+      const route = props.state.routes.find(route => route.key === view);
+      if(route){
+        props.descriptors[view].options.drawerLabel = CapitalizeFirst(t('pageTitle.' + route.name));
+      }
     }
   }
   return (
@@ -97,7 +100,7 @@ const DrawerMenu = React.memo((props) => {
             />
           <RequestError request={request} />
         </View>
-        <DrawerNavigatorItems {...props} />
+        <DrawerItemList {...props} />
       </ScrollView>
       <View style={styles.row}>
         <Button

@@ -1,6 +1,6 @@
 import React from 'react';
 import { View, TouchableOpacity, StyleSheet, StatusBar } from 'react-native';
-import { useHeaderHeight } from 'react-navigation-stack';
+import { useHeaderHeight } from '@react-navigation/stack';
 import KeyboardAvoidingView from './KeyboardAvoidingView';
 import { status } from 'wappsto-redux/actions/stream';
 import { useTranslation, CapitalizeFirst } from '../translations';
@@ -27,7 +27,7 @@ const Screen = React.memo(({ style, children }) => {
   const { stream, reconnectStream, message } = useStreamStatus();
   const connected = useConnected();
   useCurrentPage();
-  const showStream = connected && stream && stream.status !== 2 && !config.hideStreamNotification;
+  const showStream = connected && stream && stream.status !== 2 && config.stream && !config.hideStreamNotification;
 
   return (
     <View style={[styles.container, style]}>

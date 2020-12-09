@@ -90,10 +90,10 @@ const ChangePassword = React.memo(() => {
   );
 });
 
-ChangePassword.navigationOptions = ({ navigation, screenProps: { t } }) => {
+ChangePassword.navigationOptions = ({ route, t }) => {
   return {
     ...theme.headerStyle,
-    title: navigation.getParam('title', CapitalizeEach(t('pageTitle.changePassword')))
+    title: route.params.title || CapitalizeEach(t('pageTitle.changePassword'))
   };
 };
 

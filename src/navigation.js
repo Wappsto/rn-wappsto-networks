@@ -1,3 +1,8 @@
+/*
+ * to fix in the future
+ * since we updated react-navigation libs, all react-navigation libs used in here are not valid
+ * not going to fix this unless needed, after all you can still create your own navigation. let's be honest, it's not that difficult
+ */
 import React from 'react';
 import './getImages';
 import {Provider} from 'react-redux';

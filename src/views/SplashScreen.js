@@ -1,7 +1,5 @@
 import React from 'react';
 import { View, StatusBar, StyleSheet, Image } from 'react-native';
-import SessionVerifier from './SessionVerifier';
-import useStorageSession from '../hooks/useStorageSession';
 import theme from '../theme/themeExport';
 import defaultImages from '../theme/images';
 
@@ -20,8 +18,6 @@ const styles = StyleSheet.create({
 });
 
 const SplashScreen = ({ navigation }) => {
-  const { session, status } = useStorageSession();
-
   return (
     <View style={styles.splashScreenContainer}>
       <StatusBar backgroundColor={theme.variables.statusBarBgLight} barStyle={theme.variables.statusBarColorDark}/>
@@ -29,11 +25,6 @@ const SplashScreen = ({ navigation }) => {
         defaultImages.splashScreen.logo &&
         <Image resizeMode='contain' style={styles.image} source={defaultImages.splashScreen.logo} />
       }
-      <SessionVerifier
-        status={status}
-        session={session}
-        navigate={navigation.navigate}
-      />
     </View>
   );
 };

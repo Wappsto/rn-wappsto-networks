@@ -9,7 +9,7 @@ const RequestError = React.memo(({ request, skipCodes = [], warning, autoHide = 
   const [ visible, setVisible ] = useState(false);
 
   useEffect(() => {
-    if(!visible && request && request.status === 'error' && request.json && skipCodes.indexOf(request.json.code) === -1){
+    if(!visible && request && request.status === 'error' && (!request.json || request.json && skipCodes.indexOf(request.json.code) === -1)){
       setVisible(true);
     } else {
       const prevRequestId = prevRequest && prevRequest.id;

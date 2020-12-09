@@ -4,7 +4,7 @@ import {removeRequest} from 'wappsto-redux/actions/request';
 import {addSession} from 'wappsto-redux/actions/session';
 import useRequest from 'wappsto-blanket/hooks/useRequest';
 
-const SessionVerifier = React.memo(({ status, session, navigate }) => {
+const SessionVerifier = React.memo(({ status, session, onResult }) => {
   const cache = useRef({});
   const dispatch = useDispatch();
   const { request, send } = useRequest();
@@ -14,15 +14,15 @@ const SessionVerifier = React.memo(({ status, session, navigate }) => {
     clearTimeout(cache.current.maximumTimeout);
   }
 
-  const navigateTo = (page) => {
+  const sendResult = (isValid) => {
     clearTimeouts();
-    navigate(page);
+    onResult(isValid);
   }
 
-  const userLogged = (cRequest, cSession) => {
-    dispatch(addSession(cSession.json));
-    dispatch(removeRequest(cRequest.id));
-    navigateTo('MainScreen');
+  const userLogged = () => {
+    dispatch(addSession(session));
+    dispatch(removeRequest(request.id));
+    sendResult(true);
   }
 
   const checkSession = () => {
@@ -43,9 +43,9 @@ const SessionVerifier = React.memo(({ status, session, navigate }) => {
       cache.current.timeoutEnded = true;
       if (status !== 'pending') {
         if (cache.current.sessionStatus === 'error') {
-          navigateTo('LoginStackScreen');
+          sendResult(false);
         } else if (cache.current.sessionStatus === 'success') {
-          navigateTo('MainScreen');
+          userLogged();
         }
       }
     }, 500);
@@ -54,7 +54,7 @@ const SessionVerifier = React.memo(({ status, session, navigate }) => {
   const addMaximumTimeout = () => {
     cache.current.maximumTimeout = setTimeout(() => {
       cache.current.timeoutEnded = true;
-      navigateTo('LoginStackScreen');
+      sendResult(false);
     }, 10000);
   }
 
@@ -63,7 +63,7 @@ const SessionVerifier = React.memo(({ status, session, navigate }) => {
       if (status === 'error') {
         cache.current.sessionStatus = 'error';
         if (cache.current.timeoutEnded) {
-          navigateTo('LoginStackScreen');
+          sendResult(false);
         }
       }
       if (!request && session) {
@@ -74,10 +74,10 @@ const SessionVerifier = React.memo(({ status, session, navigate }) => {
         if (request.status === 'success') {
           if (cache.current.timeoutEnded && !cache.current.done) {
             cache.current.done = true;
-            userLogged(request, session);
+            userLogged();
           }
         } else if (request.status === 'error') {
-          navigateTo('LoginStackScreen');
+          sendResult(false);
         }
       }
     }

@@ -3,7 +3,7 @@ import { Platform } from 'react-native';
 import AsyncStorage from '@react-native-community/async-storage';
 import { AccessToken, LoginManager } from 'react-native-fbsdk';
 import { GoogleSignin, statusCodes } from '@react-native-community/google-signin';
-import appleAuth, { AppleAuthRequestScope, AppleAuthRequestOperation } from '@invertase/react-native-apple-authentication';
+import { appleAuth } from '@invertase/react-native-apple-authentication';
 import auth from '@react-native-firebase/auth';
 import { useDispatch } from 'react-redux';
 import config from 'wappsto-redux/config';
@@ -11,6 +11,7 @@ import { removeRequest } from 'wappsto-redux/actions/request';
 import useRequest from 'wappsto-blanket/hooks/useRequest';
 import useConnected from '../useConnected';
 import { isEmail } from '../../util/helpers';
+import {addSession} from 'wappsto-redux/actions/session';
 
 const useSignIn = (navigation) => {
   const connected = useConnected();
@@ -38,10 +39,6 @@ const useSignIn = (navigation) => {
   const saveSession = (cRequest) => {
     AsyncStorage.setItem('session', JSON.stringify(cRequest.json));
   }
-
-  const navigateToMain = useCallback(() => {
-    navigation.navigate('MainScreen');
-  }, [navigation]);
 
   const moveToPasswordField = useCallback(() => {
     const trimText = username.trim();
@@ -190,8 +187,8 @@ const useSignIn = (navigation) => {
       setIsSigninInProgress(true);
       // Start the sign-in request
       const appleAuthRequestResponse = await appleAuth.performRequest({
-        requestedOperation: AppleAuthRequestOperation.LOGIN,
-        requestedScopes: [AppleAuthRequestScope.EMAIL, AppleAuthRequestScope.FULL_NAME],
+        requestedOperation: appleAuth.Operation.LOGIN,
+        requestedScopes: [appleAuth.Scope.EMAIL, appleAuth.Scope.FULL_NAME],
       });
 
       // Ensure Apple returned a user identityToken
@@ -227,8 +224,8 @@ const useSignIn = (navigation) => {
 
   const userLogged = (cRequest) => {
     dispatch(removeRequest(cRequest.id));
+    dispatch(addSession(cRequest.json));
     saveSession(cRequest);
-    navigateToMain();
   }
 
   useEffect(() => {
@@ -266,6 +263,7 @@ const useSignIn = (navigation) => {
       }
     }
   }, [signIn]);
+
 
   return {
     username,

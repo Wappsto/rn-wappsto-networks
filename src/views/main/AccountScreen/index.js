@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Clipboard, View, Image, StyleSheet, ScrollView, ActivityIndicator } from 'react-native';
+import { View, Image, StyleSheet, ScrollView, ActivityIndicator } from 'react-native';
 import Screen from '../../../components/Screen';
 import Text from '../../../components/Text';
 import Button from '../../../components/Button';
@@ -13,6 +13,8 @@ import useUser from '../../../hooks/useUser';
 import useDeleteAccount from '../../../hooks/account/useDeleteAccount';
 import Popup from '../../../components/Popup';
 import Input from '../../../components/Input';
+import KeyboardAvoidingView from '../../../components/KeyboardAvoidingView';
+import Clipboard from '@react-native-community/clipboard';
 
 const styles = StyleSheet.create({
   item: {
@@ -93,18 +95,19 @@ const DeleteAccount = React.memo(({ setButtonsDisabled }) => {
         reject={hideConfirmationPopup}
         acceptDisabled={!canConfirmDelete}
       >
-        <View>
-          <Input
-            onChangeText={setUsername}
-            value={username}
-            label={CapitalizeFirst(t('account:username'))}
-            textContentType='emailAddress'
-            autoCapitalize='none'
-            keyboardType='email-address'
-            returnKeyType='next'
-            disabled={loading}
-          />
-        </View>
+      <KeyboardAvoidingView>
+        <Input
+          onChangeText={setUsername}
+          value={username}
+          label={CapitalizeFirst(t('account:username'))}
+          textContentType='emailAddress'
+          autoCapitalize='none'
+          keyboardType='email-address'
+          returnKeyType='next'
+          disabled={loading}
+          style={{height: 40}}
+        />
+      </KeyboardAvoidingView>
       </ConfirmationPopup>
       <Popup visible={successVisible} onRequestClose={hideSuccessPopup} hide={hideSuccessPopup} hideCloseIcon>
         <Text
@@ -123,6 +126,8 @@ const DeleteAccount = React.memo(({ setButtonsDisabled }) => {
       <Button
         type='link'
         color='alert'
+        align='left'
+        icon='trash'
         onPress={showConfirmationPopup}
         text={CapitalizeFirst(t('account:deleteAccount'))}
         disabled={!canDelete}
@@ -209,46 +214,28 @@ const AccountScreen = React.memo(({navigation}) => {
             </View>
             {signedWithEmail &&
               <View style={styles.item}>
-                <Text
-                  size={14}
-                  bold
-                  content={CapitalizeFirst(t('account:username'))}
+                <Button
+                  type='link'
+                  color='primary'
+                  onPress={() => navigation.navigate('ChangeUsernameScreen', {})}
+                  icon='edit-3'
+                  align='left'
+                  text={CapitalizeFirst(t('account:changeUsername'))}
+                  disabled={buttonsDisabled}
                 />
-                <View style={styles.row}>
-                  <Text
-                    color='secondary'
-                    content={session.username}
-                  />
-                    <Button
-                      type='link'
-                      color='primary'
-                      onPress={() => navigation.navigate('ChangeUsernameScreen', {})}
-                      icon='edit-3'
-                      disabled={buttonsDisabled}
-                    />
-                </View>
               </View>
             }
 
             <View style={styles.item}>
-              <Text
-                size={14}
-                bold
-                content={CapitalizeFirst(t('account:password'))}
+              <Button
+                type='link'
+                color='primary'
+                text={CapitalizeFirst(t('account:changePassword'))}
+                onPress={() => navigation.navigate(signedWithEmail ? 'ChangePasswordScreen' : 'RecoverPasswordScreen', {})}
+                icon='edit-3'
+                align='left'
+                disabled={buttonsDisabled}
               />
-                <View style={styles.row}>
-                  <Text
-                    color='secondary'
-                    content='••••••'
-                  />
-                  <Button
-                    type='link'
-                    color='primary'
-                    onPress={() => navigation.navigate(signedWithEmail ? 'ChangePasswordScreen' : 'RecoverPasswordScreen', {})}
-                    icon='edit-3'
-                    disabled={buttonsDisabled}
-                  />
-                </View>
             </View>
             <DeleteAccount setButtonsDisabled={setButtonsDisabled} />
           </>
@@ -261,7 +248,7 @@ const AccountScreen = React.memo(({navigation}) => {
   );
 });
 
-AccountScreen.navigationOptions = ({ navigation, screenProps: { t } }) => {
+AccountScreen.navigationOptions = ({ navigation, t }) => {
   return {
     ...theme.headerStyle,
     title: CapitalizeEach(t('pageTitle.account')),

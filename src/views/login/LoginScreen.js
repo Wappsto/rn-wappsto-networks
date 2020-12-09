@@ -51,12 +51,10 @@ const styles = StyleSheet.create({
     height:25,
     margin:10
   },
-  header:{
-    paddingTop: 30
-  },
   headerImage:{
     alignSelf: 'center',
-    maxWidth: '100%'
+    width: '100%',
+    height: 150
   },
   appTitle:{
     fontSize:25,
@@ -65,17 +63,22 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     color:theme.variables.primary
   },
-  section:{
-    marginBottom:20
-  },
   seperator:{
-    borderWidth: 0.3,
-    borderColor: theme.variables.borderColor,
-    marginBottom: 15
+    alignSelf: 'center',
+    width: 200,
+    borderWidth: 0.5,
+    borderColor: theme.variables.disabled,
+    marginVertical: 25
   },
   googleColor: {backgroundColor: '#4285F4'},
   facebookColor: {backgroundColor: '#4267B2'},
-  terms: { textAlign: 'center', margin: 20 }
+  terms: {
+    textAlign: 'center',
+    marginBottom:20
+  },
+  footer: {
+    textAlign: 'center'
+  }
 });
 
 const TermsAndConditions = React.memo(({navigation}) => {
@@ -300,7 +303,7 @@ const LoginScreen = React.memo(({ navigation }) => {
   );
 });
 
-LoginScreen.navigationOptions = ({ screenProps: { t } }) => {
+LoginScreen.navigationOptions = ({ t }) => {
   return {
     headerShown: false,
     title: CapitalizeFirst(t('pageTitle.login'))
@@ -329,14 +332,24 @@ LoginScreen.Header = () => {
 }
 
 LoginScreen.Footer = () => {
+  
   return (
-    <Text
-      style={styles.versionNr}
-      color='secondary'
-      align='center'
-      size={10}
-      content={'v' + VersionNumber.appVersion}
-    />
+    <RNText style={styles.footer}>
+      <Text
+        color='secondary'
+        align='center'
+        size={10}
+        content={'v' + VersionNumber.appVersion + ' © '}
+      />
+      <Text
+        bold
+        onPress={() => handlePress('https://www.seluxit.com')}
+        color='secondary'
+        align='center'
+        size={10}
+        content={'Seluxit A/S'}
+      />
+    </RNText>
   );
 }
 
@@ -347,7 +360,7 @@ const handlePress = async (url) => {
   }
 };
 LoginScreen.onTermsPress = () => {
-  handlePress('https://www.seluxit.com');
+  handlePress('https://www.seluxit.com/wp-content/uploads/2020/06/Cloud-Solutions-Terms-and-Conditions-Business.pdf');
 }
 
 LoginScreen.onPrivacyPress = () => {

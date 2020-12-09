@@ -1,6 +1,7 @@
 import React, { useState, useCallback, useEffect } from 'react';
 import { StatusBar } from 'react-native';
 import PopupButton from '../../../../components/PopupButton';
+import BackHandlerView from '../../../../components/BackHandlerView';
 import { Modal } from 'react-native';
 import theme from '../../../../theme/themeExport';
 import SelectChoice from './SelectChoice';
@@ -12,7 +13,6 @@ import ClaimNetwork from './ClaimNetwork';
 import useVisible from 'wappsto-blanket/hooks/useVisible';
 import { iotNetworkListAdd, iotNetworkAddFlow } from '../../../../util/params';
 import ConfirmAddManufacturerNetwork from './ConfirmAddManufacturerNetwork';
-import BackHandlerView from './BackHandlerView';
 import useAddNetwork from '../../../../hooks/setup/useAddNetwork';
 import useWifiFields from '../../../../hooks/setup/blufi/useWifiFields';
 import useInitBlufi from '../../../../hooks/setup/blufi/useInitBlufi';
