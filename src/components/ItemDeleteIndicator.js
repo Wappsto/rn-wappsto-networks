@@ -9,7 +9,7 @@ const styles = StyleSheet.create({
     width: '100%',
     height: '100%',
     zIndex: 99,
-    backgroundColor: color(theme.variables.appBgColor).alpha(0.4)
+    backgroundColor: color(theme.variables.appBgColor).alpha(0.4).string()
   }
 });
 

@@ -51,7 +51,7 @@ const Popup = React.memo(({ fullScreen, animationType, visible, hide, onRequestC
         <View style={styles.popupOverlay}>
         <Wrapper>
           <SafeAreaView>
-            <StatusBar backgroundColor={color(theme.variables.statusBarBgDark).darken(0.5)} barStyle={theme.variables.statusBarColorLight} />
+            <StatusBar backgroundColor={color(theme.variables.statusBarBgDark).darken(0.5).string()} barStyle={theme.variables.statusBarColorLight} />
             <TouchableWithoutFeedback>
               <View style={[styles.popupContent, (!fullScreen && styles.popupContentWithBorder), contentStyle]}>
                 {children}

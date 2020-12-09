@@ -1,11 +1,7 @@
-/*
- * to fix in the future
- * since we updated react-navigation libs, all react-navigation libs used in here are not valid
- * not going to fix this unless needed, after all you can still create your own navigation. let's be honest, it's not that difficult
- */
 import React, { useMemo, useState } from 'react';
 import './getImages';
-import {Provider} from 'react-redux';
+import { Provider } from 'react-redux';
+import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import { createDrawerNavigator } from '@react-navigation/drawer';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
@@ -37,18 +33,18 @@ let components = {
   ChangeUsernameScreen: require('./views/main/AccountScreen/ChangeUsernameScreen').default,
   ChangePasswordScreen: require('./views/main/AccountScreen/ChangePasswordScreen').default,
   DrawerMenu: require('./components/DrawerMenu').default,
-  RecoverPasswordScreen: require('./views/login/RecoverPasswordScreen').default,
   LoginScreen: require('./views/login/LoginScreen').default,
   RegisterScreen: require('./views/login/RegisterScreen').default,
   TermsAndConditionsScreen: require('./views/login/TermsAndConditionsScreen').default,
+  RecoverPasswordScreen: require('./views/login/RecoverPasswordScreen').default,
   LoginStackScreen: function(){
     const LoginStack = createStackNavigator();
     const LoginStackScreen = () => (
       <LoginStack.Navigator>
-        {createScreen(LoginStack, 'LoginScreen', this.LoginScreen)}
-        {createScreen(LoginStack, 'RegisterScreen', this.RegisterScreen)}
-        {createScreen(LoginStack, 'TermsAndConditionsScreen', this.TermsAndConditionsScreen)}
-        {createScreen(LoginStack, 'RecoverPasswordScreen', this.RecoverPasswordScreen)}
+        {createScreen(LoginStack, 'LoginScreen', components.LoginScreen)}
+        {createScreen(LoginStack, 'RegisterScreen', components.RegisterScreen)}
+        {createScreen(LoginStack, 'TermsAndConditionsScreen', components.TermsAndConditionsScreen)}
+        {createScreen(LoginStack, 'RecoverPasswordScreen', components.RecoverPasswordScreen)}
       </LoginStack.Navigator>
     )
     return LoginStackScreen;
@@ -78,16 +74,16 @@ let components = {
     const AccountStack = createStackNavigator();
     const AccountStackScreen = () => (
       <AccountStack.Navigator>
-        {createScreen(AccountStack, 'AccountScreen', this.AccountScreen)}
-        {createScreen(AccountStack, 'ChangeUserDetailsScreen', this.ChangeUserDetailsScreen)}
-        {createScreen(AccountStack, 'ChangeUsernameScreen', this.ChangeUsernameScreen)}
-        {createScreen(AccountStack, 'ChangePasswordScreen', this.ChangePasswordScreen)}
-        {createScreen(AccountStack, 'RecoverPasswordScreen', this.RecoverPasswordScreen)}
+        {createScreen(AccountStack, 'AccountScreen', components.AccountScreen)}
+        {createScreen(AccountStack, 'ChangeUserDetailsScreen', components.ChangeUserDetailsScreen)}
+        {createScreen(AccountStack, 'ChangeUsernameScreen', components.ChangeUsernameScreen)}
+        {createScreen(AccountStack, 'ChangePasswordScreen', components.ChangePasswordScreen)}
+        {createScreen(AccountStack, 'RecoverPasswordScreen', components.RecoverPasswordScreen)}
       </AccountStack.Navigator>
     )
     return AccountStackScreen;
   },
-  MainScreen: function() {
+  MainDrawerScreen: function() {
     const MainDrawer = createDrawerNavigator();
     const MainDrawerScreen = () => (
       <MainDrawer.Navigator
@@ -99,52 +95,48 @@ let components = {
         }}
         drawerContent={this.DrawerMenu}>
         <MainDrawer.Screen name='main' component={this.MainStackScreen}/>
-        <MainDrawer.Screen name='account' component={this.AccountStackScreen}/>
       </MainDrawer.Navigator>
     )
     return MainDrawerScreen;
   },
   RootRouter: function() {
-    const RootRouter = () => {
-      const { session: storageSession, status } = useStorageSession();
-      const [ isValidSession, setIsValidSession ] = useState('pending');
-      const session = useSelector(getSession);
+    const { session: storageSession, status } = useStorageSession();
+    const [ isValidSession, setIsValidSession ] = useState('pending');
+    const session = useSelector(getSession);
 
-      const handleCachedSession = (isValid) => {
-        if(!isValid){
-          setIsValidSession('error');
-        }
-      }
-
-      useMemo(() => {
-        if(session && session.valid !== false){
-          setIsValidSession('success');
-        } else if(isValidSession !== 'pending'){
-          setIsValidSession('error');
-        }
-      }, [session, isValidSession]);
-
-      switch(isValidSession){
-        case 'success':
-          return <this.MainDrawerScreen />
-        case 'error':
-          return <this.LoginStackScreen />
-        case 'pending':
-          return (
-            <>
-              <this.SplashScreen/>
-              <this.SessionVerifier
-                status={status}
-                session={storageSession}
-                onResult={handleCachedSession}
-              />
-            </>
-          )
-        default:
-          return null;
+    const handleCachedSession = (isValid) => {
+      if(!isValid){
+        setIsValidSession('error');
       }
     }
-    return RootRouter;
+
+    useMemo(() => {
+      if(session && session.valid !== false){
+        setIsValidSession('success');
+      } else if(isValidSession !== 'pending'){
+        setIsValidSession('error');
+      }
+    }, [session, isValidSession]);
+
+    switch(isValidSession){
+      case 'success':
+        return <components.MainDrawerScreen />
+      case 'error':
+        return <components.LoginStackScreen />
+      case 'pending':
+        return (
+          <>
+            <components.SplashScreen/>
+            <components.SessionVerifier
+              status={status}
+              session={storageSession}
+              onResult={handleCachedSession}
+            />
+          </>
+        )
+      default:
+        return null;
+    }
   },
 
   // helper function
@@ -175,12 +167,14 @@ const App = React.memo(() => {
   }
   return (
     <Provider store={store}>
-      <SafeAreaProvider>
-        <components.RootRouter
-          screenProps={{ t }}
-          useSuspense={false}
-        />
-      </SafeAreaProvider>
+      <NavigationContainer>
+        <SafeAreaProvider>
+          <components.RootRouter
+            screenProps={{ t }}
+            useSuspense={false}
+          />
+        </SafeAreaProvider>
+      </NavigationContainer>
     </Provider>
   );
 });

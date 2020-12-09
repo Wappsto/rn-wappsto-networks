@@ -75,7 +75,7 @@ export function generateVariables(v = {}) {
     // Border
     borderRadiusBase: 5,
     get borderColor() {
-      return color(this.appBgColor).darken(0.1);
+      return color(this.appBgColor).darken(0.1).string();
     },
     borderWidth: 1 / PixelRatio.getPixelSizeForLayoutSize(0.3),
 
@@ -103,9 +103,9 @@ export function generateVariables(v = {}) {
     },
     get inputSelectionColor() {
       if(color(this.inputTextColor).isDark()){
-        return color(this.inputTextColor).lighten(0.9);
+        return color(this.inputTextColor).lighten(0.9).string();
       } else {
-       return color(this.inputTextColor).darken(0.7);
+        return color(this.inputTextColor).darken(0.7).string();
      }
     },
     get inputBorderColor() {
