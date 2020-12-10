@@ -55,13 +55,13 @@ const Popup = React.memo(({ fullScreen, animationType, visible, hide, onRequestC
             <TouchableWithoutFeedback>
               <View style={[styles.popupContent, (!fullScreen && styles.popupContentWithBorder), contentStyle]}>
                 {children}
-                <TouchableOpacity
-                  onPress={hide}
-                  style={styles.closeButton}>
-                  {!hideCloseIcon &&
+                {!hideCloseIcon &&
+                  <TouchableOpacity
+                    onPress={hide}
+                    style={styles.closeButton}>
                     <Icon name='x' size={24} color={theme.variables.textSecondary} />
-                  }
-                </TouchableOpacity>
+                  </TouchableOpacity>
+                }
               </View>
             </TouchableWithoutFeedback>
           </SafeAreaView>

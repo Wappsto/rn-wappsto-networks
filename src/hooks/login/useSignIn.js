@@ -18,17 +18,23 @@ const useSignIn = (navigation) => {
   const dispatch = useDispatch();
   const [ username, setUsername ] = useState('');
   const [ password, setPassword ] = useState('');
+  const [ showError, setShowError ] = useState(false);
   const [ showRecaptcha, setShowRecaptcha ] = useState('');
   const [ isSigninInProgress, setIsSigninInProgress ] = useState(false);
   const [ showPassword, setShowPassword ] = useState(false);
   const passwordInputRef = useRef();
   const [ fbSignInError, setFbSignInError ] = useState(null);
-  const { request, send } = useRequest();
+  const { request, send, removeRequest: remove } = useRequest();
   const errorNumber = useRef(0);
   const recaptchaRef = useRef();
 
-  const postRequest = fbSignInError || request;
-  const loading = postRequest && (postRequest.status === 'pending' || postRequest.status === 'success');
+  const r = (fbSignInError || request)
+  const postRequest = showError && r;
+  const loading = r && (
+    r.status === 'pending'
+    || r.status === 'success'
+    || (r.status === 'error' && r.json?.code === 9900007)
+  );
   const canTPSignIn = connected && !isSigninInProgress && !loading
   const canSignIn = canTPSignIn && isEmail(username) && password;
 
@@ -66,6 +72,7 @@ const useSignIn = (navigation) => {
   }, [username, password]);
 
   const signIn = useCallback((recaptcha) => {
+    setShowError(false);
     setFbSignInError(null);
     send({
       method: 'POST',
@@ -91,6 +98,7 @@ const useSignIn = (navigation) => {
 
   // ----------------- 3rd Auth Signin ----------------------------
   const sendAuthRequest = useCallback((token) => {
+    setShowError(false);
     setFbSignInError(null);
     send({
       method: 'POST',
@@ -232,6 +240,7 @@ const useSignIn = (navigation) => {
     if(request){
       if(request.status === 'success'){
         errorNumber.current = 0;
+        setShowError(false);
         setShowRecaptcha(false);
         userLogged(request);
       } else if(request.status === 'error'){
@@ -239,7 +248,10 @@ const useSignIn = (navigation) => {
         if(errorNumber.current > 2 || (request.json && request.json.code === 9900007)){
           if(!showRecaptcha){
             setShowRecaptcha(true);
+            recaptchaRef.current.show();
           }
+        } else {
+          setShowError(true);
         }
       }
     }
@@ -250,6 +262,7 @@ const useSignIn = (navigation) => {
     if (data) {
       if (['cancel', 'error', 'expired'].includes(data)) {
         if(recaptchaRef.current){
+          remove();
           recaptchaRef.current.hide();
         }
         return;
@@ -262,8 +275,7 @@ const useSignIn = (navigation) => {
         }, 1500);
       }
     }
-  }, [signIn]);
-
+  }, [signIn, remove]);
 
   return {
     username,

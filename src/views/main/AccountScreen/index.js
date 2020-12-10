@@ -95,7 +95,6 @@ const DeleteAccount = React.memo(({ setButtonsDisabled }) => {
         reject={hideConfirmationPopup}
         acceptDisabled={!canConfirmDelete}
       >
-      <KeyboardAvoidingView>
         <Input
           onChangeText={setUsername}
           value={username}
@@ -107,7 +106,6 @@ const DeleteAccount = React.memo(({ setButtonsDisabled }) => {
           disabled={loading}
           style={{height: 40}}
         />
-      </KeyboardAvoidingView>
       </ConfirmationPopup>
       <Popup visible={successVisible} onRequestClose={hideSuccessPopup} hide={hideSuccessPopup} hideCloseIcon>
         <Text

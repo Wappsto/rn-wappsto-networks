@@ -1,7 +1,8 @@
 import React from 'react';
-import { View, TouchableOpacity, StyleSheet, StatusBar } from 'react-native';
+import { View, TouchableOpacity, StyleSheet } from 'react-native';
 import { useHeaderHeight } from '@react-navigation/stack';
 import KeyboardAvoidingView from './KeyboardAvoidingView';
+import FocusAwareStatusBar from './FocusAwareStatusBar';
 import { status } from 'wappsto-redux/actions/stream';
 import { useTranslation, CapitalizeFirst } from '../translations';
 import theme from '../theme/themeExport';
@@ -31,7 +32,7 @@ const Screen = React.memo(({ style, children }) => {
 
   return (
     <View style={[styles.container, style]}>
-      <StatusBar backgroundColor={theme.variables.statusBarBgDark} barStyle={theme.variables.statusBarColorLight} />
+      <FocusAwareStatusBar backgroundColor={theme.variables.statusBarBgDark} barStyle={theme.variables.statusBarColorLight} />
       {!connected && (
         <Text
           style={[theme.common.toastFullWidth, theme.common.warningPanel]}
