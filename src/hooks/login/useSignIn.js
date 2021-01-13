@@ -33,7 +33,7 @@ const useSignIn = (navigation) => {
   const loading = r && (
     r.status === 'pending'
     || r.status === 'success'
-    || (r.status === 'error' && r.json?.code === 9900007)
+    || (r.status === 'error' && r.json?.code === 9900007 && !showRecaptcha)
   );
   const canTPSignIn = connected && !isSigninInProgress && !loading
   const canSignIn = canTPSignIn && isEmail(username) && password;
@@ -245,11 +245,9 @@ const useSignIn = (navigation) => {
         userLogged(request);
       } else if(request.status === 'error'){
         errorNumber.current++;
-        if(errorNumber.current > 2 || (request.json && request.json.code === 9900007)){
-          if(!showRecaptcha){
-            setShowRecaptcha(true);
-            recaptchaRef.current.show();
-          }
+        if(!showRecaptcha && (errorNumber.current > 2 || (request.json && request.json.code === 9900007))){
+          setShowRecaptcha(true);
+          recaptchaRef.current.show();
         } else {
           setShowError(true);
         }
