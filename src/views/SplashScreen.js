@@ -17,7 +17,7 @@ const styles = StyleSheet.create({
   }
 });
 
-const SplashScreen = ({ navigation }) => {
+const SplashScreen = () => {
   return (
     <View style={styles.splashScreenContainer}>
       <StatusBar backgroundColor={theme.variables.statusBarBgLight} barStyle={theme.variables.statusBarColorDark}/>

@@ -51,7 +51,7 @@ const useUser = () => {
     if (config.stream) {
       dispatch(closeStream(config.stream.name));
     }
-    sendDelete({ method: 'DELETE', url: '/session/' + session?.meta?.id });
+    sendDelete({ method: 'DELETE', url: '/session/' + session?.meta?.id, abortable: false });
     dispatch(removeSession());
     AsyncStorage.removeItem('session');
   }, [sendDelete, session, dispatch]);

@@ -7877,10 +7877,10 @@ wappsto-blanket@^1.2.0:
   dependencies:
     uuid "^8.3.1"
 
-wappsto-redux@^3.5.0:
-  version "3.5.0"
-  resolved "https://registry.yarnpkg.com/wappsto-redux/-/wappsto-redux-3.5.0.tgz#8731023e3166dc8ed3c6158dc7b6b17d5dd0ff7c"
-  integrity sha512-UDCc+CjXXoax1bSnXlPcd2Uzm3i7AJMlkc+ey/0twk+XlhvC42WS+odFPw1a55gpr8hcfYd1K31TjbIbj9OPvw==
+wappsto-redux@^3.5.1:
+  version "3.5.1"
+  resolved "https://registry.yarnpkg.com/wappsto-redux/-/wappsto-redux-3.5.1.tgz#86a1aece9bbcc243bb8443544abfa62a1e8f9f86"
+  integrity sha512-re7OEHNli+T+jXGUusOgGZEQ/AorJNWVilYLOc+k4ez4AIwlc2B/wcso5kiUYPmZu8yskzoa2J1wCMwm93KuTQ==
   dependencies:
     deep-equal "^2.0.3"
     normalizr "^3.4.1"

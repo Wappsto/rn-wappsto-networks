@@ -166,7 +166,7 @@ const LoginScreen = React.memo(({ navigation }) => {
   return (
     <SafeAreaView style={theme.common.container}>
       <StatusBar backgroundColor={theme.variables.statusBarBgLight} barStyle={theme.variables.statusBarColorDark} />
-      {!connected && (
+      {connected === false && (
         <Text
           style={[theme.common.toastFullWidth, theme.common.warningPanel]}
           content={CapitalizeFirst(t('error:internetConnectionLost'))}

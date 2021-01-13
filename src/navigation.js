@@ -1,4 +1,4 @@
-import React, { useMemo, useState } from 'react';
+import React, { useMemo, useState, useEffect } from 'react';
 import './getImages';
 import { Provider } from 'react-redux';
 import { NavigationContainer } from '@react-navigation/native';
@@ -105,6 +105,7 @@ let components = {
       const { session: storageSession, status } = useStorageSession();
       const [ isValidSession, setIsValidSession ] = useState('pending');
       const session = useSelector(getSession);
+      const [ ready, setReady ] = useState(false);
 
       const handleCachedSession = (isValid) => {
         if(!isValid){
@@ -120,6 +121,19 @@ let components = {
         }
       }, [session, isValidSession]);
 
+      const wait = async () => {
+        try {
+          if(components.SplashScreen.load){
+            await components.SplashScreen.load();
+          }
+        } catch (e) {
+        }
+        setReady(true);
+      }
+      useEffect(() => {
+        wait();
+      }, []);
+
       switch(isValidSession){
         case 'success':
           return <components.MainDrawerScreen />
@@ -128,12 +142,16 @@ let components = {
         case 'pending':
           return (
             <>
-              <components.SplashScreen/>
-              <components.SessionVerifier
-                status={status}
-                session={storageSession}
-                onResult={handleCachedSession}
-              />
+              <components.SplashScreen />
+              {
+                ready && (
+                  <components.SessionVerifier
+                    status={status}
+                    session={storageSession}
+                    onResult={handleCachedSession}
+                  />
+                )
+              }
             </>
           )
         default:
