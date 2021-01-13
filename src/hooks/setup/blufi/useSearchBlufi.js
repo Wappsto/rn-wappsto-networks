@@ -36,6 +36,9 @@ const useSearchBlufi = () => {
     bleManagerEmitter.addListener(
       'BleManagerDiscoverPeripheral',
       (device) => {
+        if(config.blufiFilterEmptyName && !device.name){
+          return;
+        }
         const lowerName = device.name ? device.name.toLowerCase() : '';
         setDevices(devices => {
           if((!config.blufiFilter || config.blufiFilter.length === 0 || config.blufiFilter.find(f => lowerName.includes(f.toLowerCase()))) && !devices.find(d => d.id === device.id)){

@@ -11,6 +11,7 @@
   },
   "firebaseWebClientId": "733864116078-nd9f0902lv71pi4qe5jpbisiagjs9gg0.apps.googleusercontent.com",
   "blufiFilter": ["blu"],
+  "blufiFilterEmptyName": true,
   "recaptchaKey": "6Ld1xrIUAAAAAMooWJqcqmVqh4ph5D2DFChZdAzG",
   "showLanguageButton": false
 }
