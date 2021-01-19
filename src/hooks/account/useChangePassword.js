@@ -33,7 +33,7 @@ const useChangePassword = () => {
         body: {
           username: session.username,
           password: currentPassword.text,
-          new_username: newPassword.text
+          new_password: newPassword.text
         }
       });
     }

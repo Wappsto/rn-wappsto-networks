@@ -1,6 +1,6 @@
 {
   "name": "rn-wappsto-networks",
-  "version": "1.5.6",
+  "version": "1.5.8",
   "private": true,
   "scripts": {
     "android": "react-native run-android",
