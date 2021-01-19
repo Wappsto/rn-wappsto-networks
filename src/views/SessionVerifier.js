@@ -1,13 +1,12 @@
 import React, { useEffect, useRef } from 'react';
 import { useDispatch } from 'react-redux';
-import {removeRequest} from 'wappsto-redux/actions/request';
 import {addSession} from 'wappsto-redux/actions/session';
 import useRequest from 'wappsto-blanket/hooks/useRequest';
 
 const SessionVerifier = React.memo(({ status, session, onResult }) => {
   const cache = useRef({});
   const dispatch = useDispatch();
-  const { request, send } = useRequest();
+  const { request, send, removeRequest } = useRequest();
 
   const clearTimeouts = () => {
     clearTimeout(cache.current.minimumTimeout);
@@ -21,7 +20,7 @@ const SessionVerifier = React.memo(({ status, session, onResult }) => {
 
   const userLogged = () => {
     dispatch(addSession(session));
-    dispatch(removeRequest(request.id));
+    removeRequest();
     sendResult(true);
   }
 
