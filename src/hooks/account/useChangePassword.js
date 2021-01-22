@@ -6,7 +6,7 @@ import useField from '../useField';
 import useRequestSuccessPopup from './useRequestSuccessPopup';
 
 const useChangePassword = () => {
-  const { user, session } = useUser();
+  const { user } = useUser();
   const connected = useConnected();
   const { send, request } = useRequest();
   const requestSuccessHandler = useRequestSuccessPopup(request);
@@ -31,7 +31,6 @@ const useChangePassword = () => {
         method: 'PATCH',
         url: `/register/${userId}`,
         body: {
-          username: session.username,
           password: currentPassword.text,
           new_password: newPassword.text
         }

@@ -1,14 +1,12 @@
 import { useEffect, useState, useCallback } from 'react';
-import { Platform, NativeModules, NativeEventEmitter, Linking } from 'react-native';
+import { Platform, Linking } from 'react-native';
 import BleManager from 'react-native-ble-manager';
 import { BlufiParameter } from '../../../BlufiLib/util/params';
 import { config } from '../../../configureWappstoRedux';
 import LocationServicesDialogBox from 'react-native-android-location-services-dialog-box';
 import { useTranslation, CapitalizeFirst } from '../../../translations';
 import { request, PERMISSIONS, RESULTS } from 'react-native-permissions';
-
-const BleManagerModule = NativeModules.BleManager;
-const bleManagerEmitter = new NativeEventEmitter(BleManagerModule);
+import bleManagerEmitter from './bleManagerEmitter';
 
 const PermissionError = {
   BLUETOOTH_UNAUTHORIZED: 'bluetoothUnauthorized',
@@ -62,7 +60,7 @@ const useSearchBlufi = () => {
 
   const getAndroidLocationPermission = useCallback(async () => {
     if (Platform.Version >= 23) {
-      const result = await request(PERMISSIONS.ANDROID.ACCESS_COARSE_LOCATION);
+      const result = await request(PERMISSIONS.ANDROID.ACCESS_FINE_LOCATION);
       if(result !== RESULTS.GRANTED){
         throw PermissionError.LOCATION;
       }

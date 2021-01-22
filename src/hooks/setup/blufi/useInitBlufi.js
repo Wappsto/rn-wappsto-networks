@@ -1,10 +1,7 @@
 import { useEffect } from 'react';
-import { NativeModules, NativeEventEmitter } from 'react-native';
 import Blufi from '../../../BlufiLib';
 import BleManager from 'react-native-ble-manager';
-
-const BleManagerModule = NativeModules.BleManager;
-const bleManagerEmitter = new NativeEventEmitter(BleManagerModule);
+import bleManagerEmitter from './bleManagerEmitter';
 
 const useInitBlufi = () => {
   useEffect(() => {
