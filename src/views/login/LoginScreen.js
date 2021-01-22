@@ -332,7 +332,7 @@ LoginScreen.Header = () => {
 }
 
 LoginScreen.Footer = () => {
-  
+
   return (
     <RNText style={styles.footer}>
       <Text
@@ -360,7 +360,7 @@ const handlePress = async (url) => {
   }
 };
 LoginScreen.onTermsPress = () => {
-  handlePress('https://www.seluxit.com/wp-content/uploads/2020/06/Cloud-Solutions-Terms-and-Conditions-Business.pdf');
+  handlePress('https://www.seluxit.com/legal/seluxit-cloud-solutions-terms-and-conditions/');
 }
 
 LoginScreen.onPrivacyPress = () => {

@@ -3,7 +3,7 @@ import { Platform } from 'react-native';
 import AsyncStorage from '@react-native-community/async-storage';
 import { AccessToken, LoginManager } from 'react-native-fbsdk';
 import { GoogleSignin, statusCodes } from '@react-native-community/google-signin';
-import { appleAuth } from '@invertase/react-native-apple-authentication';
+import { appleAuth, appleAuthAndroid } from '@invertase/react-native-apple-authentication';
 import auth from '@react-native-firebase/auth';
 import { useDispatch } from 'react-redux';
 import config from 'wappsto-redux/config';
@@ -12,6 +12,7 @@ import useRequest from 'wappsto-blanket/hooks/useRequest';
 import useConnected from '../useConnected';
 import { isEmail } from '../../util/helpers';
 import {addSession} from 'wappsto-redux/actions/session';
+import uuid from 'uuid/v4';
 
 const useSignIn = (navigation) => {
   const connected = useConnected();
@@ -140,6 +141,7 @@ const useSignIn = (navigation) => {
           // some other error happened
           code = 'generic';
         }
+        setShowError(true);
         setFbSignInError({
           id,
           status: 'error',
@@ -180,6 +182,7 @@ const useSignIn = (navigation) => {
       const token = await firebaseUserCredential.user.getIdToken();
       sendAuthRequest(token);
     } catch (e) {
+      setShowError(true);
       setFbSignInError({
         id,
         status: 'error',
@@ -193,14 +196,49 @@ const useSignIn = (navigation) => {
     const id = 'fbSignInError' + Math.random();
     try {
       setIsSigninInProgress(true);
+
       // Start the sign-in request
-      const appleAuthRequestResponse = await appleAuth.performRequest({
-        requestedOperation: appleAuth.Operation.LOGIN,
-        requestedScopes: [appleAuth.Scope.EMAIL, appleAuth.Scope.FULL_NAME],
-      });
+      let appleAuthResponse, idToken, nonce;
+      if(Platform.OS === 'ios'){
+        appleAuthResponse = await appleAuth.performRequest({
+         requestedOperation: appleAuth.Operation.LOGIN,
+         requestedScopes: [appleAuth.Scope.EMAIL, appleAuth.Scope.FULL_NAME],
+       });
+       idToken = appleAuthResponse.identityToken;
+       nonce = appleAuthResponse.nonce;
+     } else {
+       const rawNonce = uuid();
+       const state = uuid();
+
+       // Configure the request
+       appleAuthAndroid.configure({
+         // The Service ID you registered with Apple
+         clientId: 'com.wappsto',
+
+         // Return URL added to your Apple dev console. We intercept this redirect, but it must still match
+         // the URL you provided to Apple. It can be an empty route on your backend as it's never called.
+         redirectUri: 'https://wappsto-941e8.firebaseapp.com/__/auth/handler',
+
+         // The type of response requested - code, id_token, or both.
+         responseType: appleAuthAndroid.ResponseType.ALL,
+
+         // The amount of user information requested from Apple.
+         scope: appleAuthAndroid.Scope.ALL,
+
+         // Random nonce value that will be SHA256 hashed before sending to Apple.
+         nonce: rawNonce,
+
+         // Unique state value used to prevent CSRF attacks. A UUID will be generated if nothing is provided.
+         state,
+       });
+
+       appleAuthResponse = await appleAuthAndroid.signIn();
+       idToken = appleAuthResponse.id_token;
+       nonce = appleAuthResponse.nonce;
+     }
 
       // Ensure Apple returned a user identityToken
-      if (!appleAuthRequestResponse.identityToken) {
+      if (!idToken) {
         setFbSignInError({
           id
         });
@@ -214,12 +252,12 @@ const useSignIn = (navigation) => {
       });
 
       // Create a Firebase credential from the response
-      const { identityToken, nonce } = appleAuthRequestResponse;
-      const credential = auth.AppleAuthProvider.credential(identityToken, nonce);
+      const credential = auth.AppleAuthProvider.credential(idToken, nonce);
       const firebaseUserCredential = await auth().signInWithCredential(credential);
       const token = await firebaseUserCredential.user.getIdToken();
       sendAuthRequest(token);
     } catch (e) {
+      setShowError(true);
       setFbSignInError({
         id,
         status: 'error',
