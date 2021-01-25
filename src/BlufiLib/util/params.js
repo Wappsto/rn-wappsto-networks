@@ -2,7 +2,7 @@ import { Platform } from 'react-native';
 
 const UUIDs = {
   ios: {
-    UUID_SERVICE: 'FFFF',
+    UUID_SERVICE: 0xFFFF,
     UUID_WRITE_CHARACTERISTIC: 'FF01',
     UUID_NOTIFICATION_CHARACTERISTIC: 'FF02'
   },
