@@ -6,10 +6,11 @@ import theme from '../theme/themeExport';
 
 const styles = StyleSheet.create({
   inputWrapper: {
-    flex:1,
+    width:'100%',
     marginBottom: theme.variables.defaultFontSize
   },
   input: {
+    width:'100%',
     fontSize: theme.variables.inputTextSize,
     fontFamily: theme.variables.fontFamily,
     color: theme.variables.inputTextColor,
