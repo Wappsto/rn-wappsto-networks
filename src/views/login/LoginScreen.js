@@ -282,18 +282,15 @@ const LoginScreen = React.memo(({ navigation }) => {
                   {CapitalizeFirst(t('account:signInWithFacebook'))}
                 </RNText>
               </TouchableOpacity>
-              {
-                Platform.OS === 'ios' &&
-                <AppleButton
-                  buttonStyle={AppleButton.Style.WHITE}
-                  buttonType={AppleButton.Type.SIGN_IN}
-                  style={[
-                    styles.signinButton,
-                    !canTPSignIn && theme.common.disabled
-                  ]}
-                  onPress={appleSignIn}
-                />
-              }
+              <AppleButton
+                buttonStyle={AppleButton.Style.BLACK}
+                buttonType={AppleButton.Type.SIGN_IN}
+                style={[
+                  styles.signinButton,
+                  !canTPSignIn && theme.common.disabled
+                ]}
+                onPress={appleSignIn}
+              />
             </View>
           </View>
           <LoginScreen.Footer />
