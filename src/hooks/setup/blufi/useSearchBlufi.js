@@ -131,7 +131,7 @@ const useSearchBlufi = () => {
         }
       }
       setScanning(true);
-      BleManager.scan([BlufiParameter.UUID_SERVICE], 15, false);
+      BleManager.scan([], 15, false);
     } catch(e){
       if(typeof e === 'string'){
         if(Platform.OS === 'ios'){
