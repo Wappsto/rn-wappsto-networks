@@ -105,6 +105,7 @@ const DeleteAccount = React.memo(({ setButtonsDisabled }) => {
             keyboardType='email-address'
             returnKeyType='next'
             disabled={loading}
+            style={{height: 45}}
           />
         </View>
       </ConfirmationPopup>
