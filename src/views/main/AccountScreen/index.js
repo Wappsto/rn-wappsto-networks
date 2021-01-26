@@ -95,17 +95,18 @@ const DeleteAccount = React.memo(({ setButtonsDisabled }) => {
         reject={hideConfirmationPopup}
         acceptDisabled={!canConfirmDelete}
       >
-        <Input
-          onChangeText={setUsername}
-          value={username}
-          label={CapitalizeFirst(t('account:username'))}
-          textContentType='emailAddress'
-          autoCapitalize='none'
-          keyboardType='email-address'
-          returnKeyType='next'
-          disabled={loading}
-          style={{height: 40}}
-        />
+        <View style={{height: 70}}>
+          <Input
+            onChangeText={setUsername}
+            value={username}
+            label={CapitalizeFirst(t('account:username'))}
+            textContentType='emailAddress'
+            autoCapitalize='none'
+            keyboardType='email-address'
+            returnKeyType='next'
+            disabled={loading}
+          />
+        </View>
       </ConfirmationPopup>
       <Popup visible={successVisible} onRequestClose={hideSuccessPopup} hide={hideSuccessPopup} hideCloseIcon>
         <Text
