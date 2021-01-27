@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import useList from 'wappsto-blanket/hooks/useList';
 import { setItem } from 'wappsto-redux/actions/items';
 import { removeItem as removeStoreItem } from 'wappsto-redux/actions/items';
+import { removeRequest } from 'wappsto-redux/actions/request';
 import { makeStreamSelector } from 'wappsto-redux/selectors/stream';
 import { makeItemSelector } from 'wappsto-redux/selectors/items';
 import { config } from '../configureWappstoRedux';
@@ -43,13 +44,13 @@ const usePageList = (name, url, query, addItemName, removeItemName) => {
         schema.dependencies.forEach(({ key, type }) => {
           if(type === 'many'){
             dispatch(removeStoreItem(`/${item.meta.type}/${item.meta.id}/${key}_ids`));
-            dispatch(removeStoreItem(`/${item.meta.type}/${item.meta.id}/${key}_fetched`));
+            dispatch(removeRequest(`/${item.meta.type}/${item.meta.id}/${key}_requestId`));
             const childSchema = schemas.getSchemaTree(key);
             childSchema.dependencies.forEach(({ key: cKey, type: cType }) => {
               if(cType === 'many'){
                 item[key].forEach(childId => {
                   dispatch(removeStoreItem(`/${key}/${childId}/${cKey}_ids`));
-                  dispatch(removeStoreItem(`/${key}/${childId}/${cKey}_fetched`));
+                  dispatch(removeRequest(`/${key}/${childId}/${cKey}_requestId`));
                 });
               }
             });
