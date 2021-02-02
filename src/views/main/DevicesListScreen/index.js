@@ -142,7 +142,7 @@ const ListItem = React.memo(({ network, navigation }) => {
 
 const query = {
   expand: 1,
-  limit: 10,
+  limit: 4,
   order_by: getServiceVersion('network') === '' ? 'created' : 'meta.created',
   from_last: true,
   verbose: true
