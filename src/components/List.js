@@ -27,10 +27,14 @@ const List = React.memo(({
   addItemName,
   removeItemName,
   emptyAddFlow,
-  EmptyComponent
+  EmptyComponent,
+  minimumItems = 10
 }) => {
   const { t } = useTranslation();
   const { items, request, refresh, canLoadMore, loadMore } = usePageList(name, url, query, addItemName, removeItemName);
+  if(items.length < minimumItems && request.status === 'success' && canLoadMore){
+    loadMore();
+  }
 
   return (
     <View style={style || theme.common.container}>
