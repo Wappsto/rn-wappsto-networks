@@ -39,7 +39,13 @@ const ValueSettings = React.memo(() => {
           <Text content={CapitalizeFirst(t('deviceDescription.version')) + ': ' + device.version}/>
         }
         {!!device.serial &&
-          <Text content={CapitalizeFirst(t('deviceDescription.description')) + ': ' + device.serial}/>
+          <Text content={CapitalizeFirst(t('deviceDescription.serial')) + ': ' + device.serial}/>
+        }
+        {!!device.protocol &&
+          <Text content={CapitalizeFirst(t('deviceDescription.protocol')) + ': ' + device.protocol}/>
+        }
+        {!!device.communication &&
+          <Text content={CapitalizeFirst(t('deviceDescription.communication')) + ': ' + device.communication}/>
         }
         {!!device.description &&
           <Text content={CapitalizeFirst(t('deviceDescription.description')) + ': ' + device.description}/>
