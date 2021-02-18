@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import { Text as RNText, View, StyleSheet, ActivityIndicator } from 'react-native';
 import Clipboard from '@react-native-clipboard/clipboard';
-import { RNTooltips as Tooltip } from 'react-native-tooltips';
 import { useTranslation, CapitalizeEach, CapitalizeFirst } from '../../translations';
 import theme from '../../theme/themeExport';
 import Text from '../../components/Text';
@@ -39,13 +38,18 @@ const styles = StyleSheet.create({
   },
   offline: {
     backgroundColor: '#999'
+  },
+  label:{
+    marginBottom: 20,
+    backgroundColor: theme.variables.secondary,
+    paddingVertical: 3
   }
 });
 
 const NetworkScreen = React.memo(({navigation}) => {
   const { t } = useTranslation();
-  const [copiedText, setCopiedText] = useState('nothing here');
-  const [visibleTooltip, setVisibleTooltip] = useState(false);
+  const [copiedText, setCopiedText] = useState('Nothing copied yet');
+  const [copiedTextVisible, setCopiedTextVisible] = useState(false);
   const network = useGetItemEntity(selectedNetworkName, 'network');
   const { deleteItem, request, confirmVisible, showDeleteConfirmation, hideDeleteConfirmation } = useDeleteItem(network);
 
@@ -58,7 +62,7 @@ const NetworkScreen = React.memo(({navigation}) => {
   const copyToClipboard = (id) => {
     Clipboard.setString(id);
     setCopiedText(id);
-    set VisibleTooltip(true);
+    setCopiedTextVisible(true);
   }
 
   return (
@@ -76,17 +80,20 @@ const NetworkScreen = React.memo(({navigation}) => {
               <Text bold content={CapitalizeEach(t('networkDescription.uuid')) + ': '}/>
               <Text ellipsizeMode='tail' content={network.meta.id}/>
             </View>
-            <Tooltip text={copiedText} visible={visibleTooltip}>
-              <Button onPress={() => copyToClipboard(network.meta.id)} type='link' color='primary' icon='clipboard'/>
-            </Tooltip>
+            <Button onPress={() => copyToClipboard(network.meta.id)} type='link' color='primary' icon='clipboard'/>
           </View>
+          {copiedTextVisible &&
+            <View style={styles.label}>
+              <Text align='center' color={theme.variables.textInverse} content={'Copied: ' + copiedText}/>
+            </View>
+          }
           <RNText>
-              <Text bold content={CapitalizeEach(t('networkDescription.created')) + ': '} />
-              <Timestamp timestamp={network.meta.created}></Timestamp>
+            <Text bold content={CapitalizeEach(t('networkDescription.created')) + ': '} />
+            <Timestamp timestamp={network.meta.created}></Timestamp>
           </RNText>
           <RNText>
-              <Text bold content={CapitalizeEach(t('networkDescription.updated')) + ': '}/>
-              <Timestamp timestamp={network.meta.updated}></Timestamp>
+            <Text bold content={CapitalizeEach(t('networkDescription.updated')) + ': '}/>
+            <Timestamp timestamp={network.meta.updated}></Timestamp>
           </RNText>
           { !!network.meta.connection &&
             <View style={theme.common.row}>
@@ -102,27 +109,27 @@ const NetworkScreen = React.memo(({navigation}) => {
         </View>
         <View>
           <Button
-              display='block'
-              disabled={request && request.status === 'pending'}
-              text={CapitalizeFirst(t('genericButton.share'))}
-              icon='share-2'
+            display='block'
+            disabled={request && request.status === 'pending'}
+            text={CapitalizeFirst(t('genericButton.share'))}
+            icon='share-2'
           />
           <Button
-              type='outlined'
-              display='block'
-              disabled={true}
-              text={CapitalizeFirst(t('configure'))}
-              icon='sliders'
+            type='outlined'
+            display='block'
+            disabled={true}
+            text={CapitalizeFirst(t('configure'))}
+            icon='sliders'
           />
           <Button
-              type='outlined'
-              color='alert'
-              display='block'
-              onPress={showDeleteConfirmation}
-              request={request}
-              disabled={request && request.status === 'pending'}
-              text={CapitalizeFirst(t('genericButton.delete'))}
-              icon='trash-2'
+            type='outlined'
+            color='alert'
+            display='block'
+            onPress={showDeleteConfirmation}
+            request={request}
+            disabled={request && request.status === 'pending'}
+            text={CapitalizeFirst(t('genericButton.delete'))}
+            icon='trash-2'
           />
 
           <RequestError request={request} />

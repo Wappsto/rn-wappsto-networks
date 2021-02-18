@@ -60,6 +60,7 @@
   "deleteConfirmationQuestion": "Are you sure you want to delete?",
   "deleteConfirmationDescription": "this action cannot be undone.",
   "noData": "no data",
+  "configure": "configure",
   "lastUpdated": "last updated",
   "loading": "loading",
   "logout": "logout",
