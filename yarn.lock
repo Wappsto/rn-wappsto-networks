@@ -992,6 +992,11 @@
     "@types/yargs" "^15.0.0"
     chalk "^3.0.0"
 
+"@react-native-clipboard/clipboard@^1.6.0":
+  version "1.6.0"
+  resolved "https://registry.yarnpkg.com/@react-native-clipboard/clipboard/-/clipboard-1.6.0.tgz#27d7a6751bca44c5cee06744e093a891374960f7"
+  integrity sha512-WiD3bK8+b4k4aVMQ0AzPGlJG6Y/8tMq/nkBUdmoMFOBa6bByoE2jfSCLkObDWZG6Ig0F0zBz082FFyNrSZ9QNA==
+
 "@react-native-community/async-storage@^1.12.0":
   version "1.12.1"
   resolved "https://registry.yarnpkg.com/@react-native-community/async-storage/-/async-storage-1.12.1.tgz#25f821b4f6b13abe005ad67e47c6f1cee9f27b24"
@@ -6391,6 +6396,11 @@ react-native-screens@^2.11.0:
   version "2.15.0"
   resolved "https://registry.yarnpkg.com/react-native-screens/-/react-native-screens-2.15.0.tgz#9b97c1881c4fcdf304bf363f0013225901625f44"
   integrity sha512-qTSQPy0WKHtlb8xt5gY0Gt6sdvfQUQAnFSqgsggW9UEvySbkHzpqOrOYNA79Ca8oXO0dCFwp6X8buIiDefa7+Q==
+
+react-native-tooltips@^1.0.3:
+  version "1.0.3"
+  resolved "https://registry.yarnpkg.com/react-native-tooltips/-/react-native-tooltips-1.0.3.tgz#e0fe0789aa890f27ab6eacb1fc02b7ddcc7c5c9d"
+  integrity sha512-f2XEL23FlPMpIq11t6EIYGf1sl1FoWCwQRFIvQB9+6v5Jyod1O61yoKy2lgg91Egz531Szmqac0wTXuxVC9vjw==
 
 react-native-vector-icons@^7.1.0:
   version "7.1.0"

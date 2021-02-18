@@ -14,19 +14,15 @@ import { isPrototype } from 'wappsto-blanket/util';
 import { getServiceVersion } from 'wappsto-redux/util/helpers';
 import useAppStateStream from '../../../hooks/useAppStateStream';
 import useAddNetworkStream from '../../../hooks/useAddNetworkStream';
-import PopupButton from '../../../components/PopupButton';
-import Popup from '../../../components/Popup';
-import ConfirmationPopup from '../../../components/ConfirmationPopup';
 import ItemDeleteIndicator from '../../../components/ItemDeleteIndicator';
-import useDeleteItem from '../../../hooks/useDeleteItem';
 import useDeleteItemRequest from '../../../hooks/useDeleteItemRequest';
-import RequestError from '../../../components/RequestError';
-import { useSelector } from 'react-redux';
+import { selectedNetworkName } from '../../../util/params';
+import { useSelector, useDispatch } from 'react-redux';
 import { makeItemSelector } from 'wappsto-redux/selectors/items';
+import { setItem } from 'wappsto-redux/actions/items';
 
 const styles = StyleSheet.create({
   listHeader: {
-    backgroundColor: theme.variables.appBg,
     paddingLeft: 10,
     paddingRight: 5
   },
@@ -34,56 +30,40 @@ const styles = StyleSheet.create({
     flex: 1
   },
   listItem: {
-    marginBottom:20
+    paddingBottom:20,
+    borderWidth: 1,
+    borderColor: '#e1e1e1',
+    borderBottomWidth: 3,
   },
   circle: {
     width: 7,
     height: 7,
     borderRadius: 5,
-    marginTop: 3,
     marginRight: 6
   },
   online: {
     backgroundColor: '#32CD32'
   },
   offline: {
-    backgroundColor: '#bbb'
+    backgroundColor: '#999'
   }
 });
 
-const NetworkDetails = React.memo(({ network, style }) => {
-  const content = useCallback((visible, hide) => {
-    const { t } = useTranslation();
-    const { deleteItem, request, confirmVisible, showDeleteConfirmation, hideDeleteConfirmation } = useDeleteItem(network);
-    return (
-      <Popup visible={visible} onRequestClose={hide} hide={hide}>
-        <ConfirmationPopup
-          visible={confirmVisible}
-          accept={deleteItem}
-          reject={hideDeleteConfirmation}
-        />
-        <Text size='h4' content={network.name}/>
-        <Text content={CapitalizeEach(t('networkDescription.uuid')) + ': ' + network.meta.id}/>
-        <RequestError request={request} />
-        <Button
-          type='outlined'
-          color='alert'
-          onPress={showDeleteConfirmation}
-          request={request}
-          disabled={request && request.status === 'pending'}
-          text={CapitalizeFirst(t('genericButton.delete'))}
-          icon='trash-2'
-        />
-      </Popup>
-    );
-  }, [network]);
-  return <PopupButton buttonStyle={style} icon='info'>{content}</PopupButton>;
-});
-
-const ItemHeader = React.memo(({ network }) => {
+const ItemHeader = React.memo(({ network, navigation}) => {
   const { t } = useTranslation();
   const isPrototypeNetwork = isPrototype(network);
   const online = network && network.meta && network.meta.connection && network.meta.connection.online;
+
+  const dispatch = useDispatch();
+
+  const navigate = useCallback(() => {
+    dispatch(setItem(selectedNetworkName, network.meta.id));
+    navigation.navigate('NetworkScreen', {
+      title: network.name ? network.name : network.meta.id
+    });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [network]);
+
   return (
     <View style={[theme.common.row,styles.listHeader]}>
       { !isPrototypeNetwork &&
@@ -96,9 +76,13 @@ const ItemHeader = React.memo(({ network }) => {
         { network.name &&
           <Text bold content={network.name + ' '}/>
         }
-        <Text color='secondary' content={network.meta.id}/>
+        <Text color='secondary' content={'[' + network.meta.id.slice(0, 9) + '... ]'}/>
       </RNText>
-      <NetworkDetails network={network}/>
+
+      <Button
+        icon='more-vertical'
+        type='link'
+        onPress={navigate}/>
     </View>
   )
 });
@@ -134,7 +118,7 @@ const ListItem = React.memo(({ network, navigation }) => {
   return (
     <View style={styles.listItem}>
       <ItemDeleteIndicator request={request} />
-      <ItemHeader network={network}/>
+      <ItemHeader network={network} navigation={navigation} />
       <ItemContent network={network} navigation={navigation} />
     </View>
   )
@@ -173,7 +157,7 @@ DevicesListScreen.navigationOptions = ({ navigation, t }) => {
     ...theme.headerStyle,
     title: CapitalizeEach(t('pageTitle.main')),
     headerLeft: () => <MenuButton navigation={navigation} />,
-    headerRight: () => <AddNetwork navigation={navigation} />,
+    headerRight: () => <AddNetwork navigation={navigation} />
   };
 };
 
