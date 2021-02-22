@@ -1,7 +1,7 @@
-import React, { useState } from 'react';
-import { Text as RNText, View, StyleSheet, ActivityIndicator } from 'react-native';
+import React, { useState, useEffect } from 'react';
+import { Text as RNText, View, StyleSheet } from 'react-native';
 import Clipboard from '@react-native-clipboard/clipboard';
-import { useTranslation, CapitalizeEach, CapitalizeFirst } from '../../translations';
+import { useTranslation, CapitalizeFirst } from '../../translations';
 import theme from '../../theme/themeExport';
 import Text from '../../components/Text';
 import Button from '../../components/Button';
@@ -64,6 +64,18 @@ const NetworkScreen = React.memo(({navigation}) => {
     setCopiedText(id);
     setCopiedTextVisible(true);
   }
+  useEffect(() => {
+    let t;
+    if(copiedTextVisible){
+      t = setTimeout(() => {
+        setCopiedTextVisible(false);
+      }, 3000);
+    }
+    return () => {
+      clearTimeout(t);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [copiedTextVisible]);
 
   return (
     <Screen>
@@ -71,13 +83,13 @@ const NetworkScreen = React.memo(({navigation}) => {
         <View>
           {network.name &&
             <RNText>
-              <Text bold content={CapitalizeEach(t('networkDescription.name')) + ': '} />
+              <Text size='p' bold content={CapitalizeFirst(t('networkDescription.name')) + ': '} />
               <Text content={network.name}/>
             </RNText>
           }
           <View style={theme.common.row}>
             <View>
-              <Text bold content={CapitalizeEach(t('networkDescription.uuid')) + ': '}/>
+              <Text bold content={CapitalizeFirst(t('networkDescription.uuid')) + ': '}/>
               <Text ellipsizeMode='tail' content={network.meta.id}/>
             </View>
             <Button onPress={() => copyToClipboard(network.meta.id)} type='link' color='primary' icon='clipboard'/>
@@ -88,23 +100,35 @@ const NetworkScreen = React.memo(({navigation}) => {
             </View>
           }
           <RNText>
-            <Text bold content={CapitalizeEach(t('networkDescription.created')) + ': '} />
+            <Text bold content={CapitalizeFirst(t('networkDescription.created')) + ': '} />
             <Timestamp timestamp={network.meta.created}></Timestamp>
           </RNText>
           <RNText>
-            <Text bold content={CapitalizeEach(t('networkDescription.updated')) + ': '}/>
+            <Text bold content={CapitalizeFirst(t('networkDescription.updated')) + ': '}/>
             <Timestamp timestamp={network.meta.updated}></Timestamp>
           </RNText>
           { !!network.meta.connection &&
             <View style={theme.common.row}>
-              <Text bold content={CapitalizeEach(t('networkDescription.connection')) + ': '}/>
+              <Text bold content={CapitalizeFirst(t('networkDescription.connection')) + ': '}/>
               <View style={[styles.circle, network.meta.connection?.online ? styles.online : styles.offline ]} />
               <RNText>
                 <Text content={
-                  (network.meta.connection?.online ? CapitalizeEach(t('networkDescription.online')) : CapitalizeEach(t('networkDescription.offline'))) + ' '}/>
+                  (network.meta.connection?.online ? CapitalizeFirst(t('networkDescription.online')) : CapitalizeFirst(t('networkDescription.offline'))) + ' '}/>
                 <Timestamp timestamp={network.meta.updated}></Timestamp>
               </RNText>
             </View>
+          }
+          { !!network.meta.control_timeout &&
+            <RNText>
+              <Text bold content={CapitalizeFirst(t('networkDescription.control_timeout')) + ': '}/>
+              <Text content={network.meta.control_timeout}/>
+            </RNText>
+          }
+          { !!network.meta.control_when_offline &&
+            <RNText>
+              <Text bold content={CapitalizeFirst(t('networkDescription.control_when_offline'))+ ': '}/>
+              <Text content={network.meta.control_when_offline}/>
+            </RNText>
           }
         </View>
         <View>
