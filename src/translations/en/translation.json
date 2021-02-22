@@ -39,6 +39,8 @@
   "device": "device",
   "device_plural": "device",
   "networkDescription": {
+    "control_timeout": "control timout in seconds",
+    "control_when_offline": "controll when offline",
     "created": "created",
     "name": "name",
     "updated": "updated",
@@ -55,7 +57,9 @@
     "product": "product",
     "serial": "serial",
     "uuid": "thing ID (UUID)",
-    "version": "version"
+    "version": "version",
+    "protocol": "protocol",
+    "communication": "communication"
   },
   "deleteConfirmationQuestion": "Are you sure you want to delete?",
   "deleteConfirmationDescription": "this action cannot be undone.",
