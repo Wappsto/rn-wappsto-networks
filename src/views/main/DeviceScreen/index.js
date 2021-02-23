@@ -6,6 +6,7 @@ import theme from '../../../theme/themeExport';
 import { selectedDeviceName } from '../../../util/params';
 import { getServiceVersion } from 'wappsto-redux/util/helpers';
 import DeviceDetails from './DeviceDetails';
+import DeviceLocation from './DeviceLocation';
 import useUnmountRemoveItem from '../../../hooks/useUnmountRemoveItem';
 import useUndefinedBack from '../../../hooks/useUndefinedBack';
 import useGetItemEntity from '../../../hooks/useGetItemEntity';
@@ -37,6 +38,7 @@ const DeviceScreen = React.memo(({ navigation }) => {
         url={url}
         query={query}
         renderItem={({item}) => <Value item={item} />}
+        listHeaderComponent={!!device?.meta?.geo ? <DeviceLocation device={device}/> : null}
       />
     </Screen>
   );
