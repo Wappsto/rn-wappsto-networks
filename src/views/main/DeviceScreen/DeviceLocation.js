@@ -1,36 +1,38 @@
 import React from 'react';
 import { View, StyleSheet } from 'react-native';
-import MapView from 'react-native-maps';
+import MapView, { Marker } from 'react-native-maps';
 
 const styles = StyleSheet.create({
   mapContainer: {
-    height: 240,
-    marginTop: -20,
-    marginLeft:-20,
-    marginRight: -20,
+    height: 220,
     marginBottom: 20
   },
   map:{
    ...StyleSheet.absoluteFillObject
-  },
-  marker: {
-    height: 48,
-    width: 48
-  },
-  markerFixedWrapper: {
-    marginLeft: -24,
-    marginTop: -48,
-    left: '50%',
-    top: '50%'
   }
 });
 
-const DeviceLocation = React.memo(() => {
+const DeviceLocation = React.memo((geo) => {
+  const latitude = parseFloat(geo?.geo?.latitude);
+  const longitude = parseFloat(geo?.geo?.longitude);
+
+  if(!latitude && !longitude){
+    return null;
+  }
+
   return (
-    <View style={{height: 300}}>
+    <View style={styles.mapContainer}>
       <MapView
         style={styles.map}
-      />
+        initialRegion={{
+          latitude: latitude,
+          longitude: longitude,
+          latitudeDelta: 0.0922,
+          longitudeDelta: 0.0421,
+        }}
+      >
+        <Marker coordinate={{ latitude : latitude , longitude : longitude }}/>
+      </MapView>
     </View>
   )
 });
