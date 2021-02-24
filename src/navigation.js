@@ -28,6 +28,7 @@ let components = {
   SplashScreen: require('./views/SplashScreen').default,
   DevicesListScreen: require('./views/main/DevicesListScreen').default,
   DeviceScreen: require('./views/main/DeviceScreen').default,
+  NetworkScreen: require('./views/main/NetworkScreen').default,
   AccountScreen: require('./views/main/AccountScreen').default,
   ChangeUserDetailsScreen: require('./views/main/AccountScreen/ChangeUserDetailsScreen').default,
   ChangeUsernameScreen: require('./views/main/AccountScreen/ChangeUsernameScreen').default,
@@ -66,6 +67,7 @@ let components = {
       <MainStack.Navigator>
         {createScreen(MainStack, 'DevicesListScreen', components.DevicesListScreen)}
         {createScreen(MainStack, 'DeviceScreen', components.DeviceScreen)}
+        {createScreen(MainStack, 'NetworkScreen', components.NetworkScreen)}
       </MainStack.Navigator>
     )
     return MainStackScreen;

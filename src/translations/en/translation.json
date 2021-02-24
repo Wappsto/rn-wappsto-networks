@@ -27,7 +27,8 @@
     "reload": "reload",
     "remove": "remove",
     "save": "save",
-    "send": "send"
+    "send": "send",
+    "share": "share"
   },
   "validation": {
     "wrongMinNumber": "inserted number should larger than {{number}}",
@@ -38,8 +39,15 @@
   "device": "device",
   "device_plural": "device",
   "networkDescription": {
+    "control_timeout": "control timout in seconds",
+    "control_when_offline": "controll when offline",
+    "created": "created",
     "name": "name",
-    "uuid": "device ID (UUID)"
+    "updated": "updated",
+    "uuid": "device ID (UUID)",
+    "connection": "connection",
+    "online": "online",
+    "offline": "offline"
   },
   "deviceDescription": {
     "description": "description",
@@ -49,11 +57,14 @@
     "product": "product",
     "serial": "serial",
     "uuid": "thing ID (UUID)",
-    "version": "version"
+    "version": "version",
+    "protocol": "protocol",
+    "communication": "communication"
   },
   "deleteConfirmationQuestion": "Are you sure you want to delete?",
   "deleteConfirmationDescription": "this action cannot be undone.",
   "noData": "no data",
+  "configure": "configure",
   "lastUpdated": "last updated",
   "loading": "loading",
   "logout": "logout",

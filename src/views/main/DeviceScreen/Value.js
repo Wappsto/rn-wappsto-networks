@@ -1,5 +1,5 @@
 import React, { useCallback } from 'react';
-import {View, StyleSheet, ActivityIndicator} from 'react-native';
+import {View, StyleSheet, ActivityIndicator, TouchableOpacity, Image} from 'react-native';
 import States from './States';
 import ValueDetails from './ValueDetails';
 import theme from '../../../theme/themeExport';
@@ -29,6 +29,11 @@ const styles = StyleSheet.create({
     marginBottom:0,
     fontWeight: 'bold',
     flex:1
+  },
+  chartIcon: {
+    width:20,
+    height:18,
+    margin:10
   }
 });
 
@@ -59,6 +64,15 @@ const ValueComponent = React.memo(({ item, navigation }) => {
           style={styles.itemHeaderText}
         />
         <>
+          {item.number &&
+            <TouchableOpacity>
+              <Image
+                resizeMode='contain'
+                source={require('../../../../assets/images/line-chart.png')}
+                style={styles.chartIcon}
+              />
+            </TouchableOpacity>
+          }
           {request && request.status === 'pending' ? (
             <ActivityIndicator
               size='small'
