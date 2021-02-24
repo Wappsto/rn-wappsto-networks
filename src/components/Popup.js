@@ -48,9 +48,8 @@ const Popup = React.memo(({ fullScreen, animationType, visible, hide, onRequestC
       onRequestClose={onRequestClose}
     >
       <TouchableWithoutFeedback onPress={hide}>
-        <View style={styles.popupOverlay}>
-        <Wrapper>
-          <SafeAreaView>
+        <SafeAreaView style={styles.popupOverlay}>
+          <Wrapper>
             <StatusBar backgroundColor={color(theme.variables.statusBarBgDark).darken(0.5).string()} barStyle={theme.variables.statusBarColorLight} />
             <TouchableWithoutFeedback>
               <View style={[styles.popupContent, (!fullScreen && styles.popupContentWithBorder), contentStyle]}>
@@ -64,9 +63,8 @@ const Popup = React.memo(({ fullScreen, animationType, visible, hide, onRequestC
                 }
               </View>
             </TouchableWithoutFeedback>
-          </SafeAreaView>
           </Wrapper>
-        </View>
+        </SafeAreaView>
       </TouchableWithoutFeedback>
     </Modal>
   );
