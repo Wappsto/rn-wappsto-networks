@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Text as RNText, View, StyleSheet } from 'react-native';
-import Clipboard from '@react-native-clipboard/clipboard';
+import Clipboard from '@react-native-community/clipboard';
 import { useTranslation, CapitalizeFirst } from '../../translations';
 import theme from '../../theme/themeExport';
 import Text from '../../components/Text';
