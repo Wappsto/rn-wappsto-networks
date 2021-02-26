@@ -7,7 +7,7 @@ import useRequest from 'wappsto-blanket/hooks/useRequest';
 import RequestError from '../../../components/RequestError';
 import Text from '../../../components/Text';
 import Button from '../../../components/Button';
-
+import { useTranslation, CapitalizeFirst } from '../../../translations';
 
 const styles = StyleSheet.create({
   itemPanel: {
@@ -38,11 +38,15 @@ const styles = StyleSheet.create({
 });
 
 const ValueComponent = React.memo(({ item, navigation }) => {
+  const { t } = useTranslation();
   const { request, send } = useRequest();
 
   const navigateToLog = useCallback(() => {
-    navigation.navigate('LogScreen');
-  }, [navigation]);
+    navigation.navigate('LogScreen', {
+      title: `${item.name || item.meta.id} ${t('logs')}`,
+      id: item.meta.id
+    });
+  }, [navigation, t, item]);
 
   const updateValueStatus = useCallback(() => {
     send({

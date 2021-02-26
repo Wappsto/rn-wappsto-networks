@@ -76,8 +76,8 @@ const  getValueType = (value, t) => {
 }
 
 const ValueSettings = React.memo(({ item }) => {
+  const { t } = useTranslation();
   const content = useCallback((visible, hide) => {
-    const { t } = useTranslation();
     const valueDataType = getValueType(item, t);
     return (
       <Popup visible={visible} onRequestClose={hide} hide={hide}>
@@ -98,7 +98,7 @@ const ValueSettings = React.memo(({ item }) => {
         {valueDataType.view}
       </Popup>
     );
-  }, [item]);
+  }, [item, t]);
   return <PopupButton icon='info'>{content}</PopupButton>;
 });
 

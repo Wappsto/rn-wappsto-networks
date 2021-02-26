@@ -1,4 +1,4 @@
-import React, { useMemo, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { StyleSheet, TouchableOpacity, View } from 'react-native';
 import ModalDropdown from 'react-native-modal-dropdown';
 import Popover, { PopoverPlacement } from 'react-native-popover-view';
@@ -284,9 +284,17 @@ const defaultOptions = {
   value: TIME_OPTIONS[0]
 };
 const ChartHeader = ({ options, setOptions, children}) => {
-  useMemo(() => !options && setOptions(defaultOptions));
+  useEffect(() => {
+    if(!options){
+      const dates = getOptions(defaultOptions.value.time, defaultOptions.value.number, false);
+      setOptions({...defaultOptions, ...dates});
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
-  if(!options) return null;
+  if(!options){
+    return null
+  }
 
   let ValueComponent = null;
   switch(options.type){
