@@ -1,6 +1,7 @@
 import React from 'react';
-import { View, StyleSheet } from 'react-native';
+import { View, StyleSheet, Linking } from 'react-native';
 import MapView, { Marker } from 'react-native-maps';
+import Button from '../../../components/Button';
 
 const styles = StyleSheet.create({
   mapContainer: {
@@ -9,6 +10,15 @@ const styles = StyleSheet.create({
   },
   map:{
    ...StyleSheet.absoluteFillObject
+  },
+  directionButton: {
+    position: 'absolute',
+    bottom: 10,
+    right:10,
+    zIndex: 1,
+    paddingLeft: 12,
+    paddingRight: 15,
+    backgroundColor: '#4285F4'
   }
 });
 
@@ -33,6 +43,7 @@ const DeviceLocation = React.memo((geo) => {
       >
         <Marker coordinate={{ latitude : latitude , longitude : longitude }}/>
       </MapView>
+      <Button style={styles.directionButton} icon='navigation' onPress={ ()=>{ Linking.openURL('https://www.google.com/maps/dir/?api=1&destination=' + latitude + ',' + longitude)}} />
     </View>
   )
 });
