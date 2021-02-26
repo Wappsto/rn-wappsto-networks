@@ -157,6 +157,7 @@ const TimeValue = React.memo(({ value, setOptions }) => {
     setOptions((options) => {
       const n = {...options, ...newOptions, value: selectedValue, type: 'clock'};
       delete n.limit;
+      delete n.order;
       return n;
     });
   }
@@ -178,9 +179,9 @@ const TimeValue = React.memo(({ value, setOptions }) => {
 const LastXValue = React.memo(({ value, setOptions }) => {
   const { t } = useTranslation();
   const onChangeValue = (_, selectedValue) => {
-    const start = (new Date()).toISOString();
-    const end = (new Date('01/01/2010')).toISOString();
-    setOptions((options) => ({...options, start, end, limit: selectedValue, value: selectedValue, type: 'hash' }));
+    const start = (new Date('01/01/2010')).toISOString();
+    const end = (new Date()).toISOString();
+    setOptions((options) => ({...options, start, end, limit: selectedValue, value: selectedValue, type: 'hash', order: 'descending' }));
   }
   return (
     <ModalDropdown
