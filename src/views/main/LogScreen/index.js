@@ -75,7 +75,7 @@ const LogScreen = React.memo(() => {
       {values}
       <ChartHeader options={options} setOptions={setOptions}>
         {loading && <ActivityIndicator color='red' />}
-        <GraphChart data={data}/>
+        <GraphChart data={data} operation={options?.operation}/>
       </ChartHeader>
     </>
   )
