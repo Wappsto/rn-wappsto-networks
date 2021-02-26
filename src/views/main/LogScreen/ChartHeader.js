@@ -318,7 +318,6 @@ const ChartHeader = ({ options, setOptions, children}) => {
       </View>
 
       <View style={[theme.common.row, {justifyContent: 'center'}]}>
-
         <TouchableOpacity style={styles.button}>
           <Icon name='chevron-left'/>
         </TouchableOpacity>

@@ -2,6 +2,7 @@ import React, { useState, useEffect, useRef, useCallback } from 'react';
 import GraphChart from './GraphChart';
 import ChartHeader from './ChartHeader';
 import LogComponent, { STATUS } from './LogComponent';
+import { ActivityIndicator } from 'react-native';
 import { useRoute } from '@react-navigation/native';
 import useEntitySelector from 'wappsto-blanket/hooks/useEntitySelector';
 import equal from 'deep-equal';
@@ -69,11 +70,11 @@ const LogScreen = React.memo(() => {
     setValues(values);
   }, [options, valueId, permission, onDone]);
 
-  console.log(data);
   return (
     <>
       {values}
       <ChartHeader options={options} setOptions={setOptions}>
+        {loading && <ActivityIndicator color='red' />}
         <GraphChart data={data}/>
       </ChartHeader>
     </>
