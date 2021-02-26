@@ -37,7 +37,7 @@ const DeviceScreen = React.memo(({ navigation }) => {
         name={url}
         url={url}
         query={query}
-        renderItem={({item}) => <Value item={item} />}
+        renderItem={({item}) => <Value item={item} navigation={navigation} />}
         listHeaderComponent={!!device?.meta?.geo ? <DeviceLocation geo={device.meta.geo}/> : null}
       />
     </Screen>

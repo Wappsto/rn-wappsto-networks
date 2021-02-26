@@ -40,6 +40,10 @@ const styles = StyleSheet.create({
 const ValueComponent = React.memo(({ item, navigation }) => {
   const { request, send } = useRequest();
 
+  const navigateToLog = useCallback(() => {
+    navigation.navigate('LogScreen');
+  }, [navigation]);
+
   const updateValueStatus = useCallback(() => {
     send({
       method: 'PATCH',
@@ -65,7 +69,7 @@ const ValueComponent = React.memo(({ item, navigation }) => {
         />
         <>
           {item.number &&
-            <TouchableOpacity>
+            <TouchableOpacity onPress={navigateToLog}>
               <Image
                 resizeMode='contain'
                 source={require('../../../../assets/images/line-chart.png')}

@@ -56,14 +56,6 @@ const NetworkScreen = React.memo(({navigation}) => {
   useUnmountRemoveItem(selectedNetworkName);
   useUndefinedBack(network, navigation);
 
-  if(!network || !network.meta || !network.meta.id ){
-    return null;
-  }
-  const copyToClipboard = (id) => {
-    Clipboard.setString(id);
-    setCopiedText(id);
-    setCopiedTextVisible(true);
-  }
   useEffect(() => {
     let t;
     if(copiedTextVisible){
@@ -76,6 +68,15 @@ const NetworkScreen = React.memo(({navigation}) => {
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [copiedTextVisible]);
+
+  if(!network || !network.meta || !network.meta.id ){
+    return null;
+  }
+  const copyToClipboard = (id) => {
+    Clipboard.setString(id);
+    setCopiedText(id);
+    setCopiedTextVisible(true);
+  }
 
   return (
     <Screen>

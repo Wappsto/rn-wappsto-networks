@@ -225,5 +225,9 @@
         "flowButton": "close"
       }
     }
-  }
+  },
+  "lastXMinutes": "last {{number}} minutes",
+  "lastXHours": "last {{number}} hours",
+  "lastXMonths": "last {{number}} months",
+  "lastXPoints": "last {{number}} points"
 }
