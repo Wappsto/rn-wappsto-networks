@@ -1,8 +1,9 @@
 import React, { useMemo, useState } from 'react';
 import { TouchableOpacity, Text, StyleSheet, View } from 'react-native';
-import { VictoryChart, VictoryTheme, VictoryLine } from 'victory-native';
+import { VictoryChart, VictoryTheme, VictoryLine, createContainer } from 'victory-native';
 import theme from '../../../theme/themeExport';
 
+const VictoryZoomVoronoiContainer = createContainer('zoom', 'voronoi');
 const styles = StyleSheet.create({
   colorBox: {
     width: 20,
@@ -24,7 +25,7 @@ const GraphChart = React.memo(({ data, operation = 'data' }) => {
     for(let key in data){
         const props = {
           key,
-          data: data[key].data.map(d => ({ x: new Date(d.time), y: d[operation] && !isNaN(d[operation]) ? parseFloat(d[operation]) : null })),
+          data: data[key].data.map(d => ({ x: new Date(d.time), y: d[operation] && !isNaN(d[operation]) ? parseFloat(d[operation]) : null, rawValue: d[operation] })),
           name: data[key].name,
           style: {
             data: { stroke: COLORS[key] }
@@ -60,7 +61,11 @@ const GraphChart = React.memo(({ data, operation = 'data' }) => {
   return (
     <>
       <VictoryChart
+        scale={{ x: 'time' }}
         theme={VictoryTheme.material}
+        containerComponent={
+        <VictoryZoomVoronoiContainer labels={d => `${d.datum.childName}: ${d.datum.rawValue}`} />
+    }
       >
         {lines}
       </VictoryChart>
