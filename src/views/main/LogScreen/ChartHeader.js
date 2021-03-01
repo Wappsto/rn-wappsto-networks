@@ -55,7 +55,6 @@ const styles = StyleSheet.create({
     height:500,
     borderColor:'red',
     borderWidth: 1,
-    backgroundColor:'green'
   }
 });
 
@@ -132,7 +131,7 @@ const getOptions = (time, number = 1, autoCompute) => {
 
 const TypeSelector = React.memo(({ type, setOptions }) => {
   const onChangeType = (_, selectedType) => {
-    setOptions((options) => ({...options, type: selectedType, value: ''}));
+    setOptions((options) => options.type === selectedType ? options : {...options, type: selectedType, value: ''});
   }
   return (
     <ModalDropdown

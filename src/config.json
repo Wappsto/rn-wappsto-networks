@@ -2,7 +2,8 @@
   "baseUrl": "https://qa.wappsto.com/services",
   "serviceVersion": {
     "default": "2.0",
-    "user": "2.1"
+    "user": "2.1",
+    "log": "2.1"
   },
   "stream": {
     "name": "wappsto-native-2.0",
