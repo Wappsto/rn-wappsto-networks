@@ -27,6 +27,9 @@ const styles = StyleSheet.create({
     justifyContent:'center',
     backgroundColor: 'white'
   },
+  buttonDisabled: {
+    backgroundColor: theme.variables.disabled
+  },
   modalDropdown:{
     flex: 1,
     height: 30,
@@ -89,7 +92,7 @@ const compute = ({ start, end }) => {
   }
 }
 
-const getOptions = (time, number = 1, autoCompute) => {
+const getDateOptions = (time, number = 1, autoCompute) => {
   const options = { end: new Date() };
   switch(time){
     case 'minute':
@@ -129,6 +132,12 @@ const getOptions = (time, number = 1, autoCompute) => {
   return options;
 }
 
+const getXValueOptions = (number) => {
+  const start = (new Date('01/01/2010')).toISOString();
+  const end = (new Date()).toISOString();
+  return { start, end, limit: number, value: { number }, type: 'hash', order: 'descending' };
+}
+
 const TypeSelector = React.memo(({ type, setOptions }) => {
   const onChangeType = (_, selectedType) => {
     setOptions((options) => options.type === selectedType ? options : {...options, type: selectedType, value: ''});
@@ -152,7 +161,7 @@ const TypeSelector = React.memo(({ type, setOptions }) => {
 const TimeValue = React.memo(({ value, setOptions }) => {
   const { t } = useTranslation();
   const onChangeValue = (_, selectedValue) => {
-    const newOptions = getOptions(selectedValue.time, selectedValue.number, false);
+    const newOptions = getDateOptions(selectedValue.time, selectedValue.number, false);
     setOptions((options) => {
       const n = {...options, ...newOptions, value: selectedValue, type: 'clock'};
       delete n.limit;
@@ -164,6 +173,7 @@ const TimeValue = React.memo(({ value, setOptions }) => {
     <ModalDropdown
       style={styles.modalDropdown}
       defaultValue={CapitalizeFirst(t(value?.t || 'pleaseSelect', { number: value.number }))}
+      defaultIndex={0}
       options={TIME_OPTIONS}
       textStyle={styles.dropdownText}
       onSelect={onChangeValue}
@@ -178,14 +188,13 @@ const TimeValue = React.memo(({ value, setOptions }) => {
 const LastXValue = React.memo(({ value, setOptions }) => {
   const { t } = useTranslation();
   const onChangeValue = (_, selectedValue) => {
-    const start = (new Date('01/01/2010')).toISOString();
-    const end = (new Date()).toISOString();
-    setOptions((options) => ({...options, start, end, limit: selectedValue, value: selectedValue, type: 'hash', order: 'descending' }));
+    const newOptions = getXValueOptions(selectedValue);
+    setOptions(options => ({...options, ...newOptions}));
   }
   return (
     <ModalDropdown
       style={styles.modalDropdown}
-      defaultValue={CapitalizeFirst(t(value || 'pleaseSelect', { number: value }))}
+      defaultValue={CapitalizeFirst(t(value?.number ? 'lastXPoints' : 'pleaseSelect', { number: value.number }))}
       options={POINT_OPTIONS}
       textStyle={styles.dropdownText}
       onSelect={onChangeValue}
@@ -284,9 +293,11 @@ const defaultOptions = {
   value: TIME_OPTIONS[0]
 };
 const ChartHeader = ({ options, setOptions, children}) => {
+  const { t } = useTranslation();
+
   useEffect(() => {
     if(!options){
-      const dates = getOptions(defaultOptions.value.time, defaultOptions.value.number, false);
+      const dates = getDateOptions(defaultOptions.value.time, defaultOptions.value.number, false);
       setOptions({...defaultOptions, ...dates});
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -296,14 +307,65 @@ const ChartHeader = ({ options, setOptions, children}) => {
     return null
   }
 
+  const setArrowOptions = (newOptions, number) => {
+    setOptions({...defaultOptions, ...newOptions, value: { ...options.value, number }});
+  }
+
   let ValueComponent = null;
+  let handleLeft, handleRight, leftDisabled, rightDisabled;
   switch(options.type){
-    case 'clock':
+    case 'clock':{
       ValueComponent = TimeValue;
+      const diff = 1;
+      const leftDiff = options.value.number + diff;
+      const rightDiff = options.value.number - diff;
+      switch(options.value.time){
+        case 'minute':
+          leftDisabled = leftDiff === 60;
+          break;
+        case 'hour':
+          leftDisabled = leftDiff === 24;
+          break;
+        case 'day':
+          leftDisabled = leftDiff === 7;
+          break;
+        case 'week':
+          leftDisabled = leftDiff === 4;
+          break;
+        case 'month':
+          leftDisabled = leftDiff === 2;
+          break;
+        default:
+          leftDisabled = leftDiff === 1;
+      }
+      rightDisabled = rightDiff === 0;
+      handleLeft = () => {
+        const newOptions = getDateOptions(options.value.time, leftDiff, false);
+        setArrowOptions(newOptions, leftDiff);
+      }
+      handleRight = () => {
+        const newOptions = getDateOptions(options.value.time, rightDiff, false);
+        setArrowOptions(newOptions, rightDiff);
+      }
       break;
-    case 'hash':
+    }
+    case 'hash':{
       ValueComponent = LastXValue;
+      const diff = 10;
+      const leftDiff = options.value.number + diff;
+      const rightDiff = options.value.number - diff;
+      leftDisabled = leftDiff > 2000;
+      rightDisabled = rightDiff === 0;
+      handleLeft = () => {
+        const newOptions = getXValueOptions(leftDiff);
+        setArrowOptions(newOptions, leftDiff);
+      }
+      handleRight = () => {
+        const newOptions = getXValueOptions(rightDisabled);
+        setArrowOptions(newOptions, rightDiff);
+      }
       break;
+    }
     case 'calendar':
       ValueComponent = CalendarValue;
       break;
@@ -317,15 +379,18 @@ const ChartHeader = ({ options, setOptions, children}) => {
         <Compute operation={options.operation} group_by={options.group_by} setOptions={setOptions}/>
       </View>
 
-      <View style={[theme.common.row, {justifyContent: 'center'}]}>
-        <TouchableOpacity style={styles.button}>
-          <Icon name='chevron-left'/>
-        </TouchableOpacity>
-        <Text content='timeframe'/>
-        <TouchableOpacity style={styles.button}>
-          <Icon name='chevron-right'/>
-        </TouchableOpacity>
-      </View>
+      {
+        !!options.value &&
+        <View style={[theme.common.row, {justifyContent: 'center'}]}>
+          <TouchableOpacity style={[styles.button, leftDisabled && styles.buttonDisabled]} onPress={handleLeft} disabled={leftDisabled}>
+            <Icon name='chevron-left'/>
+          </TouchableOpacity>
+          <Text content={CapitalizeFirst(t(options.type === 'clock' ? options.value.t : 'lastXPoints', { number: options.value.number }))}/>
+          <TouchableOpacity style={[styles.button, rightDisabled && styles.buttonDisabled]} onPress={handleRight} disabled={rightDisabled}>
+            <Icon name='chevron-right'/>
+          </TouchableOpacity>
+        </View>
+      }
       <View style={styles.chartContainer}>
         {children}
       </View>

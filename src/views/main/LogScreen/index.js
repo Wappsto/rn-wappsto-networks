@@ -52,7 +52,7 @@ const LogScreen = React.memo(() => {
     if(options.limit){
       rawOptions.limit = options.limit;
     }
-    if(!rawOptions.start || !rawOptions.end || equal(rawOptions, prevOptions)){
+    if(!rawOptions.start || !rawOptions.end || equal(rawOptions, prevOptions.current)){
       return;
     }
     setLoading(true);

@@ -1,6 +1,7 @@
 import React, { useMemo, useState } from 'react';
 import { TouchableOpacity, Text, StyleSheet, View } from 'react-native';
 import { VictoryChart, VictoryTheme, VictoryLine, createContainer } from 'victory-native';
+import { useTranslation } from '../../../translations';
 import theme from '../../../theme/themeExport';
 
 const VictoryZoomVoronoiContainer = createContainer('zoom', 'voronoi');
@@ -19,7 +20,8 @@ const COLORS = {
   Control: 'green'
 }
 const GraphChart = React.memo(({ data, operation = 'data' }) => {
-  const [ filter, setFilter ] = useState([]);
+  const { t } = useTranslation();
+  const [ hidden, setHidden ] = useState([]);
   const formattedData = useMemo(() => {
     const fd = [];
     for(let key in data){
@@ -42,13 +44,13 @@ const GraphChart = React.memo(({ data, operation = 'data' }) => {
     const legend = [];
     formattedData.forEach((props) => {
       const { key, name } = props;
-      if(!filter.includes(key)){
+      const isHidden = hidden.includes(key);
+      if(!isHidden){
         lines.push(<VictoryLine {...props}/>);
       }
-      const inFilter = filter.includes(key);
       legend.push(
-        <TouchableOpacity key={key} onPress={() => setFilter(f => inFilter ? f.filter(k => k !== key) : [...f, key] )}>
-          <View style={[theme.common.row, inFilter && styles.selected]}>
+        <TouchableOpacity key={key} onPress={() => setHidden(h => isHidden ? h.filter(k => k !== key) : [...h, key] )}>
+          <View style={[theme.common.row, isHidden && styles.selected]}>
             <View style={[styles.colorBox, { backgroundColor: COLORS[key] }]}/>
             <Text>{name}</Text>
           </View>
@@ -56,7 +58,7 @@ const GraphChart = React.memo(({ data, operation = 'data' }) => {
       )
     })
     return [lines, legend];
-  }, [formattedData, filter]);
+  }, [formattedData, hidden]);
 
   return (
     <>
@@ -64,8 +66,8 @@ const GraphChart = React.memo(({ data, operation = 'data' }) => {
         scale={{ x: 'time' }}
         theme={VictoryTheme.material}
         containerComponent={
-        <VictoryZoomVoronoiContainer labels={d => `${d.datum.childName}: ${d.datum.rawValue}`} />
-    }
+          <VictoryZoomVoronoiContainer labels={d => [`${t('time')}: ${d.datum.x.toLocaleString()}\n${d.datum.childName}: ${d.datum.rawValue}`]} />
+        }
       >
         {lines}
       </VictoryChart>
