@@ -19,6 +19,7 @@ const LogScreen = React.memo(() => {
   const [ options, setOptions ] = useState();
   const [ values, setValues ] = useState([]);
   const prevOptions = useRef(options);
+  const prevLive = useRef(false);
   const cachedData = useRef({});
   const errors = useRef({});
   const hasReport = value?.permission?.includes('r');
@@ -30,7 +31,7 @@ const LogScreen = React.memo(() => {
       return;
     } else {
       cachedData.current[data.type] = data;
-      if(data.status === STATUS.error){
+      if(data.status === STATUS.ERROR){
         errors.current[data.type] = true;
       }
     }
@@ -40,7 +41,7 @@ const LogScreen = React.memo(() => {
       }
     }
     setLoading(false);
-    setData(cachedData.current);
+    setData({...cachedData.current});
   }, []);
 
   useEffect(() => {
@@ -60,21 +61,28 @@ const LogScreen = React.memo(() => {
     if(options.limit){
       rawOptions.limit = options.limit;
     }
-    if(!rawOptions.start || !rawOptions.end || equal(rawOptions, prevOptions.current)){
-      return;
+    if(prevLive.current === options.live){
+      if(!rawOptions.start || !rawOptions.end || equal(rawOptions, prevOptions.current)){
+        return;
+      }
     }
     errors.current = {};
     cachedData.current = {};
     prevOptions.current = rawOptions;
-    setLoading(true);
+    prevLive.current = options.live;
+    setLoading(!options.live);
     const values = [];
     if(hasReport){
       cachedData.current.Report = null;
-      values.push(<LogComponent key='read' id={valueId} options={rawOptions} onDone={onDone} stateType='Report' onlyNumber={!options.isList} />);
+      values.push(<LogComponent key='read' id={valueId} options={rawOptions} onDone={onDone} stateType='Report' onlyNumber={!options.isList} live={options.live} />);
+    } else {
+      delete cachedData.current.Report;
     }
     if(hasControl){
       cachedData.current.Control = null;
-      values.push(<LogComponent key='write' id={valueId} options={rawOptions} onDone={onDone} stateType='Control' onlyNumber={!options.isList} />);
+      values.push(<LogComponent key='write' id={valueId} options={rawOptions} onDone={onDone} stateType='Control' onlyNumber={!options.isList} live={options.live} />);
+    } else {
+      delete cachedData.current.Control;
     }
     setValues(values);
   }, [options, valueId, hasReport, hasControl, onDone]);
@@ -88,7 +96,7 @@ const LogScreen = React.memo(() => {
         {!loading && !errors.current.Report && hasReport && !data.Report?.data.length && <Text color='warning' content={CapitalizeFirst(t('noReportDataWarning'))}/>}
         {errors.current.Control && <Text color='error' content={CapitalizeFirst(t('failedToGetControlData'))}/>}
         {!loading && !errors.current.Control && hasControl && !data.Control?.data.length && <Text color='warning' content={CapitalizeFirst(t('noControlDataWarning'))}/>}
-        <GraphChart data={data} operation={options?.operation}/>
+        <GraphChart data={data} operation={options?.live ? 'data' : options?.operation}/>
       </ChartHeader>
     </>
   )

@@ -2,7 +2,8 @@ import React, { useEffect, useRef, useMemo } from 'react';
 import useLogs, { STATUS } from 'wappsto-blanket/hooks/useLogs';
 import useEntitySelector from 'wappsto-blanket/hooks/useEntitySelector';
 
-const LogComponent = React.memo(({ id, options, onDone, stateType = 'Report', onlyNumber, nameExtra, cacheId, clearCache, refresh }) => {
+const LogComponent = React.memo(({ id, options, onDone, stateType = 'Report', onlyNumber, nameExtra, cacheId, clearCache, refresh, live }) => {
+  const liveData = useRef([]);
   const value = useEntitySelector('value', id);
   const state = useEntitySelector('state', {
     parent: {
@@ -37,15 +38,17 @@ const LogComponent = React.memo(({ id, options, onDone, stateType = 'Report', on
 
   const mounted = useRef(true);
 
-  useEffect(() => {
+    useEffect(() => {
     if(value){
       obj.current.isNumber = value.hasOwnProperty('number');
       if(state && (!onlyNumber || obj.current.isNumber)){
-        stateLogs.cancel();
-        stateLogs.reset(clearCache);
-        const cached = stateLogs.getLogs(options);
-        if(cached === true){
-          onDone({ ...obj.current, data: stateLogs.data, status: stateLogs.status });
+        if(!live){
+          stateLogs.cancel();
+          stateLogs.reset(clearCache);
+          const cached = stateLogs.getLogs(options);
+          if(cached === true){
+            onDone({ ...obj.current, data: stateLogs.data, status: stateLogs.status });
+          }
         }
       } else {
         onDone({ ...obj.current, data: [] });
@@ -55,6 +58,7 @@ const LogComponent = React.memo(({ id, options, onDone, stateType = 'Report', on
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [options]);
+
 
   useEffect(() => {
     if(stateLogs.status !== STATUS.PENDING && stateLogs.status !== STATUS.IDLE && onDone){
@@ -77,6 +81,21 @@ const LogComponent = React.memo(({ id, options, onDone, stateType = 'Report', on
       }
     }
   }, [onDone]);
+
+  useEffect(() => {
+    if(live){
+      if(value && state && (!onlyNumber || obj.current.isNumber)){
+        if(liveData.current.length > 9){
+          liveData.current.shift();
+        }
+        liveData.current.push({ data: state.data, time: state.timestamp });
+        onDone({ ...obj.current, data: [...liveData.current], status: STATUS.SUCCESS });
+      }
+    } else {
+      liveData.current = [];
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [state, live]);
 
   return null;
 })

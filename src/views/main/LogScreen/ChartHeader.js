@@ -15,6 +15,9 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'space-between'
   },
+  center: {
+    justifyContent: 'center'
+  },
   buttonRow:{
     backgroundColor: 'pink'
   },
@@ -58,6 +61,18 @@ const styles = StyleSheet.create({
     height:500,
     borderColor:'red',
     borderWidth: 1,
+  },
+  liveCircle: {
+    width: 10,
+    height: 10,
+    borderRadius: 20,
+    margin: 10
+  },
+  liveOn: {
+    backgroundColor: 'green'
+  },
+  liveOff: {
+    backgroundColor: 'red'
   }
 });
 
@@ -307,6 +322,10 @@ const ChartHeader = ({ options, setOptions, children}) => {
     return null
   }
 
+  const toggleLive = () => {
+    setOptions({...options, live: !options.live});
+  }
+
   const setArrowOptions = (newOptions, number) => {
     setOptions({...defaultOptions, ...newOptions, value: { ...options.value, number }});
   }
@@ -373,23 +392,31 @@ const ChartHeader = ({ options, setOptions, children}) => {
 
   return (
     <View>
-      <View style={[styles.row, styles.buttonRow]}>
-        <TypeSelector type={options.type} setOptions={setOptions}  />
-        <ValueComponent value={options.value} setOptions={setOptions} />
-        <Compute operation={options.operation} group_by={options.group_by} setOptions={setOptions}/>
-      </View>
-
+      <TouchableOpacity style={theme.common.row} onPress={toggleLive}>
+        <View style={[styles.liveCircle, options.live ? styles.liveOn : styles.liveOff]}/>
+        <Text content={CapitalizeFirst(t('live'))} />
+      </TouchableOpacity>
       {
-        !!options.value &&
-        <View style={[theme.common.row, {justifyContent: 'center'}]}>
-          <TouchableOpacity style={[styles.button, leftDisabled && styles.buttonDisabled]} onPress={handleLeft} disabled={leftDisabled}>
-            <Icon name='chevron-left'/>
-          </TouchableOpacity>
-          <Text content={CapitalizeFirst(t(options.type === 'clock' ? options.value.t : 'lastXPoints', { number: options.value.number }))}/>
-          <TouchableOpacity style={[styles.button, rightDisabled && styles.buttonDisabled]} onPress={handleRight} disabled={rightDisabled}>
-            <Icon name='chevron-right'/>
-          </TouchableOpacity>
-        </View>
+        !options.live && 
+        <>
+          <View style={[styles.row, styles.buttonRow]}>
+            <TypeSelector type={options.type} setOptions={setOptions}  />
+            <ValueComponent value={options.value} setOptions={setOptions} />
+            <Compute operation={options.operation} group_by={options.group_by} setOptions={setOptions}/>
+          </View>
+          {
+            !!options.value &&
+            <View style={[theme.common.row, styles.center]}>
+              <TouchableOpacity style={[styles.button, leftDisabled && styles.buttonDisabled]} onPress={handleLeft} disabled={leftDisabled}>
+                <Icon name='chevron-left'/>
+              </TouchableOpacity>
+              <Text content={CapitalizeFirst(t(options.type === 'clock' ? options.value.t : 'lastXPoints', { number: options.value.number }))}/>
+              <TouchableOpacity style={[styles.button, rightDisabled && styles.buttonDisabled]} onPress={handleRight} disabled={rightDisabled}>
+                <Icon name='chevron-right'/>
+              </TouchableOpacity>
+            </View>
+          }
+        </>
       }
       <View style={styles.chartContainer}>
         {children}
