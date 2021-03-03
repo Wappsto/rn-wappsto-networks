@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import Text from '../components/Text';
 import usePrevious from 'wappsto-blanket/hooks/usePrevious';
+import { getRequestErrorMessage } from '../util/helpers';
 import {useTranslation, CapitalizeFirst} from '../translations';
 
 const RequestError = React.memo(({ request, skipCodes = [], warning, autoHide = true }) => {
@@ -11,6 +12,8 @@ const RequestError = React.memo(({ request, skipCodes = [], warning, autoHide = 
   useEffect(() => {
     if(!visible && request && request.status === 'error' && (!request.json || request.json && skipCodes.indexOf(request.json.code) === -1)){
       setVisible(true);
+    } else if(request && request.status === 'pending'){
+      setVisible(false);
     } else {
       const prevRequestId = prevRequest && prevRequest.id;
       const requestId = request && request.id;
@@ -35,17 +38,7 @@ const RequestError = React.memo(({ request, skipCodes = [], warning, autoHide = 
   }, [visible]);
 
   if (request && visible) {
-    let message;
-    if (request.json && request.json.code) {
-      message = t('error:' + request.json.code, request.json.data);
-      if (message === request.json.code.toString()) {
-        message = request.json.code + ': ' + request.json.message;
-      }
-    } else if (request.responseStatus) {
-      message = t('error:status.' + request.responseStatus);
-    } else {
-      message = t('error:noResponse');
-    }
+    const message = getRequestErrorMessage(request, t);
     return (
       <Text
         size='p'

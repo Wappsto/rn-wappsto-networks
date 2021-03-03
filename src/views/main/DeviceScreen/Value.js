@@ -7,7 +7,7 @@ import useRequest from 'wappsto-blanket/hooks/useRequest';
 import RequestError from '../../../components/RequestError';
 import Text from '../../../components/Text';
 import Button from '../../../components/Button';
-import { useTranslation, CapitalizeFirst } from '../../../translations';
+import { useTranslation } from '../../../translations';
 
 const styles = StyleSheet.create({
   itemPanel: {

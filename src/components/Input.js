@@ -4,7 +4,7 @@ import Text from './Text';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import theme from '../theme/themeExport';
 
-const styles = StyleSheet.create({
+export const styles = StyleSheet.create({
   inputWrapper: {
     width:'100%',
     marginBottom: theme.variables.defaultFontSize

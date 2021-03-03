@@ -3,7 +3,7 @@ import { View, Text as RNtext, StyleSheet, Image } from 'react-native';
 import Text from '../../../components/Text';
 import theme from '../../../theme/themeExport';
 import { useTranslation, CapitalizeFirst } from '../../../translations';
-import Timestamp from './Timestamp';
+import Timestamp from '../../../components/Timestamp';
 import { cannotAccessState } from 'wappsto-blanket/util';
 
 const styles = StyleSheet.create({

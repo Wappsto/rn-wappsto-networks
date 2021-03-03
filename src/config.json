@@ -1,5 +1,5 @@
 {
-  "baseUrl": "https://wappsto.com/services",
+  "baseUrl": "https://qa.wappsto.com/services",
   "serviceVersion": {
     "default": "2.0",
     "user": "2.1",

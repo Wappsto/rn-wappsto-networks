@@ -1,19 +1,22 @@
 import React, { useState, useEffect } from 'react';
 import { Text as RNText, View, StyleSheet } from 'react-native';
 import Clipboard from '@react-native-community/clipboard';
-import { useTranslation, CapitalizeFirst } from '../../translations';
-import theme from '../../theme/themeExport';
-import Text from '../../components/Text';
-import Button from '../../components/Button';
-import Screen from '../../components/Screen';
-import Timestamp from './DeviceScreen/Timestamp';
-import ConfirmationPopup from '../../components/ConfirmationPopup';
-import RequestError from '../../components/RequestError';
-import useDeleteItem from '../../hooks/useDeleteItem';
-import { selectedNetworkName } from '../../util/params';
-import useGetItemEntity from '../../hooks/useGetItemEntity';
-import useUnmountRemoveItem from '../../hooks/useUnmountRemoveItem';
-import useUndefinedBack from '../../hooks/useUndefinedBack';
+import { useTranslation, CapitalizeFirst } from '../../../translations';
+import theme from '../../../theme/themeExport';
+import Text from '../../../components/Text';
+import Button from '../../../components/Button';
+import Screen from '../../../components/Screen';
+import Timestamp from '../../../components/Timestamp';
+import ConfirmationPopup from '../../../components/ConfirmationPopup';
+import RequestError from '../../../components/RequestError';
+import Share from './Share';
+import useDeleteItem from '../../../hooks/useDeleteItem';
+import { selectedNetworkName } from '../../../util/params';
+import useGetItemEntity from '../../../hooks/useGetItemEntity';
+import useUnmountRemoveItem from '../../../hooks/useUnmountRemoveItem';
+import useUndefinedBack from '../../../hooks/useUndefinedBack';
+import useVisible from 'wappsto-blanket/hooks/useVisible';
+import Toast from 'react-native-toast-message';
 
 const styles = StyleSheet.create({
   container:{
@@ -43,6 +46,9 @@ const styles = StyleSheet.create({
     marginBottom: 20,
     backgroundColor: theme.variables.secondary,
     paddingVertical: 3
+  },
+  toast: {
+    zIndex: 999
   }
 });
 
@@ -52,6 +58,7 @@ const NetworkScreen = React.memo(({navigation}) => {
   const [copiedTextVisible, setCopiedTextVisible] = useState(false);
   const network = useGetItemEntity(selectedNetworkName, 'network');
   const { deleteItem, request, confirmVisible, showDeleteConfirmation, hideDeleteConfirmation } = useDeleteItem(network);
+  const [shareVibile, showShare, hideShare] = useVisible(false);
 
   useUnmountRemoveItem(selectedNetworkName);
   useUndefinedBack(network, navigation);
@@ -66,7 +73,6 @@ const NetworkScreen = React.memo(({navigation}) => {
     return () => {
       clearTimeout(t);
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [copiedTextVisible]);
 
   if(!network || !network.meta || !network.meta.id ){
@@ -80,7 +86,9 @@ const NetworkScreen = React.memo(({navigation}) => {
 
   return (
     <Screen>
+      <Toast ref={Toast.setRef} style={styles.toast} />
       <View style={styles.container}>
+        <Share item={network} visible={shareVibile} hide={hideShare}/>
         <View>
           {network.name &&
             <RNText>
@@ -102,11 +110,11 @@ const NetworkScreen = React.memo(({navigation}) => {
           }
           <RNText>
             <Text bold content={CapitalizeFirst(t('networkDescription.created')) + ': '} />
-            <Timestamp timestamp={network.meta.created}></Timestamp>
+            <Timestamp timestamp={network.meta.created}/>
           </RNText>
           <RNText>
             <Text bold content={CapitalizeFirst(t('networkDescription.updated')) + ': '}/>
-            <Timestamp timestamp={network.meta.updated}></Timestamp>
+            <Timestamp timestamp={network.meta.updated}/>
           </RNText>
           { !!network.meta.connection &&
             <View style={theme.common.row}>
@@ -115,7 +123,7 @@ const NetworkScreen = React.memo(({navigation}) => {
               <RNText>
                 <Text content={
                   (network.meta.connection?.online ? CapitalizeFirst(t('networkDescription.online')) : CapitalizeFirst(t('networkDescription.offline'))) + ' '}/>
-                <Timestamp timestamp={network.meta.updated}></Timestamp>
+                <Timestamp timestamp={network.meta.updated}/>
               </RNText>
             </View>
           }
@@ -127,7 +135,7 @@ const NetworkScreen = React.memo(({navigation}) => {
           }
           { !!network.meta.control_when_offline &&
             <RNText>
-              <Text bold content={CapitalizeFirst(t('networkDescription.control_when_offline'))+ ': '}/>
+              <Text bold content={CapitalizeFirst(t('networkDescription.control_when_offline')) + ': '}/>
               <Text content={network.meta.control_when_offline}/>
             </RNText>
           }
@@ -137,6 +145,7 @@ const NetworkScreen = React.memo(({navigation}) => {
             display='block'
             disabled={request && request.status === 'pending'}
             text={CapitalizeFirst(t('genericButton.share'))}
+            onPress={showShare}
             icon='share-2'
           />
           <Button
@@ -160,9 +169,9 @@ const NetworkScreen = React.memo(({navigation}) => {
           <RequestError request={request} />
         </View>
         <ConfirmationPopup
-            visible={confirmVisible}
-            accept={deleteItem}
-            reject={hideDeleteConfirmation}
+          visible={confirmVisible}
+          accept={deleteItem}
+          reject={hideDeleteConfirmation}
         />
       </View>
     </Screen>

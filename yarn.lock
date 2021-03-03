@@ -6627,6 +6627,13 @@ react-native-svg@^12.1.0:
     css-select "^2.1.0"
     css-tree "^1.0.0-alpha.39"
 
+react-native-toast-message@^1.4.9:
+  version "1.4.9"
+  resolved "https://registry.yarnpkg.com/react-native-toast-message/-/react-native-toast-message-1.4.9.tgz#47f33ac312fe2aee5dbdd4ae14745fa0d354102e"
+  integrity sha512-QhHzzsiymKpHEWz2nUKQjQMRuGN+/a8cOwDXJcz3TQFY03p20f6sJW9JKw3KkMfvWiUhGbApCPpNU6tHaAZ32w==
+  dependencies:
+    prop-types "^15.7.2"
+
 react-native-vector-icons@^7.1.0:
   version "7.1.0"
   resolved "https://registry.yarnpkg.com/react-native-vector-icons/-/react-native-vector-icons-7.1.0.tgz#145487d617b2a81d395d2cf64e6e065fcab3a454"
@@ -8445,9 +8452,6 @@ wappsto-blanket@Wappsto/wappsto-blanket#144b4d2:
   version "1.2.3"
   resolved "https://codeload.github.com/Wappsto/wappsto-blanket/tar.gz/144b4d26fed2aa9a4f0438f4bf2b07f7d69d96f8"
   dependencies:
-    axios "^0.21.1"
-    deep-equal "^2.0.5"
-    querystring "^0.2.1"
     uuid "^8.3.1"
 
 wappsto-redux@^3.5.1:

@@ -55,3 +55,18 @@ export const getStateData = (data, step) => {
 	}
   return Math.round(data);
 }
+
+export function getRequestErrorMessage(request, t) {
+  let message;
+  if (request.json && request.json.code) {
+    message = t('error:' + request.json.code, request.json.data);
+    if (message === request.json.code.toString()) {
+      message = request.json.code + ': ' + request.json.message;
+    }
+  } else if (request.responseStatus) {
+    message = t('error:status.' + request.responseStatus);
+  } else {
+    message = t('error:noResponse');
+  }
+  return message;
+}
