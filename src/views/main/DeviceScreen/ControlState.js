@@ -71,26 +71,26 @@ export const StateDataField = ({
           trackColor={{false: theme.variables.switchTrackColor, true: theme.variables.switchTrackColorEnabled}}
         />
       );
-    } else if ((param.max - param.min) / param.step <= 150) {
-      const onSlidingComplete = (data) => {
-        setIsFocused(false);
-        updateState(getStateData(data, param.step));
-      }
-      stateDataField = (
-        <Slider
-          onSlidingStart={() => setIsFocused(true)}
-          onSlidingComplete={onSlidingComplete}
-          maximumValue={param.max}
-          minimumValue={param.min}
-          step={param.step}
-          style={styles.slider}
-          value={parseFloat(input) || 0}
-          disabled={isUpdating}
-          thumbTintColor={theme.variables.sliderThumbTintColor}
-          minimumTrackTintColor={theme.variables.sliderMinimumTrackTintColor}
-          maximumTrackTintColor={theme.variables.sliderMaximumTrackTintColor}
-        />
-      );
+    // } else if ((param.max - param.min) / param.step <= 150) {
+    //   const onSlidingComplete = (data) => {
+    //     setIsFocused(false);
+    //     updateState(getStateData(data, param.step));
+    //   }
+    //   stateDataField = (
+    //     <Slider
+    //       onSlidingStart={() => setIsFocused(true)}
+    //       onSlidingComplete={onSlidingComplete}
+    //       maximumValue={param.max}
+    //       minimumValue={param.min}
+    //       step={param.step}
+    //       style={styles.slider}
+    //       value={parseFloat(input) || 0}
+    //       disabled={isUpdating}
+    //       thumbTintColor={theme.variables.sliderThumbTintColor}
+    //       minimumTrackTintColor={theme.variables.sliderMinimumTrackTintColor}
+    //       maximumTrackTintColor={theme.variables.sliderMaximumTrackTintColor}
+    //     />
+    //   );
     } else {
       stateDataField = (
         <NumericInput
