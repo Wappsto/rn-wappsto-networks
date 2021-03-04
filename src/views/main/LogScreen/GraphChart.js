@@ -1,8 +1,10 @@
-import React, { useMemo, useState } from 'react';
+import React, { useMemo, useState, useRef, useCallback } from 'react';
 import { TouchableOpacity, Text, StyleSheet, View } from 'react-native';
 import { VictoryChart, VictoryTheme, VictoryLine, createContainer } from 'victory-native';
-import { useTranslation } from '../../../translations';
+import Button from '../../../components/Button';
+import { useTranslation, CapitalizeFirst } from '../../../translations';
 import theme from '../../../theme/themeExport';
+import equal from 'deep-equal';
 
 const VictoryZoomVoronoiContainer = createContainer('zoom', 'voronoi');
 const styles = StyleSheet.create({
@@ -22,12 +24,35 @@ const COLORS = {
 const GraphChart = React.memo(({ data, operation = 'data' }) => {
   const { t } = useTranslation();
   const [ hidden, setHidden ] = useState([]);
+  const [ zoom, setZoom ] = useState();
+  const xyCache = useRef({});
+
+  const resetZoom = useCallback(() => xyCache.current.x.length && xyCache.current.y.length && setZoom(xyCache.current), []);
+
   const formattedData = useMemo(() => {
     const fd = [];
+    const x = [];
+    const y = [];
     for(let key in data){
         const props = {
           key,
-          data: data[key].data.map(d => ({ x: new Date(d.time), y: d[operation] && !isNaN(d[operation]) ? parseFloat(d[operation]) : null, rawValue: d[operation] })),
+          data: data[key].data.map(d => {
+            const time = new Date(d.time);
+            const data = d[operation] && !isNaN(d[operation]) ? parseFloat(d[operation]) : null;
+            if(!x[0] || time.getTime() < x[0].getTime()){
+              x[0] = time;
+            }
+            if(!x[1] || time.getTime() > x[1].getTime()){
+              x[1] = time;
+            }
+            if(!y[0] || data < y[0]){
+              y[0] = data;
+            }
+            if(!y[1] || data > y[1]){
+              y[1] = data;
+            }
+            return { x: time, y: data, rawValue: d[operation] };
+          }),
           name: data[key].name,
           style: {
             data: { stroke: COLORS[key] }
@@ -35,8 +60,10 @@ const GraphChart = React.memo(({ data, operation = 'data' }) => {
         }
         fd.push(props);
     }
+    xyCache.current = { x, y };
+    resetZoom();
     return fd;
-  }, [data, operation]);
+  }, [data, operation, resetZoom]);
 
   // const scale = { x: 'time', y: 'linear' };
   const [lines, legend] = useMemo(() => {
@@ -60,13 +87,26 @@ const GraphChart = React.memo(({ data, operation = 'data' }) => {
     return [lines, legend];
   }, [formattedData, hidden]);
 
+  const cannotZoom = equal(xyCache.current, zoom);
   return (
     <>
+      <Button
+        disabled={cannotZoom}
+        style={cannotZoom && theme.common.disabled}
+        onPress={resetZoom}
+        display='block'
+        color='primary'
+        text={CapitalizeFirst(t('resetZoom'))}
+      />
       <VictoryChart
         scale={{ x: 'time' }}
         theme={VictoryTheme.material}
         containerComponent={
-          <VictoryZoomVoronoiContainer labels={d => [`${t('time')}: ${d.datum.x.toLocaleString()}\n${d.datum.childName}: ${d.datum.rawValue}`]} />
+          <VictoryZoomVoronoiContainer
+            labels={d => [`${t('time')}: ${d.datum.x.toLocaleString()}\n${d.datum.childName}: ${d.datum.rawValue}`]}
+            onZoomDomainChange={setZoom}
+            zoomDomain={zoom}
+            />
         }
       >
         {lines}
