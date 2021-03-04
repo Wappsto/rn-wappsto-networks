@@ -27,7 +27,7 @@ const GraphChart = React.memo(({ data, operation = 'data' }) => {
   const [ zoom, setZoom ] = useState();
   const xyCache = useRef({});
 
-  const resetZoom = useCallback(() => xyCache.current.x.length && xyCache.current.y.length && setZoom(xyCache.current), []);
+  const resetZoom = useCallback(() => setZoom(xyCache.current), []);
 
   const formattedData = useMemo(() => {
     const fd = [];
@@ -60,8 +60,10 @@ const GraphChart = React.memo(({ data, operation = 'data' }) => {
         }
         fd.push(props);
     }
-    xyCache.current = { x, y };
-    resetZoom();
+    if(x.length && y.length){
+      xyCache.current = { x, y };
+      resetZoom();
+    }
     return fd;
   }, [data, operation, resetZoom]);
 
@@ -72,7 +74,7 @@ const GraphChart = React.memo(({ data, operation = 'data' }) => {
     formattedData.forEach((props) => {
       const { key, name } = props;
       const isHidden = hidden.includes(key);
-      if(!isHidden){
+      if(!isHidden && props.data.length){
         lines.push(<VictoryLine {...props}/>);
       }
       legend.push(
@@ -87,7 +89,7 @@ const GraphChart = React.memo(({ data, operation = 'data' }) => {
     return [lines, legend];
   }, [formattedData, hidden]);
 
-  const cannotZoom = equal(xyCache.current, zoom);
+  const cannotZoom = !lines.length || equal(xyCache.current, zoom);
   return (
     <>
       <Button

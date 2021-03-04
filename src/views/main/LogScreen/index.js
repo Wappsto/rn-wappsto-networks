@@ -1,4 +1,6 @@
 import React, { useState, useEffect, useRef, useCallback } from 'react';
+import { ScrollView } from 'react-native';
+import Screen from '../../../components/Screen';
 import Text from '../../../components/Text';
 import GraphChart from './GraphChart';
 import ChartHeader, { MAX_POINTS } from './ChartHeader';
@@ -92,22 +94,24 @@ const LogScreen = React.memo(() => {
   const showCustomReportError = !loading && !errors.current.Report && hasReport;
   const showCustomControlError = !loading && !errors.current.Control && hasControl;
   return (
-    <>
-      {values}
-      <ChartHeader options={options} setOptions={setOptions}>
-        {loading && <ActivityIndicator color='red' />}
+    <Screen>
+      <ScrollView>
+        {values}
+        <ChartHeader options={options} setOptions={setOptions}>
+          {loading && <ActivityIndicator color='red' />}
 
-        {errors.current.Report && <Text color='error' content={CapitalizeFirst(t('failedToGetReportData'))}/>}
-        {showCustomReportError && !data.Report?.data.length && <Text color='warning' content={CapitalizeFirst(t('noReportDataWarning'))}/>}
-        {showCustomReportError && data.Report?.data.length > MAX_POINTS && <Text color='warning' content={CapitalizeFirst(t('moreReportPointsThanMaxWarning', { max: MAX_POINTS }))}/>}
+          {errors.current.Report && <Text color='error' content={CapitalizeFirst(t('failedToGetReportData'))}/>}
+          {showCustomReportError && !data.Report?.data.length && <Text color='warning' content={CapitalizeFirst(t('noReportDataWarning'))}/>}
+          {showCustomReportError && data.Report?.data.length > MAX_POINTS && <Text color='warning' content={CapitalizeFirst(t('moreReportPointsThanMaxWarning', { max: MAX_POINTS }))}/>}
 
-        {errors.current.Control && <Text color='error' content={CapitalizeFirst(t('failedToGetControlData'))}/>}
-        {showCustomControlError && !data.Control?.data.length && <Text color='warning' content={CapitalizeFirst(t('noControlDataWarning'))}/>}
-        {showCustomControlError && data.Control?.data.length > MAX_POINTS && <Text color='warning' content={CapitalizeFirst(t('moreControlPointsThanMaxWarning', { max: MAX_POINTS }))}/>}
+          {errors.current.Control && <Text color='error' content={CapitalizeFirst(t('failedToGetControlData'))}/>}
+          {showCustomControlError && !data.Control?.data.length && <Text color='warning' content={CapitalizeFirst(t('noControlDataWarning'))}/>}
+          {showCustomControlError && data.Control?.data.length > MAX_POINTS && <Text color='warning' content={CapitalizeFirst(t('moreControlPointsThanMaxWarning', { max: MAX_POINTS }))}/>}
 
-        <GraphChart data={data} operation={options?.live ? 'data' : options?.operation}/>
-      </ChartHeader>
-    </>
+          <GraphChart data={data} operation={options?.live ? 'data' : options?.operation}/>
+        </ChartHeader>
+      </ScrollView>
+    </Screen>
   )
 });
 
