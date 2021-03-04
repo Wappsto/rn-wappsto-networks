@@ -8452,6 +8452,9 @@ wappsto-blanket@Wappsto/wappsto-blanket#144b4d2:
   version "1.2.3"
   resolved "https://codeload.github.com/Wappsto/wappsto-blanket/tar.gz/144b4d26fed2aa9a4f0438f4bf2b07f7d69d96f8"
   dependencies:
+    axios "^0.21.1"
+    deep-equal "^2.0.5"
+    querystring "^0.2.1"
     uuid "^8.3.1"
 
 wappsto-redux@^3.5.1:

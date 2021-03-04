@@ -88,6 +88,8 @@ const POINT_OPTIONS = [50, 100, 300, 1000];
 const OPERATIONS = ['none', 'avg', 'count', 'max', 'min', 'sqrdiff', 'stddev', 'sum', 'variance'];
 const GROUP_BY = ['none', 'microsecond', 'millisecond', 'second', 'minute', 'hour', 'day', 'week', 'month', 'quarter', 'year'];
 
+export const MAX_POINTS = 1000;
+
 const compute = ({ start, end }) => {
   if(!start || !end){
     return;
@@ -373,7 +375,7 @@ const ChartHeader = ({ options, setOptions, children}) => {
       const diff = 10;
       const leftDiff = options.value.number + diff;
       const rightDiff = options.value.number - diff;
-      leftDisabled = leftDiff > 2000;
+      leftDisabled = leftDiff > MAX_POINTS;
       rightDisabled = rightDiff === 0;
       handleLeft = () => {
         const newOptions = getXValueOptions(leftDiff);
@@ -397,7 +399,7 @@ const ChartHeader = ({ options, setOptions, children}) => {
         <Text content={CapitalizeFirst(t('live'))} />
       </TouchableOpacity>
       {
-        !options.live && 
+        !options.live &&
         <>
           <View style={[styles.row, styles.buttonRow]}>
             <TypeSelector type={options.type} setOptions={setOptions}  />

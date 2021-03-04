@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef, useCallback } from 'react';
 import Text from '../../../components/Text';
 import GraphChart from './GraphChart';
-import ChartHeader from './ChartHeader';
+import ChartHeader, { MAX_POINTS } from './ChartHeader';
 import LogComponent, { STATUS } from './LogComponent';
 import { ActivityIndicator } from 'react-native';
 import { useRoute } from '@react-navigation/native';
@@ -60,6 +60,8 @@ const LogScreen = React.memo(() => {
     }
     if(options.limit){
       rawOptions.limit = options.limit;
+    } else {
+      rawOptions.limit = MAX_POINTS + 1;
     }
     if(prevLive.current === options.live){
       if(!rawOptions.start || !rawOptions.end || equal(rawOptions, prevOptions.current)){
@@ -87,15 +89,22 @@ const LogScreen = React.memo(() => {
     setValues(values);
   }, [options, valueId, hasReport, hasControl, onDone]);
 
+  const showCustomReportError = !loading && !errors.current.Report && hasReport;
+  const showCustomControlError = !loading && !errors.current.Control && hasControl;
   return (
     <>
       {values}
       <ChartHeader options={options} setOptions={setOptions}>
         {loading && <ActivityIndicator color='red' />}
+
         {errors.current.Report && <Text color='error' content={CapitalizeFirst(t('failedToGetReportData'))}/>}
-        {!loading && !errors.current.Report && hasReport && !data.Report?.data.length && <Text color='warning' content={CapitalizeFirst(t('noReportDataWarning'))}/>}
+        {showCustomReportError && !data.Report?.data.length && <Text color='warning' content={CapitalizeFirst(t('noReportDataWarning'))}/>}
+        {showCustomReportError && data.Report?.data.length > MAX_POINTS && <Text color='warning' content={CapitalizeFirst(t('moreReportPointsThanMaxWarning', { max: MAX_POINTS }))}/>}
+
         {errors.current.Control && <Text color='error' content={CapitalizeFirst(t('failedToGetControlData'))}/>}
-        {!loading && !errors.current.Control && hasControl && !data.Control?.data.length && <Text color='warning' content={CapitalizeFirst(t('noControlDataWarning'))}/>}
+        {showCustomControlError && !data.Control?.data.length && <Text color='warning' content={CapitalizeFirst(t('noControlDataWarning'))}/>}
+        {showCustomControlError && data.Control?.data.length > MAX_POINTS && <Text color='warning' content={CapitalizeFirst(t('moreControlPointsThanMaxWarning', { max: MAX_POINTS }))}/>}
+
         <GraphChart data={data} operation={options?.live ? 'data' : options?.operation}/>
       </ChartHeader>
     </>

@@ -54,7 +54,7 @@ const Share = React.memo(({ item, visible, hide }) => {
       body: {
         'permission':[{
           'meta':{
-            'id': user
+            'id': user.toLowerCase()
           },
           'restriction':[{method: restriction}]
         }]
