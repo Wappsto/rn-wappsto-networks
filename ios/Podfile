@@ -8,6 +8,9 @@ target 'rn_wappsto_networks' do
 
   use_react_native!(:path => config["reactNativePath"])
 
+  permissions_path = '../node_modules/react-native-permissions/ios'
+  pod 'Permission-BluetoothPeripheral', :path => "#{permissions_path}/BluetoothPeripheral.podspec"
+
   target 'rn_wappsto_networksTests' do
     inherit! :complete
     # Pods for testing
