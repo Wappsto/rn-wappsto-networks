@@ -10,6 +10,7 @@ import { useRoute } from '@react-navigation/native';
 import useEntitySelector from 'wappsto-blanket/hooks/useEntitySelector';
 import equal from 'deep-equal';
 import { useTranslation, CapitalizeFirst } from '../../../translations';
+import theme from '../../../theme/themeExport';
 
 const LogScreen = React.memo(() => {
   const { t } = useTranslation();
@@ -118,6 +119,7 @@ const LogScreen = React.memo(() => {
 
 LogScreen.navigationOptions = ({ route }) => {
   return {
+    ...theme.headerStyle,
     title: route.params.title || '',
   };
 };

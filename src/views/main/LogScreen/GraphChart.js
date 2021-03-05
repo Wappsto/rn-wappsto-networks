@@ -45,7 +45,7 @@ const GraphChart = React.memo(({ data, operation = 'data', setCanScroll }) => {
             if(!x[1] || time.getTime() > x[1].getTime()){
               x[1] = time;
             }
-            if(data){
+            if(data !== null){
               if(!y[0] || data < y[0]){
                 y[0] = data;
               }
