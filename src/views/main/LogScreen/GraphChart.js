@@ -45,11 +45,13 @@ const GraphChart = React.memo(({ data, operation = 'data', setCanScroll }) => {
             if(!x[1] || time.getTime() > x[1].getTime()){
               x[1] = time;
             }
-            if(!y[0] || data < y[0]){
-              y[0] = data;
-            }
-            if(!y[1] || data > y[1]){
-              y[1] = data;
+            if(data){
+              if(!y[0] || data < y[0]){
+                y[0] = data;
+              }
+              if(!y[1] || data > y[1]){
+                y[1] = data;
+              }
             }
             return { x: time, y: data, rawValue: d[operation] };
           }),
