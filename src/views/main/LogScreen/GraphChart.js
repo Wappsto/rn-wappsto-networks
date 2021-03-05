@@ -21,7 +21,7 @@ const COLORS = {
   Report: 'red',
   Control: 'green'
 }
-const GraphChart = React.memo(({ data, operation = 'data' }) => {
+const GraphChart = React.memo(({ data, operation = 'data', setCanScroll }) => {
   const { t } = useTranslation();
   const [ hidden, setHidden ] = useState([]);
   const [ zoom, setZoom ] = useState();
@@ -108,6 +108,8 @@ const GraphChart = React.memo(({ data, operation = 'data' }) => {
             labels={d => [`${t('time')}: ${d.datum.x.toLocaleString()}\n${d.datum.childName}: ${d.datum.rawValue}`]}
             onZoomDomainChange={setZoom}
             zoomDomain={zoom}
+            onTouchStart={() => setCanScroll(false)}
+            onTouchEnd={() => setCanScroll(true)}
             />
         }
       >
