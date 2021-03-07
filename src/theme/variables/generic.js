@@ -21,6 +21,8 @@ export function generateVariables(v = {}) {
     alert: '#c51165',
     warning: '#f0ad4e',
 
+    signInButtonTheme: 'light', // 'light' or 'dark'
+
     // Typography
     defaultFontSize: 14,
     fontFamily: 'System',
