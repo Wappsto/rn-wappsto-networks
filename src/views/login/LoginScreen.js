@@ -35,7 +35,7 @@ const styles = StyleSheet.create({
     fontSize: 16,
     lineHeight: 24,
     fontWeight: '600',
-    color: 'white'
+    color: theme.variables.signInButtonTheme === 'dark' ? '#ffffff' : '#000000'
   },
   GoogleSigninButtonWrapper: {
     backgroundColor: 'white',
@@ -70,7 +70,7 @@ const styles = StyleSheet.create({
     borderColor: theme.variables.disabled,
     marginVertical: 25
   },
-  googleColor: {backgroundColor: '#4285F4'},
+  googleColor: {backgroundColor: theme.variables.signInButtonTheme === 'dark' ? '#4285F4' : '#ffffff'},
   facebookColor: {backgroundColor: '#4267B2'},
   terms: {
     textAlign: 'center',
@@ -278,12 +278,12 @@ const LoginScreen = React.memo(({ navigation }) => {
                     resizeMode='contain'
                     source={require('../../../assets/images/login/f_logo_RGB-White_58.png')} style={styles.signinButtonImage}/>
                 </View>
-                <RNText style={styles.signinButtonText}>
+                <RNText style={[styles.signinButtonText, {color: 'white'}]}>
                   {CapitalizeFirst(t('account:signInWithFacebook'))}
                 </RNText>
               </TouchableOpacity>
               <AppleButton
-                buttonStyle={AppleButton.Style.BLACK}
+                buttonStyle={theme.variables.signInButtonTheme === 'dark' ?  AppleButton.Style.BLACK : AppleButton.Style.WHITE}
                 buttonType={AppleButton.Type.SIGN_IN}
                 style={[
                   styles.signinButton,
