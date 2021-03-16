@@ -8,38 +8,21 @@
 
 /* Begin PBXBuildFile section */
 		00E356F31AD99517003FC87E /* rn_wappsto_networksTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 00E356F21AD99517003FC87E /* rn_wappsto_networksTests.m */; };
-		0CA9868892DE470188C9D8A8 /* FontAwesome5_Solid.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 607EB9872E9140EEA1687CA5 /* FontAwesome5_Solid.ttf */; };
 		13B07FBC1A68108700A75B9A /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB01A68108700A75B9A /* AppDelegate.m */; };
 		13B07FBD1A68108700A75B9A /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB11A68108700A75B9A /* LaunchScreen.xib */; };
 		13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB51A68108700A75B9A /* Images.xcassets */; };
 		13B07FC11A68108700A75B9A /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB71A68108700A75B9A /* main.m */; };
-		26393EF8D0E744D8829ACF25 /* FontAwesome5_Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 645E35F1355042D9805521D7 /* FontAwesome5_Regular.ttf */; };
 		276440D21D565C3698E67A9C /* libPods-rn_wappsto_networks-tvOS.a in Frameworks */ = {isa = PBXBuildFile; fileRef = E746DD5088FCBA0A71D540BE /* libPods-rn_wappsto_networks-tvOS.a */; };
 		2D02E4BC1E0B4A80006451C7 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB01A68108700A75B9A /* AppDelegate.m */; };
 		2D02E4BD1E0B4A84006451C7 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB51A68108700A75B9A /* Images.xcassets */; };
 		2D02E4BF1E0B4AB3006451C7 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB71A68108700A75B9A /* main.m */; };
 		2DCD954D1E0B4F2C00145EB5 /* rn_wappsto_networksTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 00E356F21AD99517003FC87E /* rn_wappsto_networksTests.m */; };
-		4F0BAD82775B4ED58DFBBD30 /* FontAwesome5_Brands.ttf in Resources */ = {isa = PBXBuildFile; fileRef = E459F6D2484F40A99590A5BF /* FontAwesome5_Brands.ttf */; };
-		573301E15FAA48E09B64FF51 /* Feather.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 533BAA86D7A044A98C639D7C /* Feather.ttf */; };
-		58FE528630C54866986CE63A /* FontAwesome.ttf in Resources */ = {isa = PBXBuildFile; fileRef = B406AC4F9AEF4B70A4873795 /* FontAwesome.ttf */; };
-		5DCCC7BC4A594624B3470FD2 /* Ionicons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 77C6730101CB44E998CC1E89 /* Ionicons.ttf */; };
 		673ED8B325F13C39006DF199 /* File.swift in Sources */ = {isa = PBXBuildFile; fileRef = 673ED8B225F13C39006DF199 /* File.swift */; };
 		673ED8B425F13C39006DF199 /* File.swift in Sources */ = {isa = PBXBuildFile; fileRef = 673ED8B225F13C39006DF199 /* File.swift */; };
-		67B85C89246AD83900DB439B /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 67B85C88246AD83900DB439B /* GoogleService-Info.plist */; };
 		67FBC123245971DE00B1A0C1 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 67FBC122245971DE00B1A0C1 /* GoogleService-Info.plist */; };
-		7AAF5EAEDF234FA5890BB932 /* Foundation.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 9D1C7B549C5F436F85DEA832 /* Foundation.ttf */; };
-		8233911217314812BC7B4D01 /* MaterialIcons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 4F45F97152864E4C80FD60A5 /* MaterialIcons.ttf */; };
 		82E1941162371E12C6C3530A /* libPods-rn_wappsto_networks-rn_wappsto_networksTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 70CDF0E48754585C011FBAA9 /* libPods-rn_wappsto_networks-rn_wappsto_networksTests.a */; };
-		86593585FF084D88A1DEF89C /* Octicons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = EB359626BDAE41AE9CF76027 /* Octicons.ttf */; };
-		8847E760BC0D4A5BBF0608DF /* Zocial.ttf in Resources */ = {isa = PBXBuildFile; fileRef = FEFAD39E48124C4D9B8DA2CF /* Zocial.ttf */; };
-		8B7F88FA303549888AB35A92 /* AntDesign.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 7B9D6AEFA643494F8F8D242B /* AntDesign.ttf */; };
-		9F5B504E21054EEE87BD8027 /* Entypo.ttf in Resources */ = {isa = PBXBuildFile; fileRef = BCCB85C9C4B243B8B7774891 /* Entypo.ttf */; };
-		B360FCC0395645539246610C /* EvilIcons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = E38A9C00431D462CB94AC36E /* EvilIcons.ttf */; };
 		C6FD83B0F29D1F17E4CA7964 /* libPods-rn_wappsto_networks.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 6802507841FE5A54801BB575 /* libPods-rn_wappsto_networks.a */; };
 		D7CC0566D897F3327175D4D3 /* libPods-rn_wappsto_networks-tvOSTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = A7F2DD5E3E896A62BE83D139 /* libPods-rn_wappsto_networks-tvOSTests.a */; };
-		EED752F26AF9442D815260EF /* SimpleLineIcons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 00AA0A3D76E140C9A5E1FAC6 /* SimpleLineIcons.ttf */; };
-		F083B1B29C194AAF909AA1D0 /* MaterialCommunityIcons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 49F8F49761D04932868C2CD1 /* MaterialCommunityIcons.ttf */; };
-		F3B07F39B0924ED288668E60 /* Fontisto.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 8685FD6AB6B84E1A896CDC85 /* Fontisto.ttf */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -422,24 +405,7 @@
 			files = (
 				13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */,
 				13B07FBD1A68108700A75B9A /* LaunchScreen.xib in Resources */,
-				8B7F88FA303549888AB35A92 /* AntDesign.ttf in Resources */,
-				9F5B504E21054EEE87BD8027 /* Entypo.ttf in Resources */,
-				B360FCC0395645539246610C /* EvilIcons.ttf in Resources */,
-				573301E15FAA48E09B64FF51 /* Feather.ttf in Resources */,
-				58FE528630C54866986CE63A /* FontAwesome.ttf in Resources */,
-				4F0BAD82775B4ED58DFBBD30 /* FontAwesome5_Brands.ttf in Resources */,
-				26393EF8D0E744D8829ACF25 /* FontAwesome5_Regular.ttf in Resources */,
-				0CA9868892DE470188C9D8A8 /* FontAwesome5_Solid.ttf in Resources */,
-				F3B07F39B0924ED288668E60 /* Fontisto.ttf in Resources */,
 				67FBC123245971DE00B1A0C1 /* GoogleService-Info.plist in Resources */,
-				7AAF5EAEDF234FA5890BB932 /* Foundation.ttf in Resources */,
-				5DCCC7BC4A594624B3470FD2 /* Ionicons.ttf in Resources */,
-				F083B1B29C194AAF909AA1D0 /* MaterialCommunityIcons.ttf in Resources */,
-				8233911217314812BC7B4D01 /* MaterialIcons.ttf in Resources */,
-				86593585FF084D88A1DEF89C /* Octicons.ttf in Resources */,
-				67B85C89246AD83900DB439B /* GoogleService-Info.plist in Resources */,
-				EED752F26AF9442D815260EF /* SimpleLineIcons.ttf in Resources */,
-				8847E760BC0D4A5BBF0608DF /* Zocial.ttf in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -473,7 +439,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "export NODE_BINARY=node\n../node_modules/react-native/scripts/react-native-xcode.sh";
+			shellScript = "export NODE_BINARY=node\n../node_modules/react-native/scripts/react-native-xcode.sh\n";
 		};
 		20DE82D5A1D06DB2D6A8C7E2 /* [CP] Copy Pods Resources */ = {
 			isa = PBXShellScriptBuildPhase;
