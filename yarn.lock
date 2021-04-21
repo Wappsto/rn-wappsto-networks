@@ -8457,6 +8457,10 @@ wappsto-blanket@Wappsto/wappsto-blanket#144b4d2:
     querystring "^0.2.1"
     uuid "^8.3.1"
 
+wappsto-locales@Wappsto/wappsto-locales:
+  version "0.0.0"
+  resolved "https://codeload.github.com/Wappsto/wappsto-locales/tar.gz/5f1a1877338946f249eda8363bbba174f7a727a5"
+
 wappsto-redux@^3.5.1:
   version "3.5.1"
   resolved "https://registry.yarnpkg.com/wappsto-redux/-/wappsto-redux-3.5.1.tgz#86a1aece9bbcc243bb8443544abfa62a1e8f9f86"

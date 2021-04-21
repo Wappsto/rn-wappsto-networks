@@ -8,14 +8,16 @@ const langueStorageKey = 'langueStorageKey';
 const resources = {
   en: {
     translation: require('./en/translation'),
-    account: require('./en/account'),
-    error: require('./en/error'),
-    languages: require('./en/languages')
+    dataModel: require('wappsto-locales/en/dataModel.json'),
+    account: require('wappsto-locales/en/account.json'),
+    error: require('wappsto-locales/en/error.json'),
+    languages: require('wappsto-locales/en/languages.json'),
   },
   da: {
     translation: require('./da/translation'),
-    account: require('./da/account'),
-    error: require('./da/error')
+    account: require('wappsto-locales/da/account.json'),
+    error:  require('wappsto-locales/da/error.json'),
+    languages: require('wappsto-locales/da/languages.json'),
   },
 };
 

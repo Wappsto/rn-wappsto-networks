@@ -62,6 +62,7 @@
     "victory-native": "^35.3.1",
     "vm-browserify": "0.0.4",
     "wappsto-blanket": "Wappsto/wappsto-blanket#144b4d2",
+    "wappsto-locales": "Wappsto/wappsto-locales",
     "wappsto-redux": "^3.5.1"
   },
   "devDependencies": {

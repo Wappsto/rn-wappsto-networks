@@ -34,33 +34,6 @@
     "wrongMinNumber": "inserted number should larger than {{number}}",
     "wrongMaxNumber": "inserted number should be smaller than {{number}}"
   },
-  "currentState": "current state",
-  "desiredState": "desired state",
-  "device": "device",
-  "device_plural": "device",
-  "networkDescription": {
-    "control_timeout": "control timout in seconds",
-    "control_when_offline": "controll when offline",
-    "created": "created",
-    "name": "name",
-    "updated": "updated",
-    "uuid": "device ID (UUID)",
-    "connection": "connection",
-    "online": "online",
-    "offline": "offline"
-  },
-  "deviceDescription": {
-    "description": "description",
-    "included": "included",
-    "manufacturer": "manufacturer",
-    "name": "name",
-    "product": "product",
-    "serial": "serial",
-    "uuid": "thing ID (UUID)",
-    "version": "version",
-    "protocol": "protocol",
-    "communication": "communication"
-  },
   "deleteConfirmationQuestion": "Are you sure you want to delete?",
   "deleteConfirmationDescription": "this action cannot be undone.",
   "noData": "no data",
@@ -68,12 +41,8 @@
   "lastUpdated": "last updated",
   "loading": "loading",
   "logout": "logout",
-  "network": "network",
-  "network_plural": "network",
   "prototype": "prototype",
   "prototype_plural": "prototypes",
-  "state": "state",
-  "state_plural": "state",
   "statusMessage": {
     "connecting": "connecting...",
     "creatingStream": "creating stream...",
@@ -94,30 +63,6 @@
     "yearsAgo": "few years ago"
   },
   "tryAgain": "try again",
-  "value": "value",
-  "value_plural": "values",
-  "valueDescription": {
-    "blob": "blob",
-    "dataType": "data type",
-    "encoding": "encoding",
-    "max": "maximum",
-    "maxLength": "maximum length",
-    "min": "minimum",
-    "name": "name",
-    "namespace": "namespace",
-    "permission": "permission",
-    "status": "status",
-    "stepSize": "step size",
-    "string": "string",
-    "type": "type",
-    "unit": "unit",
-    "uuid": "ID (UUID)",
-    "xsd": "XSD"
-  },
-  "cannotAccess": {
-    "not_shared": "You do not have permission to access the data",
-    "not_paid": "You do not have enough money to access the data"
-  },
   "onboarding": {
     "registrationTitle": "add device",
     "configurationTitle": "configure device",
