@@ -146,7 +146,7 @@ const ControlState = React.memo(({ state, value }) => {
   return (
     <View>
       <View style={styles.row}>
-        <Text bold color='secondary' style={styles.textMargin} content={CapitalizeFirst(t('desiredState'))}/>
+        <Text bold color='secondary' style={styles.textMargin} content={CapitalizeFirst(t('dataModel:stateProperties.controlState'))}/>
         {!cannotAccessState(state) &&
           <Timestamp timestamp={state.timestamp}/>
         }
@@ -154,7 +154,7 @@ const ControlState = React.memo(({ state, value }) => {
       {
         cannotAccessState(state) ?
         (
-          <Text content={CapitalizeFirst(t('cannotAccess.' + state.status_payment))}/>
+          <Text content={CapitalizeFirst(t('dataModel:stateProperties.status_payment.' + state.status_payment))}/>
         ) : (
           <>
             <View style={styles.dataWrapper}>

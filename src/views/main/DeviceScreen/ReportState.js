@@ -5,6 +5,7 @@ import theme from '../../../theme/themeExport';
 import { useTranslation, CapitalizeFirst } from '../../../translations';
 import Timestamp from '../../../components/Timestamp';
 import { cannotAccessState } from 'wappsto-blanket/util';
+import { roundBasedOnStep } from 'wappsto-blanket/util';
 
 const styles = StyleSheet.create({
   image: {
@@ -35,16 +36,25 @@ const content = (state, value) => {
     } else {
       return null;
     }
+  } else if (value.hasOwnProperty('number')) {
+    return (
+      <RNtext style={styles.text}>
+        <Text
+          style={styles.data}
+          content={roundBasedOnStep(state.data, value.number.step, value.number.min)}
+        />
+        <Text
+          color='secondary'
+          content={value.number && value.number.unit && ' ' + value.number.unit}
+        />
+      </RNtext>
+    );
   } else {
     return (
       <RNtext style={styles.text}>
         <Text
           style={styles.data}
           content={state.data}
-        />
-        <Text
-          color='secondary'
-          content={value.number && value.number.unit && ' ' + value.number.unit}
         />
       </RNtext>
     );
@@ -56,14 +66,14 @@ const ReportState = React.memo(({ state, value }) => {
   return (
     <View>
       <View style={styles.row}>
-        <Text bold color='secondary' style={styles.textMargin} content={CapitalizeFirst(t('currentState'))}/>
+        <Text bold color='secondary' style={styles.textMargin} content={CapitalizeFirst(t('dataModel:stateProperties.reportState'))}/>
         {!cannotAccessState(state) &&
           <Timestamp timestamp={state.timestamp}/>
         }
       </View>
       {
         cannotAccessState(state) ? (
-          <Text content={CapitalizeFirst(t('cannotAccess.' + state.status_payment))} />
+          <Text content={CapitalizeFirst(t('dataModel:stateProperties.status_payment.' + state.status_payment))} />
         ) : (
           content(state, value)
         )

@@ -1,8 +1,22 @@
 import React, { useCallback } from 'react';
+import { Text as RNText, View, StyleSheet } from 'react-native';
 import PopupButton from '../../../components/PopupButton';
 import Popup from '../../../components/Popup';
+import ID from '../../../components/ID';
 import Text from '../../../components/Text';
 import { useTranslation, CapitalizeFirst } from '../../../translations';
+import useEntitiesSelector from 'wappsto-blanket/hooks/useEntitiesSelector';
+import theme from '../../../theme/themeExport';
+
+const styles = StyleSheet.create({
+  container: {
+    marginVertical: 10,
+    padding: 8,
+    borderRadius: theme.variables.borderRadiusBase,
+    borderColor: theme.variables.borderColor,
+    borderWidth: theme.variables.borderWidth,
+  }
+});
 
 const exist = (num) => num !== undefined && num !== null && !isNaN(num);
 
@@ -13,10 +27,16 @@ const  getValueType = (value, t) => {
         view: (
           <>
             {!!value.blob.encoding &&
-              <Text content={CapitalizeFirst(t('valueDescription.encoding')) + ': ' + value.blob.encoding}/>
+              <RNText>
+                <Text bold content={CapitalizeFirst(t('dataModel:valueProperties.blobProperties.encoding')) + ': '}/>
+                <Text content={value.blob.encoding}/>
+              </RNText>
             }
             {!!value.blob.max &&
-              <Text content={CapitalizeFirst(t('valueDescription.maxLength')) + ': ' + value.blob.max}/>
+              <RNText>
+                <Text bold content={CapitalizeFirst(t('dataModel:valueProperties.blobProperties.maxLength')) + ': '}/>
+                <Text content={value.blob.max}/>
+              </RNText>
             }
           </>
         ),
@@ -27,16 +47,28 @@ const  getValueType = (value, t) => {
         view: (
           <>
             {exist(value.number.min) &&
-              <Text content={CapitalizeFirst(t('valueDescription.min')) + ': ' + value.number.min} />
+              <RNText>
+                <Text bold content={CapitalizeFirst(t('dataModel:valueProperties.numberProperties.min')) + ': '}/>
+                <Text content={value.number.min} />
+              </RNText>
             }
             {exist(value.number.max) &&
-              <Text content={CapitalizeFirst(t('valueDescription.max')) + ': ' + value.number.max} />
+              <RNText>
+                <Text bold content={CapitalizeFirst(t('dataModel:valueProperties.numberProperties.max')) + ': '}/>
+                <Text content={value.number.max} />
+              </RNText>
             }
             {exist(value.number.step) &&
-              <Text content={CapitalizeFirst(t('valueDescription.stepSize')) + ': ' + value.number.step} />
+              <RNText>
+                <Text bold content={CapitalizeFirst(t('dataModel:valueProperties.numberProperties.step')) + ': '}/>
+                <Text content={value.number.step} />
+              </RNText>
             }
             {!!value.number.unit &&
-              <Text content={CapitalizeFirst(t('valueDescription.unit')) + ': ' + value.number.unit} />
+              <RNText>
+                <Text bold content={CapitalizeFirst(t('dataModel:valueProperties.numberProperties.unit')) + ': '}/>
+                <Text content={value.number.unit} />
+              </RNText>
             }
           </>
         ),
@@ -47,10 +79,16 @@ const  getValueType = (value, t) => {
         view: (
           <>
           {!!value.string.encoding &&
-            <Text content={CapitalizeFirst(t('valueDescription.encoding')) + ': ' + value.string.encoding}/>
+            <RNText>
+              <Text bold content={CapitalizeFirst(t('dataModel:valueProperties.stringProperties.encoding')) + ': '}/>
+              <Text content={value.string.encoding}/>
+            </RNText>
           }
           {!!value.string.max &&
-            <Text content={CapitalizeFirst(t('valueDescription.maxLength')) + ': ' + value.string.max}/>
+            <RNText>
+              <Text bold content={CapitalizeFirst(t('dataModel:valueProperties.stringProperties.max')) + ': '}/>
+              <Text content={value.string.max}/>
+            </RNText>
           }
           </>
         ),
@@ -61,10 +99,16 @@ const  getValueType = (value, t) => {
         view: (
           <>
             {!!value.xml.xsd &&
-              <Text content={CapitalizeFirst(t('valueDescription.xsd')) + ': ' + value.xml.xsd}/>
+              <RNText>
+                <Text bold content={CapitalizeFirst(t('dataModel:valueProperties.xmlProperties.xsd')) + ': '}/>
+                <Text content={value.xml.xsd}/>
+              </RNText>
             }
             {!!value.xml.namespace &&
-              <Text content={CapitalizeFirst(t('valueDescription.namespace')) + ': ' + value.xml.namespace}/>
+              <RNText>
+                <Text bold content={CapitalizeFirst(t('dataModel:valueProperties.xmlProperties.namespace')) + ': '}/>
+                <Text content={value.xml.namespace}/>
+              </RNText>
             }
           </>
         ),
@@ -78,24 +122,78 @@ const  getValueType = (value, t) => {
 const ValueSettings = React.memo(({ item }) => {
   const { t } = useTranslation();
   const content = useCallback((visible, hide) => {
-    const valueDataType = getValueType(item, t);
+  const states = useEntitiesSelector('state', { parent: { type: 'value', id: item.meta.id }});
+  const valueDataType = getValueType(item, t);
     return (
       <Popup visible={visible} onRequestClose={hide} hide={hide}>
         <Text size={'h4'} content={item.name}/>
-        <Text content={CapitalizeFirst(t('valueDescription.uuid')) + ': ' + item.meta.id}/>
+        <ID id={item.meta.id} label={CapitalizeFirst(t('dataModel:valueProperties.meta.id'))}/>
+        <RNText>
+          <Text bold content={CapitalizeFirst(t('dataModel:universalMeta.historical'))+ ': '}/>
+          <Text content={item.meta.historical ? CapitalizeFirst(t('dataModel:universalMeta.historicalOptions.' + item.meta.historical)) : CapitalizeFirst(t('dataModel:universalMeta.historicalOptions.true'))}/>
+        </RNText>
         {!!item.type &&
-          <Text content={CapitalizeFirst(t('valueDescription.type')) + ': ' + item.type}/>
+          <RNText>
+            <Text bold content={CapitalizeFirst(t('dataModel:valueProperties.type')) + ': '}/>
+            <Text content={item.type}/>
+          </RNText>
         }
         {!!item.permission &&
-          <Text content={CapitalizeFirst(t('valueDescription.permission')) + ': ' + item.permission}/>
+          <RNText>
+            <Text bold content={CapitalizeFirst(t('dataModel:valueProperties.permission')) + ': '}/>
+            <Text content={item.permission}/>
+          </RNText>
         }
         {!!item.status &&
-          <Text content={CapitalizeFirst(t('valueDescription.status')) + ': ' + item.status}/>
+          <RNText>
+            <Text bold content={CapitalizeFirst(t('dataModel:valueProperties.status')) + ': '}/>
+            <Text content={item.status}/>
+          </RNText>
+        }
+        {!!item.period &&
+          <RNText>
+            <Text bold content={CapitalizeFirst(t('dataModel:valueProperties.period')) + ': '}/>
+            <Text content={item.period}/>
+          </RNText>
+        }
+        {!!item.delta &&
+          <RNText>
+            <Text bold content={CapitalizeFirst(t('dataModel:valueProperties.delta')) + ': '}/>
+            <Text content={item.delta}/>
+          </RNText>
+        }
+        {!!item.description &&
+          <RNText>
+            <Text bold content={CapitalizeFirst(t('dataModel:valueProperties.description')) + ': '}/>
+            <Text content={item.description}/>
+          </RNText>
         }
         {!!valueDataType.text &&
-          <Text content={CapitalizeFirst(t('valueDescription.dataType')) + ': ' + valueDataType.text}/>
+          <RNText>
+            <Text bold content={CapitalizeFirst(t('dataModel:valueProperties.dataType')) + ': '}/>
+            <Text content={valueDataType.text}/>
+          </RNText>
         }
         {valueDataType.view}
+        {states.length && states.map(state => (
+          <View style={styles.container}>
+            <Text size={16} content={CapitalizeFirst(t('dataModel:stateProperties.' + (state.type === 'Report' ? 'reportState' : 'controlState'))) }/>
+            <ID id={state.meta.id} label={CapitalizeFirst(t('dataModel:stateProperties.meta.id'))}/>
+            <RNText>
+              <Text bold content={CapitalizeFirst(t('dataModel:universalMeta.historical'))+ ': '}/>
+              <Text content={state.meta.historical ? CapitalizeFirst(t('dataModel:universalMeta.historicalOptions.' + state.meta.historical)) : CapitalizeFirst(t('dataModel:universalMeta.historicalOptions.true'))}/>
+            </RNText>
+            <RNText>
+              <Text bold content={CapitalizeFirst(t('dataModel:stateProperties.data')) + ': '}/>
+              <Text content={state.data || '-'}/>
+            </RNText>
+            <RNText>
+              <Text bold content={CapitalizeFirst(t('dataModel:stateProperties.timestamp')) + ': '}/>
+              <Text content={state.timestamp}/>
+            </RNText>
+          </View>
+        ))
+        }
       </Popup>
     );
   }, [item, t]);

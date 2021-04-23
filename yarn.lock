@@ -8453,9 +8453,9 @@ walker@^1.0.7, walker@~1.0.5:
   dependencies:
     makeerror "1.0.x"
 
-wappsto-blanket@Wappsto/wappsto-blanket#144b4d2:
+wappsto-blanket@Wappsto/wappsto-blanket#603bb18:
   version "1.2.3"
-  resolved "https://codeload.github.com/Wappsto/wappsto-blanket/tar.gz/144b4d26fed2aa9a4f0438f4bf2b07f7d69d96f8"
+  resolved "https://codeload.github.com/Wappsto/wappsto-blanket/tar.gz/603bb1874c51a6bd574f99e86afdde395a2d49cc"
   dependencies:
     axios "^0.21.1"
     deep-equal "^2.0.5"

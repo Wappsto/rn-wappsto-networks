@@ -1,5 +1,5 @@
 import React, { useCallback } from 'react';
-import {View, StyleSheet, ActivityIndicator, TouchableOpacity, Image} from 'react-native';
+import { View, StyleSheet, ActivityIndicator, TouchableOpacity, Image } from 'react-native';
 import States from './States';
 import ValueDetails from './ValueDetails';
 import theme from '../../../theme/themeExport';

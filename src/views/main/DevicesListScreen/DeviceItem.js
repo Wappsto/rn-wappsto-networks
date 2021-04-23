@@ -65,7 +65,7 @@ const DeviceItem = React.memo(({ navigation, id, isPrototype }) => {
           />
           <Text
             style={styles.listItemSubheader}
-            content={device.value.length + ' ' + t('value', {count: device.value.length})}
+            content={device.value.length + ' ' + t('dataModel:value', {count: device.value.length})}
           />
         </View>
       </View>
