@@ -1,8 +1,10 @@
 import React from 'react';
+import { Text as RNText } from 'react-native';
 import Text from '../../../components/Text';
 import Button from '../../../components/Button';
 import PopupButton from '../../../components/PopupButton';
 import Popup from '../../../components/Popup';
+import ID from '../../../components/ID';
 import theme from '../../../theme/themeExport';
 import { useTranslation, CapitalizeFirst } from '../../../translations';
 import { selectedDeviceName } from '../../../util/params';
@@ -28,31 +30,71 @@ const ValueSettings = React.memo(() => {
           reject={hideDeleteConfirmation}
         />
         <Text size='h4' content={device.name}/>
-        <Text content={CapitalizeFirst(t('deviceDescription.uuid')) + ': ' + device.meta.id}/>
+        <ID id={device.meta.id} label={CapitalizeFirst(t('dataModel:deviceProperties.meta.id'))}/>
         {!!device.manufacturer &&
-          <Text content={CapitalizeFirst(t('deviceDescription.manufacturer')) + ': ' + device.manufacturer}/>
+          <RNText>
+            <Text bold content={CapitalizeFirst(t('dataModel:deviceProperties.manufacturer')) + ': '} />
+            <Text content={device.manufacturer}/>
+          </RNText>
         }
         {!!device.product &&
-          <Text content={CapitalizeFirst(t('deviceDescription.product')) + ': ' + device.product}/>
+          <RNText>
+            <Text bold content={CapitalizeFirst(t('dataModel:deviceProperties.product')) + ': '} />
+            <Text content={device.product}/>
+          </RNText>
         }
         {!!device.version &&
-          <Text content={CapitalizeFirst(t('deviceDescription.version')) + ': ' + device.version}/>
+          <RNText>
+            <Text bold content={CapitalizeFirst(t('dataModel:deviceProperties.version')) + ': '} />
+            <Text content={device.version}/>
+          </RNText>
         }
         {!!device.serial &&
-          <Text content={CapitalizeFirst(t('deviceDescription.serial')) + ': ' + device.serial}/>
+          <RNText>
+            <Text bold content={CapitalizeFirst(t('dataModel:deviceProperties.serial')) + ': '} />
+            <Text content={device.serial}/>
+          </RNText>
         }
         {!!device.protocol &&
-          <Text content={CapitalizeFirst(t('deviceDescription.protocol')) + ': ' + device.protocol}/>
+          <RNText>
+            <Text bold content={CapitalizeFirst(t('dataModel:deviceProperties.protocol')) + ': '} />
+            <Text content={device.protocol}/>
+          </RNText>
         }
         {!!device.communication &&
-          <Text content={CapitalizeFirst(t('deviceDescription.communication')) + ': ' + device.communication}/>
+          <RNText>
+            <Text bold content={CapitalizeFirst(t('dataModel:deviceProperties.communication')) + ': '} />
+            <Text content={device.communication}/>
+          </RNText>
         }
         {!!device.description &&
-          <Text content={CapitalizeFirst(t('deviceDescription.description')) + ': ' + device.description}/>
+          <RNText>
+            <Text bold content={CapitalizeFirst(t('dataModel:deviceProperties.description')) + ': ' } />
+            <Text content={device.description}/>
+          </RNText>
         }
         {!!device.included &&
-          <Text content={CapitalizeFirst(t('deviceDescription.included')) + ': ' + device.included}/>
+          <RNText>
+            <Text bold content={CapitalizeFirst(t('dataModel:deviceProperties.included')) + ': '} />
+            <Text content={device.included}/>
+          </RNText>
         }
+        {!!device.control_timeout &&
+          <RNText>
+            <Text bold content={CapitalizeFirst(t('dataModel:deviceProperties.control_timeout')) + ': '} />
+            <Text content={device.control_timeout + 's'}/>
+          </RNText>
+        }
+        {!!device.control_when_offline &&
+          <RNText>
+            <Text bold content={CapitalizeFirst(t('dataModel:deviceProperties.control_when_offline')) + ': '} />
+            <Text content={t('dataModel:' + device.control_when_offline)}/>
+          </RNText>
+        }
+        <RNText>
+          <Text bold content={CapitalizeFirst(t('dataModel:universalMeta.historical'))+ ': '}/>
+          <Text content={device.meta.historical ? CapitalizeFirst(t('dataModel:universalMeta.historicalOptions.' + device.meta.historical)) : CapitalizeFirst(t('dataModel:universalMeta.historicalOptions.true'))}/>
+        </RNText>
         <RequestError request={request} />
         <Button
           type='outlined'
