@@ -9,6 +9,7 @@ import theme from '../../../theme/themeExport';
 import { useTranslation, CapitalizeFirst } from '../../../translations';
 import useVisible from 'wappsto-blanket/hooks/useVisible';
 
+const headerHeight = 35;
 const styles = StyleSheet.create({
   row: {
     flexDirection: 'row',
@@ -19,13 +20,15 @@ const styles = StyleSheet.create({
     justifyContent: 'center'
   },
   buttonRow:{
-    backgroundColor: 'pink'
+    paddingTop: 10
   },
   button: {
-    minWidth:30,
-    height:30,
+    minWidth:headerHeight,
+    height:headerHeight,
+    height: headerHeight,
+    lineHeight: headerHeight,
     margin:5,
-    paddingHorizontal: 5,
+    paddingHorizontal: 8,
     alignItems:'center',
     justifyContent:'center',
     backgroundColor: 'white'
@@ -33,60 +36,68 @@ const styles = StyleSheet.create({
   buttonDisabled: {
     backgroundColor: theme.variables.disabled
   },
-  modalDropdown:{
-    flex: 1,
-    height: 30,
-    alignItems: 'center',
-    justifyContent: 'center',
-    backgroundColor: 'white'
+  dropdownContainer:{
+    height:'auto'
   },
-  dropdownButton: {
-    flexDirection:'row',
-    alignItems: 'center'
+  dropdownText:{
+    width:'100%',
+    height: headerHeight + 5,
+    lineHeight: headerHeight + 5,
+    paddingHorizontal: 10
+  },
+  dropdownButton:{
+    flex: 1,
+    backgroundColor: 'white',
+    height: headerHeight
+  },
+  dropdownButtonInput: {
+    flex: 1,
+    marginHorizontal: 5,
+    marginVertical: 10,
+    borderColor: theme.variables.borderColor,
+    borderWidth: theme.variables.borderWidth
+  },
+  dropdownButtonText:{
+    width:'100%',
+    height: headerHeight,
+    lineHeight: headerHeight,
+    paddingHorizontal: 8
   },
   typeIconStyle: {
-    padding: 10,
-    paddingRight:15
+    padding: 15,
+    paddingRight:20
   },
   typeIconSelected: {
     backgroundColor: 'grey'
   },
-  dropdownText: {
-    width:'100%',
-    height: 30,
-    lineHeight: 30,
-    paddingHorizontal: 10
-  },
   chartContainer: {
-    height:500,
-    borderColor:'red',
-    borderWidth: 1,
+   // backgroundColor: 'white'
   },
   liveCircle: {
-    width: 10,
-    height: 10,
-    borderRadius: 20,
-    margin: 10
+    width: 8,
+    height: 8,
+    borderRadius: 8,
+    marginRight: 5
   },
   liveOn: {
     backgroundColor: 'green'
   },
   liveOff: {
-    backgroundColor: 'red'
+    backgroundColor: '#c9c9c9'
   }
 });
 
 const TYPES = ['clock', 'hash']; //, 'calendar'
 const TIME_OPTIONS = [
-  {t: 'lastXMinutes', number: 5, time: 'minute' },
-  {t: 'lastXMinutes', number: 30, time: 'minute' },
-  {t: 'lastXHours', number: 1, time: 'hour' },
-  {t: 'lastXMonths', number: 1, time: 'month' }
+  {t: 'log:lastOptions.lastXTimeFrame', number: 5, time: 'minute' },
+  {t: 'log:lastOptions.lastXTimeFrame', number: 30, time: 'minute' },
+  {t: 'log:lastOptions.lastXTimeFrame', number: 1, time: 'hour' },
+  {t: 'log:lastOptions.lastXTimeFrame', number: 1, time: 'month' }
 ];
 const POINT_OPTIONS = [50, 100, 300, 1000];
 
-const OPERATIONS = ['none', 'avg', 'count', 'max', 'min', 'sqrdiff', 'stddev', 'sum', 'variance'];
-const GROUP_BY = ['none', 'microsecond', 'millisecond', 'second', 'minute', 'hour', 'day', 'week', 'month', 'quarter', 'year'];
+const OPERATIONS = ['none', 'avg', 'sum', 'count', 'max', 'min', 'stddev', 'variance', 'geometric_mean', 'arbitrary', 'sqrdiff'];
+const GROUP_BY = ['microsecond', 'millisecond', 'second', 'minute', 'hour', 'day', 'week', 'month', 'quarter', 'year'];
 
 export const MAX_POINTS = 1000;
 
@@ -162,6 +173,7 @@ const TypeSelector = React.memo(({ type, setOptions }) => {
   return (
     <ModalDropdown
       style={styles.button}
+      dropdownStyle={[styles.dropdownContainer, {marginTop: 10}]}
       defaultValue={type}
       options={TYPES}
       renderRow={(option, _, isSelected) => <Icon size={15} name={option} style={[styles.typeIconStyle, isSelected && styles.typeIconSelected]}/>}
@@ -188,15 +200,16 @@ const TimeValue = React.memo(({ value, setOptions }) => {
   }
   return (
     <ModalDropdown
-      style={styles.modalDropdown}
-      defaultValue={CapitalizeFirst(t(value?.t || 'pleaseSelect', { number: value.number }))}
+      style={styles.dropdownButton}
+      textStyle={styles.dropdownButtonText}
+      dropdownStyle={styles.dropdownContainer}
+      defaultValue={CapitalizeFirst(t(value?.t || 'select', { x: value?.number,  time: value?.time }))}
       defaultIndex={0}
       options={TIME_OPTIONS}
-      textStyle={styles.dropdownText}
       onSelect={onChangeValue}
-      renderButtonText={(option) => CapitalizeFirst(t(option.t, { number: option.number }))}
+      renderButtonText={(option) => CapitalizeFirst(t(option.t, { x: option.number,  time: option.time }))}
       renderRow={(option, _, isSelected) => (
-        <Text content={CapitalizeFirst(t(option.t, { number: option.number }))} color={isSelected ? 'secondary' : 'primary'}/>
+        <Text style={styles.dropdownText} content={CapitalizeFirst(t(option.t, { x: option.number, time: option.time }))} color={isSelected ? 'secondary' : 'primary'}/>
       )}
     />
   )
@@ -210,14 +223,15 @@ const LastXValue = React.memo(({ value, setOptions }) => {
   }
   return (
     <ModalDropdown
-      style={styles.modalDropdown}
-      defaultValue={CapitalizeFirst(t(value?.number ? 'lastXPoints' : 'pleaseSelect', { number: value.number }))}
+      style={styles.dropdownButton}
+      textStyle={styles.dropdownButtonText}
+      dropdownStyle={styles.dropdownContainer}
+      defaultValue={CapitalizeFirst(t(value?.number ? 'log:lastOptions.lastXPoints' : 'select', { x: value.number }))}
       options={POINT_OPTIONS}
-      textStyle={styles.dropdownText}
       onSelect={onChangeValue}
-      renderButtonText={(option) => CapitalizeFirst(t('lastXPoints', { number: option }))}
+      renderButtonText={(option) => CapitalizeFirst(t('log:lastOptions.lastXPoints', { x: option }))}
       renderRow={(option, _, isSelected) => (
-        <Text content={CapitalizeFirst(t('lastXPoints', { number: option }))} color={isSelected ? 'secondary' : 'primary'}/>
+        <Text style={styles.dropdownText} content={CapitalizeFirst(t('log:lastOptions.lastXPoints', { x: option }))} color={isSelected ? 'secondary' : 'primary'}/>
       )}
     />
   )
@@ -230,18 +244,18 @@ const CalendarValue = React.memo(({ value, setOptions }) => {
 const Compute = React.memo(({ operation, group_by, setOptions }) => {
   const { t } = useTranslation();
   const [ visible, show, hide ] = useVisible(false);
-  const [ localOptions, setLocalOptions ] = useState({ operation: operation || 'none', group_by: group_by || 'none' });
+  const [ localOptions, setLocalOptions ] = useState({ operation: operation || 'none', group_by: group_by || 'minute' });
   const disabled = (localOptions.operation !== 'none' && localOptions.group_by === 'none')
               || (localOptions.operation === operation && localOptions.group_by === group_by)
               || (localOptions.operation === 'none' && localOptions.group_by === 'none' && !operation && !group_by);
 
   const resetAndShow = () => {
-    setLocalOptions({ operation: operation || 'none', group_by: group_by || 'none' });
+    setLocalOptions({ operation: operation || 'none', group_by: group_by || 'minute' });
     show();
   }
 
   const onChangeOperation = (_, selectedOperation) => {
-    setLocalOptions(options => ({...options, operation: selectedOperation, group_by: selectedOperation === 'none' ? 'none' : options.group_by}));
+    setLocalOptions(options => ({...options, operation: selectedOperation, group_by: selectedOperation === 'none' ? 'minute' : options.group_by}));
   }
 
   const onChangeGroupBy = (_, selectedGB) => {
@@ -264,36 +278,44 @@ const Compute = React.memo(({ operation, group_by, setOptions }) => {
       placement={PopoverPlacement.BOTTOM}
       isVisible={visible}
       onRequestClose={hide}
+      popoverStyle={{padding: 15}}
       from={
         <TouchableOpacity style={styles.button} onPress={resetAndShow}>
-          <Icon name='more-horizontal'/>
+          <Text content={localOptions.operation === 'none' ? CapitalizeFirst(t('log:operations.none_short')) : CapitalizeFirst(t('log:operations.' + localOptions.operation + '_short')) + ' [' + CapitalizeFirst(t('log:timeFrame.' + localOptions.group_by + '_short')) +']'}/>
         </TouchableOpacity>
       }
     >
-      <ModalDropdown
-        style={styles.button}
-        defaultValue={localOptions.operation}
-        options={OPERATIONS}
-        renderButtonText={option => t(option)}
-        renderRow={(option, _, isSelected) => (
-          <Text content={CapitalizeFirst(t(option))} color={isSelected ? 'secondary' : 'primary'}/>
-        )}
-        onSelect={onChangeOperation}
-      />
-      {
-        localOptions.operation !== 'none' &&
+      <Text content={CapitalizeFirst(t('log:infoText.configureAggregation'))}/>
+      <View style={theme.common.row}>
         <ModalDropdown
-          style={styles.button}
-          defaultValue={localOptions.group_by}
-          options={GROUP_BY}
+          style={styles.dropdownButtonInput}
+          textStyle={styles.dropdownButtonText}
+          defaultValue={localOptions.operation}
+          options={OPERATIONS}
           renderButtonText={option => t(option)}
           renderRow={(option, _, isSelected) => (
-            <Text content={CapitalizeFirst(t(option))} color={isSelected ? 'secondary' : 'primary'}/>
+            <Text style={styles.dropdownText} content={CapitalizeFirst(t('log:operations.' + option))} color={isSelected ? 'secondary' : 'primary'}/>
           )}
-          onSelect={onChangeGroupBy}
+          onSelect={onChangeOperation}
         />
-      }
-
+        {
+          localOptions.operation !== 'none' &&
+          <>
+            <Text content={t('log:operationPostposition')}/>
+            <ModalDropdown
+              style={styles.dropdownButtonInput}
+              textStyle={styles.dropdownButtonText}
+              defaultValue={localOptions.group_by}
+              options={GROUP_BY}
+              renderButtonText={option => t(option)}
+              renderRow={(option, _, isSelected) => (
+                <Text style={styles.dropdownText} content={CapitalizeFirst(t('log:timeFrame.' + option))} color={isSelected ? 'secondary' : 'primary'}/>
+              )}
+              onSelect={onChangeGroupBy}
+            />
+          </>
+        }
+      </View>
       <Button
         disabled={disabled}
         onPress={apply}
@@ -311,7 +333,7 @@ const defaultOptions = {
 };
 const ChartHeader = ({ options, setOptions, children}) => {
   const { t } = useTranslation();
-
+  const disabled = true;
   useEffect(() => {
     if(!options){
       const dates = getDateOptions(defaultOptions.value.time, defaultOptions.value.number, false);
@@ -394,31 +416,32 @@ const ChartHeader = ({ options, setOptions, children}) => {
 
   return (
     <View>
-      <TouchableOpacity style={theme.common.row} onPress={toggleLive}>
-        <View style={[styles.liveCircle, options.live ? styles.liveOn : styles.liveOff]}/>
-        <Text content={CapitalizeFirst(t('live'))} />
-      </TouchableOpacity>
+      <View style={[styles.row, styles.buttonRow]}>
+        { 
+          !options.live &&
+            <>
+              <TypeSelector type={options.type} setOptions={setOptions}  />
+              <ValueComponent value={options.value} setOptions={setOptions} />
+              <Compute operation={options.operation} group_by={options.group_by} setOptions={setOptions}/>
+            </>
+        }
+        <TouchableOpacity style={[theme.common.row, styles.button, options.live ? {flex:1} : {}]} onPress={toggleLive}>
+          <View style={[styles.liveCircle, options.live ? styles.liveOn : styles.liveOff]}/>
+          <Text content={CapitalizeFirst(t('log:liveDataButton'))} />
+        </TouchableOpacity>
+      </View>
+
       {
-        !options.live &&
-        <>
-          <View style={[styles.row, styles.buttonRow]}>
-            <TypeSelector type={options.type} setOptions={setOptions}  />
-            <ValueComponent value={options.value} setOptions={setOptions} />
-            <Compute operation={options.operation} group_by={options.group_by} setOptions={setOptions}/>
+        !options.live &&!!options.value && !disabled &&
+          <View style={[theme.common.row, styles.center]}>
+            <TouchableOpacity style={[styles.button, leftDisabled && styles.buttonDisabled]} onPress={handleLeft} disabled={leftDisabled}>
+              <Icon name='chevron-left'/>
+            </TouchableOpacity>
+            <Text content={CapitalizeFirst(t(options.type === 'clock' ? options.value.t : 'log:lastOptions.lastXPoints', { x: options.value.number }))}/>
+            <TouchableOpacity style={[styles.button, rightDisabled && styles.buttonDisabled]} onPress={handleRight} disabled={rightDisabled}>
+              <Icon name='chevron-right'/>
+            </TouchableOpacity>
           </View>
-          {
-            !!options.value &&
-            <View style={[theme.common.row, styles.center]}>
-              <TouchableOpacity style={[styles.button, leftDisabled && styles.buttonDisabled]} onPress={handleLeft} disabled={leftDisabled}>
-                <Icon name='chevron-left'/>
-              </TouchableOpacity>
-              <Text content={CapitalizeFirst(t(options.type === 'clock' ? options.value.t : 'lastXPoints', { number: options.value.number }))}/>
-              <TouchableOpacity style={[styles.button, rightDisabled && styles.buttonDisabled]} onPress={handleRight} disabled={rightDisabled}>
-                <Icon name='chevron-right'/>
-              </TouchableOpacity>
-            </View>
-          }
-        </>
       }
       <View style={styles.chartContainer}>
         {children}

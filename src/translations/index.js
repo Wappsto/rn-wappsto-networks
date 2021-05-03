@@ -12,6 +12,7 @@ const resources = {
     account: require('wappsto-locales/en/account.json'),
     error: require('wappsto-locales/en/error.json'),
     languages: require('wappsto-locales/en/languages.json'),
+    log: require('wappsto-locales/en/log.json'),
   },
   da: {
     translation: require('./da/translation'),
