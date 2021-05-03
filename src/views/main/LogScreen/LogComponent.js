@@ -1,8 +1,10 @@
 import React, { useEffect, useRef, useMemo } from 'react';
 import useLogs, { STATUS } from 'wappsto-blanket/hooks/useLogs';
 import useEntitySelector from 'wappsto-blanket/hooks/useEntitySelector';
+import { useTranslation, CapitalizeFirst } from '../../../translations';
 
 const LogComponent = React.memo(({ id, options, onDone, stateType = 'Report', onlyNumber, nameExtra, cacheId, clearCache, refresh, live }) => {
+  const { t } = useTranslation();
   const liveData = useRef([]);
   const value = useEntitySelector('value', id);
   const state = useEntitySelector('state', {
@@ -27,7 +29,7 @@ const LogComponent = React.memo(({ id, options, onDone, stateType = 'Report', on
     }
     obj.current = {
       ...obj.current,
-      name: (stateType + unit + (nameExtra ? ' | ' + nameExtra  : '')) || undefined,
+      name: (CapitalizeFirst(t('dataModel:stateProperties.' + stateType.toLowerCase() + 'State')) + unit + (nameExtra ? ' | ' + nameExtra  : '')) || undefined,
       id: stateId,
       type: stateType,
       valueId: id,

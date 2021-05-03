@@ -1,7 +1,8 @@
 import React, { useMemo, useState, useRef, useCallback } from 'react';
-import { TouchableOpacity, Text, StyleSheet, View } from 'react-native';
-import { VictoryChart, VictoryTheme, VictoryLine, createContainer } from 'victory-native';
+import { TouchableOpacity, StyleSheet, View } from 'react-native';
+import { VictoryChart, VictoryVoronoiContainer, VictoryScatter, VictoryTheme, VictoryLine, createContainer } from 'victory-native';
 import Button from '../../../components/Button';
+import Text from '../../../components/Text';
 import { useTranslation, CapitalizeFirst } from '../../../translations';
 import theme from '../../../theme/themeExport';
 import equal from 'deep-equal';
@@ -9,18 +10,25 @@ import equal from 'deep-equal';
 const VictoryZoomVoronoiContainer = createContainer('zoom', 'voronoi');
 const styles = StyleSheet.create({
   colorBox: {
-    width: 20,
-    height: 20,
-    margin: 20
+    width: 14,
+    height: 14,
+    margin: 8
   },
   selected: {
     opacity: 0.3
+  },
+  container: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center'
   }
 });
+
 const COLORS = {
-  Report: 'red',
-  Control: 'green'
+  Report: theme.variables.primary,
+  Control: theme.variables.secondary
 }
+
 const GraphChart = React.memo(({ data, operation = 'data', setCanScroll }) => {
   const { t } = useTranslation();
   const [ hidden, setHidden ] = useState([]);
@@ -55,10 +63,7 @@ const GraphChart = React.memo(({ data, operation = 'data', setCanScroll }) => {
             }
             return { x: time, y: data, rawValue: d[operation] };
           }),
-          name: data[key].name,
-          style: {
-            data: { stroke: COLORS[key] }
-          }
+          name: data[key].name
         }
         fd.push(props);
     }
@@ -77,13 +82,13 @@ const GraphChart = React.memo(({ data, operation = 'data', setCanScroll }) => {
       const { key, name } = props;
       const isHidden = hidden.includes(key);
       if(!isHidden && props.data.length){
-        lines.push(<VictoryLine {...props}/>);
+        lines.push([<VictoryLine {...props} style={{data: { stroke: COLORS[key] }}}/>, <VictoryScatter  {...props} style={{data: {fill: COLORS[key]} }}/>]);
       }
       legend.push(
         <TouchableOpacity key={key} onPress={() => setHidden(h => isHidden ? h.filter(k => k !== key) : [...h, key] )}>
           <View style={[theme.common.row, isHidden && styles.selected]}>
             <View style={[styles.colorBox, { backgroundColor: COLORS[key] }]}/>
-            <Text>{name}</Text>
+            <Text content={name} />
           </View>
         </TouchableOpacity>
       )
@@ -93,32 +98,30 @@ const GraphChart = React.memo(({ data, operation = 'data', setCanScroll }) => {
 
   const cannotZoom = !lines.length || equal(xyCache.current, zoom);
   return (
-    <>
-      <Button
-        disabled={cannotZoom}
-        style={cannotZoom && theme.common.disabled}
-        onPress={resetZoom}
-        display='block'
-        color='primary'
-        text={CapitalizeFirst(t('resetZoom'))}
-      />
+    <View style={styles.container}>
+      {/*
+        <Button
+          disabled={cannotZoom}
+          style={cannotZoom && theme.common.disabled}
+          onPress={resetZoom}
+          display='block'
+          color='primary'
+          text={CapitalizeFirst(t('resetZoom'))}
+        />
+      */}
       <VictoryChart
         scale={{ x: 'time' }}
         theme={VictoryTheme.material}
         containerComponent={
-          <VictoryZoomVoronoiContainer
-            labels={d => [`${t('time')}: ${d.datum.x.toLocaleString()}\n${d.datum.childName}: ${d.datum.rawValue}`]}
-            onZoomDomainChange={setZoom}
-            zoomDomain={zoom}
-            onTouchStart={() => setCanScroll(false)}
-            onTouchEnd={() => setCanScroll(true)}
-            />
+          <VictoryVoronoiContainer
+            labels={d => [`${d.datum.childName}: ${d.datum.rawValue} (${d.datum.x.toLocaleString()})`]}
+          />
         }
       >
         {lines}
       </VictoryChart>
       <View style={theme.common.row}>{legend}</View>
-    </>
+    </View>
   );
 });
 
