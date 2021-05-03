@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, TouchableOpacity, StyleSheet } from 'react-native';
+import { View, TouchableOpacity, StyleSheet, SafeAreaView } from 'react-native';
 import { useHeaderHeight } from '@react-navigation/stack';
 import KeyboardAvoidingView from './KeyboardAvoidingView';
 import FocusAwareStatusBar from './FocusAwareStatusBar';
@@ -31,7 +31,7 @@ const Screen = React.memo(({ style, children }) => {
   const showStream = connected && stream && stream.status !== 2 && config.stream && !config.hideStreamNotification;
 
   return (
-    <View style={[styles.container, style]}>
+    <SafeAreaView style={[styles.container, style]}>
       <FocusAwareStatusBar backgroundColor={theme.variables.statusBarBgDark} barStyle={theme.variables.statusBarColorLight} />
       {!connected && (
         <Text
@@ -57,7 +57,7 @@ const Screen = React.memo(({ style, children }) => {
       <KeyboardAvoidingView offset={headerHeight}>
         {children}
       </KeyboardAvoidingView>
-    </View>
+    </SafeAreaView>
   );
 });
 

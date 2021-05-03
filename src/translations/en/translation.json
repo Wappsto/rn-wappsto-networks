@@ -30,10 +30,6 @@
     "send": "send",
     "share": "share"
   },
-  "validation": {
-    "wrongMinNumber": "inserted number should larger than {{number}}",
-    "wrongMaxNumber": "inserted number should be smaller than {{number}}"
-  },
   "deleteConfirmationQuestion": "Are you sure you want to delete?",
   "deleteConfirmationDescription": "this action cannot be undone.",
   "noData": "no data",
@@ -53,14 +49,6 @@
     "streamClosed": "stream connection closed",
     "streamOpen": "stream connection open",
     "updatingStream": "updating stream..."
-  },
-  "timestamp": {
-    "daysAgo": "few day ago",
-    "hoursAgo": "few hours ago",
-    "minutesAgo": "few minutes ago",
-    "monthsAgo": "few month ago",
-    "secondsAgo": "few seconds ago",
-    "yearsAgo": "few years ago"
   },
   "tryAgain": "try again",
   "onboarding": {
@@ -171,10 +159,6 @@
       }
     }
   },
-  "lastXMinutes": "last {{number}} minutes",
-  "lastXHours": "last {{number}} hours",
-  "lastXMonths": "last {{number}} months",
-  "lastXPoints": "last {{number}} points",
   "itemShareSuccess": "{{name}} is now shared with the user {{user}}.",
   "itemShareError": "failed to share {{name}} with {{user}}."
 }
