@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { ScrollView } from 'react-native';
+import Message from '../../../components/Message';
 import Screen from '../../../components/Screen';
-import Text from '../../../components/Text';
 import GraphChart from './GraphChart';
 import ChartHeader, { MAX_POINTS } from './ChartHeader';
 import LogComponent, { STATUS } from './LogComponent';
@@ -101,15 +101,43 @@ const LogScreen = React.memo(() => {
         {values}
         <ChartHeader options={options} setOptions={setOptions}>
           {loading && <ActivityIndicator color='red' />}
+          {errors.current.Report &&
+            <Message
+              message={CapitalizeFirst(t('log:error.fetch'))}
+              type='error'
+            />
+          }
+          {showCustomReportError && !data.Report?.data?.length &&
+            <Message
+              message={CapitalizeFirst(t('log:error.noData' + ' (' + CapitalizeFirst(t('dataModel:stateProperties.reportState')) + ')'))}
+              type='warning'
+            />
+          }
+          {showCustomReportError && data.Report?.data.length > MAX_POINTS &&
+            <Message
+              message={CapitalizeFirst(t('log:error.valueHasTooManyPoints', {value: CapitalizeFirst(t('dataModel:stateProperties.reportState')), points: MAX_POINTS}))}
+              type='warning'
+            />
+          }
 
-          {errors.current.Report && <Text color='error' content={CapitalizeFirst(t('failedToGetReportData'))}/>}
-          {showCustomReportError && !data.Report?.data.length && <Text color='warning' content={CapitalizeFirst(t('noReportDataWarning'))}/>}
-          {showCustomReportError && data.Report?.data.length > MAX_POINTS && <Text color='warning' content={CapitalizeFirst(t('moreReportPointsThanMaxWarning', { max: MAX_POINTS }))}/>}
-
-          {errors.current.Control && <Text color='error' content={CapitalizeFirst(t('failedToGetControlData'))}/>}
-          {showCustomControlError && !data.Control?.data.length && <Text color='warning' content={CapitalizeFirst(t('noControlDataWarning'))}/>}
-          {showCustomControlError && data.Control?.data.length > MAX_POINTS && <Text color='warning' content={CapitalizeFirst(t('moreControlPointsThanMaxWarning', { max: MAX_POINTS }))}/>}
-
+          {errors.current.Control &&
+            <Message
+              message={CapitalizeFirst(t('log:error.fetch'))}
+              type='warning'
+            />
+          }
+          {showCustomControlError && !data.Control?.data.length &&
+            <Message
+              message={CapitalizeFirst(t('log:error.noData')) + ' (' + CapitalizeFirst(t('dataModel:stateProperties.controlState')) + ')'}
+              type='warning'
+            />
+          }
+          {showCustomControlError && data.Control?.data.length > MAX_POINTS &&
+            <Message
+              message={CapitalizeFirst(t('log:error.valueHasTooManyPoints', {value: CapitalizeFirst(t('dataModel:stateProperties.controlState')), points: MAX_POINTS}))}
+              type='warning'
+            />
+          }
           <GraphChart data={data} operation={options?.live ? 'data' : options?.operation} setCanScroll={setCanScroll}/>
         </ChartHeader>
       </ScrollView>

@@ -176,7 +176,7 @@ const ValueSettings = React.memo(({ item }) => {
         }
         {valueDataType.view}
         {states.length && states.map(state => (
-          <View style={styles.container}>
+          <View style={styles.container} key={state.meta.id}>
             <Text size={16} content={CapitalizeFirst(t('dataModel:stateProperties.' + (state.type === 'Report' ? 'reportState' : 'controlState'))) }/>
             <ID id={state.meta.id} label={CapitalizeFirst(t('dataModel:stateProperties.meta.id'))}/>
             <RNText>
