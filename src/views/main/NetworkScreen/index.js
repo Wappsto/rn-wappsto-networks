@@ -95,10 +95,6 @@ const NetworkScreen = React.memo(({navigation}) => {
               <Text content={network.meta.control_when_offline}/>
             </RNText>
           }
-          <RNText>
-            <Text bold content={CapitalizeFirst(t('dataModel:universalMeta.historical'))+ ': '}/>
-            <Text content={network.meta.historical ? CapitalizeFirst(t('dataModel:universalMeta.historicalOptions.' + device.meta.historical)) : CapitalizeFirst(t('dataModel:universalMeta.historicalOptions.true'))}/>
-          </RNText>
         </View>
         <View>
           <Button
