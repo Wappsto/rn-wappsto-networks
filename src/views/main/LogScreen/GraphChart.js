@@ -7,7 +7,7 @@ import { useTranslation, CapitalizeFirst } from '../../../translations';
 import theme from '../../../theme/themeExport';
 import equal from 'deep-equal';
 
-const VictoryZoomVoronoiContainer = createContainer('zoom', 'voronoi');
+// const VictoryZoomVoronoiContainer = createContainer('zoom', 'voronoi');
 const styles = StyleSheet.create({
   colorBox: {
     width: 14,
@@ -78,11 +78,13 @@ const GraphChart = React.memo(({ data, operation = 'data', setCanScroll }) => {
   const [lines, legend] = useMemo(() => {
     const lines = [];
     const legend = [];
-    formattedData.forEach((props) => {
-      const { key, name } = props;
+    formattedData.forEach(({ key, name, ...props }) => {
       const isHidden = hidden.includes(key);
       if(!isHidden && props.data.length){
-        lines.push([<VictoryLine {...props} style={{data: { stroke: COLORS[key] }}}/>, <VictoryScatter  {...props} style={{data: {fill: COLORS[key]} }}/>]);
+        lines.push([
+          <VictoryLine key={key + '_line'} {...props} style={{data: { stroke: COLORS[key] }}}/>,
+          <VictoryScatter key={key + '_points'} {...props} style={{data: {fill: COLORS[key]} }}/>
+        ]);
       }
       legend.push(
         <TouchableOpacity key={key} onPress={() => setHidden(h => isHidden ? h.filter(k => k !== key) : [...h, key] )}>
@@ -91,7 +93,7 @@ const GraphChart = React.memo(({ data, operation = 'data', setCanScroll }) => {
             <Text content={name} />
           </View>
         </TouchableOpacity>
-      )
+      );
     })
     return [lines, legend];
   }, [formattedData, hidden]);
