@@ -23,8 +23,7 @@ const styles = StyleSheet.create({
     paddingTop: 10
   },
   button: {
-    minWidth:headerHeight,
-    height:headerHeight,
+    minWidth: headerHeight,
     height: headerHeight,
     lineHeight: headerHeight,
     margin:5,
@@ -108,7 +107,7 @@ const compute = ({ start, end }) => {
   // diff in minutes
   const diff = (end.getTime() - start.getTime()) / (1000 * 60);
   if(diff <= 60){
-    return;
+    return [];
   } else if(diff <= 60 * 24){
     return ['minute', 'avg'];
   } else if(diff <= 60 * 24 * 7){
@@ -126,10 +125,16 @@ const getDateOptions = (time, number = 1, autoCompute) => {
     case 'minute':
       options.start = new Date();
       options.start.setMinutes(options.start.getMinutes() - number);
+      if(autoCompute){
+        [options.group_by, options.operation] = compute(options);
+      }
       break;
     case 'hour':
       options.start = new Date();
       options.start.setHours(options.start.getHours() - number);
+      if(autoCompute){
+        [options.group_by, options.operation] = compute(options);
+      }
       break;
     case 'day':
       options.start = new Date();
@@ -157,13 +162,19 @@ const getDateOptions = (time, number = 1, autoCompute) => {
   }
   options.start.setMilliseconds(0);
   options.end.setMilliseconds(0);
+  options.order = 'descending';
   return options;
 }
 
-const getXValueOptions = (number) => {
+const getXValueOptions = (number, autoCompute) => {
   const start = (new Date('01/01/2010')).toISOString();
   const end = (new Date()).toISOString();
-  return { start, end, limit: number, value: { number }, type: 'hash', order: 'descending' };
+  const options = { start, end, limit: number, value: { number }, type: 'hash', order: 'descending' };
+  if(autoCompute){
+    options.operation = undefined;
+    options.group_by = undefined;
+  }
+  return options;
 }
 
 const TypeSelector = React.memo(({ type, setOptions }) => {
@@ -187,10 +198,10 @@ const TypeSelector = React.memo(({ type, setOptions }) => {
   );
 });
 
-const TimeValue = React.memo(({ value, setOptions }) => {
+const TimeValue = React.memo(({ value, setOptions, autoCompute }) => {
   const { t } = useTranslation();
   const onChangeValue = (_, selectedValue) => {
-    const newOptions = getDateOptions(selectedValue.time, selectedValue.number, false);
+    const newOptions = getDateOptions(selectedValue.time, selectedValue.number, autoCompute);
     setOptions((options) => {
       const n = {...options, ...newOptions, value: selectedValue, type: 'clock'};
       delete n.limit;
@@ -215,10 +226,10 @@ const TimeValue = React.memo(({ value, setOptions }) => {
   )
 });
 
-const LastXValue = React.memo(({ value, setOptions }) => {
+const LastXValue = React.memo(({ value, setOptions, autoCompute }) => {
   const { t } = useTranslation();
   const onChangeValue = (_, selectedValue) => {
-    const newOptions = getXValueOptions(selectedValue);
+    const newOptions = getXValueOptions(selectedValue, autoCompute);
     setOptions(options => ({...options, ...newOptions}));
   }
   return (
@@ -264,7 +275,7 @@ const Compute = React.memo(({ operation, group_by, setOptions }) => {
 
   const apply = () => {
     setOptions(options => {
-      const newOptions = {...options, ...localOptions}
+      const newOptions = {...options, ...localOptions, custom: true};
       if(newOptions.operation === 'none'){
         delete newOptions.operation;
         delete newOptions.group_by;
@@ -336,7 +347,7 @@ const ChartHeader = ({ options, setOptions, children}) => {
   const disabled = true;
   useEffect(() => {
     if(!options){
-      const dates = getDateOptions(defaultOptions.value.time, defaultOptions.value.number, false);
+      const dates = getDateOptions(defaultOptions.value.time, defaultOptions.value.number, true);
       setOptions({...defaultOptions, ...dates});
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -383,11 +394,11 @@ const ChartHeader = ({ options, setOptions, children}) => {
       }
       rightDisabled = rightDiff === 0;
       handleLeft = () => {
-        const newOptions = getDateOptions(options.value.time, leftDiff, false);
+        const newOptions = getDateOptions(options.value.time, leftDiff, !options.custom);
         setArrowOptions(newOptions, leftDiff);
       }
       handleRight = () => {
-        const newOptions = getDateOptions(options.value.time, rightDiff, false);
+        const newOptions = getDateOptions(options.value.time, rightDiff, !options.custom);
         setArrowOptions(newOptions, rightDiff);
       }
       break;
@@ -417,11 +428,11 @@ const ChartHeader = ({ options, setOptions, children}) => {
   return (
     <View>
       <View style={[styles.row, styles.buttonRow]}>
-        { 
+        {
           !options.live &&
             <>
               <TypeSelector type={options.type} setOptions={setOptions}  />
-              <ValueComponent value={options.value} setOptions={setOptions} />
+              <ValueComponent value={options.value} setOptions={setOptions} autoCompute={!options.custom} />
               <Compute operation={options.operation} group_by={options.group_by} setOptions={setOptions}/>
             </>
         }

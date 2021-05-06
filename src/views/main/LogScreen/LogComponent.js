@@ -36,7 +36,7 @@ const LogComponent = React.memo(({ id, options, onDone, stateType = 'Report', on
       isNumber: false,
       isBoolean: value && value.hasOwnProperty('number') && value.number.max - value.number.min === value.number.step
     }
-  }, [value, nameExtra, stateId, stateType, id]);
+  }, [value, nameExtra, stateId, stateType, id, t]);
 
   const mounted = useRef(true);
 
@@ -66,7 +66,6 @@ const LogComponent = React.memo(({ id, options, onDone, stateType = 'Report', on
     if(stateLogs.status !== STATUS.PENDING && stateLogs.status !== STATUS.IDLE && onDone){
       onDone({ ...obj.current, data: stateLogs.data, status: stateLogs.status });
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [id, onDone, stateId, stateType, stateLogs.data, stateLogs.status, value, refresh]);
 
   useEffect(() => {
