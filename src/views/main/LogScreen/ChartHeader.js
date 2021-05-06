@@ -252,7 +252,7 @@ const CalendarValue = React.memo(({ value, setOptions }) => {
   return null;
 });
 
-const Compute = React.memo(({ operation, group_by, setOptions }) => {
+const Compute = React.memo(({ operation = 'none', group_by = 'minute', setOptions }) => {
   const { t } = useTranslation();
   const [ visible, show, hide ] = useVisible(false);
   const [ localOptions, setLocalOptions ] = useState({ operation: operation || 'none', group_by: group_by || 'minute' });
@@ -284,6 +284,7 @@ const Compute = React.memo(({ operation, group_by, setOptions }) => {
     });
     hide();
   }
+  
   return(
     <Popover
       placement={PopoverPlacement.BOTTOM}
@@ -292,7 +293,7 @@ const Compute = React.memo(({ operation, group_by, setOptions }) => {
       popoverStyle={{padding: 15}}
       from={
         <TouchableOpacity style={styles.button} onPress={resetAndShow}>
-          <Text content={localOptions.operation === 'none' ? CapitalizeFirst(t('log:operations.none_short')) : CapitalizeFirst(t('log:operations.' + localOptions.operation + '_short')) + ' [' + CapitalizeFirst(t('log:timeFrame.' + localOptions.group_by + '_short')) +']'}/>
+          <Text content={operation === 'none' ? CapitalizeFirst(t('log:operations.none_short')) : CapitalizeFirst(t('log:operations.' + operation + '_short')) + ' [' + CapitalizeFirst(t('log:timeFrame.' + group_by + '_short')) + ']'}/>
         </TouchableOpacity>
       }
     >
