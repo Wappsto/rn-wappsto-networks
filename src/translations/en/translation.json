@@ -27,8 +27,7 @@
     "reload": "reload",
     "remove": "remove",
     "save": "save",
-    "send": "send",
-    "share": "share"
+    "send": "send"
   },
   "deleteConfirmationQuestion": "Are you sure you want to delete?",
   "deleteConfirmationDescription": "this action cannot be undone.",
@@ -158,7 +157,5 @@
         "flowButton": "close"
       }
     }
-  },
-  "itemShareSuccess": "{{name}} is now shared with the user {{user}}.",
-  "itemShareError": "failed to share {{name}} with {{user}}."
+  }
 }

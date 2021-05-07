@@ -100,7 +100,7 @@ const NetworkScreen = React.memo(({navigation}) => {
           <Button
             display='block'
             disabled={true} //{request && request.status === 'pending'}
-            text={CapitalizeFirst(t('genericButton.share'))}
+            text={CapitalizeFirst(t('acl:share'))}
             onPress={showShare}
             icon='share-2'
           />

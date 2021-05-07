@@ -64,7 +64,7 @@ const Share = React.memo(({ item, visible, hide }) => {
       if(response.ok){
         Toast.show({
           type: 'success',
-          text1: CapitalizeFirst(t('itemShareSuccess', { name: item.name || item.meta.id, user }))
+          text1: CapitalizeFirst(t('acl:shareItem.success', { name: item.name || item.meta.id, user }))
         });
         setUser('');
         setRestriction(DEFAULT_RESTRICTION);
@@ -73,7 +73,7 @@ const Share = React.memo(({ item, visible, hide }) => {
       } else if(!visible){
         Toast.show({
           type: 'error',
-          text1: CapitalizeFirst(t('itemShareError', { name: item.name || item.meta.id, user })),
+          text1: CapitalizeFirst(t('acl:shareItem.error', { name: item.name || item.meta.id, user })),
           text2: getRequestErrorMessage(response, t)
         });
       }
@@ -81,7 +81,7 @@ const Share = React.memo(({ item, visible, hide }) => {
       if(!visible){
         Toast.show({
           type: 'error',
-          text1: CapitalizeFirst(t('itemShareError', { name: item.name || item.meta.id, user })),
+          text1: CapitalizeFirst(t('acl:shareItem.error', { name: item.name || item.meta.id, user })),
           text2: getRequestErrorMessage(response, t)
         });
       }
@@ -90,16 +90,16 @@ const Share = React.memo(({ item, visible, hide }) => {
 
   return (
     <Popup visible={visible} hide={hide} onRequestClose={hide} fullScreen={false}>
-      <Input disabled={loading} label={CapitalizeFirst(t('user'))} validationError={error.user && CapitalizeFirst(t('userShouldBeEmailOrUUID'))} value={user} onChangeText={setUser}/>
-        <CheckBox disabled={loading} checked={restriction.create} text={CapitalizeFirst(t('create'))} onPress={() => setRestriction(r => ({...r, create: !r.create }))}/>
-        <CheckBox disabled={loading} checked={restriction.retrieve} text={CapitalizeFirst(t('retrieve'))} onPress={() => setRestriction(r => ({...r, retrieve: !r.retrieve }))}/>
-        <CheckBox disabled={loading} checked={restriction.update} text={CapitalizeFirst(t('update'))} onPress={() => setRestriction(r => ({...r, update: !r.update }))}/>
-        <CheckBox disabled={loading} checked={restriction.delete} text={CapitalizeFirst(t('delete'))} onPress={() => setRestriction(r => ({...r, delete: !r.delete }))}/>
+      <Input disabled={loading} label={CapitalizeFirst(t('acl:enterUserEmailOrId'))} validationError={error.user && CapitalizeFirst(t('acl:validation.valueDoesntMatchIdOrEmail'))} value={user} onChangeText={setUser}/>
+        <CheckBox disabled={loading} checked={restriction.create} text={CapitalizeFirst(t('acl:method.create'))} onPress={() => setRestriction(r => ({...r, create: !r.create }))}/>
+        <CheckBox disabled={loading} checked={restriction.retrieve} text={CapitalizeFirst(t('acl:method.retrieve'))} onPress={() => setRestriction(r => ({...r, retrieve: !r.retrieve }))}/>
+        <CheckBox disabled={loading} checked={restriction.update} text={CapitalizeFirst(t('acl:method.update'))} onPress={() => setRestriction(r => ({...r, update: !r.update }))}/>
+        <CheckBox disabled={loading} checked={restriction.delete} text={CapitalizeFirst(t('acl:method.delete'))} onPress={() => setRestriction(r => ({...r, delete: !r.delete }))}/>
         {
           !!error.restriction &&
           <Text
             color='error'
-            content={CapitalizeFirst(t('atLeastOneRestrictionShouldBeChecked'))}
+            content={CapitalizeFirst(t('acl:validation.atLeastOneNeedstoBeSelected'))}
             style={styles.validationError}
           />
         }
@@ -124,7 +124,7 @@ const Share = React.memo(({ item, visible, hide }) => {
           onPress={share}
           display='block'
           color='primary'
-          text={CapitalizeFirst(t('share'))}
+          text={CapitalizeFirst(t('acl:share'))}
         />
       </View>
     </Popup>

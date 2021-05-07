@@ -1,0 +1,18 @@
+{
+  "share": "share",
+  "enterUserEmailOrId": "enter user's email or ID",
+  "method": {
+    "retrieve": "retrieve",
+    "update": "update",
+    "create": "create",
+    "delete": "delete"
+  },
+  "shareItem": {
+    "success": "{{name}} is now shared with the user {{user}}.",
+    "error": "failed to share {{name}} with {{user}}."
+  },
+  "validation": {
+    "atLeastOneNeedstoBeSelected": "least one option need to be selected",
+    "valueDoesntMatchIdOrEmail": "entered text doen't match email or ID"
+  }
+}
