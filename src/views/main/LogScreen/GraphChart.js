@@ -82,8 +82,8 @@ const GraphChart = React.memo(({ data, operation = 'data', setCanScroll }) => {
       const isHidden = hidden.includes(key);
       if(!isHidden && props.data.length){
         lines.push([
-          <VictoryLine key={key + '_line'} {...props} style={{data: { stroke: COLORS[key] }}}/>,
-          <VictoryScatter key={key + '_points'} {...props} style={{data: {fill: COLORS[key]} }}/>
+          <VictoryLine key={key + '_line'} name={key + '_line'} {...props} style={{data: { stroke: COLORS[key] }}}/>,
+          <VictoryScatter key={key + '_points'} name={name} {...props} style={{data: {fill: COLORS[key]} }}/>
         ]);
       }
       legend.push(
@@ -116,6 +116,7 @@ const GraphChart = React.memo(({ data, operation = 'data', setCanScroll }) => {
         theme={VictoryTheme.material}
         containerComponent={
           <VictoryVoronoiContainer
+            voronoiBlacklist={['Report_line', 'Control_line']}
             labels={d => [`${d.datum.childName}: ${d.datum.rawValue} (${d.datum.x.toLocaleString()})`]}
           />
         }

@@ -453,7 +453,7 @@ const ChartHeader = ({ options, setOptions, children}) => {
             <TouchableOpacity style={[styles.button, leftDisabled && styles.buttonDisabled]} onPress={handleLeft} disabled={leftDisabled}>
               <Icon name='chevron-left'/>
             </TouchableOpacity>
-            <Text content={CapitalizeFirst(t(options.type === 'clock' ? options.value.t : 'log:lastOptions.lastXPoints', { x: options.value.number }))}/>
+            <Text content={CapitalizeFirst(t(options.type === 'clock' ? options.value.t : 'log:lastOptions.lastXPoints', { x: options.value.number, time: options.value.time }))}/>
             <TouchableOpacity style={[styles.button, rightDisabled && styles.buttonDisabled]} onPress={handleRight} disabled={rightDisabled}>
               <Icon name='chevron-right'/>
             </TouchableOpacity>

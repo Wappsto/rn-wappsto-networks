@@ -4,7 +4,6 @@ import List from '../../../components/List';
 import Value from './Value';
 import theme from '../../../theme/themeExport';
 import { selectedDeviceName } from '../../../util/params';
-import { getServiceVersion } from 'wappsto-redux/util/helpers';
 import DeviceDetails from './DeviceDetails';
 import DeviceLocation from './DeviceLocation';
 import useUnmountRemoveItem from '../../../hooks/useUnmountRemoveItem';
@@ -19,8 +18,9 @@ const DeviceScreen = React.memo(({ navigation }) => {
   const query = useMemo(() => ({
     expand: 3,
     limit: 10,
-    order_by: getServiceVersion('value') === '' ? 'created' : 'meta.created',
-    verbose: true
+    order_by: 'meta.created',
+    verbose: true,
+    method: 'retrieve'
   }), []);
 
   useUnmountRemoveItem(selectedDeviceName);

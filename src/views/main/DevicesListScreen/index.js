@@ -11,7 +11,6 @@ import theme from '../../../theme/themeExport';
 import { useTranslation, CapitalizeEach, CapitalizeFirst } from '../../../translations';
 import { iotNetworkListAdd, iotNetworkListRemove, iotNetworkAddFlow } from '../../../util/params';
 import { isPrototype } from 'wappsto-blanket/util';
-import { getServiceVersion } from 'wappsto-redux/util/helpers';
 import useAppStateStream from '../../../hooks/useAppStateStream';
 import useAddNetworkStream from '../../../hooks/useAddNetworkStream';
 import ItemDeleteIndicator from '../../../components/ItemDeleteIndicator';
@@ -127,9 +126,10 @@ const ListItem = React.memo(({ network, navigation }) => {
 const query = {
   expand: 1,
   limit: 4,
-  order_by: getServiceVersion('network') === '' ? 'created' : 'meta.created',
+  order_by: 'this_meta.created',
   from_last: true,
-  verbose: true
+  verbose: true,
+  method: 'retrieve'
 };
 const DevicesListScreen = React.memo(({ navigation }) => {
   const getItem = useMemo(makeItemSelector, []);
