@@ -128,10 +128,6 @@ const ValueSettings = React.memo(({ item }) => {
       <Popup visible={visible} onRequestClose={hide} hide={hide}>
         <Text size={'h4'} content={item.name}/>
         <ID id={item.meta.id} label={CapitalizeFirst(t('dataModel:valueProperties.meta.id'))}/>
-        <RNText>
-          <Text bold content={CapitalizeFirst(t('dataModel:universalMeta.historical'))+ ': '}/>
-          <Text content={item.meta.historical ? CapitalizeFirst(t('dataModel:universalMeta.historicalOptions.' + item.meta.historical)) : CapitalizeFirst(t('dataModel:universalMeta.historicalOptions.true'))}/>
-        </RNText>
         {!!item.type &&
           <RNText>
             <Text bold content={CapitalizeFirst(t('dataModel:valueProperties.type')) + ': '}/>
