@@ -11,15 +11,22 @@ import useVisible from 'wappsto-blanket/hooks/useVisible';
 
 const headerHeight = 35;
 const styles = StyleSheet.create({
-  row: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between'
-  },
   center: {
     justifyContent: 'center'
   },
-  buttonRow:{
+  typeSelectionButton:{
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    backgroundColor: 'white',
+    padding: 10,
+    height: headerHeight,
+    marginHorizontal:5
+  },
+  header:{
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
     paddingTop: 10
   },
   button: {
@@ -66,11 +73,9 @@ const styles = StyleSheet.create({
     padding: 15,
     paddingRight:20
   },
-  typeIconSelected: {
-    backgroundColor: 'grey'
-  },
   chartContainer: {
-   // backgroundColor: 'white'
+    backgroundColor: 'white',
+    paddingBottom: 20
   },
   liveCircle: {
     width: 8,
@@ -183,14 +188,13 @@ const TypeSelector = React.memo(({ type, setOptions }) => {
   }
   return (
     <ModalDropdown
-      style={styles.button}
-      dropdownStyle={[styles.dropdownContainer, {marginTop: 10}]}
+      dropdownStyle={[styles.dropdownContainer, {marginLeft: 5}]}
       defaultValue={type}
       options={TYPES}
-      renderRow={(option, _, isSelected) => <Icon size={15} name={option} style={[styles.typeIconStyle, isSelected && styles.typeIconSelected]}/>}
+      renderRow={(option, _, isSelected) => <Icon size={15} name={option} style={styles.typeIconStyle} color={isSelected && theme.variables.disabled}/>}
       onSelect={onChangeType}
     >
-      <View style={styles.row}>
+      <View style={styles.typeSelectionButton}>
         <Icon size={15} name={type} style={{marginRight:5}}/>
         <Icon size={10} name='chevron-down'/>
       </View>
@@ -214,13 +218,13 @@ const TimeValue = React.memo(({ value, setOptions, autoCompute }) => {
       style={styles.dropdownButton}
       textStyle={styles.dropdownButtonText}
       dropdownStyle={styles.dropdownContainer}
-      defaultValue={CapitalizeFirst(t(value?.t || 'select', { x: value?.number,  time: value?.time }))}
+      defaultValue={CapitalizeFirst(t(value?.t || 'genericButton.select', { x: value?.number,  time: value?.time }))}
       defaultIndex={0}
       options={TIME_OPTIONS}
       onSelect={onChangeValue}
       renderButtonText={(option) => CapitalizeFirst(t(option.t, { x: option.number,  time: option.time }))}
       renderRow={(option, _, isSelected) => (
-        <Text style={styles.dropdownText} content={CapitalizeFirst(t(option.t, { x: option.number, time: option.time }))} color={isSelected ? 'secondary' : 'primary'}/>
+        <Text style={styles.dropdownText} content={CapitalizeFirst(t(option.t, { x: option.number, time: option.time }))} color={isSelected ? theme.variables.disabled : 'primary'}/>
       )}
     />
   )
@@ -237,12 +241,12 @@ const LastXValue = React.memo(({ value, setOptions, autoCompute }) => {
       style={styles.dropdownButton}
       textStyle={styles.dropdownButtonText}
       dropdownStyle={styles.dropdownContainer}
-      defaultValue={CapitalizeFirst(t(value?.number ? 'log:lastOptions.lastXPoints' : 'select', { x: value.number }))}
+      defaultValue={CapitalizeFirst(t(value?.number ? 'log:lastOptions.lastXPoints' : 'genericButton.select', { x: value.number }))}
       options={POINT_OPTIONS}
       onSelect={onChangeValue}
       renderButtonText={(option) => CapitalizeFirst(t('log:lastOptions.lastXPoints', { x: option }))}
       renderRow={(option, _, isSelected) => (
-        <Text style={styles.dropdownText} content={CapitalizeFirst(t('log:lastOptions.lastXPoints', { x: option }))} color={isSelected ? 'secondary' : 'primary'}/>
+        <Text style={styles.dropdownText} content={CapitalizeFirst(t('log:lastOptions.lastXPoints', { x: option }))} color={isSelected ? theme.variables.disabled : 'primary'}/>
       )}
     />
   )
@@ -302,11 +306,11 @@ const Compute = React.memo(({ operation = 'none', group_by = 'minute', setOption
         <ModalDropdown
           style={styles.dropdownButtonInput}
           textStyle={styles.dropdownButtonText}
-          defaultValue={localOptions.operation}
+          defaultValue={CapitalizeFirst(t('log:operations.' + localOptions.operation))}
           options={OPERATIONS}
-          renderButtonText={option => t(option)}
+          renderButtonText={option => CapitalizeFirst(t('log:operations.' + option))}
           renderRow={(option, _, isSelected) => (
-            <Text style={styles.dropdownText} content={CapitalizeFirst(t('log:operations.' + option))} color={isSelected ? 'secondary' : 'primary'}/>
+            <Text style={styles.dropdownText} content={CapitalizeFirst(t('log:operations.' + option))} color={isSelected ? theme.variables.disabled : 'primary'}/>
           )}
           onSelect={onChangeOperation}
         />
@@ -317,11 +321,11 @@ const Compute = React.memo(({ operation = 'none', group_by = 'minute', setOption
             <ModalDropdown
               style={styles.dropdownButtonInput}
               textStyle={styles.dropdownButtonText}
-              defaultValue={localOptions.group_by}
+              defaultValue={CapitalizeFirst(t('log:timeFrame.' + localOptions.group_by))}
               options={GROUP_BY}
-              renderButtonText={option => t(option)}
+              renderButtonText={option => CapitalizeFirst(t('log:timeFrame.' + option))}
               renderRow={(option, _, isSelected) => (
-                <Text style={styles.dropdownText} content={CapitalizeFirst(t('log:timeFrame.' + option))} color={isSelected ? 'secondary' : 'primary'}/>
+                <Text style={styles.dropdownText} content={CapitalizeFirst(t('log:timeFrame.' + option))} color={isSelected ? theme.variables.disabled : 'primary'}/>
               )}
               onSelect={onChangeGroupBy}
             />
@@ -333,7 +337,7 @@ const Compute = React.memo(({ operation = 'none', group_by = 'minute', setOption
         onPress={apply}
         display='block'
         color='primary'
-        text={CapitalizeFirst(t('apply'))}
+        text={CapitalizeFirst(t('genericButton.apply'))}
       />
     </Popover>
   )
@@ -428,7 +432,7 @@ const ChartHeader = ({ options, setOptions, children}) => {
 
   return (
     <View>
-      <View style={[styles.row, styles.buttonRow]}>
+      <View style={styles.header}>
         {
           !options.live &&
             <>

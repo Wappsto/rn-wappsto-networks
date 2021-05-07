@@ -109,7 +109,7 @@ const LogScreen = React.memo(() => {
           }
           {showCustomReportError && !data.Report?.data?.length &&
             <Message
-              message={CapitalizeFirst(t('log:error.noData' + ' (' + CapitalizeFirst(t('dataModel:stateProperties.reportState')) + ')'))}
+              message={CapitalizeFirst(t('log:error.noData')) + ' (' + CapitalizeFirst(t('dataModel:stateProperties.reportState')) + ')'}
               type='warning'
             />
           }

@@ -10,9 +10,11 @@
     "settings": "settings",
     "register": "register an account",
     "login":"sign in",
+    "logs":"logs",
     "terms": "terms & conditions"
   },
   "genericButton": {
+    "apply": "apply",
     "back": "back",
     "cancel": "cancel",
     "create": "create",
@@ -27,6 +29,7 @@
     "reload": "reload",
     "remove": "remove",
     "save": "save",
+    "select": "select",
     "send": "send"
   },
   "deleteConfirmationQuestion": "Are you sure you want to delete?",
