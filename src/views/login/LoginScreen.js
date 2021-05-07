@@ -220,7 +220,7 @@ const LoginScreen = React.memo(({ navigation }) => {
                 onPress={checkAndSignIn}
                 display='block'
                 color='primary'
-                text={CapitalizeFirst(t('account:logIn'))}
+                text={CapitalizeFirst(t('account:signIn'))}
               />
             <View style={styles.formLinkButtons}>
               <Button

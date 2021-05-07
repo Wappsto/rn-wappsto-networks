@@ -87,7 +87,7 @@ const DeleteAccount = React.memo(({ setButtonsDisabled }) => {
     <View style={[styles.item, styles.deleteAccount]}>
       <ConfirmationPopup
         visible={confirmationPopupVisible}
-        title={CapitalizeFirst(t('account:deleteAccountTitle'))}
+        title={CapitalizeFirst(t('account:deleteAccount'))}
         description={CapitalizeFirst(t('account:deleteAccountInfo'))}
         rejectText={CapitalizeFirst(t('genericButton.cancel'))}
         acceptText={CapitalizeFirst(t('genericButton.send'))}
@@ -113,7 +113,7 @@ const DeleteAccount = React.memo(({ setButtonsDisabled }) => {
         <Text
           size='p'
           align='center'
-          content={CapitalizeFirst(t('account:deleteAccountSuccess'))}
+          content={CapitalizeFirst(t('account:deleteAccountConfirmation'))}
         />
         <Button
           color='success'

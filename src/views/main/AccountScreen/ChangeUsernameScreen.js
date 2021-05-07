@@ -21,7 +21,7 @@ const ChangeUsernameScreen = React.memo(() => {
           <Text
             size='p'
             align='center'
-            content={CapitalizeFirst(t('account:registrationConfirmation'))}
+            content={CapitalizeFirst(t('account:changeUsernameConfirmation'))}
           />
           <Button
             color='success'
@@ -55,7 +55,7 @@ const ChangeUsernameScreen = React.memo(() => {
           secureTextEntry={!changeEmailHandler.passwordField.visible}
           toggleShowPassword={changeEmailHandler.passwordField.toggleVisible}
           onSubmitEditing={() => changeEmailHandler.moveToField(changeEmailHandler.newUsernameField.ref)}
-          validationError={changeEmailHandler.passwordField.error && CapitalizeFirst(t('account:validation.password'))}
+          validationError={changeEmailHandler.passwordField.error && CapitalizeFirst(t('account:validation.required', { field: 'password' }))}
         />
         <Input
           inputRef={changeEmailHandler.newUsernameField.ref}

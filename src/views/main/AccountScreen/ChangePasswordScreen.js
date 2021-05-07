@@ -21,7 +21,7 @@ const ChangePassword = React.memo(() => {
           <Text
             size='p'
             align='center'
-            content={CapitalizeFirst(t('account:changePasswordSuccess'))}
+            content={CapitalizeFirst(t('account:changePasswordConfirmation'))}
           />
           <Button
             color='success'

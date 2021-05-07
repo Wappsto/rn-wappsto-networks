@@ -21,7 +21,7 @@ const ChangeUserDetailsScreen = React.memo(() => {
           <Text
             size='p'
             align='center'
-            content={CapitalizeFirst(t('account:changeUserDetailsSuccess'))}
+            content={CapitalizeFirst(t('account:changeUserDetailsConfirmation'))}
           />
           <Button
             color='success'
