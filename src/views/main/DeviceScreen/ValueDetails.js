@@ -34,7 +34,7 @@ const  getValueType = (value, t) => {
             }
             {!!value.blob.max &&
               <RNText>
-                <Text bold content={CapitalizeFirst(t('dataModel:valueProperties.blobProperties.maxLength')) + ': '}/>
+                <Text bold content={CapitalizeFirst(t('dataModel:valueProperties.blobProperties.max')) + ': '}/>
                 <Text content={value.blob.max}/>
               </RNText>
             }
