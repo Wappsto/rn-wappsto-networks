@@ -174,7 +174,7 @@ const getDateOptions = (time, number = 1, arrowClick = 0, autoCompute) => {
 const getXValueOptions = (number, arrowClick = 0, autoCompute) => {
   const start = (new Date('01/01/2010')).toISOString();
   const end = (new Date()).toISOString();
-  const options = { start, end, limit: number * (arrowClick + 1), offset: number * arrowClick, value: { number }, type: 'hash', order: 'descending' };
+  const options = { start, end, limit: number, offset: number * arrowClick, value: { number }, type: 'hash', order: 'descending' };
   if(autoCompute){
     options.operation = undefined;
     options.group_by = undefined;
