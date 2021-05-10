@@ -93,10 +93,10 @@ const styles = StyleSheet.create({
 
 const TYPES = ['clock', 'hash']; //, 'calendar'
 const TIME_OPTIONS = [
-  {t: 'log:lastOptions.lastXTimeFrame', number: 5, time: 'minute' },
-  {t: 'log:lastOptions.lastXTimeFrame', number: 30, time: 'minute' },
-  {t: 'log:lastOptions.lastXTimeFrame', number: 1, time: 'hour' },
-  {t: 'log:lastOptions.lastXTimeFrame', number: 1, time: 'month' }
+  { number: 5, time: 'minute' },
+  { number: 30, time: 'minute' },
+  { number: 1, time: 'hour' },
+  { number: 1, time: 'month' }
 ];
 const POINT_OPTIONS = [50, 100, 300, 1000];
 
@@ -124,40 +124,40 @@ const compute = ({ start, end }) => {
   }
 }
 
-const getDateOptions = (time, number = 1, autoCompute) => {
-  const options = { end: new Date() };
+const getDateOptions = (time, number = 1, arrowClick = 0, autoCompute) => {
+  const options = { end: new Date(), start: new Date() };
   switch(time){
     case 'minute':
-      options.start = new Date();
-      options.start.setMinutes(options.start.getMinutes() - number);
+      options.end.setMinutes(options.start.getMinutes() - (number * arrowClick));
+      options.start.setMinutes(options.start.getMinutes() - (number * (arrowClick + 1)));
       if(autoCompute){
         [options.group_by, options.operation] = compute(options);
       }
       break;
     case 'hour':
-      options.start = new Date();
-      options.start.setHours(options.start.getHours() - number);
+      options.end.setHours(options.start.getHours() - (number * arrowClick));
+      options.start.setHours(options.start.getHours() - (number * (arrowClick + 1)));
       if(autoCompute){
         [options.group_by, options.operation] = compute(options);
       }
       break;
     case 'day':
-      options.start = new Date();
-      options.start.setDate(options.start.getDate() - number);
+      options.end.setDate(options.start.getDate() - (number * arrowClick));
+      options.start.setDate(options.start.getDate() - (number * (arrowClick + 1)));
       if(autoCompute){
         [options.group_by, options.operation] = compute(options);
       }
       break;
     case 'week':
-      options.start = new Date();
-      options.start.setDate(options.start.getDate() - (7 * number));
+      options.end.setDate(options.start.getDate() - (7 * number * arrowClick));
+      options.start.setDate(options.start.getDate() - (7 * number * (arrowClick + 1)));
       if(autoCompute){
         [options.group_by, options.operation] = compute(options);
       }
       break;
     case 'month':
-      options.start = new Date();
-      options.start.setMonth(options.start.getMonth() - number);
+      options.end.setMonth(options.start.getMonth() - (number * arrowClick));
+      options.start.setMonth(options.start.getMonth() - (number * (arrowClick + 1)));
       if(autoCompute){
         [options.group_by, options.operation] = compute(options);
       }
@@ -171,10 +171,10 @@ const getDateOptions = (time, number = 1, autoCompute) => {
   return options;
 }
 
-const getXValueOptions = (number, autoCompute) => {
+const getXValueOptions = (number, arrowClick = 0, autoCompute) => {
   const start = (new Date('01/01/2010')).toISOString();
   const end = (new Date()).toISOString();
-  const options = { start, end, limit: number, value: { number }, type: 'hash', order: 'descending' };
+  const options = { start, end, limit: number * (arrowClick + 1), offset: number * arrowClick, value: { number }, type: 'hash', order: 'descending' };
   if(autoCompute){
     options.operation = undefined;
     options.group_by = undefined;
@@ -205,7 +205,7 @@ const TypeSelector = React.memo(({ type, setOptions }) => {
 const TimeValue = React.memo(({ value, setOptions, autoCompute }) => {
   const { t } = useTranslation();
   const onChangeValue = (_, selectedValue) => {
-    const newOptions = getDateOptions(selectedValue.time, selectedValue.number, autoCompute);
+    const newOptions = getDateOptions(selectedValue.time, selectedValue.number, 0, autoCompute);
     setOptions((options) => {
       const n = {...options, ...newOptions, value: selectedValue, type: 'clock'};
       delete n.limit;
@@ -218,13 +218,13 @@ const TimeValue = React.memo(({ value, setOptions, autoCompute }) => {
       style={styles.dropdownButton}
       textStyle={styles.dropdownButtonText}
       dropdownStyle={styles.dropdownContainer}
-      defaultValue={CapitalizeFirst(t(value?.t || 'genericButton.select', { x: value?.number,  time: value?.time }))}
+      defaultValue={CapitalizeFirst(t(value?.number ? 'log:lastOptions.lastXTimeFrame' : 'genericButton.select', { x: value?.number,  time: value?.time }))}
       defaultIndex={0}
       options={TIME_OPTIONS}
       onSelect={onChangeValue}
-      renderButtonText={(option) => CapitalizeFirst(t(option.t, { x: option.number,  time: option.time }))}
+      renderButtonText={(option) => CapitalizeFirst(t('log:lastOptions.lastXTimeFrame', { x: option.number,  time: option.time }))}
       renderRow={(option, _, isSelected) => (
-        <Text style={styles.dropdownText} content={CapitalizeFirst(t(option.t, { x: option.number, time: option.time }))} color={isSelected ? theme.variables.disabled : 'primary'}/>
+        <Text style={styles.dropdownText} content={CapitalizeFirst(t('log:lastOptions.lastXTimeFrame', { x: option.number, time: option.time }))} color={isSelected ? theme.variables.disabled : 'primary'}/>
       )}
     />
   )
@@ -233,7 +233,7 @@ const TimeValue = React.memo(({ value, setOptions, autoCompute }) => {
 const LastXValue = React.memo(({ value, setOptions, autoCompute }) => {
   const { t } = useTranslation();
   const onChangeValue = (_, selectedValue) => {
-    const newOptions = getXValueOptions(selectedValue, autoCompute);
+    const newOptions = getXValueOptions(selectedValue, 0, autoCompute);
     setOptions(options => ({...options, ...newOptions}));
   }
   return (
@@ -288,7 +288,7 @@ const Compute = React.memo(({ operation = 'none', group_by = 'minute', setOption
     });
     hide();
   }
-  
+
   return(
     <Popover
       placement={PopoverPlacement.BOTTOM}
@@ -349,10 +349,9 @@ const defaultOptions = {
 };
 const ChartHeader = ({ options, setOptions, children}) => {
   const { t } = useTranslation();
-  const disabled = true;
   useEffect(() => {
     if(!options){
-      const dates = getDateOptions(defaultOptions.value.time, defaultOptions.value.number, true);
+      const dates = getDateOptions(defaultOptions.value.time, defaultOptions.value.number, 0, true);
       setOptions({...defaultOptions, ...dates});
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -366,62 +365,36 @@ const ChartHeader = ({ options, setOptions, children}) => {
     setOptions({...options, live: !options.live});
   }
 
-  const setArrowOptions = (newOptions, number) => {
-    setOptions({...defaultOptions, ...newOptions, value: { ...options.value, number }});
-  }
-
   let ValueComponent = null;
-  let handleLeft, handleRight, leftDisabled, rightDisabled;
+  let handleLeft, handleRight;
+  const rightDisabled = !options.value.arrowClick;
+  const leftDisabled = options.value.arrowClick === 10;
   switch(options.type){
-    case 'clock':{
+    case 'clock': {
       ValueComponent = TimeValue;
-      const diff = 1;
-      const leftDiff = options.value.number + diff;
-      const rightDiff = options.value.number - diff;
-      switch(options.value.time){
-        case 'minute':
-          leftDisabled = leftDiff === 60;
-          break;
-        case 'hour':
-          leftDisabled = leftDiff === 24;
-          break;
-        case 'day':
-          leftDisabled = leftDiff === 7;
-          break;
-        case 'week':
-          leftDisabled = leftDiff === 4;
-          break;
-        case 'month':
-          leftDisabled = leftDiff === 2;
-          break;
-        default:
-          leftDisabled = leftDiff === 1;
-      }
-      rightDisabled = rightDiff === 0;
       handleLeft = () => {
-        const newOptions = getDateOptions(options.value.time, leftDiff, !options.custom);
-        setArrowOptions(newOptions, leftDiff);
+        const arrowClick = (options.value.arrowClick || 0) + 1;
+        const newOptions = getDateOptions(options.value.time, options.value.number, arrowClick, !options.custom);
+        setOptions({...defaultOptions, ...newOptions, value: { ...options.value, arrowClick }});
       }
       handleRight = () => {
-        const newOptions = getDateOptions(options.value.time, rightDiff, !options.custom);
-        setArrowOptions(newOptions, rightDiff);
+        const arrowClick = (options.value.arrowClick || 0) - 1;
+        const newOptions = getDateOptions(options.value.time, options.value.number, arrowClick, !options.custom);
+        setOptions({...defaultOptions, ...newOptions, value: { ...options.value, arrowClick }});
       }
       break;
     }
-    case 'hash':{
+    case 'hash': {
       ValueComponent = LastXValue;
-      const diff = 10;
-      const leftDiff = options.value.number + diff;
-      const rightDiff = options.value.number - diff;
-      leftDisabled = leftDiff > MAX_POINTS;
-      rightDisabled = rightDiff === 0;
       handleLeft = () => {
-        const newOptions = getXValueOptions(leftDiff);
-        setArrowOptions(newOptions, leftDiff);
+        const arrowClick = (options.value.arrowClick || 0) + 1;
+        const newOptions = getXValueOptions(options.value.number, arrowClick);
+        setOptions({...defaultOptions, ...newOptions, value: { ...options.value, arrowClick }});
       }
       handleRight = () => {
-        const newOptions = getXValueOptions(rightDisabled);
-        setArrowOptions(newOptions, rightDiff);
+        const arrowClick = (options.value.arrowClick || 0) - 1;
+        const newOptions = getXValueOptions(options.value.number, arrowClick);
+        setOptions({...defaultOptions, ...newOptions, value: { ...options.value, arrowClick }});
       }
       break;
     }
@@ -430,6 +403,22 @@ const ChartHeader = ({ options, setOptions, children}) => {
       break;
   }
 
+  let arrowMessage;
+  const from = options.value.number * options.value.arrowClick;
+  const to = options.value.number * (options.value.arrowClick + 1);
+  if(options.type === 'clock'){
+    if(!options.value.arrowClick){
+      arrowMessage = CapitalizeFirst(t('log:lastOptions.lastXTimeFrame', { x: options.value.number, time: options.value.time }));
+    } else {
+      arrowMessage = CapitalizeFirst(t(`log:lastOptions.rangeTimeFrame ${from} - ${to} - ${options.value.time}`, { from, to, time: options.value.time }));
+    }
+  } else {
+    if(!options.value.arrowClick){
+      arrowMessage = CapitalizeFirst(t('log:lastOptions.lastXPoints', { x: options.value.number }));
+    } else {
+      arrowMessage = CapitalizeFirst(t(`log:lastOptions.rangeXPoints ${from} - ${to}`, { from, to }));
+    }
+  }
   return (
     <View>
       <View style={styles.header}>
@@ -448,12 +437,12 @@ const ChartHeader = ({ options, setOptions, children}) => {
       </View>
 
       {
-        !options.live &&!!options.value && !disabled &&
+        !options.live && !!options.value &&
           <View style={[theme.common.row, styles.center]}>
             <TouchableOpacity style={[styles.button, leftDisabled && styles.buttonDisabled]} onPress={handleLeft} disabled={leftDisabled}>
               <Icon name='chevron-left'/>
             </TouchableOpacity>
-            <Text content={CapitalizeFirst(t(options.type === 'clock' ? options.value.t : 'log:lastOptions.lastXPoints', { x: options.value.number, time: options.value.time }))}/>
+            <Text content={arrowMessage}/>
             <TouchableOpacity style={[styles.button, rightDisabled && styles.buttonDisabled]} onPress={handleRight} disabled={rightDisabled}>
               <Icon name='chevron-right'/>
             </TouchableOpacity>
