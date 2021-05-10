@@ -91,7 +91,7 @@ const styles = StyleSheet.create({
   }
 });
 
-const TYPES = ['clock', 'hash']; //, 'calendar'
+const TYPES = ['hash', 'clock']; //, 'calendar'
 const TIME_OPTIONS = [
   { number: 5, time: 'minute' },
   { number: 30, time: 'minute' },
@@ -190,6 +190,7 @@ const TypeSelector = React.memo(({ type, setOptions }) => {
     <ModalDropdown
       dropdownStyle={[styles.dropdownContainer, {marginLeft: 5}]}
       defaultValue={type}
+      defaultIndex={0}
       options={TYPES}
       renderRow={(option, _, isSelected) => <Icon size={15} name={option} style={styles.typeIconStyle} color={isSelected && theme.variables.disabled}/>}
       onSelect={onChangeType}
@@ -218,8 +219,7 @@ const TimeValue = React.memo(({ value, setOptions, autoCompute }) => {
       style={styles.dropdownButton}
       textStyle={styles.dropdownButtonText}
       dropdownStyle={styles.dropdownContainer}
-      defaultValue={CapitalizeFirst(t(value?.number ? 'log:lastOptions.lastXTimeFrame' : 'genericButton.select', { x: value?.number,  time: value?.time }))}
-      defaultIndex={0}
+      defaultValue={CapitalizeFirst(t(value?.time ? 'log:lastOptions.lastXTimeFrame' : 'genericButton.select', { x: value?.number,  time: value?.time }))}
       options={TIME_OPTIONS}
       onSelect={onChangeValue}
       renderButtonText={(option) => CapitalizeFirst(t('log:lastOptions.lastXTimeFrame', { x: option.number,  time: option.time }))}
@@ -242,6 +242,7 @@ const LastXValue = React.memo(({ value, setOptions, autoCompute }) => {
       textStyle={styles.dropdownButtonText}
       dropdownStyle={styles.dropdownContainer}
       defaultValue={CapitalizeFirst(t(value?.number ? 'log:lastOptions.lastXPoints' : 'genericButton.select', { x: value.number }))}
+      defaultIndex={0}
       options={POINT_OPTIONS}
       onSelect={onChangeValue}
       renderButtonText={(option) => CapitalizeFirst(t('log:lastOptions.lastXPoints', { x: option }))}
@@ -345,14 +346,25 @@ const Compute = React.memo(({ operation = 'none', group_by = 'minute', setOption
 
 const defaultOptions = {
   type: TYPES[0],
-  value: TIME_OPTIONS[0]
+  value: {
+    number: POINT_OPTIONS[0]
+  }
 };
 const ChartHeader = ({ options, setOptions, children}) => {
   const { t } = useTranslation();
   useEffect(() => {
     if(!options){
-      const dates = getDateOptions(defaultOptions.value.time, defaultOptions.value.number, 0, true);
-      setOptions({...defaultOptions, ...dates});
+      let newOptions;
+      switch (defaultOptions.type) {
+        case 'clock':
+          newOptions = getDateOptions(defaultOptions.value.time, defaultOptions.value.number, 0, true);
+          break;
+        case 'hash':
+        default:
+          newOptions = getXValueOptions(defaultOptions.value.number, 0, true);
+          break;
+      }
+      setOptions({...defaultOptions, ...newOptions, value: { ... defaultOptions.value }});
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
@@ -375,12 +387,12 @@ const ChartHeader = ({ options, setOptions, children}) => {
       handleLeft = () => {
         const arrowClick = (options.value.arrowClick || 0) + 1;
         const newOptions = getDateOptions(options.value.time, options.value.number, arrowClick, !options.custom);
-        setOptions({...defaultOptions, ...newOptions, value: { ...options.value, arrowClick }});
+        setOptions({...options, ...newOptions, value: { ...options.value, arrowClick }});
       }
       handleRight = () => {
         const arrowClick = (options.value.arrowClick || 0) - 1;
         const newOptions = getDateOptions(options.value.time, options.value.number, arrowClick, !options.custom);
-        setOptions({...defaultOptions, ...newOptions, value: { ...options.value, arrowClick }});
+        setOptions({...options, ...newOptions, value: { ...options.value, arrowClick }});
       }
       break;
     }
@@ -388,13 +400,13 @@ const ChartHeader = ({ options, setOptions, children}) => {
       ValueComponent = LastXValue;
       handleLeft = () => {
         const arrowClick = (options.value.arrowClick || 0) + 1;
-        const newOptions = getXValueOptions(options.value.number, arrowClick);
-        setOptions({...defaultOptions, ...newOptions, value: { ...options.value, arrowClick }});
+        const newOptions = getXValueOptions(options.value.number, arrowClick, !options.custom);
+        setOptions({...options, ...newOptions, value: { ...options.value, arrowClick }});
       }
       handleRight = () => {
         const arrowClick = (options.value.arrowClick || 0) - 1;
-        const newOptions = getXValueOptions(options.value.number, arrowClick);
-        setOptions({...defaultOptions, ...newOptions, value: { ...options.value, arrowClick }});
+        const newOptions = getXValueOptions(options.value.number, arrowClick, !options.custom);
+        setOptions({...options, ...newOptions, value: { ...options.value, arrowClick }});
       }
       break;
     }
