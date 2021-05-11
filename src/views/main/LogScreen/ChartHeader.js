@@ -192,7 +192,7 @@ const TypeSelector = React.memo(({ type, setOptions }) => {
       defaultValue={type}
       defaultIndex={0}
       options={TYPES}
-      renderRow={(option, _, isSelected) => <Icon size={15} name={option} style={styles.typeIconStyle} color={isSelected && theme.variables.disabled}/>}
+      renderRow={(option, _, isSelected) => <Icon size={15} name={option} style={styles.typeIconStyle} color={isSelected ? theme.variables.disabled : theme.variables.textColor}/>}
       onSelect={onChangeType}
     >
       <View style={styles.typeSelectionButton}>
