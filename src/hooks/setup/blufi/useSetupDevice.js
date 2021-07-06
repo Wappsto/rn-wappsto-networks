@@ -266,6 +266,7 @@ const useSetupDevice = (connectToDevice, addNetworkHandler, wifiFields, autoConf
     configure,
     loading,
     setStep,
+    reset,
     error: error.current,
     step: currentStep,
     request: request,
