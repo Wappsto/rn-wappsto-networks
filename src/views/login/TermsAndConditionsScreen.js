@@ -48,7 +48,8 @@ const TermsAndConditionsScreen = React.memo(({ navigation }) => {
   );
 });
 
-TermsAndConditionsScreen.navigationOptions = ({ t }) => {
+TermsAndConditionsScreen.navigationOptions = () => {
+  const { t } = useTranslation();
   return {
     ...theme.headerStyle,
     title: CapitalizeEach(t('pageTitle.terms'))

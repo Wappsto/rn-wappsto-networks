@@ -248,7 +248,8 @@ const AccountScreen = React.memo(({navigation}) => {
   );
 });
 
-AccountScreen.navigationOptions = ({ navigation, t }) => {
+AccountScreen.navigationOptions = ({ navigation }) => {
+  const { t } = useTranslation();
   return {
     ...theme.headerStyle,
     title: CapitalizeEach(t('pageTitle.account')),

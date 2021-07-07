@@ -300,7 +300,8 @@ const LoginScreen = React.memo(({ navigation }) => {
   );
 });
 
-LoginScreen.navigationOptions = ({ t }) => {
+LoginScreen.navigationOptions = () => {
+  const { t } = useTranslation();
   return {
     headerShown: false,
     title: CapitalizeFirst(t('pageTitle.login'))
@@ -329,7 +330,6 @@ LoginScreen.Header = () => {
 }
 
 LoginScreen.Footer = () => {
-
   return (
     <RNText style={styles.footer}>
       <Text

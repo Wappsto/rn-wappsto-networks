@@ -34,7 +34,8 @@ const RecoverPassword = React.memo(() => {
   );
 });
 
-RecoverPassword.navigationOptions = ({ route, t }) => {
+RecoverPassword.navigationOptions = ({ route }) => {
+  const { t } = useTranslation();
   return {
     ...theme.headerStyle,
     title: route.params.title || CapitalizeEach(t('pageTitle.recoverPassword'))

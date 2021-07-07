@@ -83,7 +83,8 @@ const ChangeUsernameScreen = React.memo(() => {
   );
 });
 
-ChangeUsernameScreen.navigationOptions = ({ route, t }) => {
+ChangeUsernameScreen.navigationOptions = ({ route }) => {
+  const { t } = useTranslation();
   return {
     ...theme.headerStyle,
     title: route.params.title || CapitalizeEach(t('pageTitle.changeUsername'))

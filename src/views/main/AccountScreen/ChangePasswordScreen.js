@@ -90,7 +90,8 @@ const ChangePassword = React.memo(() => {
   );
 });
 
-ChangePassword.navigationOptions = ({ route, t }) => {
+ChangePassword.navigationOptions = ({ route }) => {
+  const { t } = useTranslation();
   return {
     ...theme.headerStyle,
     title: route.params.title || CapitalizeEach(t('pageTitle.changePassword'))

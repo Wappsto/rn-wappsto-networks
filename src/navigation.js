@@ -7,7 +7,6 @@ import { createDrawerNavigator } from '@react-navigation/drawer';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import theme from './theme/themeExport';
 import store from './configureWappstoRedux';
-import i18next, { useTranslation } from './translations';
 import useStorageSession from 'rn-wappsto-networks/src/hooks/useStorageSession';
 import { useSelector } from 'react-redux';
 import { getSession } from 'wappsto-redux/selectors/session';
@@ -17,8 +16,7 @@ let dependencies = ['ComponentStackShowcase','LoginStackScreen', 'MainStackScree
 const createScreen = (Nav, name, comp) => {
   let options;
   if(comp.navigationOptions){
-    const t = i18next.t.bind(i18next);
-    options = (props) => comp.navigationOptions({ ...props, t });
+    options = (props) => comp.navigationOptions(props);
   }
   return <Nav.Screen name={name} component={comp} options={options}/>
 }
@@ -182,7 +180,6 @@ export function replaceComponent(func) {
 
 let rendered = false;
 const App = React.memo(() => {
-  const { t } = useTranslation();
   if(!rendered){
     rendered = true;
     dependencies.forEach(d => {
@@ -196,7 +193,6 @@ const App = React.memo(() => {
       <NavigationContainer>
         <SafeAreaProvider>
           <components.RootRouter
-            screenProps={{ t }}
             useSuspense={false}
           />
         </SafeAreaProvider>
