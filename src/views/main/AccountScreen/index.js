@@ -7,13 +7,13 @@ import RequestError from '../../../components/RequestError';
 import theme from '../../../theme/themeExport';
 import MenuButton from '../../../components/MenuButton';
 import ConfirmationPopup from '../../../components/ConfirmationPopup';
-import { useTranslation, CapitalizeFirst, CapitalizeEach } from '../../../translations';
+import { useTranslation, CapitalizeFirst } from '../../../translations';
 import Icon from 'react-native-vector-icons/Feather';
 import useUser from '../../../hooks/useUser';
 import useDeleteAccount from '../../../hooks/account/useDeleteAccount';
 import Popup from '../../../components/Popup';
 import Input from '../../../components/Input';
-import KeyboardAvoidingView from '../../../components/KeyboardAvoidingView';
+import PageTitle from '../../../components/PageTitle';
 import Clipboard from '@react-native-community/clipboard';
 
 const styles = StyleSheet.create({
@@ -249,10 +249,9 @@ const AccountScreen = React.memo(({navigation}) => {
 });
 
 AccountScreen.navigationOptions = ({ navigation }) => {
-  const { t } = useTranslation();
   return {
     ...theme.headerStyle,
-    title: CapitalizeEach(t('pageTitle.account')),
+    title: <PageTitle title='pageTitle.account' />,
     headerLeft: () => <MenuButton navigation={navigation} />,
   };
 };

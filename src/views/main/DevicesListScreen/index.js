@@ -14,6 +14,7 @@ import { isPrototype } from 'wappsto-blanket/util';
 import useAppStateStream from '../../../hooks/useAppStateStream';
 import useAddNetworkStream from '../../../hooks/useAddNetworkStream';
 import ItemDeleteIndicator from '../../../components/ItemDeleteIndicator';
+import PageTitle from '../../../components/PageTitle';
 import useDeleteItemRequest from '../../../hooks/useDeleteItemRequest';
 import { selectedNetworkName } from '../../../util/params';
 import { useSelector, useDispatch } from 'react-redux';
@@ -153,10 +154,9 @@ const DevicesListScreen = React.memo(({ navigation }) => {
 });
 
 DevicesListScreen.navigationOptions = ({ navigation }) => {
-  const { t } = useTranslation();
   return {
     ...theme.headerStyle,
-    title: CapitalizeEach(t('pageTitle.main')),
+    title: <PageTitle title='pageTitle.main' />,
     headerLeft: () => <MenuButton navigation={navigation} />,
     headerRight: () => <AddNetwork navigation={navigation} />
   };

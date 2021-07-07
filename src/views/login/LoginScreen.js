@@ -1,5 +1,5 @@
 import React, { useCallback } from 'react';
-import { Image, View, Text as RNText, Linking, TouchableOpacity, ActivityIndicator, StyleSheet, StatusBar, ScrollView, Platform } from 'react-native';
+import { Image, View, Text as RNText, Linking, TouchableOpacity, ActivityIndicator, StyleSheet, StatusBar, ScrollView } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { AppleButton } from '@invertase/react-native-apple-authentication';
 import { useTranslation, CapitalizeFirst, CapitalizeEach } from '../../translations';
@@ -11,6 +11,7 @@ import Input from '../../components/Input';
 import Text from '../../components/Text';
 import Button from '../../components/Button';
 import LanguageButton from '../../components/LanguageButton';
+import PageTitle from '../../components/PageTitle';
 import theme from '../../theme/themeExport';
 import defaultImages from '../../theme/images';
 import VersionNumber from 'react-native-version-number';
@@ -301,10 +302,9 @@ const LoginScreen = React.memo(({ navigation }) => {
 });
 
 LoginScreen.navigationOptions = () => {
-  const { t } = useTranslation();
   return {
     headerShown: false,
-    title: CapitalizeFirst(t('pageTitle.login'))
+    title: <PageTitle title='pageTitle.login' />
   };
 };
 

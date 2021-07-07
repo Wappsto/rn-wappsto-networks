@@ -6,6 +6,7 @@ import theme from '../../theme/themeExport';
 import Screen from '../../components/Screen';
 import Button from '../../components/Button';
 import CheckBox from '../../components/CheckBox';
+import PageTitle from '../../components/PageTitle';
 import { WebView } from 'react-native-webview';
 
 const TermsAndConditionsScreen = React.memo(({ navigation }) => {
@@ -49,10 +50,9 @@ const TermsAndConditionsScreen = React.memo(({ navigation }) => {
 });
 
 TermsAndConditionsScreen.navigationOptions = () => {
-  const { t } = useTranslation();
   return {
     ...theme.headerStyle,
-    title: CapitalizeEach(t('pageTitle.terms'))
+    title: <PageTitle title='pageTitle.terms' />
   };
 };
 

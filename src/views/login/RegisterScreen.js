@@ -9,6 +9,7 @@ import theme from '../../theme/themeExport';
 import RequestError from '../../components/RequestError';
 import ReCaptcha from '../../components/ReCaptcha';
 import Popup from '../../components/Popup';
+import PageTitle from '../../components/PageTitle';
 import useRegisterUser from '../../hooks/login/useRegisterUser';
 
 const RegisterScreen = React.memo(({ navigation }) => {
@@ -126,10 +127,9 @@ const RegisterScreen = React.memo(({ navigation }) => {
 });
 
 RegisterScreen.navigationOptions = () => {
-  const { t } = useTranslation();
   return {
     ...theme.headerStyle,
-    title: CapitalizeFirst(t('pageTitle.register'))
+    title: <PageTitle title='pageTitle.register' />
   };
 };
 

@@ -6,6 +6,7 @@ import Button from '../../../components/Button';
 import Input from '../../../components/Input';
 import RequestError from '../../../components/RequestError';
 import Popup from '../../../components/Popup';
+import PageTitle from '../../../components/PageTitle';
 import theme from '../../../theme/themeExport';
 import { useTranslation, CapitalizeFirst, CapitalizeEach } from '../../../translations';
 import useChangeEmail from '../../../hooks/account/useChangeEmail';
@@ -84,10 +85,9 @@ const ChangeUsernameScreen = React.memo(() => {
 });
 
 ChangeUsernameScreen.navigationOptions = ({ route }) => {
-  const { t } = useTranslation();
   return {
     ...theme.headerStyle,
-    title: route.params.title || CapitalizeEach(t('pageTitle.changeUsername'))
+    title: route.params.title || <PageTitle title='pageTitle.changeUsername' />
   };
 };
 
