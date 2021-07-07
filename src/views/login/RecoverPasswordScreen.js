@@ -82,7 +82,7 @@ const RecoverScreen = React.memo(({ navigation }) => {
 RecoverScreen.navigationOptions = () => {
   return {
     ...theme.headerStyle,
-    title: <PageTitle title='account:recoverPassword' />
+    title: <PageTitle title='account:forgotPassword' />
   };
 };
 
