@@ -56,6 +56,9 @@ const LogScreen = React.memo(() => {
       start: options.start,
       end: options.end,
     };
+    if(options.order){
+      rawOptions.order = options.order;
+    }
     if(options.operation){
       rawOptions.operation = options.operation;
     }
@@ -67,6 +70,7 @@ const LogScreen = React.memo(() => {
     } else {
       rawOptions.limit = MAX_POINTS + 1;
     }
+
     if(prevLive.current === options.live){
       if(!rawOptions.start || !rawOptions.end || equal(rawOptions, prevOptions.current)){
         return;
