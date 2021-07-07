@@ -228,7 +228,7 @@ const LoginScreen = React.memo(({ navigation }) => {
                 onPress={moveToRecoverPasswordScreen}
                 type='link'
                 color='primary'
-                text={CapitalizeFirst(t('account:recoverPassword'))}
+                text={CapitalizeFirst(t('account:forgotPassword'))}
               />
               <Text content='|'/>
               <Button

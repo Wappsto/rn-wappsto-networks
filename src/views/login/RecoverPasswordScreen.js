@@ -34,7 +34,7 @@ const RecoverScreen = React.memo(({ navigation }) => {
         <Popup visible={(request && request.status === 'success') || false} onRequestClose={emptyFunc} hide={emptyFunc} hideCloseIcon>
           <Text
             size='p'
-            content={CapitalizeFirst(t('account:recoverPasswordConfirmation'))}
+            content={CapitalizeFirst(t('account:forgotPasswordConfirmation'))}
           />
           <Button
             color='success'
@@ -45,10 +45,10 @@ const RecoverScreen = React.memo(({ navigation }) => {
         <View style={theme.common.contentContainer}>
           <Text
             size='p'
-            content={CapitalizeFirst(t('account:recoverPasswordInfo'))}
+            content={CapitalizeFirst(t('account:forgotPasswordInfo'))}
           />
           <Input
-            label={CapitalizeFirst(t('account:email'))}
+            label={CapitalizeFirst(t('account:username'))}
             style={emailError && theme.common.error}
             onChangeText={setEmail}
             value={email}
@@ -81,7 +81,7 @@ const RecoverScreen = React.memo(({ navigation }) => {
 RecoverScreen.navigationOptions = ({ t }) => {
   return {
     ...theme.headerStyle,
-    title: CapitalizeFirst(t('pageTitle.recoverPassword'))
+    title: CapitalizeFirst(t('account:forgotPassword'))
   };
 };
 
