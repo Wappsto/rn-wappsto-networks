@@ -1,7 +1,6 @@
 import React, { useCallback } from 'react';
 import { Image, View, Text as RNText, Linking, TouchableOpacity, ActivityIndicator, StyleSheet, StatusBar, ScrollView } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { AppleButton } from '@invertase/react-native-apple-authentication';
 import { useTranslation, CapitalizeFirst, CapitalizeEach } from '../../translations';
 import useSignIn from '../../hooks/login/useSignIn';
 import RequestError from '../../components/RequestError';
@@ -23,14 +22,15 @@ const styles = StyleSheet.create({
     alignItems: 'center'
   },
   signinButton: {
-    width:'100%',
-    maxWidth: 260,
+    minWidth: 280,
     height: 48,
-    marginVertical :8,
+    marginVertical:8,
+    paddingRight:10,
     borderRadius: 3,
     alignSelf: 'center',
     flexDirection: 'row',
     alignItems: 'center',
+    justifyContent: 'center'
   },
   signinButtonText: {
     fontSize: 16,
@@ -45,7 +45,8 @@ const styles = StyleSheet.create({
     marginRight:12
   },
   FacebookSigninButtonWrapper: {
-    marginLeft: 8
+  },
+  AppleSigninButtonWrapper:{
   },
   signinButtonImage: {
     width:25,
@@ -71,7 +72,8 @@ const styles = StyleSheet.create({
     borderColor: theme.variables.disabled,
     marginVertical: 25
   },
-  googleColor: {backgroundColor: theme.variables.signInButtonTheme === 'dark' ? '#4285F4' : '#ffffff'},
+  appleColor: {backgroundColor: theme.variables.signInButtonTheme === 'dark' ? '#000000' : '#ffffff'},
+  googleColor: {justifyContent: 'space-between', backgroundColor: theme.variables.signInButtonTheme === 'dark' ? '#4285F4' : '#ffffff'},
   facebookColor: {backgroundColor: '#4267B2'},
   terms: {
     textAlign: 'center',
@@ -283,15 +285,26 @@ const LoginScreen = React.memo(({ navigation }) => {
                   {CapitalizeFirst(t('account:signInWithFacebook'))}
                 </RNText>
               </TouchableOpacity>
-              <AppleButton
-                buttonStyle={theme.variables.signInButtonTheme === 'dark' ?  AppleButton.Style.BLACK : AppleButton.Style.WHITE}
-                buttonType={AppleButton.Type.SIGN_IN}
+              <TouchableOpacity
+                disabled={!canTPSignIn}
                 style={[
                   styles.signinButton,
+                  styles.appleColor,
                   !canTPSignIn && theme.common.disabled
                 ]}
                 onPress={appleSignIn}
-              />
+              >
+                <View style={styles.AppleSigninButtonWrapper}>
+                  <Image
+                    resizeMode='contain'
+                    source={theme.variables.signInButtonTheme === 'dark' ? require('../../../assets/images/login/apple-white.png') : require('../../../assets/images/login/apple-black.png')}
+                    style={styles.signinButtonImage}
+                  />
+                </View>
+                <RNText style={[styles.signinButtonText]}>
+                  {CapitalizeFirst(t('account:signInWithApple'))}
+                </RNText>
+              </TouchableOpacity>
             </View>
           </View>
           <LoginScreen.Footer />
