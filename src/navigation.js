@@ -14,11 +14,7 @@ import { getSession } from 'wappsto-redux/selectors/session';
 let dependencies = ['ComponentStackShowcase','LoginStackScreen', 'MainStackScreen', 'AccountStackScreen', 'MainScreen', 'MainDrawerScreen', 'RootRouter'];
 
 const createScreen = (Nav, name, comp) => {
-  let options;
-  if(comp.navigationOptions){
-    options = (props) => comp.navigationOptions(props);
-  }
-  return <Nav.Screen name={name} component={comp} options={options}/>
+  return <Nav.Screen name={name} component={comp} options={comp.navigationOptions}/>
 }
 
 let components = {
