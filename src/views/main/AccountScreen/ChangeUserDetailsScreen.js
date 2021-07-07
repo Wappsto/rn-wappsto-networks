@@ -91,7 +91,7 @@ const ChangeUserDetailsScreen = React.memo(() => {
 ChangeUserDetailsScreen.navigationOptions = ({ route }) => {
   return {
     ...theme.headerStyle,
-    title: route.params.title || <PageTitle title='pageTitle.changeUserDetails' />
+    title: route.params.title || <PageTitle title='account:changeUserDetails' />
   };
 };
 

@@ -94,7 +94,7 @@ const ChangePassword = React.memo(() => {
 ChangePassword.navigationOptions = ({ route }) => {
   return {
     ...theme.headerStyle,
-    title: route.params.title || <PageTitle title='pageTitle.changePassword' />
+    title: route.params.title || <PageTitle title='account:changePassword' />
   };
 };
 

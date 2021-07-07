@@ -62,8 +62,8 @@
     "stream-browserify": "^1.0.0",
     "victory-native": "^35.3.1",
     "vm-browserify": "0.0.4",
-    "wappsto-blanket": "git+https://github.com/Wappsto/wappsto-blanket#e65e520d41b435920b3ed0df703e850e9946763b",
-    "wappsto-locales": "git+https://github.com/Wappsto/wappsto-locales#647990825e67262253053585b0b1c0a2c5a9bc87",
+    "wappsto-blanket": "^1.2.4",
+    "wappsto-locales": "^0.1.0",
     "wappsto-redux": "^3.5.5"
   },
   "devDependencies": {

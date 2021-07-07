@@ -2,13 +2,8 @@
   "appTitle": "Wappsto Networks",
   "pageTitle": {
     "account": "account",
-    "changePassword": "change password",
-    "changeUsername": "change email",
-    "changeUserDetails": "change personal details",
-    "recoverPassword": "recover password",
     "main": "devices",
     "settings": "settings",
-    "register": "register an account",
     "login":"sign in",
     "logs":"logs",
     "terms": "terms & conditions"

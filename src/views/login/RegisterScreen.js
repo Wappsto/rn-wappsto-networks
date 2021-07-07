@@ -129,7 +129,7 @@ const RegisterScreen = React.memo(({ navigation }) => {
 RegisterScreen.navigationOptions = () => {
   return {
     ...theme.headerStyle,
-    title: <PageTitle title='pageTitle.register' />
+    title: <PageTitle title='account:register' />
   };
 };
 
