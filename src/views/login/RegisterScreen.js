@@ -125,7 +125,8 @@ const RegisterScreen = React.memo(({ navigation }) => {
   )
 });
 
-RegisterScreen.navigationOptions = ({ t }) => {
+RegisterScreen.navigationOptions = () => {
+  const { t } = useTranslation();
   return {
     ...theme.headerStyle,
     title: CapitalizeFirst(t('pageTitle.register'))

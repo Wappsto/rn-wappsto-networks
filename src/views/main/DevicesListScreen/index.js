@@ -152,7 +152,8 @@ const DevicesListScreen = React.memo(({ navigation }) => {
   );
 });
 
-DevicesListScreen.navigationOptions = ({ navigation, t }) => {
+DevicesListScreen.navigationOptions = ({ navigation }) => {
+  const { t } = useTranslation();
   return {
     ...theme.headerStyle,
     title: CapitalizeEach(t('pageTitle.main')),

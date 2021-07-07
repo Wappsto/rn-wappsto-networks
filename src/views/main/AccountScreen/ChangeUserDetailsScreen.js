@@ -87,7 +87,8 @@ const ChangeUserDetailsScreen = React.memo(() => {
   );
 });
 
-ChangeUserDetailsScreen.navigationOptions = ({ route, t }) => {
+ChangeUserDetailsScreen.navigationOptions = ({ route }) => {
+  const { t } = useTranslation();
   return {
     ...theme.headerStyle,
     title: route.params.title || CapitalizeEach(t('pageTitle.changeUserDetails'))
