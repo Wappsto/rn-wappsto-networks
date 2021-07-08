@@ -40,9 +40,7 @@ const styles = StyleSheet.create({
   },
   GoogleSigninButtonWrapper: {
     backgroundColor: 'white',
-    borderRadius: 2,
-    marginLeft: 1.5,
-    marginRight:12
+    borderRadius: 2
   },
   FacebookSigninButtonWrapper: {
   },
@@ -73,7 +71,7 @@ const styles = StyleSheet.create({
     marginVertical: 25
   },
   appleColor: {backgroundColor: theme.variables.signInButtonTheme === 'dark' ? '#000000' : '#ffffff'},
-  googleColor: {justifyContent: 'space-between', backgroundColor: theme.variables.signInButtonTheme === 'dark' ? '#4285F4' : '#ffffff'},
+  googleColor: {backgroundColor: theme.variables.signInButtonTheme === 'dark' ? '#4285F4' : '#ffffff'},
   facebookColor: {backgroundColor: '#4267B2'},
   terms: {
     textAlign: 'center',
