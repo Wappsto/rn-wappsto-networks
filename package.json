@@ -30,7 +30,7 @@
     "process": "^0.11.10",
     "react": "16.13.1",
     "react-i18next": "^11.7.3",
-    "react-native": "0.63.4",
+    "react-native": "0.64.1",
     "react-native-android-location-services-dialog-box": "^2.8.2",
     "react-native-barcode-mask": "^1.2.4",
     "react-native-ble-manager": "^7.3.1",
