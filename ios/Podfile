@@ -9,7 +9,7 @@ target 'rn_wappsto_networks' do
   use_react_native!(:path => config["reactNativePath"])
 
   permissions_path = '../node_modules/react-native-permissions/ios'
-  pod 'Permission-BluetoothPeripheral', :path => "#{permissions_path}/BluetoothPeripheral.podspec"
+  pod 'Permission-BluetoothPeripheral', :path => "#{permissions_path}/BluetoothPeripheral/Permission-BluetoothPeripheral.podspec"
 
   target 'rn_wappsto_networksTests' do
     inherit! :complete
@@ -24,13 +24,4 @@ target 'rn_wappsto_networks' do
   # post_install do |installer|
   #   flipper_post_install(installer)
   # end
-end
-
-target 'rn_wappsto_networks-tvOS' do
-  # Pods for rn_wappsto_networks-tvOS
-
-  target 'rn_wappsto_networks-tvOSTests' do
-    inherit! :search_paths
-    # Pods for testing
-  end
 end
