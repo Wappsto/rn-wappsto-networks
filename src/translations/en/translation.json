@@ -1,11 +1,11 @@
 {
-  "appTitle": "Wappsto Networks",
+  "appTitle": "Wappsto",
   "pageTitle": {
     "account": "account",
     "main": "devices",
     "settings": "settings",
-    "login":"sign in",
-    "logs":"logs",
+    "login": "sign in",
+    "logs": "logs",
     "terms": "terms & conditions"
   },
   "genericButton": {
@@ -85,11 +85,11 @@
       "unknownName": "unknown",
       "goToSettings": "go to settings",
       "permissionError": {
-        "bluetoothGeneric": "Enable Bluetooth to continue. Bluetooth is required to find nearby devices.",
+        "bluetoothGeneric": "Enable bluetooth to continue. Bluetooth is required to find nearby devices.",
         "bluetoothUnauthorized": "$t(onboarding.deviceDiscovery.permissionError.bluetoothGeneric)",
         "bluetoothNotSupported": "This feature requires Bluetooth yet your phone does not support it.",
         "bluetoothOff": "$t(onboarding.deviceDiscovery.permissionError.bluetoothGeneric)",
-        "location": "Enable location to continue. Location is required to find nearby devices."
+        "location": "Enable precise location to continue. Location is required to find nearby devices."
       }
     },
     "progress": {
@@ -120,10 +120,10 @@
       "generic": "something went wrong."
     },
     "wifiScan": {
-      "scanInProgress": "Retrieving Wi-Fi Network List",
+      "scanInProgress": "Retrieving Wi-Fi networks",
       "noWifiFound": "no Wi-Fi networks were found. If your Wi-Fi access point is hidden, try manual setup",
-      "foundWifi": "Wi-Fi Networks Discovered by your Device",
-      "selectWifi": "select the Wi-Fi network you would like your IoT device to connect to",
+      "foundWifi": "Wi-Fi networks discovered by your device",
+      "selectWifi": "select the Wi-Fi network for the device to connect to",
       "scanAgain": "scan again",
       "scanningInProgressInfo": "your IoT device is scanning for nearby Wi-Fi networks. Please wait...",
       "hiddenNetworkInfo": "is your Wi-Fi network hidden?",
@@ -143,7 +143,7 @@
       "sendButton": "configure"
     },
     "wifiSetup": {
-      "setupInProgress": "Configuring Device",
+      "setupInProgress": "Configuring device",
       "success": {
         "title": "your device is set up and added to your list.",
         "description": "you can now finish the setup and go to device list view.",
