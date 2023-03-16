@@ -8,9 +8,8 @@ import List from '../../../components/List';
 import DeviceItem from './DeviceItem';
 import AddNetwork from './AddNetwork';
 import theme from '../../../theme/themeExport';
-import { useTranslation, CapitalizeEach, CapitalizeFirst } from '../../../translations';
+import { useTranslation, CapitalizeFirst } from '../../../translations';
 import { iotNetworkListAdd, iotNetworkListRemove, iotNetworkAddFlow } from '../../../util/params';
-import { isPrototype } from 'wappsto-blanket/util';
 import useAppStateStream from '../../../hooks/useAppStateStream';
 import useAddNetworkStream from '../../../hooks/useAddNetworkStream';
 import ItemDeleteIndicator from '../../../components/ItemDeleteIndicator';
@@ -51,7 +50,6 @@ const styles = StyleSheet.create({
 
 const ItemHeader = React.memo(({ network, navigation }) => {
   const { t } = useTranslation();
-  const isPrototypeNetwork = isPrototype(network);
   const online =
     network && network.meta && network.meta.connection && network.meta.connection.online;
 
@@ -67,13 +65,10 @@ const ItemHeader = React.memo(({ network, navigation }) => {
 
   return (
     <View style={[theme.common.row, styles.listHeader]}>
-      {!isPrototypeNetwork && (
+      {network.meta.connection && (
         <View style={[styles.circle, online ? styles.online : styles.offline]} />
       )}
       <RNText numberOfLines={1} ellipsizeMode="tail" style={styles.textRow}>
-        {isPrototypeNetwork && (
-          <Text color="secondary" content={'(' + CapitalizeEach(t('prototype')) + ') '} />
-        )}
         {network.name && <Text bold content={network.name + ' '} />}
         <Text color="secondary" content={'[' + network.meta.id.slice(0, 9) + '... ]'} />
       </RNText>
@@ -96,9 +91,7 @@ const ItemContent = React.memo(({ network, navigation }) => {
       />
     );
   }
-  return network.device.map((id) => (
-    <DeviceItem key={id} id={id} navigation={navigation} isPrototype={isPrototype(network)} />
-  ));
+  return network.device.map((id) => <DeviceItem key={id} id={id} navigation={navigation} />);
 });
 
 const ListItem = React.memo(({ network, navigation }) => {

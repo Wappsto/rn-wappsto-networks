@@ -24,9 +24,6 @@ const styles = StyleSheet.create({
   listItemTitleArea: {
     flex: 1,
   },
-  virtual: {
-    backgroundColor: '#e5e5e5',
-  },
   listItemHeader: {
     fontSize: 16,
     color: theme.variables.primary,
@@ -37,7 +34,7 @@ const styles = StyleSheet.create({
   },
 });
 
-const DeviceItem = React.memo(({ navigation, id, isPrototype }) => {
+const DeviceItem = React.memo(({ navigation, id }) => {
   const { t } = useTranslation();
   const getEntity = useMemo(makeEntitySelector, []);
   const device = useSelector((state) => getEntity(state, 'device', id));
@@ -57,7 +54,7 @@ const DeviceItem = React.memo(({ navigation, id, isPrototype }) => {
   }
   return (
     <TouchableOpacity onPress={navigate}>
-      <View style={[styles.listItem, isPrototype && styles.virtual]}>
+      <View style={styles.listItem}>
         <View style={styles.listItemTitleArea}>
           <Text style={styles.listItemHeader} content={device.name} />
           <Text
