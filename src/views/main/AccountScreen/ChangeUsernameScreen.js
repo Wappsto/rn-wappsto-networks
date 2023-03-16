@@ -8,7 +8,7 @@ import RequestError from '../../../components/RequestError';
 import Popup from '../../../components/Popup';
 import PageTitle from '../../../components/PageTitle';
 import theme from '../../../theme/themeExport';
-import { useTranslation, CapitalizeFirst, CapitalizeEach } from '../../../translations';
+import { useTranslation, CapitalizeFirst } from '../../../translations';
 import useChangeEmail from '../../../hooks/account/useChangeEmail';
 
 const ChangeUsernameScreen = React.memo(() => {

@@ -45,20 +45,10 @@ const styles = StyleSheet.create({
   signedWithBtn: {
     alignSelf: 'center',
     textAlign: 'center',
-    padding: 2,
-    width: 200,
-    borderRadius: 30,
-  },
-  googleColor: {
-    backgroundColor: '#4285F4',
-    color: '#fff',
-  },
-  facebookColor: {
-    backgroundColor: '#4267B2',
-    color: '#fff',
-  },
-  appleColor: {
-    backgroundColor: '#fff',
+    paddingVertical: 2,
+    paddingHorizontal: 10,
+    borderRadius: 5,
+    backgroundColor: '#cccccc',
     color: '#000',
   },
   id: {
@@ -164,14 +154,7 @@ const AccountScreen = React.memo(({ navigation }) => {
               />
             )}
             {user.first_name || user.last_name ? (
-              <Text
-                size="p"
-                color="secondary"
-                align="center"
-                content={
-                  (user.first_name && user.first_name) + ' ' + (user.last_name && user.last_name)
-                }
-              />
+              <Text size="p" color="secondary" align="center" content={user.name} />
             ) : (
               <Text
                 size="p"
@@ -184,7 +167,7 @@ const AccountScreen = React.memo(({ navigation }) => {
               <Text
                 size="p"
                 color="secondary"
-                style={[styles.signedWithBtn, styles[session.provider + 'Color']]}
+                style={styles.signedWithBtn}
                 content={CapitalizeFirst(t('account:signedInWith', { provider: session.provider }))}
               />
             )}
