@@ -35,43 +35,41 @@ const RegisterScreen = React.memo(({ navigation }) => {
     canRegister,
     register,
     request,
-    loading
+    loading,
   } = useRegisterUser(navigation);
 
   return (
     <Screen>
       <ScrollView>
-        <Popup visible={successVisible} onRequestClose={hideSuccessPopup} hide={hideSuccessPopup} hideCloseIcon>
+        <Popup
+          visible={successVisible}
+          onRequestClose={hideSuccessPopup}
+          hide={hideSuccessPopup}
+          hideCloseIcon>
           <Text
-            size='p'
-            align='center'
+            size="p"
+            align="center"
             content={CapitalizeFirst(t('account:registrationConfirmation'))}
           />
           <Button
-            color='success'
+            color="success"
             onPress={hideSuccessPopup}
             text={CapitalizeFirst(t('genericButton.ok'))}
           />
         </Popup>
         <View style={theme.common.contentContainer}>
-          <Text
-            size='p'
-            align='center'
-            content={CapitalizeFirst(t('account:registrationInfo'))}
-          />
+          <Text size="p" align="center" content={CapitalizeFirst(t('account:registrationInfo'))} />
           <Input
             label={CapitalizeFirst(t('account:username'))}
             style={usernameError && theme.common.error}
-            onChangeText={usernameText =>
-              handleTextChange(usernameText, 'username')
-            }
+            onChangeText={(usernameText) => handleTextChange(usernameText, 'username')}
             value={username}
             onBlur={() => setUsernameBlurred(true)}
-            textContentType='emailAddress'
-            autoCapitalize='none'
+            textContentType="emailAddress"
+            autoCapitalize="none"
             onSubmitEditing={() => moveToNextField('username')}
-            keyboardType='email-address'
-            returnKeyType='next'
+            keyboardType="email-address"
+            returnKeyType="next"
             disabled={loading}
             validationError={usernameError && CapitalizeFirst(t('account:validation.username'))}
           />
@@ -79,15 +77,13 @@ const RegisterScreen = React.memo(({ navigation }) => {
             inputRef={passwordInputRef}
             label={CapitalizeFirst(t('account:password'))}
             style={passwordError && theme.common.error}
-            onChangeText={passwordText =>
-              handleTextChange(passwordText, 'password')
-            }
+            onChangeText={(passwordText) => handleTextChange(passwordText, 'password')}
             value={password}
             onBlur={() => setPasswordBlurred(true)}
-            textContentType='password'
+            textContentType="password"
             secureTextEntry={true}
-            autoCapitalize='none'
-            returnKeyType='next'
+            autoCapitalize="none"
+            returnKeyType="next"
             onSubmitEditing={() => moveToNextField('password')}
             disabled={loading}
             validationError={passwordError && CapitalizeFirst(t('account:validation.password'))}
@@ -95,41 +91,41 @@ const RegisterScreen = React.memo(({ navigation }) => {
           <Input
             inputRef={repeatPasswordInputRef}
             label={CapitalizeFirst(t('account:repeatPassword'))}
-            onChangeText={repeatPasswordText =>
+            onChangeText={(repeatPasswordText) =>
               handleTextChange(repeatPasswordText, 'repeatPassword')
             }
             value={repeatPassword}
             onBlur={() => setRepeatPasswordBlurred(true)}
-            textContentType='password'
+            textContentType="password"
             secureTextEntry={true}
-            autoCapitalize='none'
-            returnKeyType='done'
+            autoCapitalize="none"
+            returnKeyType="done"
             onSubmitEditing={register}
             disabled={loading}
-            validationError={repeatPasswordError && CapitalizeFirst(t('account:validation.repeatPassword'))}
+            validationError={
+              repeatPasswordError && CapitalizeFirst(t('account:validation.repeatPassword'))
+            }
           />
           <ReCaptcha onCheck={onCheckRecaptcha} recaptchaRef={recaptchaRef} />
-          {loading && (
-            <ActivityIndicator size='large' color={theme.variables.spinnerColor} />
-          )}
+          {loading && <ActivityIndicator size="large" color={theme.variables.spinnerColor} />}
           <RequestError request={request} />
           <Button
             disabled={!canRegister}
             color={!canRegister ? 'disabled' : 'primary'}
             onPress={register}
-            display='block'
+            display="block"
             text={CapitalizeFirst(t('account:register'))}
           />
         </View>
       </ScrollView>
     </Screen>
-  )
+  );
 });
 
 RegisterScreen.navigationOptions = () => {
   return {
     ...theme.headerStyle,
-    title: <PageTitle title='account:register' />
+    title: <PageTitle title="account:register" />,
   };
 };
 

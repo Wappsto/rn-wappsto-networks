@@ -1,5 +1,5 @@
 import color from 'color';
-import {Platform, PixelRatio} from 'react-native';
+import { Platform, PixelRatio } from 'react-native';
 
 const platform = Platform.OS;
 let variables = {};
@@ -26,7 +26,7 @@ export function generateVariables(v = {}) {
     // Typography
     defaultFontSize: 14,
     fontFamily: 'System',
-  //  fontFamilyBold: 'System',
+    //  fontFamilyBold: 'System',
 
     fontSizeBase: 12,
 
@@ -104,11 +104,11 @@ export function generateVariables(v = {}) {
       return this.textColor;
     },
     get inputSelectionColor() {
-      if(color(this.inputTextColor).isDark()){
+      if (color(this.inputTextColor).isDark()) {
         return color(this.inputTextColor).lighten(0.9).string();
       } else {
         return color(this.inputTextColor).darken(0.7).string();
-     }
+      }
     },
     get inputBorderColor() {
       return this.textColor;
@@ -148,13 +148,13 @@ export function generateVariables(v = {}) {
     },
 
     // Drawer
-    get drawerMenuBgColor(){
+    get drawerMenuBgColor() {
       return this.appBgColor;
     },
-    get drawerMenuText(){
+    get drawerMenuText() {
       return this.textColor;
     },
-    get drawerActiveTextColour(){
+    get drawerActiveTextColour() {
       return this.primary;
     },
 
@@ -167,17 +167,17 @@ export function generateVariables(v = {}) {
     },
 
     // StatusBar
-    statusBarColorLight:'light-content',
-    statusBarColorDark:'dark-content',
-    get statusBarBgLight(){
+    statusBarColorLight: 'light-content',
+    statusBarColorDark: 'dark-content',
+    get statusBarBgLight() {
       return this.appBgColor;
     },
-    get statusBarBgDark(){
+    get statusBarBgDark() {
       return this.primary;
     },
 
     // Popup
-    popupOverlayColor:'rgba(0, 0, 0, 0.4)',
+    popupOverlayColor: 'rgba(0, 0, 0, 0.4)',
     get popupBorderColor() {
       return this.appBgColor;
     },

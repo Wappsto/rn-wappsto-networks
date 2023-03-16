@@ -26,15 +26,15 @@ const styles = StyleSheet.create({
     borderBottomWidth: theme.variables.borderWidth,
   },
   itemHeaderText: {
-    marginBottom:0,
+    marginBottom: 0,
     fontWeight: 'bold',
-    flex:1
+    flex: 1,
   },
   chartIcon: {
-    width:20,
-    height:18,
-    margin:10
-  }
+    width: 20,
+    height: 18,
+    margin: 10,
+  },
 });
 
 const ValueComponent = React.memo(({ item, navigation }) => {
@@ -44,7 +44,7 @@ const ValueComponent = React.memo(({ item, navigation }) => {
   const navigateToLog = useCallback(() => {
     navigation.navigate('LogScreen', {
       title: `${item.name || item.meta.id} ${t('pageTitle.logs')}`,
-      id: item.meta.id
+      id: item.meta.id,
     });
   }, [navigation, t, item]);
 
@@ -53,45 +53,34 @@ const ValueComponent = React.memo(({ item, navigation }) => {
       method: 'PATCH',
       url: '/value/' + item.meta.id,
       body: {
-        status: 'update'
-      }
+        status: 'update',
+      },
     });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [item]);
 
-  if(!item.meta || item.meta.error){
+  if (!item.meta || item.meta.error) {
     return null;
   }
 
   return (
     <View style={styles.itemPanel}>
       <View style={styles.itemHeader}>
-        <Text
-          size={16}
-          content={item.name}
-          style={styles.itemHeaderText}
-        />
+        <Text size={16} content={item.name} style={styles.itemHeaderText} />
         <>
-          {item.number &&
+          {item.number && (
             <TouchableOpacity onPress={navigateToLog}>
               <Image
-                resizeMode='contain'
+                resizeMode="contain"
                 source={require('../../../../assets/images/line-chart.png')}
                 style={styles.chartIcon}
               />
             </TouchableOpacity>
-          }
+          )}
           {request && request.status === 'pending' ? (
-            <ActivityIndicator
-              size='small'
-              color={theme.variables.spinnerColor}
-            />
+            <ActivityIndicator size="small" color={theme.variables.spinnerColor} />
           ) : (
-            <Button
-              type='link'
-              onPress={updateValueStatus}
-              icon='rotate-cw'
-            />
+            <Button type="link" onPress={updateValueStatus} icon="rotate-cw" />
           )}
           <ValueDetails item={item} />
         </>

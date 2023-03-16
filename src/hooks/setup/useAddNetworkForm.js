@@ -4,17 +4,17 @@ import { manufacturerAsOwnerErrorCode } from '../../util/params';
 
 const useAddNetworkForm = (addNetworkHandler, onDone) => {
   const { sendRequest, request, acceptedManufacturerAsOwner, removeRequest } = addNetworkHandler;
-  const [ inputValue, setInputValue ] = useState('');
-  const [ isScanning, setIsScanning ] = useState(false);
-  const [ didScan, setDidScan ] = useState(false);
-  const [ scanError, setScanError ] = useState(false);
-  const [ loading, setLoading ] = useState(false);
+  const [inputValue, setInputValue] = useState('');
+  const [isScanning, setIsScanning] = useState(false);
+  const [didScan, setDidScan] = useState(false);
+  const [scanError, setScanError] = useState(false);
+  const [loading, setLoading] = useState(false);
 
   const canAdd = isUUID(inputValue) && !loading;
 
-  const onRead = useCallback(event => {
+  const onRead = useCallback((event) => {
     const uuids = event.data.match(new RegExp(UUIDRegex, 'gi'));
-    if(!uuids || uuids.length === 0){
+    if (!uuids || uuids.length === 0) {
       setScanError('noUUID');
       setInputValue('');
     } else {
@@ -30,8 +30,8 @@ const useAddNetworkForm = (addNetworkHandler, onDone) => {
   }, [sendRequest, inputValue]);
 
   const switchView = useCallback(() => {
-    setIsScanning(v => {
-      if(!v){
+    setIsScanning((v) => {
+      if (!v) {
         setScanError();
       }
       return !v;
@@ -39,18 +39,21 @@ const useAddNetworkForm = (addNetworkHandler, onDone) => {
   }, []);
 
   const onSubmitEditing = useCallback(() => {
-    if(isUUID(inputValue)){
+    if (isUUID(inputValue)) {
       addNetwork();
     }
   }, [inputValue, addNetwork]);
 
   useEffect(() => {
-    if(request){
-      if(request.status === 'success'){
-        if(onDone){
+    if (request) {
+      if (request.status === 'success') {
+        if (onDone) {
           onDone(inputValue);
         }
-      } else if(request.status !== 'pending' && (request.status !== 'error' || request.json.code !== manufacturerAsOwnerErrorCode)){
+      } else if (
+        request.status !== 'pending' &&
+        (request.status !== 'error' || request.json.code !== manufacturerAsOwnerErrorCode)
+      ) {
         setLoading(false);
       }
     }
@@ -58,7 +61,7 @@ const useAddNetworkForm = (addNetworkHandler, onDone) => {
   }, [request]);
 
   useEffect(() => {
-    if(acceptedManufacturerAsOwner === false){
+    if (acceptedManufacturerAsOwner === false) {
       setLoading(false);
     }
   }, [acceptedManufacturerAsOwner]);
@@ -79,8 +82,8 @@ const useAddNetworkForm = (addNetworkHandler, onDone) => {
     onSubmitEditing,
     addNetwork,
     loading,
-    canAdd
+    canAdd,
   };
-}
+};
 
 export default useAddNetworkForm;

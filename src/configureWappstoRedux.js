@@ -1,4 +1,4 @@
-import {use as reduxUse, configureStore} from 'wappsto-redux';
+import { use as reduxUse, configureStore } from 'wappsto-redux';
 
 let config = require('./config.json');
 
@@ -9,7 +9,7 @@ export function use(conf) {
   reduxUse(config);
 }
 
-export {config};
+export { config };
 
 const store = configureStore();
 

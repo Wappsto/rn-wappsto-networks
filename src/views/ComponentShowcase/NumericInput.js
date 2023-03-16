@@ -8,11 +8,11 @@ import theme from '../../theme/themeExport';
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor:theme.variables.appBgColor
+    backgroundColor: theme.variables.appBgColor,
   },
   content: {
-    padding: 10
-  }
+    padding: 10,
+  },
 });
 
 const TextInputShowcase = ({ navigation }) => {
@@ -20,7 +20,7 @@ const TextInputShowcase = ({ navigation }) => {
     <SafeAreaView style={styles.container}>
       <KeyboardAvoidingView>
         <ScrollView style={styles.content}>
-          <Input/>
+          <Input />
         </ScrollView>
       </KeyboardAvoidingView>
     </SafeAreaView>

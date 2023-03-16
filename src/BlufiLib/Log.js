@@ -1,19 +1,19 @@
 let isDebugEnabled = false;
 const Log = {
-  w(){
+  w() {
     console.log.apply(this, arguments);
   },
-  enableDebug(){
+  enableDebug() {
     isDebugEnabled = true;
   },
-  disableDebug(){
+  disableDebug() {
     isDebugEnabled = false;
   },
-  debug(){
-    if(isDebugEnabled){
+  debug() {
+    if (isDebugEnabled) {
       console.log.apply(this, arguments);
     }
-  }
-}
+  },
+};
 
 export default Log;

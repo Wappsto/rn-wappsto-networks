@@ -19,26 +19,27 @@ import useVisible from 'wappsto-blanket/hooks/useVisible';
 import Toast from 'react-native-toast-message';
 
 const styles = StyleSheet.create({
-  container:{
-    flex:1,
+  container: {
+    flex: 1,
     padding: 20,
-    justifyContent:'space-between'
+    justifyContent: 'space-between',
   },
   toast: {
-    zIndex: 999
-  }
+    zIndex: 999,
+  },
 });
 
-const NetworkScreen = React.memo(({navigation}) => {
+const NetworkScreen = React.memo(({ navigation }) => {
   const { t } = useTranslation();
   const network = useGetItemEntity(selectedNetworkName, 'network');
-  const { deleteItem, request, confirmVisible, showDeleteConfirmation, hideDeleteConfirmation } = useDeleteItem(network);
+  const { deleteItem, request, confirmVisible, showDeleteConfirmation, hideDeleteConfirmation } =
+    useDeleteItem(network);
   const [shareVibile, showShare, hideShare] = useVisible(false);
 
   useUnmountRemoveItem(selectedNetworkName);
   useUndefinedBack(network, navigation);
 
-  if(!network || !network.meta || !network.meta.id ){
+  if (!network || !network.meta || !network.meta.id) {
     return null;
   }
 
@@ -46,80 +47,114 @@ const NetworkScreen = React.memo(({navigation}) => {
     <Screen>
       <Toast ref={Toast.setRef} style={styles.toast} />
       <View style={styles.container}>
-        <Share item={network} visible={shareVibile} hide={hideShare}/>
+        <Share item={network} visible={shareVibile} hide={hideShare} />
         <View>
-          {network.name &&
+          {network.name && (
             <RNText>
-              <Text size='p' bold content={CapitalizeFirst(t('dataModel:networkProperties.name')) + ': '} />
-              <Text content={network.name}/>
-            </RNText>
-          }
-          <ID id={network.meta.id} label={CapitalizeFirst(t('dataModel:networkProperties.meta.id'))}/>
-          { !!network.meta.product &&
-            <RNText>
-              <Text bold content={CapitalizeFirst(t('dataModel:networkProperties.meta.product')) + ': '}/>
-              <Text content={network.meta.product}/>
-            </RNText>
-          }
-          { !!network.meta.created &&
-            <RNText>
-              <Text bold content={CapitalizeFirst(t('dataModel:universalMeta.created')) + ': '}/>
-              <Text content={network.meta.created + ' '} />
-              <Timestamp timestamp={network.meta.created}/>
-            </RNText>
-          }
-          { !!network.meta.updated &&
-            <RNText>
-              <Text bold content={CapitalizeFirst(t('dataModel:universalMeta.updated')) + ': '}/>
-              <Text content={network.meta.updated + ' '}/>
-              <Timestamp timestamp={network.meta.updated}/>
-            </RNText>
-          }
-          { !!network.meta.connection &&
-            <RNText>
-              <Text bold content={CapitalizeFirst(t('dataModel:networkProperties.meta.connection')) + ': '}/>
-              <Text content={CapitalizeFirst(t('dataModel:networkProperties.meta.connectionOnline.' + network.meta.connection.online))  + ' ' + t('since') + ' ' + network.meta.connection.timestamp + ' '}
+              <Text
+                size="p"
+                bold
+                content={CapitalizeFirst(t('dataModel:networkProperties.name')) + ': '}
               />
-              <Timestamp timestamp={network.meta.updated}/>
+              <Text content={network.name} />
             </RNText>
-          }
-          { !!network.meta.control_timeout &&
+          )}
+          <ID
+            id={network.meta.id}
+            label={CapitalizeFirst(t('dataModel:networkProperties.meta.id'))}
+          />
+          {!!network.meta.product && (
             <RNText>
-              <Text bold content={CapitalizeFirst(t('dataModel:networkProperties.control_timeout')) + ': '}/>
-              <Text content={network.meta.control_timeout}/>
+              <Text
+                bold
+                content={CapitalizeFirst(t('dataModel:networkProperties.meta.product')) + ': '}
+              />
+              <Text content={network.meta.product} />
             </RNText>
-          }
-          { !!network.meta.control_when_offline &&
+          )}
+          {!!network.meta.created && (
             <RNText>
-              <Text bold content={CapitalizeFirst(t('dataModel:networkProperties.control_when_offline')) + ': '}/>
-              <Text content={network.meta.control_when_offline}/>
+              <Text bold content={CapitalizeFirst(t('dataModel:universalMeta.created')) + ': '} />
+              <Text content={network.meta.created + ' '} />
+              <Timestamp timestamp={network.meta.created} />
             </RNText>
-          }
+          )}
+          {!!network.meta.updated && (
+            <RNText>
+              <Text bold content={CapitalizeFirst(t('dataModel:universalMeta.updated')) + ': '} />
+              <Text content={network.meta.updated + ' '} />
+              <Timestamp timestamp={network.meta.updated} />
+            </RNText>
+          )}
+          {!!network.meta.connection && (
+            <RNText>
+              <Text
+                bold
+                content={CapitalizeFirst(t('dataModel:networkProperties.meta.connection')) + ': '}
+              />
+              <Text
+                content={
+                  CapitalizeFirst(
+                    t(
+                      'dataModel:networkProperties.meta.connectionOnline.' +
+                        network.meta.connection.online,
+                    ),
+                  ) +
+                  ' ' +
+                  t('since') +
+                  ' ' +
+                  network.meta.connection.timestamp +
+                  ' '
+                }
+              />
+              <Timestamp timestamp={network.meta.updated} />
+            </RNText>
+          )}
+          {!!network.meta.control_timeout && (
+            <RNText>
+              <Text
+                bold
+                content={CapitalizeFirst(t('dataModel:networkProperties.control_timeout')) + ': '}
+              />
+              <Text content={network.meta.control_timeout} />
+            </RNText>
+          )}
+          {!!network.meta.control_when_offline && (
+            <RNText>
+              <Text
+                bold
+                content={
+                  CapitalizeFirst(t('dataModel:networkProperties.control_when_offline')) + ': '
+                }
+              />
+              <Text content={network.meta.control_when_offline} />
+            </RNText>
+          )}
         </View>
         <View>
           <Button
-            display='block'
+            display="block"
             disabled={true} //{request && request.status === 'pending'}
             text={CapitalizeFirst(t('acl:share'))}
             onPress={showShare}
-            icon='share-2'
+            icon="share-2"
           />
           <Button
-            type='outlined'
-            display='block'
+            type="outlined"
+            display="block"
             disabled={true}
             text={CapitalizeFirst(t('configure'))}
-            icon='sliders'
+            icon="sliders"
           />
           <Button
-            type='outlined'
-            color='alert'
-            display='block'
+            type="outlined"
+            color="alert"
+            display="block"
             onPress={showDeleteConfirmation}
             request={request}
             disabled={request && request.status === 'pending'}
             text={CapitalizeFirst(t('genericButton.delete'))}
-            icon='trash-2'
+            icon="trash-2"
           />
 
           <RequestError request={request} />
@@ -131,13 +166,13 @@ const NetworkScreen = React.memo(({navigation}) => {
         />
       </View>
     </Screen>
-  )
+  );
 });
 
 NetworkScreen.navigationOptions = ({ navigation, route }) => {
-    return {
-      ...theme.headerStyle,
-      title: route.params.title || ''
-    };
+  return {
+    ...theme.headerStyle,
+    title: route.params.title || '',
   };
+};
 export default NetworkScreen;

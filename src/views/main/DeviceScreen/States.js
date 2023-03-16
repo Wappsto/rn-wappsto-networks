@@ -1,5 +1,5 @@
 import React, { useMemo, useCallback } from 'react';
-import {View, ActivityIndicator} from 'react-native';
+import { View, ActivityIndicator } from 'react-native';
 import Text from '../../../components/Text';
 import { useSelector } from 'react-redux';
 import ControlState from './ControlState';
@@ -16,7 +16,9 @@ const StatesComponent = React.memo(({ value }) => {
   const url = '/value/' + id + '/state';
   const { request, send } = useRequest();
   const getEntities = useMemo(makeEntitiesSelector, []);
-  const states = useSelector(state => getEntities(state, 'state', {parent: {type: 'value', id: id}}));
+  const states = useSelector((state) =>
+    getEntities(state, 'state', { parent: { type: 'value', id: id } }),
+  );
 
   const refresh = useCallback(() => {
     if (!request || request.status !== 'pending') {
@@ -24,15 +26,15 @@ const StatesComponent = React.memo(({ value }) => {
         method: 'GET',
         url: url,
         query: {
-          expand: 0
-        }
+          expand: 0,
+        },
       });
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [request, url]);
 
-  const reportState = states.find(s => s.type === 'Report');
-  const controlState = states.find(s => s.type === 'Control');
+  const reportState = states.find((s) => s.type === 'Report');
+  const controlState = states.find((s) => s.type === 'Control');
   const haveReportState = reportState && reportState.meta && !reportState.meta.error;
   const haveControlState = controlState && controlState.meta && !controlState.meta.error;
 
@@ -40,7 +42,7 @@ const StatesComponent = React.memo(({ value }) => {
     <View>
       {states.length !== 0 ? (
         <>
-          <View style={{padding:15}}>
+          <View style={{ padding: 15 }}>
             {haveReportState && <ReportState value={value} state={reportState} />}
             {haveReportState && haveControlState && <View style={theme.common.seperator} />}
             {haveControlState && <ControlState value={value} state={controlState} />}
@@ -48,15 +50,15 @@ const StatesComponent = React.memo(({ value }) => {
         </>
       ) : (
         <Text
-          size='p'
-          color='secondary'
-          align='center'
+          size="p"
+          color="secondary"
+          align="center"
           content={CapitalizeFirst(t('noData'))}
           style={theme.common.spaceAround}
         />
       )}
       {request && request.status === 'pending' && (
-        <ActivityIndicator size='large' color={theme.variables.spinnerColor} />
+        <ActivityIndicator size="large" color={theme.variables.spinnerColor} />
       )}
       <RequestError request={request} />
     </View>

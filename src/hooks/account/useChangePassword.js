@@ -16,24 +16,30 @@ const useChangePassword = () => {
   const newPassword = useField();
   const repeatPassword = useField();
 
-  const loading =  request && request.status === 'pending';
-  const canUpdate = connected && userId && !loading && !currentPassword.error && !newPassword.error && !repeatPassword.error;
+  const loading = request && request.status === 'pending';
+  const canUpdate =
+    connected &&
+    userId &&
+    !loading &&
+    !currentPassword.error &&
+    !newPassword.error &&
+    !repeatPassword.error;
 
   const moveToField = useCallback((field) => {
-    if(field && field.current && field.current.focus){
+    if (field && field.current && field.current.focus) {
       field.current.focus();
     }
   }, []);
 
   const update = () => {
-    if(canUpdate){
+    if (canUpdate) {
       send({
         method: 'PATCH',
         url: `/register/${userId}`,
         body: {
           password: currentPassword.text,
-          new_password: newPassword.text
-        }
+          new_password: newPassword.text,
+        },
       });
     }
   };
@@ -47,8 +53,8 @@ const useChangePassword = () => {
     update,
     request,
     loading,
-    ...requestSuccessHandler
-  }
-}
+    ...requestSuccessHandler,
+  };
+};
 
 export default useChangePassword;

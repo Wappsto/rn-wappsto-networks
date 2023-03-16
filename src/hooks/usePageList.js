@@ -15,22 +15,27 @@ import { useRoute } from '@react-navigation/native';
 const usePageList = (name, url, query, addItemName, removeItemName) => {
   const dispatch = useDispatch();
   const getStream = useMemo(makeStreamSelector, []);
-  const stream = useSelector(state => getStream(state, config.stream && config.stream.name));
-  const { items, request, refresh, loadMore, canLoadMore, addItem, removeItem } = useList({ name, url, query, resetOnEmpty: true });
+  const stream = useSelector((state) => getStream(state, config.stream && config.stream.name));
+  const { items, request, refresh, loadMore, canLoadMore, addItem, removeItem } = useList({
+    name,
+    url,
+    query,
+    resetOnEmpty: true,
+  });
   const getItem = useMemo(makeItemSelector, []);
-  const currPage = useSelector(state => getItem(state, currentPage));
+  const currPage = useSelector((state) => getItem(state, currentPage));
   const route = useRoute();
   const page = route.name;
 
   useEffect(() => {
-    if(addItemName){
+    if (addItemName) {
       dispatch(setItem(addItemName, () => addItem));
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [addItemName, addItem]);
 
   useEffect(() => {
-    if(removeItemName){
+    if (removeItemName) {
       dispatch(setItem(removeItemName, () => removeItem));
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -38,17 +43,17 @@ const usePageList = (name, url, query, addItemName, removeItemName) => {
 
   const refreshList = useCallback(() => {
     // clear child list
-    items.forEach(item => {
+    items.forEach((item) => {
       const schema = schemas.getSchemaTree(item.meta.type);
-      if(schema && schema.dependencies){
+      if (schema && schema.dependencies) {
         schema.dependencies.forEach(({ key, type }) => {
-          if(type === 'many'){
+          if (type === 'many') {
             dispatch(removeStoreItem(`/${item.meta.type}/${item.meta.id}/${key}_ids`));
             dispatch(removeRequest(`/${item.meta.type}/${item.meta.id}/${key}_requestId`));
             const childSchema = schemas.getSchemaTree(key);
             childSchema.dependencies.forEach(({ key: cKey, type: cType }) => {
-              if(cType === 'many'){
-                item[key].forEach(childId => {
+              if (cType === 'many') {
+                item[key].forEach((childId) => {
                   dispatch(removeStoreItem(`/${key}/${childId}/${cKey}_ids`));
                   dispatch(removeRequest(`/${key}/${childId}/${cKey}_requestId`));
                 });
@@ -67,10 +72,10 @@ const usePageList = (name, url, query, addItemName, removeItemName) => {
       if (stream && stream.ws && stream.ws.readyState === stream.ws.CLOSED) {
         refresh(currPage === page);
       }
-    }, [stream, currPage, refresh, page])
+    }, [stream, currPage, refresh, page]),
   );
 
   return { items, request, refresh: refreshList, canLoadMore, loadMore };
-}
+};
 
 export default usePageList;

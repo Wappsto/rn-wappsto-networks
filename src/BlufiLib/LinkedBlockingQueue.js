@@ -5,7 +5,7 @@ class LinkedBlockingQueue {
   }
 
   add(cell) {
-    if(this.waiting.length > 0){
+    if (this.waiting.length > 0) {
       this.waiting[0].resolve(cell);
       clearTimeout(this.waiting[0].timeout);
       this.waiting.shift();
@@ -15,7 +15,7 @@ class LinkedBlockingQueue {
   }
 
   take() {
-    if(this.queue.length > 0){
+    if (this.queue.length > 0) {
       return this.queue.shift();
     }
     return new Promise((resolve, reject) => {
@@ -23,11 +23,10 @@ class LinkedBlockingQueue {
         resolve('');
       }, 10000);
       this.waiting.push({ resolve, reject, timeout });
-
     });
   }
 
-  clear(){
+  clear() {
     this.waiting.forEach(({ resolve }) => resolve(''));
     this.waiting = [];
     this.queue = [];

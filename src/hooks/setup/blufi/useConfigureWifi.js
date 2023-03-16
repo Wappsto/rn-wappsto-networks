@@ -6,19 +6,19 @@ let savedPasswords = {};
 const wifiSsidStorageKey = 'wifiSSID';
 const wifiPasswordStorageKey = 'wifiPassword';
 
-(async function init(){
+(async function init() {
   try {
-    savedSsid = await AsyncStorage.getItem(wifiSsidStorageKey) || '';
+    savedSsid = (await AsyncStorage.getItem(wifiSsidStorageKey)) || '';
     savedPasswords = await AsyncStorage.getItem(wifiPasswordStorageKey || '');
     savedPasswords = JSON.parse(savedPasswords) || {};
   } catch (e) {
     savedPasswords = {};
   }
-})()
+})();
 
 const useConfigureWifi = (wifiFields) => {
   const { ssid, setSsid, password, setPassword } = wifiFields;
-  const [ showPassword, setShowPassword ] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
   const passwordInputRef = useRef();
 
   const save = () => {
@@ -28,7 +28,7 @@ const useConfigureWifi = (wifiFields) => {
   };
 
   const toggleShowPassword = useCallback(() => {
-    setShowPassword(sp => !sp);
+    setShowPassword((sp) => !sp);
   }, []);
 
   const moveToPasswordField = useCallback(() => {
@@ -39,33 +39,36 @@ const useConfigureWifi = (wifiFields) => {
     passwordInputRef.current.focus();
   }, [ssid, setSsid]);
 
-  const handleTextChange = useCallback((text, type) => {
-    let currentText;
-    let set;
-    if(type === 'ssid'){
-      currentText = ssid;
-      set = setSsid;
-      const sp = savedPasswords[text];
-      if(sp){
-        setPassword(sp);
+  const handleTextChange = useCallback(
+    (text, type) => {
+      let currentText;
+      let set;
+      if (type === 'ssid') {
+        currentText = ssid;
+        set = setSsid;
+        const sp = savedPasswords[text];
+        if (sp) {
+          setPassword(sp);
+        }
+      } else {
+        currentText = password;
+        set = setPassword;
       }
-    } else {
-      currentText = password;
-      set = setPassword;
-    }
-    if (text.length - currentText.length === 1) {
-      set(text);
-    } else {
-      set(text.trim());
-    }
-  }, [ssid, password, setSsid, setPassword]);
+      if (text.length - currentText.length === 1) {
+        set(text);
+      } else {
+        set(text.trim());
+      }
+    },
+    [ssid, password, setSsid, setPassword],
+  );
 
   const init = async () => {
-    if(!ssid){
+    if (!ssid) {
       setSsid(savedSsid);
     }
     setPassword(savedPasswords[ssid || savedSsid] || '');
-  }
+  };
 
   useEffect(() => {
     init();
@@ -78,7 +81,13 @@ const useConfigureWifi = (wifiFields) => {
     savedPasswords[savedSsid] = password;
   }, [ssid, password]);
 
-  return { showPassword, toggleShowPassword, handleTextChange, passwordInputRef, moveToPasswordField };
-}
+  return {
+    showPassword,
+    toggleShowPassword,
+    handleTextChange,
+    passwordInputRef,
+    moveToPasswordField,
+  };
+};
 
 export default useConfigureWifi;

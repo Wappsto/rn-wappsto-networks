@@ -2,8 +2,8 @@ import { useState, useEffect } from 'react';
 import AsyncStorage from '@react-native-community/async-storage';
 
 const useStorageSession = () => {
-  const [ status, setStatus ] = useState('pending');
-  const [ session, setSession ] = useState();
+  const [status, setStatus] = useState('pending');
+  const [session, setSession] = useState();
 
   // Get Session
   const getSession = async () => {
@@ -26,6 +26,6 @@ const useStorageSession = () => {
   }, []);
 
   return { session, status };
-}
+};
 
 export default useStorageSession;

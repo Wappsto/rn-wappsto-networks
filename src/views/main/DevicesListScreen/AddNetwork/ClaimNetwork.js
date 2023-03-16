@@ -27,18 +27,18 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     padding: 15,
   },
-  button:{
-    marginTop:30
+  button: {
+    marginTop: 30,
   },
-  statusMessage:{
+  statusMessage: {
     alignItems: 'center',
     justifyContent: 'center',
-    flexDirection:'row',
-    marginBottom:30
+    flexDirection: 'row',
+    marginBottom: 30,
   },
-  inlineIcon:{
-    marginRight:8
-  }
+  inlineIcon: {
+    marginRight: 8,
+  },
 });
 
 const AddNetwork = React.memo(({ addNetworkHandler, hide }) => {
@@ -54,19 +54,19 @@ const AddNetwork = React.memo(({ addNetworkHandler, hide }) => {
     onSubmitEditing,
     addNetwork,
     loading,
-    canAdd
+    canAdd,
   } = useAddNetworkForm(addNetworkHandler, hide);
 
   return (
     <>
       <Text
-        size='h3'
-        align='center'
+        size="h3"
+        align="center"
         content={CapitalizeFirst(t('onboarding.claimNetwork.claimNetworkTitle'))}
       />
       <Text
-        size='p'
-        color='secondary'
+        size="p"
+        color="secondary"
         content={CapitalizeFirst(t('onboarding.claimNetwork.claimNetworkInfo'))}
       />
       <View style={styles.qrCodeScannerWrapper}>
@@ -95,21 +95,19 @@ const AddNetwork = React.memo(({ addNetworkHandler, hide }) => {
               message: CapitalizeFirst(t('onboarding.claimNetwork.cameraPermission.message')),
             }}>
             <BarcodeMask
-              width='100%'
+              width="100%"
               height={240}
               edgeColor={theme.variables.primary}
               showAnimatedLine={false}
             />
           </RNCamera>
         ) : (
-          <TouchableOpacity
-            style={styles.cameraCapture}
-            onPress={switchView}>
-            {didScan ?
+          <TouchableOpacity style={styles.cameraCapture} onPress={switchView}>
+            {didScan ? (
               <>
                 <View style={styles.statusMessage}>
                   <Icon
-                    name='check-circle'
+                    name="check-circle"
                     size={18}
                     color={theme.variables.success}
                     style={styles.inlineIcon}
@@ -120,38 +118,45 @@ const AddNetwork = React.memo(({ addNetworkHandler, hide }) => {
                   />
                 </View>
                 <Text
-                  color='secondary'
+                  color="secondary"
                   content={CapitalizeFirst(t('onboarding.claimNetwork.rescanQRCode'))}
                 />
               </>
-            :
-              <Text
-                content={CapitalizeFirst(t('onboarding.claimNetwork.scanQRCode'))}
-              />
-          }
+            ) : (
+              <Text content={CapitalizeFirst(t('onboarding.claimNetwork.scanQRCode'))} />
+            )}
           </TouchableOpacity>
         )}
       </View>
-      {scanError && <Text size='p' color='error' content={CapitalizeFirst(t('onboarding.claimNetwork.' + scanError))} />}
+      {scanError && (
+        <Text
+          size="p"
+          color="error"
+          content={CapitalizeFirst(t('onboarding.claimNetwork.' + scanError))}
+        />
+      )}
       <Input
         label={CapitalizeFirst(t('onboarding.claimNetwork.uuidLabel'))}
-        onChangeText={text => setInputValue(text)}
+        onChangeText={(text) => setInputValue(text)}
         value={inputValue}
-        autoCapitalize='none'
+        autoCapitalize="none"
         onSubmitEditing={onSubmitEditing}
-        returnKeyType='done'
+        returnKeyType="done"
         disabled={loading}
       />
       <Text
         size={12}
-        color='secondary'
+        color="secondary"
         content={CapitalizeFirst(t('onboarding.claimNetwork.enterUUID'))}
       />
-      {loading && <ActivityIndicator size='large' color={theme.variables.spinnerColor} /> }
-      <RequestError request={addNetworkHandler.request} skipCodes={addNetworkHandler.skipErrorCodes} />
+      {loading && <ActivityIndicator size="large" color={theme.variables.spinnerColor} />}
+      <RequestError
+        request={addNetworkHandler.request}
+        skipCodes={addNetworkHandler.skipErrorCodes}
+      />
       <Button
         disabled={!canAdd}
-        display='block'
+        display="block"
         color={canAdd ? 'primary' : 'disabled'}
         onPress={addNetwork}
         style={styles.button}

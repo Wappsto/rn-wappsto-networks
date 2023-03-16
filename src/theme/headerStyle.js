@@ -3,20 +3,17 @@ let variables = require('./variables/generic').default;
 let styles = {};
 
 export function generateHeaderStyles(c = {}) {
-  Object.assign(
-    styles,
-    {
-      headerTintColor: variables.headerColor,
-      headerStyle: {
-        backgroundColor: variables.headerBgColor
-      },
-      headerTitleStyle: {
-        marginLeft: 0,
-        fontFamily: variables.fontFamily
-      },
-      ...c
-    }
-  );
+  Object.assign(styles, {
+    headerTintColor: variables.headerColor,
+    headerStyle: {
+      backgroundColor: variables.headerBgColor,
+    },
+    headerTitleStyle: {
+      marginLeft: 0,
+      fontFamily: variables.fontFamily,
+    },
+    ...c,
+  });
   return styles;
 }
 

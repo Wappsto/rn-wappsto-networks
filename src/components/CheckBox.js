@@ -8,26 +8,32 @@ const styles = StyleSheet.create({
   checkbox: {
     marginRight: 10,
   },
-  container:{
+  container: {
     marginVertical: 20,
     flexDirection: 'row',
-    alignItems: 'center'
-  }
+    alignItems: 'center',
+  },
 });
 
-const CheckBox = ({ checked, onPress, style, textStyle, size = 30, color = theme.variables.primary, text = '', ...props}) => (
+const CheckBox = ({
+  checked,
+  onPress,
+  style,
+  textStyle,
+  size = 30,
+  color = theme.variables.primary,
+  text = '',
+  ...props
+}) => (
   <TouchableOpacity style={[styles.container, style]} onPress={onPress} {...props}>
     <Icon
       size={size}
       style={styles.checkbox}
       color={color}
-      name={ checked ? 'check-square' : 'square'}
+      name={checked ? 'check-square' : 'square'}
     />
-    <Text
-      style={[textStyle, {flex: 1}]}
-      content={text}
-    />
+    <Text style={[textStyle, { flex: 1 }]} content={text} />
   </TouchableOpacity>
-)
+);
 
 export default CheckBox;

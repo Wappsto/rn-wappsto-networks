@@ -16,10 +16,11 @@ import useDeleteItem from '../../../hooks/useDeleteItem';
 const ValueSettings = React.memo(() => {
   const { t } = useTranslation();
   const device = useGetItemEntity(selectedDeviceName, 'device');
-  const { deleteItem, request, confirmVisible, showDeleteConfirmation, hideDeleteConfirmation } = useDeleteItem(device);
+  const { deleteItem, request, confirmVisible, showDeleteConfirmation, hideDeleteConfirmation } =
+    useDeleteItem(device);
 
   const content = (visible, hide) => {
-    if(!device || !device.meta || !device.meta.id){
+    if (!device || !device.meta || !device.meta.id) {
       return null;
     }
     return (
@@ -29,74 +30,89 @@ const ValueSettings = React.memo(() => {
           accept={deleteItem}
           reject={hideDeleteConfirmation}
         />
-        <Text size='h4' content={device.name}/>
-        <ID id={device.meta.id} label={CapitalizeFirst(t('dataModel:deviceProperties.meta.id'))}/>
-        {!!device.manufacturer &&
+        <Text size="h4" content={device.name} />
+        <ID id={device.meta.id} label={CapitalizeFirst(t('dataModel:deviceProperties.meta.id'))} />
+        {!!device.manufacturer && (
           <RNText>
-            <Text bold content={CapitalizeFirst(t('dataModel:deviceProperties.manufacturer')) + ': '} />
-            <Text content={device.manufacturer}/>
+            <Text
+              bold
+              content={CapitalizeFirst(t('dataModel:deviceProperties.manufacturer')) + ': '}
+            />
+            <Text content={device.manufacturer} />
           </RNText>
-        }
-        {!!device.product &&
+        )}
+        {!!device.product && (
           <RNText>
             <Text bold content={CapitalizeFirst(t('dataModel:deviceProperties.product')) + ': '} />
-            <Text content={device.product}/>
+            <Text content={device.product} />
           </RNText>
-        }
-        {!!device.version &&
+        )}
+        {!!device.version && (
           <RNText>
             <Text bold content={CapitalizeFirst(t('dataModel:deviceProperties.version')) + ': '} />
-            <Text content={device.version}/>
+            <Text content={device.version} />
           </RNText>
-        }
-        {!!device.serial &&
+        )}
+        {!!device.serial && (
           <RNText>
             <Text bold content={CapitalizeFirst(t('dataModel:deviceProperties.serial')) + ': '} />
-            <Text content={device.serial}/>
+            <Text content={device.serial} />
           </RNText>
-        }
-        {!!device.protocol &&
+        )}
+        {!!device.protocol && (
           <RNText>
             <Text bold content={CapitalizeFirst(t('dataModel:deviceProperties.protocol')) + ': '} />
-            <Text content={device.protocol}/>
+            <Text content={device.protocol} />
           </RNText>
-        }
-        {!!device.communication &&
+        )}
+        {!!device.communication && (
           <RNText>
-            <Text bold content={CapitalizeFirst(t('dataModel:deviceProperties.communication')) + ': '} />
-            <Text content={device.communication}/>
+            <Text
+              bold
+              content={CapitalizeFirst(t('dataModel:deviceProperties.communication')) + ': '}
+            />
+            <Text content={device.communication} />
           </RNText>
-        }
-        {!!device.description &&
+        )}
+        {!!device.description && (
           <RNText>
-            <Text bold content={CapitalizeFirst(t('dataModel:deviceProperties.description')) + ': ' } />
-            <Text content={device.description}/>
+            <Text
+              bold
+              content={CapitalizeFirst(t('dataModel:deviceProperties.description')) + ': '}
+            />
+            <Text content={device.description} />
           </RNText>
-        }
-        {!!device.included &&
+        )}
+        {!!device.included && (
           <RNText>
             <Text bold content={CapitalizeFirst(t('dataModel:deviceProperties.included')) + ': '} />
-            <Text content={device.included}/>
+            <Text content={device.included} />
           </RNText>
-        }
-        {!!device.control_timeout &&
+        )}
+        {!!device.control_timeout && (
           <RNText>
-            <Text bold content={CapitalizeFirst(t('dataModel:deviceProperties.control_timeout')) + ': '} />
-            <Text content={device.control_timeout + 's'}/>
+            <Text
+              bold
+              content={CapitalizeFirst(t('dataModel:deviceProperties.control_timeout')) + ': '}
+            />
+            <Text content={device.control_timeout + 's'} />
           </RNText>
-        }
-        {!!device.control_when_offline &&
+        )}
+        {!!device.control_when_offline && (
           <RNText>
-            <Text bold content={CapitalizeFirst(t('dataModel:deviceProperties.control_when_offline')) + ': '} />
-            <Text content={t('dataModel:' + device.control_when_offline)}/>
+            <Text
+              bold
+              content={CapitalizeFirst(t('dataModel:deviceProperties.control_when_offline')) + ': '}
+            />
+            <Text content={t('dataModel:' + device.control_when_offline)} />
           </RNText>
-        }
+        )}
         <RequestError request={request} />
         <Button
-          type='outlined'
-          color='alert'
+          type="outlined"
+          color="alert"
           onPress={showDeleteConfirmation}
-          icon='trash-2'
+          icon="trash-2"
           request={request}
           disabled={request && request.status === 'pending'}
           text={CapitalizeFirst(t('genericButton.delete'))}
@@ -105,7 +121,11 @@ const ValueSettings = React.memo(() => {
     );
   };
 
-  return <PopupButton icon='info' color={theme.variables.white}>{content}</PopupButton>;
+  return (
+    <PopupButton icon="info" color={theme.variables.white}>
+      {content}
+    </PopupButton>
+  );
 });
 
 export default ValueSettings;

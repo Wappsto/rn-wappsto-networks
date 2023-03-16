@@ -8,7 +8,7 @@ import useAppState from './useAppState';
 const useAppStateStream = () => {
   const dispatch = useDispatch();
   const getStream = useMemo(makeStreamSelector, []);
-  const stream = useSelector(state => getStream(state, config.stream && config.stream.name));
+  const stream = useSelector((state) => getStream(state, config.stream && config.stream.name));
 
   useAppState(
     useCallback(() => {
@@ -16,7 +16,7 @@ const useAppStateStream = () => {
         endStream(dispatch, true);
         startStream(dispatch);
       }
-    }, [dispatch, stream])
+    }, [dispatch, stream]),
   );
 
   // subscribe to stream
@@ -24,9 +24,9 @@ const useAppStateStream = () => {
     startStream(dispatch);
     return () => {
       endStream(dispatch, true);
-    }
+    };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
-}
+};
 
 export default useAppStateStream;

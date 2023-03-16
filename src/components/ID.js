@@ -6,11 +6,11 @@ import Button from './Button';
 import theme from '../theme/themeExport';
 
 const styles = StyleSheet.create({
-  label:{
+  label: {
     marginBottom: 20,
     backgroundColor: theme.variables.secondary,
-    paddingVertical: 3
-  }
+    paddingVertical: 3,
+  },
 });
 
 const ID = React.memo(({ id, label }) => {
@@ -21,38 +21,42 @@ const ID = React.memo(({ id, label }) => {
     Clipboard.setString(id);
     setCopiedText(id);
     setCopiedTextVisible(true);
-  }
+  };
 
   useEffect(() => {
     let t;
-    if(copiedTextVisible){
+    if (copiedTextVisible) {
       t = setTimeout(() => {
         setCopiedTextVisible(false);
       }, 3000);
     }
     return () => {
       clearTimeout(t);
-    }
+    };
   }, [copiedTextVisible]);
 
-  if(!id) return '';
+  if (!id) return '';
 
   return (
     <>
       <View style={theme.common.row}>
-        <RNText style={{flex:1}}>
-          <Text bold content={label + ': '}/>
-          <Text content={id}/>
+        <RNText style={{ flex: 1 }}>
+          <Text bold content={label + ': '} />
+          <Text content={id} />
         </RNText>
-        <Button onPress={() => copyToClipboard(id)} type='link' color='primary' icon='clipboard'/>
+        <Button onPress={() => copyToClipboard(id)} type="link" color="primary" icon="clipboard" />
       </View>
-      {copiedTextVisible &&
+      {copiedTextVisible && (
         <View style={styles.label}>
-          <Text align='center' color={theme.variables.textInverse} content={'Copied: ' + copiedText}/>
+          <Text
+            align="center"
+            color={theme.variables.textInverse}
+            content={'Copied: ' + copiedText}
+          />
         </View>
-      }
+      )}
     </>
-  )
+  );
 });
 
 export default ID;

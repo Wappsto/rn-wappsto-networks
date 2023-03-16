@@ -21,49 +21,49 @@ const styles = StyleSheet.create({
     borderTopWidth: theme.variables.borderWidth,
     borderColor: theme.variables.borderColor,
     paddingLeft: 5,
-    paddingVertical: 10
+    paddingVertical: 10,
   },
-  row:{
-    flex:1,
-    flexDirection:'row',
-    justifyContent:'space-between'
+  row: {
+    flex: 1,
+    flexDirection: 'row',
+    justifyContent: 'space-between',
   },
   image: {
     width: 65,
-    height: 65
+    height: 65,
   },
   userImage: {
     borderRadius: 35,
     margin: 20,
     alignSelf: 'center',
     backgroundColor: theme.variables.primary,
-    padding:10
+    padding: 10,
   },
-  deleteAccount:{
-    marginBottom:50
+  deleteAccount: {
+    marginBottom: 50,
   },
-  signedWithBtn:{
-    alignSelf:'center',
-    textAlign:'center',
-    padding:2,
+  signedWithBtn: {
+    alignSelf: 'center',
+    textAlign: 'center',
+    padding: 2,
     width: 200,
-    borderRadius: 30
+    borderRadius: 30,
   },
   googleColor: {
     backgroundColor: '#4285F4',
-    color:'#fff'
+    color: '#fff',
   },
   facebookColor: {
     backgroundColor: '#4267B2',
-    color:'#fff'
+    color: '#fff',
   },
   appleColor: {
     backgroundColor: '#fff',
-    color:'#000'
+    color: '#000',
   },
-  id:{
-    maxWidth:'90%'
-  }
+  id: {
+    maxWidth: '90%',
+  },
 });
 
 const DeleteAccount = React.memo(({ setButtonsDisabled }) => {
@@ -80,7 +80,7 @@ const DeleteAccount = React.memo(({ setButtonsDisabled }) => {
     confirmDelete,
     canConfirmDelete,
     username,
-    setUsername
+    setUsername,
   } = useDeleteAccount(setButtonsDisabled);
 
   return (
@@ -93,54 +93,57 @@ const DeleteAccount = React.memo(({ setButtonsDisabled }) => {
         acceptText={CapitalizeFirst(t('genericButton.send'))}
         accept={confirmDelete}
         reject={hideConfirmationPopup}
-        acceptDisabled={!canConfirmDelete}
-      >
-        <View style={{height: 70}}>
+        acceptDisabled={!canConfirmDelete}>
+        <View style={{ height: 70 }}>
           <Input
             onChangeText={setUsername}
             value={username}
             label={CapitalizeFirst(t('account:username'))}
-            textContentType='emailAddress'
-            autoCapitalize='none'
-            keyboardType='email-address'
-            returnKeyType='next'
+            textContentType="emailAddress"
+            autoCapitalize="none"
+            keyboardType="email-address"
+            returnKeyType="next"
             disabled={loading}
-            style={{height: 45}}
+            style={{ height: 45 }}
           />
         </View>
       </ConfirmationPopup>
-      <Popup visible={successVisible} onRequestClose={hideSuccessPopup} hide={hideSuccessPopup} hideCloseIcon>
+      <Popup
+        visible={successVisible}
+        onRequestClose={hideSuccessPopup}
+        hide={hideSuccessPopup}
+        hideCloseIcon>
         <Text
-          size='p'
-          align='center'
+          size="p"
+          align="center"
           content={CapitalizeFirst(t('account:deleteAccountConfirmation'))}
         />
         <Button
-          color='success'
+          color="success"
           onPress={hideSuccessPopup}
           text={CapitalizeFirst(t('genericButton.ok'))}
         />
       </Popup>
-      {loading && <ActivityIndicator size='large' color={theme.variables.spinnerColor} />}
+      {loading && <ActivityIndicator size="large" color={theme.variables.spinnerColor} />}
       <RequestError request={request} />
       <Button
-        type='link'
-        color='alert'
-        align='left'
-        icon='trash'
+        type="link"
+        color="alert"
+        align="left"
+        icon="trash"
         onPress={showConfirmationPopup}
         text={CapitalizeFirst(t('account:deleteAccount'))}
         disabled={!canDelete}
       />
     </View>
-  )
+  );
 });
 
-const AccountScreen = React.memo(({navigation}) => {
+const AccountScreen = React.memo(({ navigation }) => {
   const { t } = useTranslation();
   const { user, request, session } = useUser();
   const signedWithEmail = session.provider === 'email' ? true : false;
-  const [ buttonsDisabled, setButtonsDisabled ] = useState(false);
+  const [buttonsDisabled, setButtonsDisabled] = useState(false);
 
   return (
     <Screen>
@@ -149,7 +152,7 @@ const AccountScreen = React.memo(({navigation}) => {
           <>
             {signedWithEmail ? (
               <Icon
-                name='user'
+                name="user"
                 color={theme.variables.textInverse}
                 style={styles.userImage}
                 size={40}
@@ -157,90 +160,89 @@ const AccountScreen = React.memo(({navigation}) => {
             ) : (
               <Image
                 style={[styles.userImage, styles.image]}
-                source={{uri: user.provider[0].picture}}
+                source={{ uri: user.provider[0].picture }}
               />
             )}
-            {(user.first_name || user.last_name) ?
+            {user.first_name || user.last_name ? (
               <Text
-                size='p'
-                color='secondary'
-                align='center'
-                content={(user.first_name && user.first_name) + ' ' + (user.last_name && user.last_name) }
+                size="p"
+                color="secondary"
+                align="center"
+                content={
+                  (user.first_name && user.first_name) + ' ' + (user.last_name && user.last_name)
+                }
               />
-            :
+            ) : (
               <Text
-                size='p'
-                color='secondary'
-                align='center'
+                size="p"
+                color="secondary"
+                align="center"
                 content={CapitalizeFirst(t('account:namePlaceholder'))}
               />
-            }
-            {!signedWithEmail &&
+            )}
+            {!signedWithEmail && (
               <Text
-                size='p'
-                color='secondary'
+                size="p"
+                color="secondary"
                 style={[styles.signedWithBtn, styles[session.provider + 'Color']]}
-                content={CapitalizeFirst(t('account:signedInWith', {provider: session.provider}))}
+                content={CapitalizeFirst(t('account:signedInWith', { provider: session.provider }))}
               />
-            }
+            )}
             <Button
-              type='link'
-              align='right'
-              color='primary'
+              type="link"
+              align="right"
+              color="primary"
               onPress={() => navigation.navigate('ChangeUserDetailsScreen', {})}
-              icon='edit-3'
+              icon="edit-3"
               disabled={buttonsDisabled}
             />
             <View style={styles.item}>
-              <Text
-                size={14}
-                bold
-                content={CapitalizeFirst(t('account:uuid'))}
-              />
+              <Text size={14} bold content={CapitalizeFirst(t('account:uuid'))} />
               <View style={styles.row}>
-                <Text
-                  color='secondary'
-                  content={user.meta.id}
-                  style={styles.id}
-                />
+                <Text color="secondary" content={user.meta.id} style={styles.id} />
                 <Button
-                  type='link'
-                  color='primary'
-                  onPress={() =>  Clipboard.setString(user.meta.id)}
-                  icon='copy'
+                  type="link"
+                  color="primary"
+                  onPress={() => Clipboard.setString(user.meta.id)}
+                  icon="copy"
                   disabled={buttonsDisabled}
                 />
               </View>
             </View>
-            {signedWithEmail &&
+            {signedWithEmail && (
               <View style={styles.item}>
                 <Button
-                  type='link'
-                  color='primary'
+                  type="link"
+                  color="primary"
                   onPress={() => navigation.navigate('ChangeUsernameScreen', {})}
-                  icon='edit-3'
-                  align='left'
+                  icon="edit-3"
+                  align="left"
                   text={CapitalizeFirst(t('account:changeUsername'))}
                   disabled={buttonsDisabled}
                 />
               </View>
-            }
+            )}
 
             <View style={styles.item}>
               <Button
-                type='link'
-                color='primary'
+                type="link"
+                color="primary"
                 text={CapitalizeFirst(t('account:changePassword'))}
-                onPress={() => navigation.navigate(signedWithEmail ? 'ChangePasswordScreen' : 'RecoverPasswordScreen', {})}
-                icon='edit-3'
-                align='left'
+                onPress={() =>
+                  navigation.navigate(
+                    signedWithEmail ? 'ChangePasswordScreen' : 'RecoverPasswordScreen',
+                    {},
+                  )
+                }
+                icon="edit-3"
+                align="left"
                 disabled={buttonsDisabled}
               />
             </View>
             <DeleteAccount setButtonsDisabled={setButtonsDisabled} />
           </>
         ) : request && request.status === 'pending' ? (
-            <ActivityIndicator size='large' color={theme.variables.spinnerColor} />
+          <ActivityIndicator size="large" color={theme.variables.spinnerColor} />
         ) : null}
         <RequestError request={request} />
       </ScrollView>
@@ -251,7 +253,7 @@ const AccountScreen = React.memo(({navigation}) => {
 AccountScreen.navigationOptions = ({ navigation }) => {
   return {
     ...theme.headerStyle,
-    title: <PageTitle title='pageTitle.account' />,
+    title: <PageTitle title="pageTitle.account" />,
     headerLeft: () => <MenuButton navigation={navigation} />,
   };
 };

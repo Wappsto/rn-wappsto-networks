@@ -18,62 +18,76 @@ const ChangeUsernameScreen = React.memo(() => {
   return (
     <Screen>
       <ScrollView style={theme.common.contentContainer}>
-        <Popup visible={changeEmailHandler.successVisible} onRequestClose={changeEmailHandler.hideSuccessPopup} hide={changeEmailHandler.hideSuccessPopup} hideCloseIcon>
+        <Popup
+          visible={changeEmailHandler.successVisible}
+          onRequestClose={changeEmailHandler.hideSuccessPopup}
+          hide={changeEmailHandler.hideSuccessPopup}
+          hideCloseIcon>
           <Text
-            size='p'
-            align='center'
+            size="p"
+            align="center"
             content={CapitalizeFirst(t('account:changeUsernameConfirmation'))}
           />
           <Button
-            color='success'
+            color="success"
             onPress={changeEmailHandler.hideSuccessPopup}
             text={CapitalizeFirst(t('genericButton.ok'))}
           />
         </Popup>
-        <Text
-          size='p'
-          content={CapitalizeFirst(t('account:changeUsernameInfo'))}
-        />
+        <Text size="p" content={CapitalizeFirst(t('account:changeUsernameInfo'))} />
         <Input
           label={CapitalizeFirst(t('account:currentUsername'))}
-          autoCapitalize='none'
-          returnKeyType='next'
+          autoCapitalize="none"
+          returnKeyType="next"
           value={changeEmailHandler.usernameField.text}
           onBlur={changeEmailHandler.usernameField.onBlur}
           onChangeText={changeEmailHandler.usernameField.setText}
-          onSubmitEditing={() => changeEmailHandler.moveToField(changeEmailHandler.passwordField.ref)}
-          validationError={changeEmailHandler.usernameField.error && CapitalizeFirst(t('account:validation.username'))}
+          onSubmitEditing={() =>
+            changeEmailHandler.moveToField(changeEmailHandler.passwordField.ref)
+          }
+          validationError={
+            changeEmailHandler.usernameField.error &&
+            CapitalizeFirst(t('account:validation.username'))
+          }
         />
         <Input
           inputRef={changeEmailHandler.passwordField.ref}
           label={CapitalizeFirst(t('account:password'))}
-          autoCapitalize='none'
-          returnKeyType='next'
+          autoCapitalize="none"
+          returnKeyType="next"
           value={changeEmailHandler.passwordField.text}
           onBlur={changeEmailHandler.passwordField.onBlur}
           onChangeText={changeEmailHandler.passwordField.setText}
           showPassword={changeEmailHandler.passwordField.visible}
           secureTextEntry={!changeEmailHandler.passwordField.visible}
           toggleShowPassword={changeEmailHandler.passwordField.toggleVisible}
-          onSubmitEditing={() => changeEmailHandler.moveToField(changeEmailHandler.newUsernameField.ref)}
-          validationError={changeEmailHandler.passwordField.error && CapitalizeFirst(t('account:validation.required', { field: 'password' }))}
+          onSubmitEditing={() =>
+            changeEmailHandler.moveToField(changeEmailHandler.newUsernameField.ref)
+          }
+          validationError={
+            changeEmailHandler.passwordField.error &&
+            CapitalizeFirst(t('account:validation.required', { field: 'password' }))
+          }
         />
         <Input
           inputRef={changeEmailHandler.newUsernameField.ref}
           label={CapitalizeFirst(t('account:newUsername'))}
-          autoCapitalize='none'
-          returnKeyType='next'
+          autoCapitalize="none"
+          returnKeyType="next"
           value={changeEmailHandler.newUsernameField.text}
           onBlur={changeEmailHandler.newUsernameField.onBlur}
           onChangeText={changeEmailHandler.newUsernameField.setText}
           onSubmitEditing={changeEmailHandler.update}
-          validationError={changeEmailHandler.newUsernameField.error && CapitalizeFirst(t('account:validation.username'))}
+          validationError={
+            changeEmailHandler.newUsernameField.error &&
+            CapitalizeFirst(t('account:validation.username'))
+          }
         />
         {changeEmailHandler.loading && (
-          <ActivityIndicator size='large' color={theme.variables.spinnerColor} />
+          <ActivityIndicator size="large" color={theme.variables.spinnerColor} />
         )}
         <Button
-          display='block'
+          display="block"
           text={CapitalizeFirst(t('genericButton.send'))}
           disabled={!changeEmailHandler.canUpdate}
           onPress={changeEmailHandler.update}
@@ -87,7 +101,7 @@ const ChangeUsernameScreen = React.memo(() => {
 ChangeUsernameScreen.navigationOptions = ({ route }) => {
   return {
     ...theme.headerStyle,
-    title: route.params.title || <PageTitle title='account:changeUsername' />
+    title: route.params.title || <PageTitle title="account:changeUsername" />,
   };
 };
 

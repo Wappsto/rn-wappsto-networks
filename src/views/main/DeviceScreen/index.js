@@ -15,18 +15,21 @@ import ItemDeleteIndicator from '../../../components/ItemDeleteIndicator';
 const DeviceScreen = React.memo(({ navigation }) => {
   const device = useGetItemEntity(selectedDeviceName, 'device');
   const deleteRequest = useDeleteItemRequest(device);
-  const query = useMemo(() => ({
-    expand: 3,
-    limit: 10,
-    order_by: 'meta.created',
-    verbose: true,
-    method: 'retrieve'
-  }), []);
+  const query = useMemo(
+    () => ({
+      expand: 3,
+      limit: 10,
+      order_by: 'meta.created',
+      verbose: true,
+      method: 'retrieve',
+    }),
+    [],
+  );
 
   useUnmountRemoveItem(selectedDeviceName);
   useUndefinedBack(device, navigation);
 
-  if(!device || !device.meta || !device.meta.id || device.meta.error){
+  if (!device || !device.meta || !device.meta.id || device.meta.error) {
     return null;
   }
   const url = '/device/' + device.meta.id + '/value';
@@ -37,8 +40,8 @@ const DeviceScreen = React.memo(({ navigation }) => {
         name={url}
         url={url}
         query={query}
-        renderItem={({item}) => <Value item={item} navigation={navigation} />}
-        listHeaderComponent={device.meta.geo ? <DeviceLocation geo={device.meta.geo}/> : null}
+        renderItem={({ item }) => <Value item={item} navigation={navigation} />}
+        listHeaderComponent={device.meta.geo ? <DeviceLocation geo={device.meta.geo} /> : null}
       />
     </Screen>
   );
@@ -48,7 +51,7 @@ DeviceScreen.navigationOptions = ({ navigation, route }) => {
   return {
     ...theme.headerStyle,
     title: route.params.title || '',
-    headerRight: () => <DeviceDetails navigation={navigation} />
+    headerRight: () => <DeviceDetails navigation={navigation} />,
   };
 };
 

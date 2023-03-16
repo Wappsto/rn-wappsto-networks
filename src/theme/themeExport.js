@@ -1,6 +1,6 @@
-import {generateStyles} from './common/main';
-import {generateVariables} from './variables/generic';
-import {generateHeaderStyles} from './headerStyle';
+import { generateStyles } from './common/main';
+import { generateVariables } from './variables/generic';
+import { generateHeaderStyles } from './headerStyle';
 
 let theme = {
   variables: require('./variables/generic').default,

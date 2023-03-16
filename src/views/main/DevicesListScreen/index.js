@@ -24,13 +24,13 @@ import { setItem } from 'wappsto-redux/actions/items';
 const styles = StyleSheet.create({
   listHeader: {
     paddingLeft: 10,
-    paddingRight: 5
+    paddingRight: 5,
   },
-  textRow:{
-    flex: 1
+  textRow: {
+    flex: 1,
   },
   listItem: {
-    paddingBottom:20,
+    paddingBottom: 20,
     borderWidth: 1,
     borderColor: '#e1e1e1',
     borderBottomWidth: 3,
@@ -39,80 +39,71 @@ const styles = StyleSheet.create({
     width: 7,
     height: 7,
     borderRadius: 5,
-    marginRight: 6
+    marginRight: 6,
   },
   online: {
-    backgroundColor: '#32CD32'
+    backgroundColor: '#32CD32',
   },
   offline: {
-    backgroundColor: '#999'
-  }
+    backgroundColor: '#999',
+  },
 });
 
-const ItemHeader = React.memo(({ network, navigation}) => {
+const ItemHeader = React.memo(({ network, navigation }) => {
   const { t } = useTranslation();
   const isPrototypeNetwork = isPrototype(network);
-  const online = network && network.meta && network.meta.connection && network.meta.connection.online;
+  const online =
+    network && network.meta && network.meta.connection && network.meta.connection.online;
 
   const dispatch = useDispatch();
 
   const navigate = useCallback(() => {
     dispatch(setItem(selectedNetworkName, network.meta.id));
     navigation.navigate('NetworkScreen', {
-      title: network.name ? network.name : network.meta.id
+      title: network.name ? network.name : network.meta.id,
     });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [network]);
 
   return (
-    <View style={[theme.common.row,styles.listHeader]}>
-      { !isPrototypeNetwork &&
-        <View style={[styles.circle, online ? styles.online : styles.offline ]} />
-      }
-      <RNText numberOfLines={1} ellipsizeMode='tail' style={styles.textRow}>
-        { isPrototypeNetwork &&
-          <Text color='secondary' content={'(' + CapitalizeEach(t('prototype')) + ') '}/>
-        }
-        { network.name &&
-          <Text bold content={network.name + ' '}/>
-        }
-        <Text color='secondary' content={'[' + network.meta.id.slice(0, 9) + '... ]'}/>
+    <View style={[theme.common.row, styles.listHeader]}>
+      {!isPrototypeNetwork && (
+        <View style={[styles.circle, online ? styles.online : styles.offline]} />
+      )}
+      <RNText numberOfLines={1} ellipsizeMode="tail" style={styles.textRow}>
+        {isPrototypeNetwork && (
+          <Text color="secondary" content={'(' + CapitalizeEach(t('prototype')) + ') '} />
+        )}
+        {network.name && <Text bold content={network.name + ' '} />}
+        <Text color="secondary" content={'[' + network.meta.id.slice(0, 9) + '... ]'} />
       </RNText>
 
-      <Button
-        icon='more-vertical'
-        type='link'
-        onPress={navigate}/>
+      <Button icon="more-vertical" type="link" onPress={navigate} />
     </View>
-  )
+  );
 });
 
 const ItemContent = React.memo(({ network, navigation }) => {
   const { t } = useTranslation();
-  if(network.device.length === 0){
+  if (network.device.length === 0) {
     return (
       <Text
-        size='p'
-        color='secondary'
-        align='center'
+        size="p"
+        color="secondary"
+        align="center"
         content={CapitalizeFirst(t('noData'))}
         style={theme.common.spaceAround}
       />
-    )
+    );
   }
-  return network.device.map(id => (
-    <DeviceItem
-      key={id}
-      id={id}
-      navigation={navigation}
-      isPrototype={isPrototype(network)}
-    />
+  return network.device.map((id) => (
+    <DeviceItem key={id} id={id} navigation={navigation} isPrototype={isPrototype(network)} />
   ));
 });
 
 const ListItem = React.memo(({ network, navigation }) => {
   const request = useDeleteItemRequest(network);
-  if(!network.meta || network.meta.error){
+  if (!network.meta || network.meta.error) {
     return null;
   }
   return (
@@ -121,7 +112,7 @@ const ListItem = React.memo(({ network, navigation }) => {
       <ItemHeader network={network} navigation={navigation} />
       <ItemContent network={network} navigation={navigation} />
     </View>
-  )
+  );
 });
 
 const query = {
@@ -130,11 +121,11 @@ const query = {
   order_by: 'this_meta.created',
   from_last: true,
   verbose: true,
-  method: 'retrieve'
+  method: 'retrieve',
 };
 const DevicesListScreen = React.memo(({ navigation }) => {
   const getItem = useMemo(makeItemSelector, []);
-  const showAddFlow = useSelector(state => getItem(state, iotNetworkAddFlow));
+  const showAddFlow = useSelector((state) => getItem(state, iotNetworkAddFlow));
 
   useAppStateStream();
   useAddNetworkStream(iotNetworkListAdd, iotNetworkListRemove);
@@ -142,7 +133,7 @@ const DevicesListScreen = React.memo(({ navigation }) => {
   return (
     <Screen>
       <List
-        url='/network'
+        url="/network"
         query={query}
         addItemName={iotNetworkListAdd}
         removeItemName={iotNetworkListRemove}
@@ -156,9 +147,9 @@ const DevicesListScreen = React.memo(({ navigation }) => {
 DevicesListScreen.navigationOptions = ({ navigation }) => {
   return {
     ...theme.headerStyle,
-    title: <PageTitle title='pageTitle.main' />,
+    title: <PageTitle title="pageTitle.main" />,
     headerLeft: () => <MenuButton navigation={navigation} />,
-    headerRight: () => <AddNetwork navigation={navigation} />
+    headerRight: () => <AddNetwork navigation={navigation} />,
   };
 };
 

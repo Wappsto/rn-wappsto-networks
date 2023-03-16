@@ -9,22 +9,24 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     flexDirection: 'column',
     justifyContent: 'space-around',
-    backgroundColor: theme.variables.appBgColor
+    backgroundColor: theme.variables.appBgColor,
   },
-  image:{
+  image: {
     alignSelf: 'center',
-    maxWidth: '100%'
-  }
+    maxWidth: '100%',
+  },
 });
 
 const SplashScreen = () => {
   return (
     <View style={styles.splashScreenContainer}>
-      <StatusBar backgroundColor={theme.variables.statusBarBgLight} barStyle={theme.variables.statusBarColorDark}/>
-      {
-        defaultImages.splashScreen.logo &&
-        <Image resizeMode='contain' style={styles.image} source={defaultImages.splashScreen.logo} />
-      }
+      <StatusBar
+        backgroundColor={theme.variables.statusBarBgLight}
+        barStyle={theme.variables.statusBarColorDark}
+      />
+      {defaultImages.splashScreen.logo && (
+        <Image resizeMode="contain" style={styles.image} source={defaultImages.splashScreen.logo} />
+      )}
     </View>
   );
 };

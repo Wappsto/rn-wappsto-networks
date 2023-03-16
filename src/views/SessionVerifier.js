@@ -1,6 +1,6 @@
 import React, { useEffect, useRef } from 'react';
 import { useDispatch } from 'react-redux';
-import {addSession} from 'wappsto-redux/actions/session';
+import { addSession } from 'wappsto-redux/actions/session';
 import useRequest from 'wappsto-blanket/hooks/useRequest';
 
 const SessionVerifier = React.memo(({ status, session, onResult }) => {
@@ -11,18 +11,18 @@ const SessionVerifier = React.memo(({ status, session, onResult }) => {
   const clearTimeouts = () => {
     clearTimeout(cache.current.minimumTimeout);
     clearTimeout(cache.current.maximumTimeout);
-  }
+  };
 
   const sendResult = (isValid) => {
     clearTimeouts();
     onResult(isValid);
-  }
+  };
 
   const userLogged = () => {
     dispatch(addSession(session));
     removeRequest();
     sendResult(true);
-  }
+  };
 
   const checkSession = () => {
     if (session) {
@@ -31,11 +31,11 @@ const SessionVerifier = React.memo(({ status, session, onResult }) => {
         method: 'GET',
         url: '/session/' + id,
         headers: {
-          'x-session': id
-        }
+          'x-session': id,
+        },
       });
     }
-  }
+  };
 
   const addMinimumTimeout = () => {
     cache.current.minimumTimeout = setTimeout(() => {
@@ -48,14 +48,14 @@ const SessionVerifier = React.memo(({ status, session, onResult }) => {
         }
       }
     }, 500);
-  }
+  };
 
   const addMaximumTimeout = () => {
     cache.current.maximumTimeout = setTimeout(() => {
       cache.current.timeoutEnded = true;
       sendResult(false);
     }, 10000);
-  }
+  };
 
   const verify = () => {
     if (!cache.current.done) {
@@ -80,7 +80,7 @@ const SessionVerifier = React.memo(({ status, session, onResult }) => {
         }
       }
     }
-  }
+  };
 
   useEffect(() => {
     verify();
@@ -92,7 +92,7 @@ const SessionVerifier = React.memo(({ status, session, onResult }) => {
     addMaximumTimeout();
     return () => {
       clearTimeouts();
-    }
+    };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [status]);
 

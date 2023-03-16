@@ -18,27 +18,28 @@ const ChangePassword = React.memo(() => {
   return (
     <Screen>
       <ScrollView style={theme.common.contentContainer}>
-        <Popup visible={changePassword.successVisible} onRequestClose={changePassword.hideSuccessPopup} hide={changePassword.hideSuccessPopup} hideCloseIcon>
+        <Popup
+          visible={changePassword.successVisible}
+          onRequestClose={changePassword.hideSuccessPopup}
+          hide={changePassword.hideSuccessPopup}
+          hideCloseIcon>
           <Text
-            size='p'
-            align='center'
+            size="p"
+            align="center"
             content={CapitalizeFirst(t('account:changePasswordConfirmation'))}
           />
           <Button
-            color='success'
+            color="success"
             onPress={changePassword.hideSuccessPopup}
             text={CapitalizeFirst(t('genericButton.ok'))}
           />
         </Popup>
-        <Text
-          size='p'
-          content={CapitalizeFirst(t('account:changePasswordInfo'))}
-        />
+        <Text size="p" content={CapitalizeFirst(t('account:changePasswordInfo'))} />
         <Input
           label={CapitalizeFirst(t('account:currentPassword'))}
           inputRef={changePassword.currentPassword.ref}
-          autoCapitalize='none'
-          returnKeyType='next'
+          autoCapitalize="none"
+          returnKeyType="next"
           value={changePassword.currentPassword.text}
           onBlur={changePassword.currentPassword.onBlur}
           onChangeText={changePassword.currentPassword.setText}
@@ -46,13 +47,16 @@ const ChangePassword = React.memo(() => {
           secureTextEntry={!changePassword.currentPassword.visible}
           toggleShowPassword={changePassword.currentPassword.toggleVisible}
           onSubmitEditing={() => changePassword.moveToField(changePassword.newPassword.ref)}
-          validationError={changePassword.currentPassword.error && CapitalizeFirst(t('account:validation.password'))}
+          validationError={
+            changePassword.currentPassword.error &&
+            CapitalizeFirst(t('account:validation.password'))
+          }
         />
         <Input
           label={CapitalizeFirst(t('account:newPassword'))}
           inputRef={changePassword.newPassword.ref}
-          autoCapitalize='none'
-          returnKeyType='next'
+          autoCapitalize="none"
+          returnKeyType="next"
           value={changePassword.newPassword.text}
           onBlur={changePassword.newPassword.onBlur}
           onChangeText={changePassword.newPassword.setText}
@@ -60,13 +64,15 @@ const ChangePassword = React.memo(() => {
           secureTextEntry={!changePassword.newPassword.visible}
           toggleShowPassword={changePassword.newPassword.toggleVisible}
           onSubmitEditing={() => changePassword.moveToField(changePassword.repeatPassword.ref)}
-          validationError={changePassword.newPassword.error && CapitalizeFirst(t('account:validation.password'))}
+          validationError={
+            changePassword.newPassword.error && CapitalizeFirst(t('account:validation.password'))
+          }
         />
         <Input
           label={CapitalizeFirst(t('account:repeatPassword'))}
           inputRef={changePassword.repeatPassword.ref}
-          autoCapitalize='none'
-          returnKeyType='next'
+          autoCapitalize="none"
+          returnKeyType="next"
           value={changePassword.repeatPassword.text}
           onBlur={changePassword.repeatPassword.onBlur}
           onChangeText={changePassword.repeatPassword.setText}
@@ -74,13 +80,15 @@ const ChangePassword = React.memo(() => {
           secureTextEntry={!changePassword.repeatPassword.visible}
           toggleShowPassword={changePassword.repeatPassword.toggleVisible}
           onSubmitEditing={changePassword.update}
-          validationError={changePassword.repeatPassword.error && CapitalizeFirst(t('account:validation.password'))}
+          validationError={
+            changePassword.repeatPassword.error && CapitalizeFirst(t('account:validation.password'))
+          }
         />
         {changePassword.loading && (
-          <ActivityIndicator size='large' color={theme.variables.spinnerColor} />
+          <ActivityIndicator size="large" color={theme.variables.spinnerColor} />
         )}
         <Button
-          display='block'
+          display="block"
           text={CapitalizeFirst(t('genericButton.save'))}
           disabled={!changePassword.canUpdate}
           onPress={changePassword.update}
@@ -94,7 +102,7 @@ const ChangePassword = React.memo(() => {
 ChangePassword.navigationOptions = ({ route }) => {
   return {
     ...theme.headerStyle,
-    title: route.params.title || <PageTitle title='account:changePassword' />
+    title: route.params.title || <PageTitle title="account:changePassword" />,
   };
 };
 

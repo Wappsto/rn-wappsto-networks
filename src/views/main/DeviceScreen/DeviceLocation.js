@@ -6,27 +6,27 @@ import Button from '../../../components/Button';
 const styles = StyleSheet.create({
   mapContainer: {
     height: 220,
-    marginBottom: 20
+    marginBottom: 20,
   },
-  map:{
-   ...StyleSheet.absoluteFillObject
+  map: {
+    ...StyleSheet.absoluteFillObject,
   },
   directionButton: {
     position: 'absolute',
     bottom: 10,
-    right:10,
+    right: 10,
     zIndex: 1,
     paddingLeft: 12,
     paddingRight: 15,
-    backgroundColor: '#4285F4'
-  }
+    backgroundColor: '#4285F4',
+  },
 });
 
 const DeviceLocation = React.memo((geo) => {
   const latitude = parseFloat(geo?.geo?.latitude);
   const longitude = parseFloat(geo?.geo?.longitude);
 
-  if(!latitude && !longitude){
+  if (!latitude && !longitude) {
     return null;
   }
 
@@ -39,13 +39,20 @@ const DeviceLocation = React.memo((geo) => {
           longitude: longitude,
           latitudeDelta: 0.0922,
           longitudeDelta: 0.0421,
-        }}
-      >
-        <Marker coordinate={{ latitude : latitude , longitude : longitude }}/>
+        }}>
+        <Marker coordinate={{ latitude: latitude, longitude: longitude }} />
       </MapView>
-      <Button style={styles.directionButton} icon='navigation' onPress={ ()=>{ Linking.openURL('https://www.google.com/maps/dir/?api=1&destination=' + latitude + ',' + longitude)}} />
+      <Button
+        style={styles.directionButton}
+        icon="navigation"
+        onPress={() => {
+          Linking.openURL(
+            'https://www.google.com/maps/dir/?api=1&destination=' + latitude + ',' + longitude,
+          );
+        }}
+      />
     </View>
-  )
+  );
 });
 
 export default DeviceLocation;

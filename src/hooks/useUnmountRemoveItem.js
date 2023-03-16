@@ -7,9 +7,9 @@ const useUnmountRemoveItem = (itemName) => {
   useEffect(() => {
     return () => {
       dispatch(removeItem(itemName));
-    }
+    };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
-}
+};
 
 export default useUnmountRemoveItem;

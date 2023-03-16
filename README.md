@@ -8,6 +8,7 @@ This app is using **react-native-firebase**, **react-native-google-signin** and 
 First, you should provide your firebase webClientId(https://console.developers.google.com/apis/credentials) and your **V2** recaptchaKey(https://www.google.com/recaptcha/admin/site/338760476) in **src/config.json**. If you don't have the file, use **config.example.json** as example.
 
 Create **strings.xml** file under **android/app/src/main/res/values/** folder and put the following:
+
 ```
 <resources>
     <string name="app_name">rn_wappsto_networks</string>
@@ -17,6 +18,7 @@ Create **strings.xml** file under **android/app/src/main/res/values/** folder an
 ```
 
 Then, you have to set up your facebook app. To do so, got to these links and follow the steps:
+
 - [Android](https://developers.facebook.com/docs/android/getting-started/).
 - [iOS](https://developers.facebook.com/docs/ios/getting-started/)
 

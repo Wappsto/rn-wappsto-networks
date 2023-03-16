@@ -6,15 +6,15 @@ import { useTranslation, CapitalizeFirst } from '../translations';
 const LanguageButton = React.memo(() => {
   const { t } = useTranslation();
   const { changeLanguage, showLanguageButton } = useLanguageButton();
-  if(!showLanguageButton){
+  if (!showLanguageButton) {
     return null;
   }
   return (
     <>
-      <Button text={CapitalizeFirst(t('languages:en'))} onPress={() => changeLanguage('en')}/>
-      <Button text={CapitalizeFirst(t('languages:da'))} onPress={() => changeLanguage('da')}/>
+      <Button text={CapitalizeFirst(t('languages:en'))} onPress={() => changeLanguage('en')} />
+      <Button text={CapitalizeFirst(t('languages:da'))} onPress={() => changeLanguage('da')} />
     </>
-  )
+  );
 });
 
 export default LanguageButton;

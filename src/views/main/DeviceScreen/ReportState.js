@@ -16,23 +16,23 @@ const styles = StyleSheet.create({
     fontSize: theme.variables.h3,
     fontWeight: '400',
   },
-  text:{
+  text: {
     textAlign: 'center',
-    marginBottom: 15
+    marginBottom: 15,
   },
-  textMargin:{
-    marginBottom:20
+  textMargin: {
+    marginBottom: 20,
   },
   row: {
     flexDirection: 'row',
-    justifyContent: 'space-between'
-  }
+    justifyContent: 'space-between',
+  },
 });
 
 const content = (state, value) => {
   if (value.hasOwnProperty('blob') && value.type === 'image') {
     if (state.data && state.data.length > 0) {
-      return <Image style={styles.image} source={{uri: state.data}} />;
+      return <Image style={styles.image} source={{ uri: state.data }} />;
     } else {
       return null;
     }
@@ -44,7 +44,7 @@ const content = (state, value) => {
           content={roundBasedOnStep(state.data, value.number.step, value.number.min)}
         />
         <Text
-          color='secondary'
+          color="secondary"
           content={value.number && value.number.unit && ' ' + value.number.unit}
         />
       </RNtext>
@@ -52,10 +52,7 @@ const content = (state, value) => {
   } else {
     return (
       <RNtext style={styles.text}>
-        <Text
-          style={styles.data}
-          content={state.data}
-        />
+        <Text style={styles.data} content={state.data} />
       </RNtext>
     );
   }
@@ -66,19 +63,23 @@ const ReportState = React.memo(({ state, value }) => {
   return (
     <View>
       <View style={styles.row}>
-        <Text bold color='secondary' style={styles.textMargin} content={CapitalizeFirst(t('dataModel:stateProperties.reportState'))}/>
-        {!cannotAccessState(state) &&
-          <Timestamp timestamp={state.timestamp}/>
-        }
+        <Text
+          bold
+          color="secondary"
+          style={styles.textMargin}
+          content={CapitalizeFirst(t('dataModel:stateProperties.reportState'))}
+        />
+        {!cannotAccessState(state) && <Timestamp timestamp={state.timestamp} />}
       </View>
-      {
-        cannotAccessState(state) ? (
-          <Text content={CapitalizeFirst(t('dataModel:stateProperties.status_payment.' + state.status_payment))} />
-        ) : (
-          content(state, value)
-        )
-      }
-
+      {cannotAccessState(state) ? (
+        <Text
+          content={CapitalizeFirst(
+            t('dataModel:stateProperties.status_payment.' + state.status_payment),
+          )}
+        />
+      ) : (
+        content(state, value)
+      )}
     </View>
   );
 });

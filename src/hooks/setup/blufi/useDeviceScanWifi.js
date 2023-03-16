@@ -5,15 +5,15 @@ import usePrevious from 'wappsto-blanket/hooks/usePrevious';
 
 const STEPS = {
   GETDEVICEWIFILIST: 'getDeviceWifiList',
-  DONE: 'done'
-}
+  DONE: 'done',
+};
 
 export const ERRORS = {
   FAILEDGETDEVICEWIFILIST: 'failedGetDeviceWifiList',
   FAILEDGETDEVICEWIFILISTTIMEOUT: 'failedGetDeviceWifiListTimeout',
   DEVICEBUSY: 'DEVICEBUSY', //when device does not want to answer because it received wrong ssid/password
-  GENERIC: 'generic'
-}
+  GENERIC: 'generic',
+};
 
 const timeoutLimit = 20000;
 const useDeviceScanWifi = (connectToDevice) => {
@@ -23,50 +23,51 @@ const useDeviceScanWifi = (connectToDevice) => {
     step: connectionStep,
     connect,
     disconnect,
-    isConnected } = connectToDevice;
+    isConnected,
+  } = connectToDevice;
   const prevConnected = usePrevious(isConnected());
-  const [ result, setResult ] = useState([]);
-  const [ step, setStep ] = useState(STEPS.GETDEVICEWIFILIST);
+  const [result, setResult] = useState([]);
+  const [step, setStep] = useState(STEPS.GETDEVICEWIFILIST);
   const timeout = useRef(null);
   const success = useRef(false);
   const error = useRef(false);
 
   error.current = Object.values(ERRORS).includes(step) || connectionError;
-  const currentStep = (connectionLoading || connectionError) ? connectionStep : step;
+  const currentStep = connectionLoading || connectionError ? connectionStep : step;
   const done = step === STEPS.DONE;
   const loading = !done && !error.current;
 
   const removeBlufiListeners = () => {
-    Blufi.onError = () => {}
-    Blufi.onDeviceScanResult = () => {}
-  }
+    Blufi.onError = () => {};
+    Blufi.onDeviceScanResult = () => {};
+  };
 
   const addBlufiListeners = () => {
     Blufi.onError = () => {
       clearTimeout(timeout.current);
-      if(!error.current){
+      if (!error.current) {
         error.current = true;
         setStep(ERRORS.GENERIC);
       }
-    }
+    };
 
     Blufi.onDeviceScanResult = async (status, data, tError) => {
-      if(error.current){
+      if (error.current) {
         return;
       }
-      if(status === BlufiCallback.STATUS_SUCCESS){
+      if (status === BlufiCallback.STATUS_SUCCESS) {
         success.current = true;
         setStep(STEPS.DONE);
-        setResult(data.sort((a,b) => b.rssi - a.rssi));
-      } else if(tError && tError.includes('133')){
+        setResult(data.sort((a, b) => b.rssi - a.rssi));
+      } else if (tError && tError.includes('133')) {
         setStep(ERRORS.DEVICEBUSY);
         disconnect();
       } else {
         setStep(ERRORS.FAILEDGETDEVICEWIFILIST);
       }
       clearTimeout(timeout.current);
-    }
-  }
+    };
+  };
 
   const getDeviceWifiList = () => {
     addBlufiListeners();
@@ -76,37 +77,37 @@ const useDeviceScanWifi = (connectToDevice) => {
       setStep(ERRORS.FAILEDGETDEVICEWIFILISTTIMEOUT);
     }, timeoutLimit);
     Blufi.requestDeviceWifiScan();
-  }
+  };
 
   const scan = async (force) => {
-    if(force || !loading){
-      if(!isConnected()) {
+    if (force || !loading) {
+      if (!isConnected()) {
         connect();
       } else {
         getDeviceWifiList();
       }
     }
-  }
+  };
 
   useEffect(() => {
-    if(prevConnected === false && isConnected()){
+    if (prevConnected === false && isConnected()) {
       getDeviceWifiList();
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isConnected()]);
 
   useEffect(() => {
-    if(!success.current){
+    if (!success.current) {
       scan(true);
     }
     return () => {
       removeBlufiListeners();
       clearTimeout(timeout.current);
-    }
+    };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return { loading, error: error.current, step: currentStep, scan, result };
-}
+};
 
 export default useDeviceScanWifi;

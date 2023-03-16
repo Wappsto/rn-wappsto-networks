@@ -1,1 +1,1 @@
-export {use as useConfig} from '../configureWappstoRedux';
+export { use as useConfig } from '../configureWappstoRedux';

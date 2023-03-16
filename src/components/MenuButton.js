@@ -4,13 +4,13 @@ import theme from '../theme/themeExport';
 import Icon from 'react-native-vector-icons/Feather';
 
 const styles = StyleSheet.create({
-  icon: {paddingLeft: 10, paddingTop: 3}
+  icon: { paddingLeft: 10, paddingTop: 3 },
 });
 
 const MenuButton = React.memo(({ navigation }) => {
   return (
     <Icon
-      name='menu'
+      name="menu"
       size={24}
       style={styles.icon}
       color={theme.variables.headerColor}

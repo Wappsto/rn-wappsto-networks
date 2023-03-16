@@ -1,1 +1,1 @@
-export {replaceComponent} from '../navigation';
+export { replaceComponent } from '../navigation';

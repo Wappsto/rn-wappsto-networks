@@ -5,10 +5,10 @@ import { makeItemSelector } from 'wappsto-redux/selectors/items';
 
 const useGetItemEntity = (itemName, itemType) => {
   const getItem = useMemo(makeItemSelector, []);
-  const itemId = useSelector(state => getItem(state, itemName));
+  const itemId = useSelector((state) => getItem(state, itemName));
   const getEntity = useMemo(makeEntitySelector, []);
-  const item = useSelector(state => getEntity(state, itemType, itemId));
+  const item = useSelector((state) => getEntity(state, itemType, itemId));
   return item;
-}
+};
 
 export default useGetItemEntity;

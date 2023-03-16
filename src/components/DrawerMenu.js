@@ -12,58 +12,58 @@ import useUser from '../hooks/useUser';
 import VersionNumber from 'react-native-version-number';
 
 const styles = StyleSheet.create({
-  container:{
-    flex:1,
-    backgroundColor:theme.variables.drawerMenuBgColor,
+  container: {
+    flex: 1,
+    backgroundColor: theme.variables.drawerMenuBgColor,
   },
   userInfo: {
     flex: 1,
     flexDirection: 'row',
     alignItems: 'center',
-    paddingHorizontal:10,
-    paddingTop:30,
-    paddingBottom:20,
-    marginVertical:4,
+    paddingHorizontal: 10,
+    paddingTop: 30,
+    paddingBottom: 20,
+    marginVertical: 4,
     borderBottomColor: theme.variables.lightGray,
-    borderBottomWidth: theme.variables.borderWidth
+    borderBottomWidth: theme.variables.borderWidth,
   },
-  row:{
-    flexDirection:'row',
-    justifyContent:'space-between',
+  row: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
     alignItems: 'flex-end',
     marginBottom: 20,
-    marginHorizontal: 5
+    marginHorizontal: 5,
   },
   userImage: {
-    backgroundColor:theme.variables.lightGray,
+    backgroundColor: theme.variables.lightGray,
     width: 35,
     height: 35,
     borderRadius: 20,
     margin: 8,
   },
-  userName:{
-    flex:1,
-    marginLeft:8
+  userName: {
+    flex: 1,
+    marginLeft: 8,
   },
-  logoutBtn:{
+  logoutBtn: {
     marginBottom: 20,
-    marginLeft: 5
+    marginLeft: 5,
   },
-  versionNr:{
+  versionNr: {
     fontSize: 12,
-    margin:10
-  }
+    margin: 10,
+  },
 });
 const DrawerMenu = React.memo((props) => {
   const { t } = useTranslation();
   const { user, name, logout, request } = useUser(props.navigation);
-  for(const view in props.descriptors){
-    if(!props.descriptors[view].options) {
+  for (const view in props.descriptors) {
+    if (!props.descriptors[view].options) {
       props.descriptors[view].options = {};
     }
-    if(!props.descriptors[view].options.drawerLabel){
-      const route = props.state.routes.find(route => route.key === view);
-      if(route){
+    if (!props.descriptors[view].options.drawerLabel) {
+      const route = props.state.routes.find((route) => route.key === view);
+      if (route) {
         props.descriptors[view].options.drawerLabel = CapitalizeFirst(t('pageTitle.' + route.name));
       }
     }
@@ -72,50 +72,28 @@ const DrawerMenu = React.memo((props) => {
     <SafeAreaView style={styles.container}>
       <ScrollView>
         <View style={styles.userInfo}>
-            {user && user.provider[0] ? (
-              <Image
-                style={styles.userImage}
-                source={{uri: user.provider[0].picture}}
-              />
-            ) : request &&
-              request.method === 'GET' &&
-              request.status === 'pending' ? (
-              <ActivityIndicator
-                size='large'
-                color={theme.variables.spinnerInverseColor}
-              />
-            ) : (
-              <Icon
-                name='user'
-                color={theme.variables.drawerMenuText}
-
-                size={20}
-              />
-            )}
-            <Text
-              ellipsizeMode='middle'
-              numberOfLines={1}
-              style={styles.userName}
-              content={name}
-            />
+          {user && user.provider[0] ? (
+            <Image style={styles.userImage} source={{ uri: user.provider[0].picture }} />
+          ) : request && request.method === 'GET' && request.status === 'pending' ? (
+            <ActivityIndicator size="large" color={theme.variables.spinnerInverseColor} />
+          ) : (
+            <Icon name="user" color={theme.variables.drawerMenuText} size={20} />
+          )}
+          <Text ellipsizeMode="middle" numberOfLines={1} style={styles.userName} content={name} />
           <RequestError request={request} />
         </View>
         <DrawerItemList {...props} />
       </ScrollView>
       <View style={styles.row}>
         <Button
-          type='link'
-          color='primary'
-          align='left'
+          type="link"
+          color="primary"
+          align="left"
           bold
           onPress={logout}
           text={CapitalizeFirst(t('logout'))}
         />
-        <Text
-          style={styles.versionNr}
-          color='secondary'
-          content={'v' + VersionNumber.appVersion}
-        />
+        <Text style={styles.versionNr} color="secondary" content={'v' + VersionNumber.appVersion} />
       </View>
     </SafeAreaView>
   );

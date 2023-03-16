@@ -18,14 +18,18 @@ const ChangeUserDetailsScreen = React.memo(() => {
   return (
     <Screen>
       <ScrollView style={theme.common.contentContainer}>
-        <Popup visible={userDetails.successVisible} onRequestClose={userDetails.hideSuccessPopup} hide={userDetails.hideSuccessPopup} hideCloseIcon>
+        <Popup
+          visible={userDetails.successVisible}
+          onRequestClose={userDetails.hideSuccessPopup}
+          hide={userDetails.hideSuccessPopup}
+          hideCloseIcon>
           <Text
-            size='p'
-            align='center'
+            size="p"
+            align="center"
             content={CapitalizeFirst(t('account:changeUserDetailsConfirmation'))}
           />
           <Button
-            color='success'
+            color="success"
             onPress={userDetails.hideSuccessPopup}
             text={CapitalizeFirst(t('genericButton.ok'))}
           />
@@ -33,7 +37,7 @@ const ChangeUserDetailsScreen = React.memo(() => {
         <Input
           value={userDetails.firstname}
           label={CapitalizeFirst(t('account:firstName'))}
-          returnKeyType='next'
+          returnKeyType="next"
           onChangeText={userDetails.setFirstname}
           onSubmitEditing={() => userDetails.moveToField(userDetails.lastnameRef)}
         />
@@ -41,7 +45,7 @@ const ChangeUserDetailsScreen = React.memo(() => {
           inputRef={userDetails.lastnameRef}
           value={userDetails.lastname}
           label={CapitalizeFirst(t('account:lastName'))}
-          returnKeyType='next'
+          returnKeyType="next"
           onChangeText={userDetails.setLastname}
           onSubmitEditing={() => userDetails.moveToField(userDetails.nicknameRef)}
         />
@@ -49,7 +53,7 @@ const ChangeUserDetailsScreen = React.memo(() => {
           inputRef={userDetails.nicknameRef}
           value={userDetails.nickname}
           label={CapitalizeFirst(t('account:nickname'))}
-          returnKeyType='next'
+          returnKeyType="next"
           onChangeText={userDetails.setNickname}
           onSubmitEditing={() => userDetails.moveToField(userDetails.emailRef)}
         />
@@ -57,27 +61,29 @@ const ChangeUserDetailsScreen = React.memo(() => {
           inputRef={userDetails.emailRef}
           value={userDetails.email}
           label={CapitalizeFirst(t('account:email'))}
-          autoCapitalize='none'
-          returnKeyType='next'
+          autoCapitalize="none"
+          returnKeyType="next"
           onChangeText={userDetails.setEmail}
           onSubmitEditing={() => userDetails.moveToField(userDetails.phoneRef)}
           onBlur={userDetails.onEmailBlur}
-          validationError={userDetails.emailError && CapitalizeFirst(t('account:validation.username'))}
+          validationError={
+            userDetails.emailError && CapitalizeFirst(t('account:validation.username'))
+          }
         />
         <Input
           inputRef={userDetails.phoneRef}
           value={userDetails.phone}
           label={CapitalizeFirst(t('account:phone'))}
-          autoCapitalize='none'
-          returnKeyType='next'
+          autoCapitalize="none"
+          returnKeyType="next"
           onChangeText={userDetails.setPhone}
           onSubmitEditing={userDetails.update}
         />
         {userDetails.loading && (
-          <ActivityIndicator size='large' color={theme.variables.spinnerColor} />
+          <ActivityIndicator size="large" color={theme.variables.spinnerColor} />
         )}
         <Button
-          display='block'
+          display="block"
           text={CapitalizeFirst(t('genericButton.save'))}
           disabled={!userDetails.canUpdate}
           onPress={userDetails.update}
@@ -91,7 +97,7 @@ const ChangeUserDetailsScreen = React.memo(() => {
 ChangeUserDetailsScreen.navigationOptions = ({ route }) => {
   return {
     ...theme.headerStyle,
-    title: route.params.title || <PageTitle title='account:changeUserDetails' />
+    title: route.params.title || <PageTitle title="account:changeUserDetails" />,
   };
 };
 

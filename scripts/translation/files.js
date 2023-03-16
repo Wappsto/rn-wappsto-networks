@@ -3,13 +3,13 @@ const fs = require('fs');
 module.exports = {
   projectNameSplitter: '^',
 
-  createDirectory(name){
-    if (!this.directoryExists(name)){
+  createDirectory(name) {
+    if (!this.directoryExists(name)) {
       fs.mkdirSync(name);
     }
   },
 
-  directoryExists(filePath){
+  directoryExists(filePath) {
     try {
       return fs.statSync(filePath).isDirectory();
     } catch (err) {
@@ -17,7 +17,7 @@ module.exports = {
     }
   },
 
-  fileExists(filePath){
+  fileExists(filePath) {
     try {
       return fs.statSync(filePath).isFile();
     } catch (err) {
@@ -25,7 +25,7 @@ module.exports = {
     }
   },
 
-  loadFile(file, encoding = 'utf8'){
+  loadFile(file, encoding = 'utf8') {
     try {
       return fs.readFileSync(file, encoding);
     } catch (err) {
@@ -33,7 +33,7 @@ module.exports = {
     }
   },
 
-  loadJsonFile(file){
+  loadJsonFile(file) {
     try {
       return JSON.parse(fs.readFileSync(file, 'utf8'));
     } catch (err) {
@@ -41,15 +41,15 @@ module.exports = {
     }
   },
 
-  saveFile(file, data){
+  saveFile(file, data) {
     fs.writeFileSync(file, data);
   },
 
-  saveJsonFile(file, data){
+  saveJsonFile(file, data) {
     fs.writeFileSync(file, JSON.stringify(data, null, 4));
   },
 
-  getAllFiles(dir, filter){
+  getAllFiles(dir, filter) {
     let files = [];
     try {
       if (fs.statSync(dir).isDirectory()) {
@@ -70,7 +70,7 @@ module.exports = {
     return files;
   },
 
-  getAllFolders(dir, filter){
+  getAllFolders(dir, filter) {
     let folders = [];
     try {
       if (fs.statSync(dir).isDirectory()) {
@@ -85,5 +85,5 @@ module.exports = {
       return [];
     }
     return folders;
-  }
+  },
 };

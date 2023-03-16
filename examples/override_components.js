@@ -4,11 +4,7 @@ import theme from '../src/theme/themeExport';
 
 // overriding COMPONENTS
 import React, { Component } from 'react';
-import {
-  View,
-  Text,
-  StyleSheet,
-} from 'react-native';
+import { View, Text, StyleSheet } from 'react-native';
 
 class NewPage extends Component {
   render() {
@@ -21,26 +17,32 @@ class NewPage extends Component {
 }
 
 replaceComponent((components) => {
-  components.replace("MainScreen", () => {
-    return createDrawerNavigator({
-      Home: { screen: this.MainStackScreen },
-      Account: { screen: this.AccountStackScreen },
-      NewPage: { screen: NewPage}
-    }, {
-      contentComponent: this.DrawerMenu
-    });
+  components.replace('MainScreen', () => {
+    return createDrawerNavigator(
+      {
+        Home: { screen: this.MainStackScreen },
+        Account: { screen: this.AccountStackScreen },
+        NewPage: { screen: NewPage },
+      },
+      {
+        contentComponent: this.DrawerMenu,
+      },
+    );
   });
 
   // or simply
 
   components.MainScreen = () => {
-    return createDrawerNavigator({
-      Home: { screen: this.MainStackScreen },
-      Account: { screen: this.AccountStackScreen },
-      NewPage: { screen: NewPage}
-    }, {
-      contentComponent: this.DrawerMenu
-    });
+    return createDrawerNavigator(
+      {
+        Home: { screen: this.MainStackScreen },
+        Account: { screen: this.AccountStackScreen },
+        NewPage: { screen: NewPage },
+      },
+      {
+        contentComponent: this.DrawerMenu,
+      },
+    );
   };
   return components;
 });

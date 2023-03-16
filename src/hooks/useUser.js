@@ -18,7 +18,7 @@ const useUser = () => {
   const { request, requestId, send } = useRequest();
   const { send: sendDelete } = useRequest();
   const getItem = useMemo(makeItemSelector, []);
-  const fetched = useSelector(state => getItem(state, userFetched));
+  const fetched = useSelector((state) => getItem(state, userFetched));
 
   const getUser = useCallback(() => {
     send({
@@ -26,8 +26,8 @@ const useUser = () => {
       url: '/user',
       query: {
         me: true,
-        expand: 0
-      }
+        expand: 0,
+      },
     });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
@@ -51,7 +51,11 @@ const useUser = () => {
     if (config.stream) {
       dispatch(closeStream(config.stream.name));
     }
-    sendDelete({ method: 'DELETE', url: '/session/' + session?.meta?.id, abortable: false });
+    sendDelete({
+      method: 'DELETE',
+      url: '/session/' + session?.meta?.id,
+      abortable: false,
+    });
     dispatch(removeSession());
     AsyncStorage.removeItem('session');
   }, [sendDelete, session, dispatch]);
@@ -79,6 +83,6 @@ const useUser = () => {
   }
 
   return { user, name, logout, request, session };
-}
+};
 
 export default useUser;

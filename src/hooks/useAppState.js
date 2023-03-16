@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { AppState } from 'react-native';
 
 const useAppState = (callback) => {
-  const [ appState, setAppState ] = useState(AppState.currentState);
+  const [appState, setAppState] = useState(AppState.currentState);
 
   // handle app state change
   useEffect(() => {
@@ -16,10 +16,10 @@ const useAppState = (callback) => {
     AppState.addEventListener('change', _handleAppStateChange);
     return () => {
       AppState.removeEventListener('change', _handleAppStateChange);
-    }
+    };
   }, [appState, callback]);
 
   return appState;
-}
+};
 
 export default useAppState;

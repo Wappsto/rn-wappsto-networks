@@ -7,21 +7,21 @@ const STEPS = {
   CONNECT: 'connect',
   INITNOTIFICATION: 'initNotification',
   NEGOCIATESECURITY: 'negotiateSecurity',
-  CONNECTED: 'connected'
-}
+  CONNECTED: 'connected',
+};
 
 const ERRORS = {
   FAILEDCONNECT: 'failedConnect',
   FAILEDINITNOTIFICATION: 'failedInitNotification',
   FAILEDNEGOCIATESECURITY: 'failedNegotiateSecurity',
   FAILEDNEGOCIATESECURITYTIMEOUT: 'failedNegotiateSecurityTimeout',
-  GENERIC: 'generic'
-}
+  GENERIC: 'generic',
+};
 
 let deviceId;
 const timeoutLimit = 10000;
 const useConnectToDevice = (selectedDevice) => {
-  const [ step, setStep ] = useState(STEPS.CONNECT);
+  const [step, setStep] = useState(STEPS.CONNECT);
   const timeout = useRef(null);
   const success = useRef(false);
   const error = useRef(false);
@@ -30,25 +30,25 @@ const useConnectToDevice = (selectedDevice) => {
   const loading = selectedDevice && step !== STEPS.CONNECTED;
 
   const removeBlufiListeners = () => {
-    Blufi.onError = () => {}
-    Blufi.onNegotiateSecurityResult = () => {}
-  }
+    Blufi.onError = () => {};
+    Blufi.onNegotiateSecurityResult = () => {};
+  };
 
   const addBlufiListeners = () => {
     Blufi.onError = () => {
       clearTimeout(timeout.current);
-      if(!error.current){
+      if (!error.current) {
         error.current = true;
         setStep(ERRORS.GENERIC);
       }
-    }
+    };
 
     Blufi.onNegotiateSecurityResult = (status) => {
-      if(error.current){
+      if (error.current) {
         return;
       }
       clearTimeout(timeout.current);
-      if(status === BlufiCallback.STATUS_SUCCESS){
+      if (status === BlufiCallback.STATUS_SUCCESS) {
         deviceId = selectedDevice.id;
         success.current = true;
         clearTimeout(timeout.current);
@@ -56,15 +56,15 @@ const useConnectToDevice = (selectedDevice) => {
       } else {
         setStep(ERRORS.FAILEDNEGOCIATESECURITY);
       }
-    }
-  }
+    };
+  };
 
   const initConnection = async () => {
     try {
       Blufi.reset();
       setStep(STEPS.CONNECT);
       await BleManager.connect(selectedDevice.id);
-    } catch(e) {
+    } catch (e) {
       setStep(ERRORS.FAILEDCONNECT);
       return;
     }
@@ -72,12 +72,16 @@ const useConnectToDevice = (selectedDevice) => {
       Blufi.setConnectedDevice(selectedDevice);
       setStep(STEPS.INITNOTIFICATION);
       await BleManager.retrieveServices(selectedDevice.id);
-      await BleManager.startNotification(selectedDevice.id, BlufiParameter.UUID_SERVICE, BlufiParameter.UUID_NOTIFICATION_CHARACTERISTIC);
-    } catch(e){
+      await BleManager.startNotification(
+        selectedDevice.id,
+        BlufiParameter.UUID_SERVICE,
+        BlufiParameter.UUID_NOTIFICATION_CHARACTERISTIC,
+      );
+    } catch (e) {
       setStep(ERRORS.FAILEDINITNOTIFICATION);
       return;
     }
-    try{
+    try {
       setStep(STEPS.NEGOCIATESECURITY);
       Blufi.negotiateSecurity();
       timeout.current = setTimeout(() => {
@@ -88,54 +92,68 @@ const useConnectToDevice = (selectedDevice) => {
       setStep(ERRORS.FAILEDNEGOCIATESECURITY);
       return;
     }
-  }
+  };
 
   const disconnect = () => {
     setStep(STEPS.CONNECT);
     deviceId = null;
     success.current = false;
-    if(selectedDevice && selectedDevice.id){
+    if (selectedDevice && selectedDevice.id) {
       BleManager.disconnect(selectedDevice.id);
     }
     Blufi.reset();
-  }
+  };
 
   const connect = (force) => {
-    if(selectedDevice && selectedDevice.id && (force || !loading)){
+    if (selectedDevice && selectedDevice.id && (force || !loading)) {
       addBlufiListeners();
-      if(!deviceId || !Blufi.connectedDevice || Blufi.connectedDevice.id !== deviceId || Blufi.connectedDevice.id !== selectedDevice.id){
+      if (
+        !deviceId ||
+        !Blufi.connectedDevice ||
+        Blufi.connectedDevice.id !== deviceId ||
+        Blufi.connectedDevice.id !== selectedDevice.id
+      ) {
         disconnect();
         initConnection();
       }
     }
-  }
+  };
 
-  useEffect((selectedDevice) => {
-    if(!success.current){
-      connect(true);
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [selectedDevice]);
+  useEffect(
+    (selectedDevice) => {
+      if (!success.current) {
+        connect(true);
+      }
+      // eslint-disable-next-line react-hooks/exhaustive-deps
+    },
+    [selectedDevice],
+  );
 
   useEffect(() => {
-    if(!success.current){
+    if (!success.current) {
       connect(true);
     }
     return () => {
       removeBlufiListeners();
       clearTimeout(timeout.current);
-    }
+    };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return {
-    loading, error: error.current, step, connect, disconnect,
+    loading,
+    error: error.current,
+    step,
+    connect,
+    disconnect,
     isConnected() {
-      return Blufi.connectedDevice
-                      && Blufi.connectedDevice.id === selectedDevice.id
-                      && deviceId === selectedDevice.id;
-    }
+      return (
+        Blufi.connectedDevice &&
+        Blufi.connectedDevice.id === selectedDevice.id &&
+        deviceId === selectedDevice.id
+      );
+    },
   };
-}
+};
 
 export default useConnectToDevice;

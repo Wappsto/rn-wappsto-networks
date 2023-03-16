@@ -11,8 +11,8 @@ const useStreamStatus = () => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const getStream = useMemo(makeStreamSelector, []);
-  const stream = useSelector(state => {
-    if(!config.stream){
+  const stream = useSelector((state) => {
+    if (!config.stream) {
       return emptyObject;
     }
     return getStream(state, config.stream.name);
@@ -24,7 +24,7 @@ const useStreamStatus = () => {
   }, [stream]);
 
   let message;
-  if(stream){
+  if (stream) {
     let mStatus = '',
       mStep;
     switch (stream.status) {
@@ -55,7 +55,7 @@ const useStreamStatus = () => {
         break;
       case status.CLOSED:
         mStatus = CapitalizeFirst(t('statusMessage.streamClosed'));
-        if(stream.code){
+        if (stream.code) {
           mStep = CapitalizeFirst(t('error:stream.code.' + stream.code));
         }
         break;
@@ -70,6 +70,6 @@ const useStreamStatus = () => {
   }
 
   return { stream, reconnectStream, message };
-}
+};
 
 export default useStreamStatus;

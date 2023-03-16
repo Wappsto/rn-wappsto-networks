@@ -5,7 +5,7 @@ import { setItem } from 'wappsto-redux/actions/items';
 
 const PopupButton = React.memo(({ icon, style, color, showItem, hideItem, children }) => {
   const dispatch = useDispatch();
-  const [ modalVisible, setModalVisible ] = useState(false);
+  const [modalVisible, setModalVisible] = useState(false);
 
   const showPopup = useCallback(() => {
     setModalVisible(true);
@@ -16,10 +16,10 @@ const PopupButton = React.memo(({ icon, style, color, showItem, hideItem, childr
   }, []);
 
   useEffect(() => {
-    if(showItem){
+    if (showItem) {
       dispatch(setItem(showItem, () => showPopup));
     }
-    if(hideItem){
+    if (hideItem) {
       dispatch(setItem(hideItem, () => hidePopup));
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -27,18 +27,8 @@ const PopupButton = React.memo(({ icon, style, color, showItem, hideItem, childr
 
   return (
     <>
-      <Button
-        onPress={showPopup}
-        type='link'
-        icon={icon}
-        color={color}
-        style={style}
-      />
-      {children(
-        modalVisible,
-        hidePopup,
-        showPopup,
-      )}
+      <Button onPress={showPopup} type="link" icon={icon} color={color} style={style} />
+      {children(modalVisible, hidePopup, showPopup)}
     </>
   );
 });

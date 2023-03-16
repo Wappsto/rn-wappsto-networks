@@ -17,11 +17,17 @@ const useChangeEmail = () => {
   const requestSuccessHandler = useRequestSuccessPopup(request);
   const userId = user && user.meta && user.meta.id;
 
-  const loading =  request && request.status === 'pending';
-  const canUpdate = connected && userId && isEmail(usernameField.text) && passwordField.text && isEmail(newUsernameField.text) && !loading;
+  const loading = request && request.status === 'pending';
+  const canUpdate =
+    connected &&
+    userId &&
+    isEmail(usernameField.text) &&
+    passwordField.text &&
+    isEmail(newUsernameField.text) &&
+    !loading;
 
   const moveToField = useCallback((field) => {
-    if(field && field.current && field.current.focus){
+    if (field && field.current && field.current.focus) {
       field.current.focus();
     }
   }, []);
@@ -30,15 +36,15 @@ const useChangeEmail = () => {
   const newUsername = newUsernameField.text;
   const password = passwordField.text;
   const update = useCallback(() => {
-    if(canUpdate){
+    if (canUpdate) {
       send({
         method: 'PATCH',
         url: `/register/${userId}`,
         body: {
           username: username,
           new_username: newUsername,
-          password: password
-        }
+          password: password,
+        },
       });
     }
   }, [canUpdate, send, username, password, newUsername, userId]);
@@ -52,8 +58,8 @@ const useChangeEmail = () => {
     update,
     request,
     loading,
-    ...requestSuccessHandler
-  }
-}
+    ...requestSuccessHandler,
+  };
+};
 
 export default useChangeEmail;

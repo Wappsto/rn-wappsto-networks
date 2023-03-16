@@ -37,5 +37,4 @@ class BlufiAESCrypto {
   }
 }
 
-
 export default BlufiAESCrypto;

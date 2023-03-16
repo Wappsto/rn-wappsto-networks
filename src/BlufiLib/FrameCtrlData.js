@@ -53,6 +53,6 @@ FrameCtrlData.getFrameCTRLValue = (encrypted, checksum, direction, requireAck, f
   }
 
   return frame;
-}
+};
 
 export default FrameCtrlData;

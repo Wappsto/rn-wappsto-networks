@@ -6,13 +6,7 @@ import moment from 'moment';
 const Timestamp = React.memo(({ timestamp }) => {
   const dateString = moment(timestamp).fromNow();
   useRefreshTimestamp(timestamp);
-  return (
-    <Text
-      color='secondary'
-      size={12}
-      content={dateString}
-    />
-  )
+  return <Text color="secondary" size={12} content={dateString} />;
 });
 
 export default Timestamp;

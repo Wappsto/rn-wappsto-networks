@@ -6,8 +6,8 @@ const useLanguageButton = () => {
   const changeLanguage = useCallback((lng) => i18n.changeLanguage(lng), []);
   return {
     showLanguageButton: config.showLanguageButton,
-    changeLanguage
+    changeLanguage,
   };
-}
+};
 
 export default useLanguageButton;

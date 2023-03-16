@@ -1,18 +1,18 @@
 import { useState, useRef, useCallback } from 'react';
 
 const useField = (defaultValue = '', validator) => {
-  const [ text, setText ] = useState(defaultValue);
-  const [ visible, setVisible ] = useState(false);
-  const [ blurred, setBlurred ] = useState(false);
+  const [text, setText] = useState(defaultValue);
+  const [visible, setVisible] = useState(false);
+  const [blurred, setBlurred] = useState(false);
 
   const ref = useRef();
 
   const onBlur = useCallback(() => {
-    setBlurred(true)
+    setBlurred(true);
   }, []);
 
   const toggleVisible = useCallback(() => {
-    setVisible(sp => !sp);
+    setVisible((sp) => !sp);
   }, []);
 
   const error = blurred && (!text || (validator && !validator(text)));
@@ -25,8 +25,8 @@ const useField = (defaultValue = '', validator) => {
     onBlur,
     blurred,
     ref,
-    error
-  }
-}
+    error,
+  };
+};
 
 export default useField;

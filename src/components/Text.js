@@ -6,33 +6,24 @@ const styles = StyleSheet.create({
   text: {
     color: theme.variables.textColor,
     fontFamily: theme.variables.fontFamily,
-    fontSize: theme.variables.defaultFontSize
+    fontSize: theme.variables.defaultFontSize,
   },
-  bold:{
-    fontWeight: 'bold'
+  bold: {
+    fontWeight: 'bold',
   },
   fontBold: {
-    fontFamily: theme.variables.fontFamilyBold
+    fontFamily: theme.variables.fontFamilyBold,
   },
-  title:{
+  title: {
     color: theme.variables.titleColor,
     fontFamily: theme.variables.titleFontFamily,
-    fontSize: theme.variables.titleFontSize
-  }
+    fontSize: theme.variables.titleFontSize,
+  },
 });
 
-const Title = React.memo(({
-  style,
-  bold,
-  size,
-  align,
-  title,
-  color,
-  content,
-  ...props
-}) => {
+const Title = React.memo(({ style, bold, size, align, title, color, content, ...props }) => {
   const fontSize = () => {
-    switch(size) {
+    switch (size) {
       case 'p':
         return theme.variables.defaultFontSize;
       case 'h1':
@@ -46,35 +37,35 @@ const Title = React.memo(({
       default:
         return !isNaN(size) ? size : theme.variables.defaultFontSize;
     }
-  }
+  };
   const fontStyle = (size) => {
     const s = fontSize();
 
     return {
       fontSize: s,
       lineHeight: s * 1.5,
-      marginBottom: s * 0.8
-    }
+      marginBottom: s * 0.8,
+    };
   };
 
-  const textColor = (color)=>{
-    switch(color) {
+  const textColor = (color) => {
+    switch (color) {
       case 'primary':
-        return {color: theme.variables.primary};
+        return { color: theme.variables.primary };
       case 'secondary':
-        return {color: theme.variables.textSecondary};
+        return { color: theme.variables.textSecondary };
       case 'success':
-        return {color: theme.variables.textSuccess};
+        return { color: theme.variables.textSuccess };
       case 'warning':
-        return {color: theme.variables.textWarning};
+        return { color: theme.variables.textWarning };
       case 'error':
-        return {color: theme.variables.textError};
+        return { color: theme.variables.textError };
       case 'inverse':
-        return {color: theme.variables.textInverse};
+        return { color: theme.variables.textInverse };
       case 'disabled':
-        return {color: theme.variables.disabled};
+        return { color: theme.variables.disabled };
       default:
-        return {color: color};
+        return { color: color };
     }
   };
   return (
@@ -84,12 +75,11 @@ const Title = React.memo(({
         styles.text,
         title && styles.title,
         bold && (theme.variables.fontFamilyBold ? styles.fontBold : styles.bold),
-        align && {textAlign: align},
+        align && { textAlign: align },
         size && fontStyle(size),
         color && textColor(color),
-        style
-      ]}
-    >
+        style,
+      ]}>
       {content}
     </RNtext>
   );

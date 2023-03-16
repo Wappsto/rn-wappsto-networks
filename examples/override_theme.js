@@ -1,15 +1,14 @@
-import {useTheme} from '../src/override/theme';
+import { useTheme } from '../src/override/theme';
 import theme from '../src/theme/themeExport';
 
 // overriding theme
 import color from 'color';
-import {Platform, Dimensions, PixelRatio} from 'react-native';
+import { Platform, Dimensions, PixelRatio } from 'react-native';
 
 const deviceHeight = Dimensions.get('window').height;
 const deviceWidth = Dimensions.get('window').width;
 const platform = Platform.OS;
-const isIphoneX =
-  platform === 'ios' && deviceHeight === 812 && deviceWidth === 375;
+const isIphoneX = platform === 'ios' && deviceHeight === 812 && deviceWidth === 375;
 
 useTheme({
   variables: {
@@ -81,9 +80,7 @@ useTheme({
     },
     buttonColor: 'white',
     get buttonTextSize() {
-      return platform === 'ios'
-        ? this.fontSizeBase * 1.2
-        : this.fontSizeBase * 1.2;
+      return platform === 'ios' ? this.fontSizeBase * 1.2 : this.fontSizeBase * 1.2;
     },
     get buttonDisabledBg() {
       return this.disabled;
@@ -96,9 +93,7 @@ useTheme({
 
     // Input
     get inputTextSize() {
-      return platform === 'ios'
-        ? this.fontSizeBase * 1.2
-        : this.fontSizeBase * 1.2;
+      return platform === 'ios' ? this.fontSizeBase * 1.2 : this.fontSizeBase * 1.2;
     },
     get inputBorderColor() {
       return color(this.primary).darken(0.3);

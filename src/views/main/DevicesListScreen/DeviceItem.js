@@ -1,5 +1,5 @@
 import React, { useMemo, useCallback } from 'react';
-import { View, TouchableOpacity,StyleSheet } from 'react-native';
+import { View, TouchableOpacity, StyleSheet } from 'react-native';
 import { useSelector } from 'react-redux';
 import { makeEntitySelector } from 'wappsto-redux/selectors/entities';
 import { selectedDeviceName } from '../../../util/params';
@@ -25,47 +25,46 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   virtual: {
-    backgroundColor: '#e5e5e5'
+    backgroundColor: '#e5e5e5',
   },
   listItemHeader: {
     fontSize: 16,
-    color: theme.variables.primary
+    color: theme.variables.primary,
   },
   listItemSubheader: {
     fontSize: theme.variables.defaultFontSize - 1,
-    color: theme.variables.textSecondary
+    color: theme.variables.textSecondary,
   },
 });
 
 const DeviceItem = React.memo(({ navigation, id, isPrototype }) => {
   const { t } = useTranslation();
   const getEntity = useMemo(makeEntitySelector, []);
-  const device = useSelector(state => getEntity(state, 'device', id));
+  const device = useSelector((state) => getEntity(state, 'device', id));
 
   const dispatch = useDispatch();
 
   const navigate = useCallback(() => {
     dispatch(setItem(selectedDeviceName, device.meta.id));
     navigation.navigate('DeviceScreen', {
-      title: device.name
+      title: device.name,
     });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [device]);
 
-  if(!device || !device.meta || !device.meta.id || device.meta.error){
+  if (!device || !device.meta || !device.meta.id || device.meta.error) {
     return null;
   }
   return (
     <TouchableOpacity onPress={navigate}>
       <View style={[styles.listItem, isPrototype && styles.virtual]}>
         <View style={styles.listItemTitleArea}>
-          <Text
-            style={styles.listItemHeader}
-            content={device.name}
-          />
+          <Text style={styles.listItemHeader} content={device.name} />
           <Text
             style={styles.listItemSubheader}
-            content={device.value.length + ' ' + t('dataModel:value', {count: device.value.length})}
+            content={
+              device.value.length + ' ' + t('dataModel:value', { count: device.value.length })
+            }
           />
         </View>
       </View>

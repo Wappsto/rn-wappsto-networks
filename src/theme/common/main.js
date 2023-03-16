@@ -1,4 +1,4 @@
-import {StyleSheet} from 'react-native';
+import { StyleSheet } from 'react-native';
 
 let variables = require('./../variables/generic').default;
 let styles = {};
@@ -9,7 +9,7 @@ export function generateStyles(c = {}) {
     StyleSheet.create({
       container: {
         flex: 1,
-        backgroundColor: variables.appBgColor
+        backgroundColor: variables.appBgColor,
       },
       warningPanel: {
         backgroundColor: variables.warning,
@@ -22,7 +22,7 @@ export function generateStyles(c = {}) {
       },
       row: {
         flexDirection: 'row',
-        alignItems: 'center'
+        alignItems: 'center',
       },
       card: {
         backgroundColor: variables.cardBgColor,
@@ -42,26 +42,26 @@ export function generateStyles(c = {}) {
       spaceLeft: {
         marginLeft: 12,
       },
-      image:{
-        alignSelf:'center',
+      image: {
+        alignSelf: 'center',
         marginTop: 20,
-        marginBottom:40
+        marginBottom: 40,
       },
       iconButton: {
         paddingRight: 14,
         paddingLeft: 14,
-        color: variables.primary
+        color: variables.primary,
       },
       contentContainer: {
         paddingHorizontal: 10,
         paddingTop: 20,
-        paddingBottom: 20
+        paddingBottom: 20,
       },
-      primaryColor:{
-        color: variables.primary
+      primaryColor: {
+        color: variables.primary,
       },
       ghost: {
-        backgroundColor: 'transparent'
+        backgroundColor: 'transparent',
       },
       disabled: {
         backgroundColor: variables.disabled,
@@ -78,8 +78,8 @@ export function generateStyles(c = {}) {
         borderBottomColor: variables.lightGray,
         borderBottomWidth: variables.borderWidth,
       },
-      headerButton:{
-        marginTop: variables.platform === 'ios' ? 0 : 6
+      headerButton: {
+        marginTop: variables.platform === 'ios' ? 0 : 6,
       },
       ...c,
     }),

@@ -9,21 +9,22 @@ const useDeleteAccount = (setLoading) => {
   const connected = useConnected();
   const { send, request } = useRequest();
   const requestSuccessHandler = useRequestSuccessPopup(request);
-  const [ confirmationPopupVisible, showConfirmationPopup, hideConfirmationPopup ] = useVisible(false);
-  const [ username, setUsername ] = useState('');
+  const [confirmationPopupVisible, showConfirmationPopup, hideConfirmationPopup] =
+    useVisible(false);
+  const [username, setUsername] = useState('');
 
-  const loading =  request && request.status === 'pending';
+  const loading = request && request.status === 'pending';
   const canDelete = connected && !loading;
   const canConfirmDelete = canDelete && isEmail(username);
 
   const sendDelete = useCallback(() => {
-    if(canDelete){
+    if (canDelete) {
       send({
         method: 'PATCH',
         url: '/register?request=delete_user',
         body: {
-          username: username
-        }
+          username: username,
+        },
       });
     }
   }, [canDelete, send, username]);
@@ -31,17 +32,17 @@ const useDeleteAccount = (setLoading) => {
   const confirmDelete = useCallback(() => {
     hideConfirmationPopup();
     sendDelete();
-  }, [ sendDelete, hideConfirmationPopup ]);
+  }, [sendDelete, hideConfirmationPopup]);
 
   useEffect(() => {
-    if(setLoading){
-      if(request && request.status === 'pending'){
+    if (setLoading) {
+      if (request && request.status === 'pending') {
         setLoading(true);
       } else {
         setLoading(false);
       }
     }
-  }, [setLoading, request])
+  }, [setLoading, request]);
 
   return {
     confirmationPopupVisible,
@@ -55,8 +56,8 @@ const useDeleteAccount = (setLoading) => {
     username,
     setUsername,
     canConfirmDelete,
-    ...requestSuccessHandler
-  }
-}
+    ...requestSuccessHandler,
+  };
+};
 
 export default useDeleteAccount;

@@ -52,7 +52,7 @@ class ByteArrayInputStream {
   }
 
   _read() {
-    return this.pos < this.count ? this.buf[this.pos++] & 0xFF : -1;
+    return this.pos < this.count ? this.buf[this.pos++] & 0xff : -1;
   }
 
   _readWithArgs(buffer, offset, length) {

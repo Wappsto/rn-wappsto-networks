@@ -11,41 +11,41 @@ import { removeRequest } from 'wappsto-redux/actions/request';
 import useRequest from 'wappsto-blanket/hooks/useRequest';
 import useConnected from '../useConnected';
 import { isEmail } from '../../util/helpers';
-import {addSession} from 'wappsto-redux/actions/session';
+import { addSession } from 'wappsto-redux/actions/session';
 import uuid from 'uuid/v4';
 
 const useSignIn = (navigation) => {
   const connected = useConnected();
   const dispatch = useDispatch();
-  const [ username, setUsername ] = useState('');
-  const [ password, setPassword ] = useState('');
-  const [ showError, setShowError ] = useState(false);
-  const [ showRecaptcha, setShowRecaptcha ] = useState('');
-  const [ isSigninInProgress, setIsSigninInProgress ] = useState(false);
-  const [ showPassword, setShowPassword ] = useState(false);
+  const [username, setUsername] = useState('');
+  const [password, setPassword] = useState('');
+  const [showError, setShowError] = useState(false);
+  const [showRecaptcha, setShowRecaptcha] = useState('');
+  const [isSigninInProgress, setIsSigninInProgress] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
   const passwordInputRef = useRef();
-  const [ fbSignInError, setFbSignInError ] = useState(null);
+  const [fbSignInError, setFbSignInError] = useState(null);
   const { request, send, removeRequest: remove } = useRequest();
   const errorNumber = useRef(0);
   const recaptchaRef = useRef();
 
-  const r = (fbSignInError || request)
+  const r = fbSignInError || request;
   const postRequest = showError && r;
-  const loading = r && (
-    r.status === 'pending'
-    || r.status === 'success'
-    || (r.status === 'error' && r.json?.code === 9900007 && !showRecaptcha)
-  );
-  const canTPSignIn = connected && !isSigninInProgress && !loading
+  const loading =
+    r &&
+    (r.status === 'pending' ||
+      r.status === 'success' ||
+      (r.status === 'error' && r.json?.code === 9900007 && !showRecaptcha));
+  const canTPSignIn = connected && !isSigninInProgress && !loading;
   const canSignIn = canTPSignIn && isEmail(username) && password;
 
   const toggleShowPassword = useCallback(() => {
-    setShowPassword(sp => !sp);
+    setShowPassword((sp) => !sp);
   }, []);
 
   const saveSession = (cRequest) => {
     AsyncStorage.setItem('session', JSON.stringify(cRequest.json));
-  }
+  };
 
   const moveToPasswordField = useCallback(() => {
     const trimText = username.trim();
@@ -55,41 +55,47 @@ const useSignIn = (navigation) => {
     passwordInputRef.current.focus();
   }, [username]);
 
-  const handleTextChange = useCallback((text, type) => {
-    let currentText;
-    let set;
-    if(type === 'username'){
-      currentText = username;
-      set = setUsername;
-    } else {
-      currentText = password;
-      set = setPassword;
-    }
-    if (text.length - currentText.length === 1) {
-      set(text);
-    } else {
-      set(text.trim());
-    }
-  }, [username, password]);
-
-  const signIn = useCallback((recaptcha) => {
-    setShowError(false);
-    setFbSignInError(null);
-    send({
-      method: 'POST',
-      url: '/session',
-      body: {
-        username: username,
-        password: password,
-        captcha: recaptcha,
-        remember_me: true
+  const handleTextChange = useCallback(
+    (text, type) => {
+      let currentText;
+      let set;
+      if (type === 'username') {
+        currentText = username;
+        set = setUsername;
+      } else {
+        currentText = password;
+        set = setPassword;
       }
-    });
-  }, [username, password, send]);
+      if (text.length - currentText.length === 1) {
+        set(text);
+      } else {
+        set(text.trim());
+      }
+    },
+    [username, password],
+  );
+
+  const signIn = useCallback(
+    (recaptcha) => {
+      setShowError(false);
+      setFbSignInError(null);
+      send({
+        method: 'POST',
+        url: '/session',
+        body: {
+          username: username,
+          password: password,
+          captcha: recaptcha,
+          remember_me: true,
+        },
+      });
+    },
+    [username, password, send],
+  );
 
   const checkAndSignIn = useCallback(() => {
     if (isEmail(username) && password) {
-      if(showRecaptcha && recaptchaRef.current){
+      if (showRecaptcha && recaptchaRef.current) {
         recaptchaRef.current.show();
       } else {
         signIn();
@@ -98,20 +104,23 @@ const useSignIn = (navigation) => {
   }, [username, password, signIn, showRecaptcha]);
 
   // ----------------- 3rd Auth Signin ----------------------------
-  const sendAuthRequest = useCallback((token) => {
-    setShowError(false);
-    setFbSignInError(null);
-    send({
-      method: 'POST',
-      url: '/session',
-      body: {
-        firebase_token: token,
-        remember_me: true
-      }
-    });
-  }, [send]);
+  const sendAuthRequest = useCallback(
+    (token) => {
+      setShowError(false);
+      setFbSignInError(null);
+      send({
+        method: 'POST',
+        url: '/session',
+        body: {
+          firebase_token: token,
+          remember_me: true,
+        },
+      });
+    },
+    [send],
+  );
 
-  const googleSignIn = useCallback(async() => {
+  const googleSignIn = useCallback(async () => {
     const id = 'fbSignInError' + Math.random();
     try {
       setIsSigninInProgress(true);
@@ -122,7 +131,7 @@ const useSignIn = (navigation) => {
       GoogleSignin.signOut();
       setFbSignInError({
         id,
-        status: 'pending'
+        status: 'pending',
       });
       const credential = auth.GoogleAuthProvider.credential(data.idToken, data.accessToken);
       const firebaseUserCredential = await auth().signInWithCredential(credential);
@@ -162,16 +171,16 @@ const useSignIn = (navigation) => {
       LoginManager.setLoginBehavior(behavior);
       LoginManager.logOut();
       const result = await LoginManager.logInWithPermissions(['public_profile', 'email']);
-      if(result.isCancelled){
+      if (result.isCancelled) {
         setFbSignInError({
-          id
+          id,
         });
         setIsSigninInProgress(false);
         return;
       }
       setFbSignInError({
         id,
-        status: 'pending'
+        status: 'pending',
       });
       const data = await AccessToken.getCurrentAccessToken();
       if (!data) {
@@ -186,7 +195,7 @@ const useSignIn = (navigation) => {
       setFbSignInError({
         id,
         status: 'error',
-        json: {}
+        json: {},
       });
     }
     setIsSigninInProgress(false);
@@ -199,48 +208,48 @@ const useSignIn = (navigation) => {
 
       // Start the sign-in request
       let appleAuthResponse, idToken, nonce;
-      if(Platform.OS === 'ios'){
+      if (Platform.OS === 'ios') {
         appleAuthResponse = await appleAuth.performRequest({
-         requestedOperation: appleAuth.Operation.LOGIN,
-         requestedScopes: [appleAuth.Scope.EMAIL, appleAuth.Scope.FULL_NAME],
-       });
-       idToken = appleAuthResponse.identityToken;
-       nonce = appleAuthResponse.nonce;
-     } else {
-       const rawNonce = uuid();
-       const state = uuid();
+          requestedOperation: appleAuth.Operation.LOGIN,
+          requestedScopes: [appleAuth.Scope.EMAIL, appleAuth.Scope.FULL_NAME],
+        });
+        idToken = appleAuthResponse.identityToken;
+        nonce = appleAuthResponse.nonce;
+      } else {
+        const rawNonce = uuid();
+        const state = uuid();
 
-       // Configure the request
-       appleAuthAndroid.configure({
-         // The Service ID you registered with Apple
-         clientId: 'com.wappsto.web',
+        // Configure the request
+        appleAuthAndroid.configure({
+          // The Service ID you registered with Apple
+          clientId: 'com.wappsto.web',
 
-         // Return URL added to your Apple dev console. We intercept this redirect, but it must still match
-         // the URL you provided to Apple. It can be an empty route on your backend as it's never called.
-         redirectUri: 'https://wappsto-941e8.firebaseapp.com/__/auth/handler',
+          // Return URL added to your Apple dev console. We intercept this redirect, but it must still match
+          // the URL you provided to Apple. It can be an empty route on your backend as it's never called.
+          redirectUri: 'https://wappsto-941e8.firebaseapp.com/__/auth/handler',
 
-         // The type of response requested - code, id_token, or both.
-         responseType: appleAuthAndroid.ResponseType.ALL,
+          // The type of response requested - code, id_token, or both.
+          responseType: appleAuthAndroid.ResponseType.ALL,
 
-         // The amount of user information requested from Apple.
-         scope: appleAuthAndroid.Scope.ALL,
+          // The amount of user information requested from Apple.
+          scope: appleAuthAndroid.Scope.ALL,
 
-         // Random nonce value that will be SHA256 hashed before sending to Apple.
-         nonce: rawNonce,
+          // Random nonce value that will be SHA256 hashed before sending to Apple.
+          nonce: rawNonce,
 
-         // Unique state value used to prevent CSRF attacks. A UUID will be generated if nothing is provided.
-         state,
-       });
+          // Unique state value used to prevent CSRF attacks. A UUID will be generated if nothing is provided.
+          state,
+        });
 
-       appleAuthResponse = await appleAuthAndroid.signIn();
-       idToken = appleAuthResponse.id_token;
-       nonce = appleAuthResponse.nonce;
-     }
+        appleAuthResponse = await appleAuthAndroid.signIn();
+        idToken = appleAuthResponse.id_token;
+        nonce = appleAuthResponse.nonce;
+      }
 
       // Ensure Apple returned a user identityToken
       if (!idToken) {
         setFbSignInError({
-          id
+          id,
         });
         setIsSigninInProgress(false);
         return;
@@ -248,7 +257,7 @@ const useSignIn = (navigation) => {
 
       setFbSignInError({
         id,
-        status: 'pending'
+        status: 'pending',
       });
 
       // Create a Firebase credential from the response
@@ -261,7 +270,7 @@ const useSignIn = (navigation) => {
       setFbSignInError({
         id,
         status: 'error',
-        json: {}
+        json: {},
       });
     }
     setIsSigninInProgress(false);
@@ -272,18 +281,21 @@ const useSignIn = (navigation) => {
     dispatch(removeRequest(cRequest.id));
     dispatch(addSession(cRequest.json));
     saveSession(cRequest);
-  }
+  };
 
   useEffect(() => {
-    if(request){
-      if(request.status === 'success'){
+    if (request) {
+      if (request.status === 'success') {
         errorNumber.current = 0;
         setShowError(false);
         setShowRecaptcha(false);
         userLogged(request);
-      } else if(request.status === 'error'){
+      } else if (request.status === 'error') {
         errorNumber.current++;
-        if(!showRecaptcha && (errorNumber.current > 2 || (request.json && request.json.code === 9900007))){
+        if (
+          !showRecaptcha &&
+          (errorNumber.current > 2 || (request.json && request.json.code === 9900007))
+        ) {
           setShowRecaptcha(true);
           recaptchaRef.current.show();
         } else {
@@ -294,24 +306,27 @@ const useSignIn = (navigation) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [request]);
 
-  const onCheckRecaptcha = useCallback((data) => {
-    if (data) {
-      if (['cancel', 'error', 'expired'].includes(data)) {
-        if(recaptchaRef.current){
-          remove();
-          recaptchaRef.current.hide();
-        }
-        return;
-      } else {
-        setTimeout(() => {
-          if(recaptchaRef.current){
+  const onCheckRecaptcha = useCallback(
+    (data) => {
+      if (data) {
+        if (['cancel', 'error', 'expired'].includes(data)) {
+          if (recaptchaRef.current) {
+            remove();
             recaptchaRef.current.hide();
           }
-          signIn(data);
-        }, 1500);
+          return;
+        } else {
+          setTimeout(() => {
+            if (recaptchaRef.current) {
+              recaptchaRef.current.hide();
+            }
+            signIn(data);
+          }, 1500);
+        }
       }
-    }
-  }, [signIn, remove]);
+    },
+    [signIn, remove],
+  );
 
   return {
     username,
@@ -333,8 +348,8 @@ const useSignIn = (navigation) => {
     loading,
     showRecaptcha,
     onCheckRecaptcha,
-    connected
-  }
-}
+    connected,
+  };
+};
 
 export default useSignIn;

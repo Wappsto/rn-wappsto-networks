@@ -18,7 +18,7 @@ const resources = {
   da: {
     translation: require('./da/translation'),
     account: require('wappsto-locales/da/account.json'),
-    error:  require('wappsto-locales/da/error.json'),
+    error: require('wappsto-locales/da/error.json'),
     languages: require('wappsto-locales/da/languages.json'),
   },
 };
@@ -28,11 +28,9 @@ const languageDetector = {
   async: true,
   detect: async (callback) => {
     let lng;
-    try{
+    try {
       lng = await AsyncStorage.getItem(langueStorageKey);
-    } catch(e){
-
-    }
+    } catch (e) {}
     callback(lng || RNLocalize.getLocales()[0].languageCode);
   },
   init: () => {},
@@ -51,7 +49,7 @@ i18next
       useSuspense: false,
     },
     interpolation: {
-      format: function(value, format, lng) {
+      format: function (value, format, lng) {
         if (format === 'CapitalizeFirst') {
           return CapitalizeFirst(value);
         }
@@ -59,11 +57,11 @@ i18next
           return Uppercase(value);
         }
         return value;
-      }
-    }
+      },
+    },
   });
 
-const handleLocalizationChange = a => {
+const handleLocalizationChange = (a) => {
   i18next.changeLanguage(RNLocalize.getLocales()[0].languageCode);
 };
 
@@ -76,7 +74,7 @@ export function CapitalizeFirst(str) {
 }
 
 export function CapitalizeEach(str) {
-  return str.replace(/\w\S*/g, function(txt) {
+  return str.replace(/\w\S*/g, function (txt) {
     return txt.charAt(0).toUpperCase() + txt.substr(1);
   });
 }

@@ -12,7 +12,7 @@ const ReCaptcha = React.memo(({ onCheck, style, recaptchaRef }) => {
       siteKey={config.recaptchaKey}
       baseUrl={config.baseUrl && config.baseUrl.replace('/services', '')}
       languageCode={i18n.language}
-      onMessage={event => onCheck(event.nativeEvent.data)}
+      onMessage={(event) => onCheck(event.nativeEvent.data)}
       cancelButtonText={CapitalizeFirst(t('genericButton.cancel'))}
     />
   );

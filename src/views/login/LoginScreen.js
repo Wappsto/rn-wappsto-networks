@@ -1,5 +1,15 @@
 import React, { useCallback } from 'react';
-import { Image, View, Text as RNText, Linking, TouchableOpacity, ActivityIndicator, StyleSheet, StatusBar, ScrollView } from 'react-native';
+import {
+  Image,
+  View,
+  Text as RNText,
+  Linking,
+  TouchableOpacity,
+  ActivityIndicator,
+  StyleSheet,
+  StatusBar,
+  ScrollView,
+} from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useTranslation, CapitalizeFirst, CapitalizeEach } from '../../translations';
 import useSignIn from '../../hooks/login/useSignIn';
@@ -16,117 +26,111 @@ import defaultImages from '../../theme/images';
 import VersionNumber from 'react-native-version-number';
 
 const styles = StyleSheet.create({
-  formLinkButtons:{
+  formLinkButtons: {
     justifyContent: 'center',
     flexDirection: 'row',
-    alignItems: 'center'
+    alignItems: 'center',
   },
   signinButton: {
     minWidth: 280,
     height: 48,
-    marginVertical:8,
-    paddingRight:10,
+    marginVertical: 8,
+    paddingRight: 10,
     borderRadius: 3,
     alignSelf: 'center',
     flexDirection: 'row',
     alignItems: 'center',
-    justifyContent: 'center'
+    justifyContent: 'center',
   },
   signinButtonText: {
     fontSize: 16,
     lineHeight: 24,
     fontWeight: '600',
-    color: theme.variables.signInButtonTheme === 'dark' ? '#ffffff' : '#000000'
+    color: theme.variables.signInButtonTheme === 'dark' ? '#ffffff' : '#000000',
   },
   GoogleSigninButtonWrapper: {
     backgroundColor: 'white',
-    borderRadius: 2
+    borderRadius: 2,
   },
-  FacebookSigninButtonWrapper: {
-  },
-  AppleSigninButtonWrapper:{
-  },
+  FacebookSigninButtonWrapper: {},
+  AppleSigninButtonWrapper: {},
   signinButtonImage: {
-    width:25,
-    height:25,
-    margin:10
+    width: 25,
+    height: 25,
+    margin: 10,
   },
-  headerImage:{
+  headerImage: {
     alignSelf: 'center',
     width: '100%',
-    height: 150
+    height: 150,
   },
-  appTitle:{
-    fontSize:25,
+  appTitle: {
+    fontSize: 25,
     padding: 10,
     fontWeight: 'bold',
     textAlign: 'center',
-    color:theme.variables.primary
+    color: theme.variables.primary,
   },
-  seperator:{
+  seperator: {
     alignSelf: 'center',
     width: 200,
     borderWidth: 0.5,
     borderColor: theme.variables.disabled,
-    marginVertical: 25
+    marginVertical: 25,
   },
-  appleColor: {backgroundColor: theme.variables.signInButtonTheme === 'dark' ? '#000000' : '#ffffff'},
-  googleColor: {backgroundColor: theme.variables.signInButtonTheme === 'dark' ? '#4285F4' : '#ffffff'},
-  facebookColor: {backgroundColor: '#4267B2'},
+  appleColor: {
+    backgroundColor: theme.variables.signInButtonTheme === 'dark' ? '#000000' : '#ffffff',
+  },
+  googleColor: {
+    backgroundColor: theme.variables.signInButtonTheme === 'dark' ? '#4285F4' : '#ffffff',
+  },
+  facebookColor: { backgroundColor: '#4267B2' },
   terms: {
     textAlign: 'center',
-    marginBottom:20
+    marginBottom: 20,
   },
   footer: {
-    textAlign: 'center'
-  }
+    textAlign: 'center',
+  },
 });
 
-const TermsAndConditions = React.memo(({navigation}) => {
+const TermsAndConditions = React.memo(({ navigation }) => {
   const { t } = useTranslation();
   const text = CapitalizeFirst(t('account:acceptTermsWhenSignIn.message'));
   const terms = t('account:acceptTermsWhenSignIn.terms');
   const privacy = t('account:acceptTermsWhenSignIn.privacy');
   const components = text.split(new RegExp('(' + terms + '|' + privacy + ')'));
   return (
-      <RNText style={styles.terms}>
-      {
-        components.map(str => {
-          if(str === terms){
-            return (
-              <Text
-                key={str}
-                onPress={() => LoginScreen.onTermsPress(navigation)}
-                size='p'
-                color='primary'
-                align='center'
-                content={str}/>
-            )
-          }
-          if(str === privacy){
-            return (
-              <Text
-                key={str}
-                onPress={() => LoginScreen.onPrivacyPress(navigation)}
-                size='p'
-                color='primary'
-                align='center'
-                content={str}/>
-            )
-          }
+    <RNText style={styles.terms}>
+      {components.map((str) => {
+        if (str === terms) {
           return (
             <Text
               key={str}
-              size='p'
-              color='secondary'
-              align='center'
+              onPress={() => LoginScreen.onTermsPress(navigation)}
+              size="p"
+              color="primary"
+              align="center"
               content={str}
             />
           );
-        })
-      }
-      </RNText>
-  )
+        }
+        if (str === privacy) {
+          return (
+            <Text
+              key={str}
+              onPress={() => LoginScreen.onPrivacyPress(navigation)}
+              size="p"
+              color="primary"
+              align="center"
+              content={str}
+            />
+          );
+        }
+        return <Text key={str} size="p" color="secondary" align="center" content={str} />;
+      })}
+    </RNText>
+  );
 });
 
 const LoginScreen = React.memo(({ navigation }) => {
@@ -149,7 +153,7 @@ const LoginScreen = React.memo(({ navigation }) => {
     postRequest,
     onCheckRecaptcha,
     loading,
-    connected
+    connected,
   } = useSignIn(navigation);
 
   const moveToTACScreen = useCallback(() => {
@@ -166,7 +170,10 @@ const LoginScreen = React.memo(({ navigation }) => {
 
   return (
     <SafeAreaView style={theme.common.container}>
-      <StatusBar backgroundColor={theme.variables.statusBarBgLight} barStyle={theme.variables.statusBarColorDark} />
+      <StatusBar
+        backgroundColor={theme.variables.statusBarBgLight}
+        barStyle={theme.variables.statusBarColorDark}
+      />
       {connected === false && (
         <Text
           style={[theme.common.toastFullWidth, theme.common.warningPanel]}
@@ -180,37 +187,31 @@ const LoginScreen = React.memo(({ navigation }) => {
           <View style={theme.common.contentContainer}>
             <View style={styles.section}>
               <Input
-                onChangeText={usernameText =>
-                  handleTextChange(usernameText, 'username')
-                }
+                onChangeText={(usernameText) => handleTextChange(usernameText, 'username')}
                 value={username}
                 label={CapitalizeFirst(t('account:username'))}
-                textContentType='emailAddress'
-                autoCapitalize='none'
+                textContentType="emailAddress"
+                autoCapitalize="none"
                 onSubmitEditing={moveToPasswordField}
-                keyboardType='email-address'
-                returnKeyType='next'
+                keyboardType="email-address"
+                returnKeyType="next"
                 disabled={loading}
               />
               <Input
                 inputRef={passwordInputRef}
-                onChangeText={passwordText =>
-                  handleTextChange(passwordText, 'password')
-                }
+                onChangeText={(passwordText) => handleTextChange(passwordText, 'password')}
                 value={password}
                 label={CapitalizeFirst(t('account:password'))}
-                textContentType='password'
-                autoCapitalize='none'
-                returnKeyType='done'
+                textContentType="password"
+                autoCapitalize="none"
+                returnKeyType="done"
                 showPassword={showPassword}
                 secureTextEntry={!showPassword}
                 toggleShowPassword={toggleShowPassword}
                 onSubmitEditing={checkAndSignIn}
                 disabled={loading}
               />
-              {loading && (
-                <ActivityIndicator size='large' color={theme.variables.spinnerColor} />
-              )}
+              {loading && <ActivityIndicator size="large" color={theme.variables.spinnerColor} />}
 
               <ReCaptcha onCheck={onCheckRecaptcha} recaptchaRef={recaptchaRef} />
 
@@ -219,32 +220,32 @@ const LoginScreen = React.memo(({ navigation }) => {
                 disabled={!canSignIn}
                 style={!canSignIn && theme.common.disabled}
                 onPress={checkAndSignIn}
-                display='block'
-                color='primary'
+                display="block"
+                color="primary"
                 text={CapitalizeFirst(t('account:signIn'))}
               />
-            <View style={styles.formLinkButtons}>
-              <Button
-                disabled={loading}
-                onPress={moveToRecoverPasswordScreen}
-                type='link'
-                color='primary'
-                text={CapitalizeFirst(t('account:forgotPassword'))}
-              />
-              <Text content='|'/>
-              <Button
-                disabled={loading}
-                onPress={moveToRegisterScreen}
-                type='link'
-                color='primary'
-                text={CapitalizeFirst(t('account:createAccount'))}
-              />
+              <View style={styles.formLinkButtons}>
+                <Button
+                  disabled={loading}
+                  onPress={moveToRecoverPasswordScreen}
+                  type="link"
+                  color="primary"
+                  text={CapitalizeFirst(t('account:forgotPassword'))}
+                />
+                <Text content="|" />
+                <Button
+                  disabled={loading}
+                  onPress={moveToRegisterScreen}
+                  type="link"
+                  color="primary"
+                  text={CapitalizeFirst(t('account:createAccount'))}
+                />
               </View>
             </View>
 
-            <View style={styles.seperator}/>
+            <View style={styles.seperator} />
 
-            <TermsAndConditions navigation={navigation}/>
+            <TermsAndConditions navigation={navigation} />
 
             <View style={styles.section}>
               <TouchableOpacity
@@ -252,14 +253,15 @@ const LoginScreen = React.memo(({ navigation }) => {
                 style={[
                   styles.signinButton,
                   styles.googleColor,
-                  !canTPSignIn && theme.common.disabled
+                  !canTPSignIn && theme.common.disabled,
                 ]}
-                onPress={googleSignIn}
-              >
+                onPress={googleSignIn}>
                 <View style={styles.GoogleSigninButtonWrapper}>
                   <Image
-                    resizeMode='contain'
-                    source={require('../../../assets/images/login/google_logo.png')} style={styles.signinButtonImage}/>
+                    resizeMode="contain"
+                    source={require('../../../assets/images/login/google_logo.png')}
+                    style={styles.signinButtonImage}
+                  />
                 </View>
                 <RNText style={styles.signinButtonText}>
                   {CapitalizeFirst(t('account:signInWithGoogle'))}
@@ -270,16 +272,17 @@ const LoginScreen = React.memo(({ navigation }) => {
                 style={[
                   styles.signinButton,
                   styles.facebookColor,
-                  !canTPSignIn && theme.common.disabled
+                  !canTPSignIn && theme.common.disabled,
                 ]}
-                onPress={facebookSignIn}
-              >
+                onPress={facebookSignIn}>
                 <View style={styles.FacebookSigninButtonWrapper}>
                   <Image
-                    resizeMode='contain'
-                    source={require('../../../assets/images/login/f_logo_RGB-White_58.png')} style={styles.signinButtonImage}/>
+                    resizeMode="contain"
+                    source={require('../../../assets/images/login/f_logo_RGB-White_58.png')}
+                    style={styles.signinButtonImage}
+                  />
                 </View>
-                <RNText style={[styles.signinButtonText, {color: 'white'}]}>
+                <RNText style={[styles.signinButtonText, { color: 'white' }]}>
                   {CapitalizeFirst(t('account:signInWithFacebook'))}
                 </RNText>
               </TouchableOpacity>
@@ -288,14 +291,17 @@ const LoginScreen = React.memo(({ navigation }) => {
                 style={[
                   styles.signinButton,
                   styles.appleColor,
-                  !canTPSignIn && theme.common.disabled
+                  !canTPSignIn && theme.common.disabled,
                 ]}
-                onPress={appleSignIn}
-              >
+                onPress={appleSignIn}>
                 <View style={styles.AppleSigninButtonWrapper}>
                   <Image
-                    resizeMode='contain'
-                    source={theme.variables.signInButtonTheme === 'dark' ? require('../../../assets/images/login/apple-white.png') : require('../../../assets/images/login/apple-black.png')}
+                    resizeMode="contain"
+                    source={
+                      theme.variables.signInButtonTheme === 'dark'
+                        ? require('../../../assets/images/login/apple-white.png')
+                        : require('../../../assets/images/login/apple-black.png')
+                    }
                     style={styles.signinButtonImage}
                   />
                 </View>
@@ -315,7 +321,7 @@ const LoginScreen = React.memo(({ navigation }) => {
 LoginScreen.navigationOptions = () => {
   return {
     headerShown: false,
-    title: <PageTitle title='pageTitle.login' />
+    title: <PageTitle title="pageTitle.login" />,
   };
 };
 
@@ -329,37 +335,38 @@ LoginScreen.Header = () => {
   const { t } = useTranslation();
   return (
     <View style={styles.header}>
-      {
-        defaultImages.loginAndRegistration.header &&
-        <Image resizeMode='contain' style={styles.headerImage} source={defaultImages.loginAndRegistration.header} />
-      }
-      <RNText style={styles.appTitle}>
-        {CapitalizeEach(t('appTitle'))}
-      </RNText>
+      {defaultImages.loginAndRegistration.header && (
+        <Image
+          resizeMode="contain"
+          style={styles.headerImage}
+          source={defaultImages.loginAndRegistration.header}
+        />
+      )}
+      <RNText style={styles.appTitle}>{CapitalizeEach(t('appTitle'))}</RNText>
     </View>
   );
-}
+};
 
 LoginScreen.Footer = () => {
   return (
     <RNText style={styles.footer}>
       <Text
-        color='secondary'
-        align='center'
+        color="secondary"
+        align="center"
         size={10}
         content={'v' + VersionNumber.appVersion + ' © '}
       />
       <Text
         bold
         onPress={() => handlePress('https://www.seluxit.com')}
-        color='secondary'
-        align='center'
+        color="secondary"
+        align="center"
         size={10}
         content={'Seluxit A/S'}
       />
     </RNText>
   );
-}
+};
 
 const handlePress = async (url) => {
   const supported = await Linking.canOpenURL(url);
@@ -369,11 +376,11 @@ const handlePress = async (url) => {
 };
 LoginScreen.onTermsPress = () => {
   handlePress('https://www.seluxit.com/legal/seluxit-cloud-solutions-terms-and-conditions/');
-}
+};
 
 LoginScreen.onPrivacyPress = () => {
   handlePress('https://www.seluxit.com/privacy');
-}
+};
 
 export function setHeader(comp) {
   LoginScreen.Header = comp;

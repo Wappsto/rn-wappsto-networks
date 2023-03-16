@@ -7,36 +7,40 @@ import Icon from 'react-native-vector-icons/Feather';
 
 const styles = StyleSheet.create({
   list: {
-    marginBottom: 20
+    marginBottom: 20,
   },
   text: {
     fontSize: 16,
-    marginBottom: 3
+    marginBottom: 3,
   },
-  button:{
+  button: {
     flexDirection: 'row',
-    alignItems: 'center'
-  }
+    alignItems: 'center',
+  },
 });
 
 const SelectChoice = React.memo(({ hide, setStep }) => {
   const { t } = useTranslation();
   return (
     <>
-      <Text
-        size='h3'
-        content={CapitalizeFirst(t('onboarding.registrationTitle'))}
-      />
+      <Text size="h3" content={CapitalizeFirst(t('onboarding.registrationTitle'))} />
       <View style={styles.list}>
         <TouchableOpacity onPress={() => setStep(1)} style={styles.button}>
-          <Icon name='plus-circle' size={20} color={theme.variables.textColor} style={theme.common.spaceAround}/>
-          <Text
-            style={styles.text}
-            content={CapitalizeFirst(t('onboarding.option.register'))}
+          <Icon
+            name="plus-circle"
+            size={20}
+            color={theme.variables.textColor}
+            style={theme.common.spaceAround}
           />
+          <Text style={styles.text} content={CapitalizeFirst(t('onboarding.option.register'))} />
         </TouchableOpacity>
         <TouchableOpacity onPress={() => setStep(2)} style={styles.button}>
-          <Icon name='wifi' size={20}  color={theme.variables.textColor} style={theme.common.spaceAround}/>
+          <Icon
+            name="wifi"
+            size={20}
+            color={theme.variables.textColor}
+            style={theme.common.spaceAround}
+          />
           <Text
             style={styles.text}
             content={CapitalizeFirst(t('onboarding.option.registerAndSetupWifi'))}
@@ -44,18 +48,23 @@ const SelectChoice = React.memo(({ hide, setStep }) => {
         </TouchableOpacity>
       </View>
       <Text
-        size='h3'
+        size="h3"
         content={CapitalizeFirst(t('onboarding.configurationTitle'))}
-        color='disabled'
+        color="disabled"
       />
       <View style={styles.list}>
         <TouchableOpacity onPress={() => setStep(2)} style={styles.button}>
-          <Icon name='wifi' size={20} color={theme.variables.disabled} style={theme.common.spaceAround}/>
+          <Icon
+            name="wifi"
+            size={20}
+            color={theme.variables.disabled}
+            style={theme.common.spaceAround}
+          />
           <Text
             style={styles.text}
             content={CapitalizeFirst(t('onboarding.option.setupWifi'))}
-            color='disabled'
-            />
+            color="disabled"
+          />
         </TouchableOpacity>
       </View>
     </>

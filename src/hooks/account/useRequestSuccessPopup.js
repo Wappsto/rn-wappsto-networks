@@ -3,7 +3,7 @@ import { useNavigation } from '@react-navigation/native';
 
 const useRequestSuccessPopup = (request) => {
   const navigation = useNavigation();
-  const [ successVisible, setSuccessVisible ] = useState(false);
+  const [successVisible, setSuccessVisible] = useState(false);
 
   const hideSuccessPopup = useCallback(() => {
     setSuccessVisible(false);
@@ -11,14 +11,14 @@ const useRequestSuccessPopup = (request) => {
   }, [navigation]);
 
   useEffect(() => {
-    if(request){
-      if(request.status === 'success'){
+    if (request) {
+      if (request.status === 'success') {
         setSuccessVisible(true);
       }
     }
   }, [request]);
 
   return { successVisible, hideSuccessPopup };
-}
+};
 
 export default useRequestSuccessPopup;

@@ -11,11 +11,19 @@ import useStorageSession from 'rn-wappsto-networks/src/hooks/useStorageSession';
 import { useSelector } from 'react-redux';
 import { getSession } from 'wappsto-redux/selectors/session';
 
-let dependencies = ['ComponentStackShowcase','LoginStackScreen', 'MainStackScreen', 'AccountStackScreen', 'MainScreen', 'MainDrawerScreen', 'RootRouter'];
+let dependencies = [
+  'ComponentStackShowcase',
+  'LoginStackScreen',
+  'MainStackScreen',
+  'AccountStackScreen',
+  'MainScreen',
+  'MainDrawerScreen',
+  'RootRouter',
+];
 
 const createScreen = (Nav, name, comp) => {
-  return <Nav.Screen name={name} component={comp} options={comp.navigationOptions}/>
-}
+  return <Nav.Screen name={name} component={comp} options={comp.navigationOptions} />;
+};
 
 let components = {
   SessionVerifier: require('./views/SessionVerifier').default,
@@ -33,7 +41,7 @@ let components = {
   RegisterScreen: require('./views/login/RegisterScreen').default,
   TermsAndConditionsScreen: require('./views/login/TermsAndConditionsScreen').default,
   RecoverPasswordScreen: require('./views/login/RecoverPasswordScreen').default,
-  LoginStackScreen: function(){
+  LoginStackScreen: function () {
     const LoginStack = createStackNavigator();
     const LoginStackScreen = () => (
       <LoginStack.Navigator>
@@ -42,21 +50,33 @@ let components = {
         {createScreen(LoginStack, 'TermsAndConditionsScreen', components.TermsAndConditionsScreen)}
         {createScreen(LoginStack, 'RecoverPasswordScreen', components.RecoverPasswordScreen)}
       </LoginStack.Navigator>
-    )
+    );
     return LoginStackScreen;
   },
-  ComponentStackShowcase: function(){
+  ComponentStackShowcase: function () {
     const ShowcaseStack = createStackNavigator();
     const ShowcaseStackScreen = () => (
       <ShowcaseStack.Navigator>
-        {createScreen(ShowcaseStack, 'ComponentShowcase', require('./views/ComponentShowcase').default)}
-        {createScreen(ShowcaseStack, 'ButtonShowcase', require('./views/ComponentShowcase/Button').default)}
-        {createScreen(ShowcaseStack, 'TextInputShowcase', require('./views/ComponentShowcase/TextInput').default)}
+        {createScreen(
+          ShowcaseStack,
+          'ComponentShowcase',
+          require('./views/ComponentShowcase').default,
+        )}
+        {createScreen(
+          ShowcaseStack,
+          'ButtonShowcase',
+          require('./views/ComponentShowcase/Button').default,
+        )}
+        {createScreen(
+          ShowcaseStack,
+          'TextInputShowcase',
+          require('./views/ComponentShowcase/TextInput').default,
+        )}
       </ShowcaseStack.Navigator>
-    )
+    );
     return ShowcaseStackScreen;
   },
-  MainStackScreen: function() {
+  MainStackScreen: function () {
     const MainStack = createStackNavigator();
     const MainStackScreen = () => (
       <MainStack.Navigator>
@@ -65,10 +85,10 @@ let components = {
         {createScreen(MainStack, 'NetworkScreen', components.NetworkScreen)}
         {createScreen(MainStack, 'LogScreen', components.LogScreen)}
       </MainStack.Navigator>
-    )
+    );
     return MainStackScreen;
   },
-  AccountStackScreen: function() {
+  AccountStackScreen: function () {
     const AccountStack = createStackNavigator();
     const AccountStackScreen = () => (
       <AccountStack.Navigator>
@@ -78,92 +98,89 @@ let components = {
         {createScreen(AccountStack, 'ChangePasswordScreen', components.ChangePasswordScreen)}
         {createScreen(AccountStack, 'RecoverPasswordScreen', components.RecoverPasswordScreen)}
       </AccountStack.Navigator>
-    )
+    );
     return AccountStackScreen;
   },
-  MainDrawerScreen: function() {
+  MainDrawerScreen: function () {
     const MainDrawer = createDrawerNavigator();
     const MainDrawerScreen = () => (
       <MainDrawer.Navigator
         drawerContentOptions={{
           activeTintColor: theme.variables.drawerActiveTextColour,
           labelStyle: {
-            fontFamily: theme.variables.fontFamily
+            fontFamily: theme.variables.fontFamily,
           },
         }}
         drawerContent={(props) => <components.DrawerMenu {...props} />}>
-        <MainDrawer.Screen name='main' component={components.MainStackScreen}/>
-        <MainDrawer.Screen name='account' component={components.AccountStackScreen}/>
+        <MainDrawer.Screen name="main" component={components.MainStackScreen} />
+        <MainDrawer.Screen name="account" component={components.AccountStackScreen} />
       </MainDrawer.Navigator>
-    )
+    );
     return MainDrawerScreen;
   },
-  RootRouter: function() {
+  RootRouter: function () {
     const RootRouter = () => {
       const { session: storageSession, status } = useStorageSession();
-      const [ isValidSession, setIsValidSession ] = useState('pending');
+      const [isValidSession, setIsValidSession] = useState('pending');
       const session = useSelector(getSession);
-      const [ ready, setReady ] = useState(false);
+      const [ready, setReady] = useState(false);
 
       const handleCachedSession = (isValid) => {
-        if(!isValid){
+        if (!isValid) {
           setIsValidSession('error');
         }
-      }
+      };
 
       useMemo(() => {
-        if(session && session.valid !== false){
+        if (session && session.valid !== false) {
           setIsValidSession('success');
-        } else if(isValidSession !== 'pending'){
+        } else if (isValidSession !== 'pending') {
           setIsValidSession('error');
         }
       }, [session, isValidSession]);
 
       const wait = async () => {
         try {
-          if(components.SplashScreen.load){
+          if (components.SplashScreen.load) {
             await components.SplashScreen.load();
           }
-        } catch (e) {
-        }
+        } catch (e) {}
         setReady(true);
-      }
+      };
       useEffect(() => {
         wait();
       }, []);
 
-      switch(isValidSession){
+      switch (isValidSession) {
         case 'success':
-          return <components.MainDrawerScreen />
+          return <components.MainDrawerScreen />;
         case 'error':
-          return <components.LoginStackScreen />
+          return <components.LoginStackScreen />;
         case 'pending':
           return (
             <>
               <components.SplashScreen />
-              {
-                ready && (
-                  <components.SessionVerifier
-                    status={status}
-                    session={storageSession}
-                    onResult={handleCachedSession}
-                  />
-                )
-              }
+              {ready && (
+                <components.SessionVerifier
+                  status={status}
+                  session={storageSession}
+                  onResult={handleCachedSession}
+                />
+              )}
             </>
-          )
+          );
         default:
           return null;
       }
-    }
+    };
     return RootRouter;
   },
 
   // helper function
-  replace: function(key, val) {
+  replace: function (key, val) {
     this[key] = val;
     const index = dependencies.indexOf(key);
-    if(index !== -1){
+    if (index !== -1) {
       dependencies.splice(index, 1);
     }
     return this;
@@ -176,10 +193,10 @@ export function replaceComponent(func) {
 
 let rendered = false;
 const App = React.memo(() => {
-  if(!rendered){
+  if (!rendered) {
     rendered = true;
-    dependencies.forEach(d => {
-      if(components[d] && components[d].constructor === Function){
+    dependencies.forEach((d) => {
+      if (components[d] && components[d].constructor === Function) {
         components[d] = components[d]();
       }
     });
@@ -188,9 +205,7 @@ const App = React.memo(() => {
     <Provider store={store}>
       <NavigationContainer>
         <SafeAreaProvider>
-          <components.RootRouter
-            useSuspense={false}
-          />
+          <components.RootRouter useSuspense={false} />
         </SafeAreaProvider>
       </NavigationContainer>
     </Provider>
