@@ -8,9 +8,7 @@ import {
   VictoryLine,
 } from 'victory-native';
 import Text from '../../../components/Text';
-import { useTranslation } from '../../../translations';
 import theme from '../../../theme/themeExport';
-import equal from 'deep-equal';
 
 // const VictoryZoomVoronoiContainer = createContainer('zoom', 'voronoi');
 const styles = StyleSheet.create({
@@ -123,7 +121,7 @@ const GraphChart = React.memo(({ data, operation = 'data' }) => {
           <VictoryVoronoiContainer
             voronoiBlacklist={['Report_line', 'Control_line']}
             labels={(d) => [
-              `${d.datum.childName}: ${d.datum.rawValue} (${d.datum.x.toLocaleString()})`,
+              `${d.datum.childName}: ${d.datum.rawValue}\n\n\n ${d.datum.x.toLocaleString()}`,
             ]}
           />
         }>
