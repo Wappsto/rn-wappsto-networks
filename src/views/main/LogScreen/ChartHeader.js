@@ -556,35 +556,6 @@ const ChartHeader = ({ options, setOptions, children }) => {
       break;
   }
 
-  let arrowMessage;
-  const from = options.value.number * options.value.arrowClick;
-  const to = options.value.number * (options.value.arrowClick + 1);
-  if (options.type === 'clock') {
-    if (!options.value.arrowClick) {
-      arrowMessage = CapitalizeFirst(
-        t('log:lastOptions.lastXTimeFrame', {
-          x: options.value.number,
-          time: options.value.time,
-        }),
-      );
-    } else {
-      arrowMessage = CapitalizeFirst(
-        t(`log:lastOptions.rangeTimeFrame ${from} - ${to} - ${options.value.time}`, {
-          from,
-          to,
-          time: options.value.time,
-        }),
-      );
-    }
-  } else {
-    if (!options.value.arrowClick) {
-      arrowMessage = CapitalizeFirst(t('log:lastOptions.lastXPoints', { x: options.value.number }));
-    } else {
-      arrowMessage = CapitalizeFirst(
-        t(`log:lastOptions.rangeXPoints ${from} - ${to}`, { from, to }),
-      );
-    }
-  }
   return (
     <View>
       <View style={styles.header}>
@@ -617,14 +588,13 @@ const ChartHeader = ({ options, setOptions, children }) => {
             style={[styles.button, leftDisabled && styles.buttonDisabled]}
             onPress={handleLeft}
             disabled={leftDisabled}>
-            <Icon name="chevron-left" />
+            <Text content={'- ' + options.value.number} />
           </TouchableOpacity>
-          <Text content={arrowMessage} />
           <TouchableOpacity
             style={[styles.button, rightDisabled && styles.buttonDisabled]}
             onPress={handleRight}
             disabled={rightDisabled}>
-            <Icon name="chevron-right" />
+            <Text content={'+ ' + options.value.number} />
           </TouchableOpacity>
         </View>
       )}
