@@ -21,7 +21,6 @@ const LogScreen = React.memo(() => {
   const [data, setData] = useState({});
   const [options, setOptions] = useState();
   const [values, setValues] = useState([]);
-  const [canScroll, setCanScroll] = useState(true);
   const prevOptions = useRef(options);
   const prevLive = useRef(false);
   const cachedData = useRef({});
@@ -121,7 +120,7 @@ const LogScreen = React.memo(() => {
   const showCustomControlError = !loading && !errors.current.Control && hasControl;
   return (
     <Screen>
-      <ScrollView scrollEnabled={canScroll}>
+      <ScrollView bounces={false}>
         {values}
         <ChartHeader options={options} setOptions={setOptions}>
           {loading && <ActivityIndicator color="red" />}
@@ -176,11 +175,7 @@ const LogScreen = React.memo(() => {
               type="warning"
             />
           )}
-          <GraphChart
-            data={data}
-            operation={options?.live ? 'data' : options?.operation}
-            setCanScroll={setCanScroll}
-          />
+          <GraphChart data={data} operation={options?.live ? 'data' : options?.operation} />
         </ChartHeader>
       </ScrollView>
     </Screen>
