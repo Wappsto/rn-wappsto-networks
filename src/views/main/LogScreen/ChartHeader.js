@@ -11,17 +11,16 @@ import useVisible from 'wappsto-blanket/hooks/useVisible';
 
 const headerHeight = 35;
 const styles = StyleSheet.create({
-  center: {
-    justifyContent: 'center',
-  },
   typeSelectionButton: {
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
     backgroundColor: 'white',
-    padding: 10,
+    padding: 9,
     height: headerHeight,
-    marginHorizontal: 5,
+    marginLeft: 5,
+    borderColor: '#ccc',
+    borderWidth: 1,
   },
   header: {
     flexDirection: 'row',
@@ -38,12 +37,20 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     backgroundColor: 'white',
+    borderColor: '#ccc',
+    borderWidth: 1,
   },
   buttonDisabled: {
     backgroundColor: theme.variables.disabled,
   },
+  textDisabled: {
+    color: theme.variables.disabled,
+  },
   dropdownContainer: {
     height: 'auto',
+    borderColor: '#ccc',
+    marginTop: -1,
+    borderWidth: 1,
   },
   dropdownText: {
     width: '100%',
@@ -55,6 +62,8 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: 'white',
     height: headerHeight,
+    borderColor: '#ccc',
+    borderWidth: 1,
   },
   dropdownButtonInput: {
     flex: 1,
@@ -74,8 +83,7 @@ const styles = StyleSheet.create({
     paddingRight: 20,
   },
   chartContainer: {
-    backgroundColor: 'white',
-    paddingBottom: 20,
+    marginBottom: 30,
   },
   liveCircle: {
     width: 8,
@@ -89,9 +97,12 @@ const styles = StyleSheet.create({
   liveOff: {
     backgroundColor: '#c9c9c9',
   },
+  smallText: {
+    fontSize: 12,
+  },
 });
 
-const TYPES = ['hash', 'clock']; //, 'calendar'
+const TYPES = ['hash', 'clock'];
 const TIME_OPTIONS = [
   { number: 15, time: 'minute' },
   { number: 1, time: 'hour' },
@@ -237,7 +248,7 @@ const TypeSelector = React.memo(({ type, setOptions }) => {
       )}
       onSelect={onChangeType}>
       <View style={styles.typeSelectionButton}>
-        <Icon size={15} name={type} style={{ marginRight: 5 }} />
+        <Icon size={15} name={type} />
         <Icon size={10} name="chevron-down" />
       </View>
     </ModalDropdown>
@@ -264,7 +275,7 @@ const TimeValue = React.memo(({ value, setOptions, autoCompute }) => {
     <ModalDropdown
       style={styles.dropdownButton}
       textStyle={styles.dropdownButtonText}
-      dropdownStyle={styles.dropdownContainer}
+      dropdownStyle={[styles.dropdownContainer, { paddingHorizontal: 10 }]}
       defaultValue={CapitalizeFirst(
         t(value?.time ? 'log:lastOptions.lastXTimeFrame' : 'genericButton.select', {
           x: value?.number,
@@ -330,10 +341,6 @@ const LastXValue = React.memo(({ value, setOptions, autoCompute }) => {
   );
 });
 
-const CalendarValue = React.memo(({ value, setOptions }) => {
-  return null;
-});
-
 const Compute = React.memo(({ operation = 'none', group_by = 'minute', setOptions }) => {
   const { t } = useTranslation();
   const [visible, show, hide] = useVisible(false);
@@ -390,6 +397,7 @@ const Compute = React.memo(({ operation = 'none', group_by = 'minute', setOption
       from={
         <TouchableOpacity style={styles.button} onPress={resetAndShow}>
           <Text
+            style={styles.smallText}
             content={
               operation === 'none'
                 ? CapitalizeFirst(t('log:operations.none_short'))
@@ -406,13 +414,17 @@ const Compute = React.memo(({ operation = 'none', group_by = 'minute', setOption
         <ModalDropdown
           style={styles.dropdownButtonInput}
           textStyle={styles.dropdownButtonText}
-          defaultValue={CapitalizeFirst(t('log:operations.' + localOptions.operation))}
+          defaultValue={`${CapitalizeFirst(t('log:operations.' + localOptions.operation))} (${t(
+            'log:operations.' + localOptions.operation + '_short',
+          )})`}
           options={OPERATIONS}
           renderButtonText={(option) => CapitalizeFirst(t('log:operations.' + option))}
           renderRow={(option, _, isSelected) => (
             <Text
               style={styles.dropdownText}
-              content={CapitalizeFirst(t('log:operations.' + option))}
+              content={`${CapitalizeFirst(t('log:operations.' + option))} (${t(
+                'log:operations.' + option + '_short',
+              )})`}
               color={isSelected ? theme.variables.disabled : 'primary'}
             />
           )}
@@ -551,8 +563,7 @@ const ChartHeader = ({ options, setOptions, children }) => {
       };
       break;
     }
-    case 'calendar':
-      ValueComponent = CalendarValue;
+    default:
       break;
   }
 
@@ -562,11 +573,31 @@ const ChartHeader = ({ options, setOptions, children }) => {
         {!options.live && (
           <>
             <TypeSelector type={options.type} setOptions={setOptions} />
+            {!!options.value && (
+              <TouchableOpacity
+                style={[styles.button, { marginRight: -1 }]}
+                onPress={handleLeft}
+                disabled={leftDisabled}>
+                <View style={[theme.common.row]}>
+                  <Icon size={15} name="arrow-left" style={leftDisabled && styles.textDisabled} />
+                </View>
+              </TouchableOpacity>
+            )}
             <ValueComponent
               value={options.value}
               setOptions={setOptions}
               autoCompute={!options.custom}
             />
+            {!!options.value && (
+              <TouchableOpacity
+                style={[styles.button, { marginLeft: -1 }]}
+                onPress={handleRight}
+                disabled={rightDisabled}>
+                <View style={theme.common.row}>
+                  <Icon size={15} name="arrow-right" style={rightDisabled && styles.textDisabled} />
+                </View>
+              </TouchableOpacity>
+            )}
             <Compute
               operation={options.operation}
               group_by={options.group_by}
@@ -575,29 +606,12 @@ const ChartHeader = ({ options, setOptions, children }) => {
           </>
         )}
         <TouchableOpacity
-          style={[theme.common.row, styles.button, options.live ? { flex: 1 } : {}]}
+          style={[theme.common.row, styles.button, options.live && { flex: 1 }]}
           onPress={toggleLive}>
           <View style={[styles.liveCircle, options.live ? styles.liveOn : styles.liveOff]} />
-          <Text content={CapitalizeFirst(t('log:liveDataButton'))} />
+          <Text style={styles.smallText} content={CapitalizeFirst(t('log:liveDataButton'))} />
         </TouchableOpacity>
       </View>
-
-      {!options.live && !!options.value && (
-        <View style={[theme.common.row, styles.center]}>
-          <TouchableOpacity
-            style={[styles.button, leftDisabled && styles.buttonDisabled]}
-            onPress={handleLeft}
-            disabled={leftDisabled}>
-            <Text content={'- ' + options.value.number} />
-          </TouchableOpacity>
-          <TouchableOpacity
-            style={[styles.button, rightDisabled && styles.buttonDisabled]}
-            onPress={handleRight}
-            disabled={rightDisabled}>
-            <Text content={'+ ' + options.value.number} />
-          </TouchableOpacity>
-        </View>
-      )}
       <View style={styles.chartContainer}>{children}</View>
     </View>
   );
