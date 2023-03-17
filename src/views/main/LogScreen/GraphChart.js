@@ -6,11 +6,9 @@ import {
   VictoryScatter,
   VictoryTheme,
   VictoryLine,
-  createContainer,
 } from 'victory-native';
-import Button from '../../../components/Button';
 import Text from '../../../components/Text';
-import { useTranslation, CapitalizeFirst } from '../../../translations';
+import { useTranslation } from '../../../translations';
 import theme from '../../../theme/themeExport';
 import equal from 'deep-equal';
 
@@ -36,8 +34,7 @@ const COLORS = {
   Control: theme.variables.secondary,
 };
 
-const GraphChart = React.memo(({ data, operation = 'data', setCanScroll }) => {
-  const { t } = useTranslation();
+const GraphChart = React.memo(({ data, operation = 'data' }) => {
   const [hidden, setHidden] = useState([]);
   const [zoom, setZoom] = useState();
   const xyCache = useRef({});
@@ -117,19 +114,8 @@ const GraphChart = React.memo(({ data, operation = 'data', setCanScroll }) => {
     return [lines, legend];
   }, [formattedData, hidden]);
 
-  const cannotZoom = !lines.length || equal(xyCache.current, zoom);
   return (
     <View style={styles.container}>
-      {/*
-        <Button
-          disabled={cannotZoom}
-          style={cannotZoom && theme.common.disabled}
-          onPress={resetZoom}
-          display='block'
-          color='primary'
-          text={CapitalizeFirst(t('resetZoom'))}
-        />
-      */}
       <VictoryChart
         scale={{ x: 'time' }}
         theme={VictoryTheme.material}

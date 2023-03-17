@@ -1,6 +1,6 @@
 {
   "name": "rn-wappsto-networks",
-  "version": "1.7.1",
+  "version": "1.8.0",
   "scripts": {
     "android": "react-native run-android",
     "ios": "react-native run-ios",
@@ -62,7 +62,7 @@
     "victory-native": "^35.3.1",
     "vm-browserify": "0.0.4",
     "wappsto-blanket": "^1.2.4",
-    "wappsto-locales": "^0.1.0",
+    "wappsto-locales": "^0.1.13",
     "wappsto-redux": "^3.5.5"
   },
   "devDependencies": {
