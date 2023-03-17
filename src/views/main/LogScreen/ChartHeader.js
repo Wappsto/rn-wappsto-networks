@@ -18,7 +18,7 @@ const styles = StyleSheet.create({
     backgroundColor: 'white',
     padding: 9,
     height: headerHeight,
-    marginLeft: 5,
+    marginHorizontal: 5,
     borderColor: '#ccc',
     borderWidth: 1,
   },

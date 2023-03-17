@@ -97,7 +97,7 @@ const LogScreen = React.memo(() => {
     } else {
       delete cachedData.current.Report;
     }
-    if (hasControl) {
+    if (!hasReport && hasControl) {
       cachedData.current.Control = null;
       values.push(
         <LogComponent
@@ -117,27 +117,24 @@ const LogScreen = React.memo(() => {
   }, [options, valueId, hasReport, hasControl, onDone]);
 
   const showCustomReportError = !loading && !errors.current.Report && hasReport;
-  const showCustomControlError = !loading && !errors.current.Control && hasControl;
+  const showCustomControlError = !loading && !hasReport && !errors.current.Control && hasControl;
+
   return (
     <Screen>
       <ScrollView bounces={false}>
         {values}
         <ChartHeader options={options} setOptions={setOptions}>
           {loading && <ActivityIndicator color="red" />}
-          {errors.current.Report && (
+
+          {(errors.current.Report || errors.current.Control) && (
             <Message message={CapitalizeFirst(t('log:error.fetch'))} type="error" />
           )}
-          {showCustomReportError && !data.Report?.data?.length && (
-            <Message
-              message={
-                CapitalizeFirst(t('log:error.noData')) +
-                ' (' +
-                CapitalizeFirst(t('dataModel:stateProperties.reportState')) +
-                ')'
-              }
-              type="warning"
-            />
+
+          {((showCustomReportError && !data.Report?.data?.length) ||
+            (showCustomControlError && !data.Control?.data.length)) && (
+            <Message message={CapitalizeFirst(t('log:error.noData'))} type="info" />
           )}
+
           {showCustomReportError && data.Report?.data.length > MAX_POINTS && (
             <Message
               message={CapitalizeFirst(
@@ -150,20 +147,6 @@ const LogScreen = React.memo(() => {
             />
           )}
 
-          {errors.current.Control && (
-            <Message message={CapitalizeFirst(t('log:error.fetch'))} type="warning" />
-          )}
-          {showCustomControlError && !data.Control?.data.length && (
-            <Message
-              message={
-                CapitalizeFirst(t('log:error.noData')) +
-                ' (' +
-                CapitalizeFirst(t('dataModel:stateProperties.controlState')) +
-                ')'
-              }
-              type="warning"
-            />
-          )}
           {showCustomControlError && data.Control?.data.length > MAX_POINTS && (
             <Message
               message={CapitalizeFirst(
