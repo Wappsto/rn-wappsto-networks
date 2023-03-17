@@ -93,12 +93,14 @@ const styles = StyleSheet.create({
 
 const TYPES = ['hash', 'clock']; //, 'calendar'
 const TIME_OPTIONS = [
-  { number: 5, time: 'minute' },
-  { number: 30, time: 'minute' },
+  { number: 15, time: 'minute' },
   { number: 1, time: 'hour' },
+  { number: 6, time: 'hour' },
+  { number: 1, time: 'day' },
+  { number: 1, time: 'week' },
   { number: 1, time: 'month' },
 ];
-const POINT_OPTIONS = [50, 100, 300, 1000];
+const POINT_OPTIONS = [25, 50, 100, 250, 500];
 
 const OPERATIONS = [
   'none',
