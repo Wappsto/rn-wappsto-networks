@@ -65,6 +65,9 @@ const LogScreen = React.memo(() => {
     if (options.group_by) {
       rawOptions.group_by = options.group_by;
     }
+    if (options.offset) {
+      rawOptions.offset = options.offset;
+    }
     if (options.limit) {
       rawOptions.limit = options.limit;
     } else {
@@ -124,43 +127,42 @@ const LogScreen = React.memo(() => {
     <Screen>
       <ScrollView bounces={false}>
         {values}
-        <ChartHeader options={options} setOptions={setOptions}>
-          {loading && <ActivityIndicator color="red" />}
+        <ChartHeader options={options} setOptions={setOptions} />
+        {loading && <ActivityIndicator color="red" />}
 
-          {(errors.current.Report || errors.current.Control) && (
-            <Message message={CapitalizeFirst(t('log:error.fetch'))} type="error" />
-          )}
+        {(errors.current.Report || errors.current.Control) && (
+          <Message message={CapitalizeFirst(t('log:error.fetch'))} type="error" />
+        )}
 
-          {((showCustomReportError && !data.Report?.data?.length) ||
-            (showCustomControlError && !data.Control?.data.length)) && (
-            <Message message={CapitalizeFirst(t('log:error.noData'))} type="info" />
-          )}
+        {((showCustomReportError && !data.Report?.data?.length) ||
+          (showCustomControlError && !data.Control?.data.length)) && (
+          <Message message={CapitalizeFirst(t('log:error.noData'))} type="info" />
+        )}
 
-          {showCustomReportError && data.Report?.data.length > MAX_POINTS && (
-            <Message
-              message={CapitalizeFirst(
-                t('log:error.valueHasTooManyPoints', {
-                  value: CapitalizeFirst(t('dataModel:stateProperties.reportState')),
-                  points: MAX_POINTS,
-                }),
-              )}
-              type="warning"
-            />
-          )}
+        {showCustomReportError && data.Report?.data.length > MAX_POINTS && (
+          <Message
+            message={CapitalizeFirst(
+              t('log:error.valueHasTooManyPoints', {
+                value: CapitalizeFirst(t('dataModel:stateProperties.reportState')),
+                points: MAX_POINTS,
+              }),
+            )}
+            type="warning"
+          />
+        )}
 
-          {showCustomControlError && data.Control?.data.length > MAX_POINTS && (
-            <Message
-              message={CapitalizeFirst(
-                t('log:error.valueHasTooManyPoints', {
-                  value: CapitalizeFirst(t('dataModel:stateProperties.controlState')),
-                  points: MAX_POINTS,
-                }),
-              )}
-              type="warning"
-            />
-          )}
-          <GraphChart data={data} operation={options?.live ? 'data' : options?.operation} />
-        </ChartHeader>
+        {showCustomControlError && data.Control?.data.length > MAX_POINTS && (
+          <Message
+            message={CapitalizeFirst(
+              t('log:error.valueHasTooManyPoints', {
+                value: CapitalizeFirst(t('dataModel:stateProperties.controlState')),
+                points: MAX_POINTS,
+              }),
+            )}
+            type="warning"
+          />
+        )}
+        <GraphChart data={data} operation={options?.live ? 'data' : options?.operation} />
       </ScrollView>
     </Screen>
   );

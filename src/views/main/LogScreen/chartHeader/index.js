@@ -18,7 +18,7 @@ const defaultOptions = {
     number: POINT_OPTIONS[0],
   },
 };
-const ChartHeader = ({ options, setOptions, children }) => {
+const ChartHeader = ({ options, setOptions }) => {
   const { t } = useTranslation();
   useEffect(() => {
     if (!options) {
@@ -58,6 +58,7 @@ const ChartHeader = ({ options, setOptions, children }) => {
   let handleLeft, handleRight;
   const rightDisabled = !options.value.arrowClick;
   const leftDisabled = options.value.arrowClick === 10;
+
   switch (options.type) {
     case 'clock': {
       ValueComponent = TimeDropdown;
@@ -96,6 +97,7 @@ const ChartHeader = ({ options, setOptions, children }) => {
       handleLeft = () => {
         const arrowClick = (options.value.arrowClick || 0) + 1;
         const newOptions = getXValueOptions(options.value.number, arrowClick, !options.custom);
+
         setOptions({
           ...options,
           ...newOptions,
@@ -162,7 +164,6 @@ const ChartHeader = ({ options, setOptions, children }) => {
           <Text style={styles.smallText} content={CapitalizeFirst(t('log:liveDataButton'))} />
         </TouchableOpacity>
       </View>
-      <View style={styles.chartContainer}>{children}</View>
     </View>
   );
 };
