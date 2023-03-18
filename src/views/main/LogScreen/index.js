@@ -162,7 +162,11 @@ const LogScreen = React.memo(() => {
             type="warning"
           />
         )}
-        <GraphChart data={data} operation={options?.live ? 'data' : options?.operation} />
+        <GraphChart
+          data={data}
+          operation={options?.live ? 'data' : options?.operation}
+          reverseOrder={options?.order && options?.order === 'descending'}
+        />
       </ScrollView>
     </Screen>
   );
