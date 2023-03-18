@@ -111,7 +111,7 @@ const TIME_OPTIONS = [
   { number: 1, time: 'week' },
   { number: 1, time: 'month' },
 ];
-const POINT_OPTIONS = [25, 50, 100, 250, 500];
+const POINT_OPTIONS = [10, 25, 50, 100];
 
 const OPERATIONS = [
   'none',

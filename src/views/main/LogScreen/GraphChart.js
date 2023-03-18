@@ -1,4 +1,4 @@
-import React, { useMemo, useState, useRef, useCallback } from 'react';
+import React, { useEffect, useMemo, useState, useRef, useCallback } from 'react';
 import { TouchableOpacity, StyleSheet, View } from 'react-native';
 import {
   VictoryChart,
@@ -7,6 +7,7 @@ import {
   VictoryTheme,
   VictoryLine,
 } from 'victory-native';
+import moment from 'moment/moment';
 import Text from '../../../components/Text';
 import theme from '../../../theme/themeExport';
 
@@ -24,6 +25,7 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
+    marginTop: 20,
   },
 });
 
@@ -35,6 +37,7 @@ const COLORS = {
 const GraphChart = React.memo(({ data, operation = 'data' }) => {
   const [hidden, setHidden] = useState([]);
   const [zoom, setZoom] = useState();
+  const [dates, setDates] = useState('-');
   const xyCache = useRef({});
 
   const resetZoom = useCallback(() => setZoom(xyCache.current), []);
@@ -112,16 +115,26 @@ const GraphChart = React.memo(({ data, operation = 'data' }) => {
     return [lines, legend];
   }, [formattedData, hidden]);
 
+  useEffect(() => {
+    if (formattedData.length > 0 && formattedData[0].data.length > 2) {
+      const data = formattedData[0].data;
+      const date1 = moment(data[0].x).format('lll');
+      const date2 = moment(data[data.length - 1].x).format('lll');
+      setDates(date1 + ' - ' + date2);
+    }
+  }, [formattedData]);
+
   return (
     <View style={styles.container}>
+      <Text content={dates} color="secondary" />
       <VictoryChart
-        scale={{ x: 'time' }}
+        scale={{ y: 'linear', x: 'time' }}
         theme={VictoryTheme.material}
         containerComponent={
           <VictoryVoronoiContainer
             voronoiBlacklist={['Report_line', 'Control_line']}
             labels={(d) => [
-              `${d.datum.childName}: ${d.datum.rawValue}\n\n\n ${d.datum.x.toLocaleString()}`,
+              `${d.datum.childName}: ${d.datum.rawValue}\n\n ${moment(d.datum.x).format('lll')}`,
             ]}
           />
         }>
