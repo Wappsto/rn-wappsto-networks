@@ -37,7 +37,7 @@ const COLORS = {
 const GraphChart = React.memo(({ data, operation = 'data', reverseOrder }) => {
   const [hidden, setHidden] = useState([]);
   const [zoom, setZoom] = useState();
-  const [dates, setDates] = useState('-');
+  const [dates, setDates] = useState();
   const xyCache = useRef({});
   const resetZoom = useCallback(() => setZoom(xyCache.current), []);
 
@@ -124,12 +124,14 @@ const GraphChart = React.memo(({ data, operation = 'data', reverseOrder }) => {
       } else {
         setDates(date1 + ' - ' + date2);
       }
+    } else {
+      setDates();
     }
   }, [formattedData, reverseOrder]);
 
   return (
     <View style={styles.container}>
-      <Text content={dates} color="secondary" />
+      {dates && <Text content={dates} color="secondary" />}
       <VictoryChart
         scale={{ y: 'linear', x: 'time' }}
         theme={VictoryTheme.material}
