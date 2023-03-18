@@ -3,7 +3,7 @@ import { ScrollView } from 'react-native';
 import Message from '../../../components/Message';
 import Screen from '../../../components/Screen';
 import GraphChart from './GraphChart';
-import ChartHeader, { MAX_POINTS } from './ChartHeader';
+import ChartHeader from './chartHeader';
 import LogComponent, { STATUS } from './LogComponent';
 import { ActivityIndicator } from 'react-native';
 import { useRoute } from '@react-navigation/native';
@@ -11,6 +11,7 @@ import useEntitySelector from 'wappsto-blanket/hooks/useEntitySelector';
 import equal from 'deep-equal';
 import { useTranslation, CapitalizeFirst } from '../../../translations';
 import theme from '../../../theme/themeExport';
+import { MAX_POINTS } from './params';
 
 const LogScreen = React.memo(() => {
   const { t } = useTranslation();
