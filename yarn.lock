@@ -8558,24 +8558,24 @@ walker@^1.0.7, walker@~1.0.5:
   dependencies:
     makeerror "1.0.x"
 
-wappsto-blanket@^1.2.4:
-  version "1.2.4"
-  resolved "https://registry.yarnpkg.com/wappsto-blanket/-/wappsto-blanket-1.2.4.tgz#4293fa9bae216f79f01d9a7c161d8de5215141a1"
-  integrity sha512-takZ80KueMFC23ZfUB7gxXRIPu7dkL/IYNYK1lFM7Uu8vAjPqIxsQDO3geCjvmrc9aplj/IShmrhzqC7Lk1brQ==
+wappsto-blanket@^1.2.6:
+  version "1.2.6"
+  resolved "https://registry.yarnpkg.com/wappsto-blanket/-/wappsto-blanket-1.2.6.tgz#c40f359a6c76417401672fec3ca150e9a5e4d2ed"
+  integrity sha512-kRWp4j4kkeyj9gkoauBjWcvlaOyWh8DklV1wikorONgGO57EdxY0v9YVw7p3NVfgHHdpvp0sPDhSLysAHm6vbA==
   dependencies:
     deep-equal "^2.0.5"
     querystring "^0.2.1"
     uuid "^8.3.1"
 
-wappsto-locales@^0.1.13:
-  version "0.1.13"
-  resolved "https://registry.yarnpkg.com/wappsto-locales/-/wappsto-locales-0.1.13.tgz#6e485192ed6ff99d9fc11950d62dbb2c06458c42"
-  integrity sha512-c5Ae7A8cCF+tbiEYuwbiNnJIXN3p5CFiIIqpR9nNVwU1SVEImrvEsJ7g8JX7ITe7hTAGB9ODNlkefl+H8NkjGw==
+wappsto-locales@^0.2.0:
+  version "0.2.0"
+  resolved "https://registry.yarnpkg.com/wappsto-locales/-/wappsto-locales-0.2.0.tgz#5e5a042606a2e9d6cf85f2b1cbb23f8c5d9fdbf7"
+  integrity sha512-bYDQlXU9khiOvxdubF4e9jiEb5IQMb1W8hpYc856G8sWNxBM4f8b+WjB7QN9xENYqBL6jNRMJG7zoHwxBd4jvg==
 
-wappsto-redux@^3.5.5:
-  version "3.5.5"
-  resolved "https://registry.yarnpkg.com/wappsto-redux/-/wappsto-redux-3.5.5.tgz#924f082c4a945368f00322f5cefe8d97513cfdb6"
-  integrity sha512-7WT+XF6QpwTfj8RaW+JmI0pK0iacIKbPhiv7FCGUBoNKtTYsSzwcXV9Z2Xz0gHLaSjCHFpqxPtjcMXzLjwaRbA==
+wappsto-redux@^3.5.7:
+  version "3.5.7"
+  resolved "https://registry.yarnpkg.com/wappsto-redux/-/wappsto-redux-3.5.7.tgz#5e850ba159bc994cecd4213cd1464fb20b53a4c8"
+  integrity sha512-9aDxXe2Qdcjr748RpCK+Yi/e0CfJGVy5HYujng/IZBCtGf7kGjd59NMQEd/gtKC9eWsHI7MBkE1fCUnuleS2yw==
   dependencies:
     deep-equal "^2.0.3"
     normalizr "^3.4.1"

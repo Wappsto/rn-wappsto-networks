@@ -61,9 +61,9 @@
     "stream-browserify": "^1.0.0",
     "victory-native": "^35.3.1",
     "vm-browserify": "0.0.4",
-    "wappsto-blanket": "^1.2.4",
-    "wappsto-locales": "^0.1.13",
-    "wappsto-redux": "^3.5.5"
+    "wappsto-blanket": "^1.2.6",
+    "wappsto-locales": "^0.2.0",
+    "wappsto-redux": "^3.5.7"
   },
   "devDependencies": {
     "@babel/core": "^7.8.4",
