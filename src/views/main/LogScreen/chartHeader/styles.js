@@ -61,7 +61,7 @@ const styles = StyleSheet.create({
     borderColor: '#ccc',
     borderWidth: 1,
     paddingHorizontal: 10,
-    paddingVertical: 8,
+    paddingVertical: 2,
   },
   dropdownButtonInput: {
     flex: 1,
