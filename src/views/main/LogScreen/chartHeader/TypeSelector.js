@@ -21,6 +21,7 @@ const TypeSelector = React.memo(({ type, setOptions }) => {
     setOptions((options) =>
       options.type === selectedType ? options : { ...options, type: selectedType, value: '' },
     );
+    hide();
   };
 
   return (

@@ -27,6 +27,7 @@ const TimeDropdown = React.memo(({ value, setOptions, autoCompute }) => {
       delete n.order;
       return n;
     });
+    hide();
   };
 
   useEffect(() => {

@@ -17,6 +17,7 @@ const PointDropdown = React.memo(({ value, setOptions, autoCompute }) => {
   const onChangeValue = (selectedValue) => {
     const newOptions = getXValueOptions(selectedValue, 0, autoCompute);
     setOptions((options) => ({ ...options, ...newOptions }));
+    hide();
   };
 
   useEffect(() => {
