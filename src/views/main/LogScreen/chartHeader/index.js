@@ -24,7 +24,7 @@ const ChartHeader = ({ options, setOptions }) => {
     if (!options) {
       let newOptions;
       switch (defaultOptions.type) {
-        case 'clock':
+        case 'timeBased':
           newOptions = getDateOptions(
             defaultOptions.value.time,
             defaultOptions.value.number,
@@ -32,7 +32,7 @@ const ChartHeader = ({ options, setOptions }) => {
             true,
           );
           break;
-        case 'hash':
+        case 'pointBased':
         default:
           newOptions = getXValueOptions(defaultOptions.value.number, 0, true);
           break;
@@ -60,7 +60,7 @@ const ChartHeader = ({ options, setOptions }) => {
   const leftDisabled = options.value.arrowClick === 10;
 
   switch (options.type) {
-    case 'clock': {
+    case 'timeBased': {
       ValueComponent = TimeDropdown;
       handleLeft = () => {
         const arrowClick = (options.value.arrowClick || 0) + 1;
@@ -92,7 +92,7 @@ const ChartHeader = ({ options, setOptions }) => {
       };
       break;
     }
-    case 'hash': {
+    case 'pointBased': {
       ValueComponent = PointDropdown;
       handleLeft = () => {
         const arrowClick = (options.value.arrowClick || 0) + 1;

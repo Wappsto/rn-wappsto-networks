@@ -60,6 +60,7 @@ const styles = StyleSheet.create({
     backgroundColor: 'white',
     borderColor: '#ccc',
     borderWidth: 1,
+    borderTopWidth: 0,
     paddingHorizontal: 10,
     paddingVertical: 2,
   },
@@ -77,8 +78,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 8,
   },
   typeIconStyle: {
-    padding: 15,
-    paddingRight: 20,
+    paddingHorizontal: 5,
   },
   chartContainer: {
     marginBottom: 30,

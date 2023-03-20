@@ -73,7 +73,7 @@ export const getXValueOptions = (number, arrowClick = 0, autoCompute) => {
     limit: number,
     offset: number * arrowClick,
     value: { number },
-    type: 'hash',
+    type: 'pointBased',
     order: 'descending',
   };
   if (autoCompute) {

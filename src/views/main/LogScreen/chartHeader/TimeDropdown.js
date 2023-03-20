@@ -21,7 +21,7 @@ const TimeDropdown = React.memo(({ value, setOptions, autoCompute }) => {
         ...options,
         ...newOptions,
         value: selectedValue,
-        type: 'clock',
+        type: 'timeBased',
       };
       delete n.limit;
       delete n.order;

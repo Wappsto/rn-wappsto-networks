@@ -1,6 +1,6 @@
 export const MAX_POINTS = 1000;
 
-export const TYPES = ['hash', 'clock'];
+export const TYPES = ['pointBased', 'timeBased'];
 
 export const TIME_OPTIONS = [
   { number: 15, time: 'minute' },
