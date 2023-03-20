@@ -33,6 +33,10 @@ const styles = StyleSheet.create({
     borderColor: '#ccc',
     borderWidth: 1,
   },
+  buttonFlex: {
+    alignItems: 'flex-start',
+    flex: 1,
+  },
   buttonDisabled: {
     backgroundColor: theme.variables.disabled,
   },
@@ -54,9 +58,10 @@ const styles = StyleSheet.create({
   dropdownButton: {
     flex: 1,
     backgroundColor: 'white',
-    height: headerHeight,
     borderColor: '#ccc',
     borderWidth: 1,
+    paddingHorizontal: 10,
+    paddingVertical: 8,
   },
   dropdownButtonInput: {
     flex: 1,
