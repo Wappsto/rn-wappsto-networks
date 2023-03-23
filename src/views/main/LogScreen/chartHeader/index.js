@@ -18,7 +18,7 @@ const defaultOptions = {
     number: POINT_OPTIONS[0],
   },
 };
-const ChartHeader = ({ options, setOptions }) => {
+const ChartHeader = ({ options, setOptions, isLoading }) => {
   const { t } = useTranslation();
   useEffect(() => {
     if (!options) {
@@ -135,7 +135,7 @@ const ChartHeader = ({ options, setOptions }) => {
                 <TouchableOpacity
                   style={[styles.button, { marginRight: -1 }]}
                   onPress={handleLeft}
-                  disabled={leftDisabled}>
+                  disabled={leftDisabled || isLoading}>
                   <View style={[theme.common.row]}>
                     <Icon
                       size={15}
@@ -147,7 +147,7 @@ const ChartHeader = ({ options, setOptions }) => {
                 <TouchableOpacity
                   style={[styles.button, { marginLeft: -1 }]}
                   onPress={handleRight}
-                  disabled={rightDisabled}>
+                  disabled={rightDisabled || isLoading}>
                   <View style={theme.common.row}>
                     <Icon
                       size={15}

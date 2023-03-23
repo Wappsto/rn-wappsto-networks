@@ -127,7 +127,7 @@ const LogScreen = React.memo(() => {
     <Screen>
       <ScrollView bounces={false}>
         {values}
-        <ChartHeader options={options} setOptions={setOptions} />
+        <ChartHeader options={options} setOptions={setOptions} isLoading={loading} />
         {loading && <ActivityIndicator color="red" />}
 
         {(errors.current.Report || errors.current.Control) && (
