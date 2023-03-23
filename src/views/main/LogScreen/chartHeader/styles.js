@@ -25,7 +25,7 @@ const styles = StyleSheet.create({
     minWidth: headerHeight,
     height: headerHeight,
     lineHeight: headerHeight,
-    margin: 5,
+    margin: 3,
     paddingHorizontal: 8,
     alignItems: 'center',
     justifyContent: 'center',
@@ -34,7 +34,9 @@ const styles = StyleSheet.create({
     borderWidth: 1,
   },
   buttonFlex: {
-    alignItems: 'flex-start',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    flexDirection: 'row',
     flex: 1,
   },
   buttonDisabled: {

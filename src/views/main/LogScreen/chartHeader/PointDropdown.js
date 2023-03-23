@@ -1,6 +1,7 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import { TouchableOpacity } from 'react-native';
 import Popover, { PopoverPlacement } from 'react-native-popover-view';
+import Icon from 'react-native-vector-icons/Feather';
 import useVisible from 'wappsto-blanket/hooks/useVisible';
 import Text from '../../../../components/Text';
 import theme from '../../../../theme/themeExport';
@@ -12,23 +13,12 @@ import styles from './styles';
 const PointDropdown = React.memo(({ value, setOptions, autoCompute }) => {
   const { t } = useTranslation();
   const [visible, show, hide] = useVisible(false);
-  const [range, setRange] = useState();
 
   const onChangeValue = (selectedValue) => {
     const newOptions = getXValueOptions(selectedValue, 0, autoCompute);
     setOptions((options) => ({ ...options, ...newOptions }));
     hide();
   };
-
-  useEffect(() => {
-    if (value?.arrowClick) {
-      setRange(
-        value.number * value.arrowClick + ' - ' + (value.number * value.arrowClick + value.number),
-      );
-    } else {
-      setRange();
-    }
-  }, [value]);
 
   return (
     <Popover
@@ -41,12 +31,11 @@ const PointDropdown = React.memo(({ value, setOptions, autoCompute }) => {
             style={styles.smallText}
             content={
               value?.number
-                ? range
-                  ? range
-                  : CapitalizeFirst(t('log:lastOptions.lastXPoints', { x: value.number }))
+                ? value.number + ' ' + t('log:point', { count: value.number })
                 : CapitalizeFirst(t('genericButton.select'))
             }
           />
+          <Icon size={12} name="chevron-down" color={theme.variables.textSecondary} />
         </TouchableOpacity>
       }>
       {POINT_OPTIONS.map((number) => (
@@ -57,7 +46,7 @@ const PointDropdown = React.memo(({ value, setOptions, autoCompute }) => {
           disabled={number === value.number}>
           <Text
             style={styles.dropdownButtonText}
-            content={CapitalizeFirst(t('log:lastOptions.lastXPoints', { x: number }))}
+            content={number + ' ' + t('log:point', { count: value.number })}
             color={number === value.number ? theme.variables.disabled : 'primary'}
           />
         </TouchableOpacity>

@@ -125,30 +125,38 @@ const ChartHeader = ({ options, setOptions }) => {
         {!options.live && (
           <>
             <TypeSelector type={options.type} setOptions={setOptions} />
-            {!!options.value && (
-              <TouchableOpacity
-                style={[styles.button, { marginRight: -1 }]}
-                onPress={handleLeft}
-                disabled={leftDisabled}>
-                <View style={[theme.common.row]}>
-                  <Icon size={15} name="arrow-left" style={leftDisabled && styles.textDisabled} />
-                </View>
-              </TouchableOpacity>
-            )}
             <ValueComponent
               value={options.value}
               setOptions={setOptions}
               autoCompute={!options.custom}
             />
             {!!options.value && (
-              <TouchableOpacity
-                style={[styles.button, { marginLeft: -1 }]}
-                onPress={handleRight}
-                disabled={rightDisabled}>
-                <View style={theme.common.row}>
-                  <Icon size={15} name="arrow-right" style={rightDisabled && styles.textDisabled} />
-                </View>
-              </TouchableOpacity>
+              <>
+                <TouchableOpacity
+                  style={[styles.button, { marginRight: -1 }]}
+                  onPress={handleLeft}
+                  disabled={leftDisabled}>
+                  <View style={[theme.common.row]}>
+                    <Icon
+                      size={15}
+                      name="arrow-left"
+                      color={leftDisabled ? theme.variables.disabled : theme.variables.textColor}
+                    />
+                  </View>
+                </TouchableOpacity>
+                <TouchableOpacity
+                  style={[styles.button, { marginLeft: -1 }]}
+                  onPress={handleRight}
+                  disabled={rightDisabled}>
+                  <View style={theme.common.row}>
+                    <Icon
+                      size={15}
+                      name="arrow-right"
+                      color={rightDisabled ? theme.variables.disabled : theme.variables.textColor}
+                    />
+                  </View>
+                </TouchableOpacity>
+              </>
             )}
             <AggregationSelector
               operation={options.operation}

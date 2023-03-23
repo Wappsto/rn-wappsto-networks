@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { ScrollView, TouchableOpacity } from 'react-native';
 import Popover, { PopoverPlacement } from 'react-native-popover-view';
+import Icon from 'react-native-vector-icons/Feather';
 import useVisible from 'wappsto-blanket/hooks/useVisible';
 import Text from '../../../../components/Text';
 import theme from '../../../../theme/themeExport';
@@ -12,7 +13,6 @@ import styles from './styles';
 const TimeDropdown = React.memo(({ value, setOptions, autoCompute }) => {
   const { t } = useTranslation();
   const [visible, show, hide] = useVisible(false);
-  const [selected, setSelected] = useState();
 
   const onChangeValue = (selectedValue) => {
     const newOptions = getDateOptions(selectedValue.time, selectedValue.number, 0, autoCompute);
@@ -30,14 +30,6 @@ const TimeDropdown = React.memo(({ value, setOptions, autoCompute }) => {
     hide();
   };
 
-  useEffect(() => {
-    if (value?.arrowClick) {
-      setSelected('- ' + (value.number + value.number * value.arrowClick) + ' ' + value.time);
-    } else {
-      setSelected();
-    }
-  }, [value]);
-
   return (
     <Popover
       placement={PopoverPlacement.BOTTOM}
@@ -49,14 +41,11 @@ const TimeDropdown = React.memo(({ value, setOptions, autoCompute }) => {
             style={styles.smallText}
             content={
               value?.number
-                ? selected
-                  ? selected
-                  : CapitalizeFirst(
-                      t('log:lastOptions.lastXTimeFrame', { x: value?.number, time: value?.time }),
-                    )
+                ? value.number + ' ' + t(`log:timeFrame.${value.time}`, { count: value.number })
                 : CapitalizeFirst(t('genericButton.select'))
             }
           />
+          <Icon size={12} name="chevron-down" color={theme.variables.textSecondary} />
         </TouchableOpacity>
       }>
       <ScrollView bounces={false}>
@@ -68,9 +57,7 @@ const TimeDropdown = React.memo(({ value, setOptions, autoCompute }) => {
             disabled={v.number === value.number && v.time === value.time}>
             <Text
               style={styles.dropdownButtonText}
-              content={CapitalizeFirst(
-                t('log:lastOptions.lastXTimeFrame', { x: v.number, time: v.time }),
-              )}
+              content={v.number + ' ' + t(`log:timeFrame.${v.time}`, { count: v.number })}
               color={
                 v.number === value.number && v.time === value.time
                   ? theme.variables.disabled
