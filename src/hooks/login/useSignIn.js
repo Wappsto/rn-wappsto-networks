@@ -1,20 +1,18 @@
-import { useState, useEffect, useRef, useCallback } from 'react';
-import { Platform } from 'react-native';
-import AsyncStorage from '@react-native-community/async-storage';
-import { AccessToken, LoginManager } from 'react-native-fbsdk';
-import { GoogleSignin, statusCodes } from '@react-native-community/google-signin';
 import { appleAuth, appleAuthAndroid } from '@invertase/react-native-apple-authentication';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { GoogleSignin, statusCodes } from '@react-native-google-signin/google-signin';
 import auth from '@react-native-firebase/auth';
+import { useCallback, useEffect, useRef, useState } from 'react';
+import { Platform } from 'react-native';
+import { AccessToken, LoginManager } from 'react-native-fbsdk';
 import { useDispatch } from 'react-redux';
-import config from 'wappsto-redux/config';
-import { removeRequest } from 'wappsto-redux/actions/request';
-import useRequest from 'wappsto-blanket/hooks/useRequest';
-import useConnected from '../useConnected';
-import { isEmail } from '../../util/helpers';
-import { addSession } from 'wappsto-redux/actions/session';
 import uuid from 'uuid/v4';
+import { useRequest } from 'wappsto-blanket';
+import { addSession, config, removeRequest } from 'wappsto-redux';
+import { isEmail } from '../../util/helpers';
+import useConnected from '../useConnected';
 
-const useSignIn = (navigation) => {
+const useSignIn = navigation => {
   const connected = useConnected();
   const dispatch = useDispatch();
   const [username, setUsername] = useState('');
@@ -40,10 +38,10 @@ const useSignIn = (navigation) => {
   const canSignIn = canTPSignIn && isEmail(username) && password;
 
   const toggleShowPassword = useCallback(() => {
-    setShowPassword((sp) => !sp);
+    setShowPassword(sp => !sp);
   }, []);
 
-  const saveSession = (cRequest) => {
+  const saveSession = cRequest => {
     AsyncStorage.setItem('session', JSON.stringify(cRequest.json));
   };
 
@@ -76,7 +74,7 @@ const useSignIn = (navigation) => {
   );
 
   const signIn = useCallback(
-    (recaptcha) => {
+    recaptcha => {
       setShowError(false);
       setFbSignInError(null);
       send({
@@ -105,7 +103,7 @@ const useSignIn = (navigation) => {
 
   // ----------------- 3rd Auth Signin ----------------------------
   const sendAuthRequest = useCallback(
-    (token) => {
+    token => {
       setShowError(false);
       setFbSignInError(null);
       send({
@@ -277,7 +275,7 @@ const useSignIn = (navigation) => {
   }, [sendAuthRequest]);
   // --------------------------------------------------------------------
 
-  const userLogged = (cRequest) => {
+  const userLogged = cRequest => {
     dispatch(removeRequest(cRequest.id));
     dispatch(addSession(cRequest.json));
     saveSession(cRequest);
@@ -307,7 +305,7 @@ const useSignIn = (navigation) => {
   }, [request]);
 
   const onCheckRecaptcha = useCallback(
-    (data) => {
+    data => {
       if (data) {
         if (['cancel', 'error', 'expired'].includes(data)) {
           if (recaptchaRef.current) {

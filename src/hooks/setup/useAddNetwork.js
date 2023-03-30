@@ -1,6 +1,6 @@
 import { useState, useCallback, useEffect, useMemo } from 'react';
-import useRequest from 'wappsto-blanket/hooks/useRequest';
-import { makeItemSelector } from 'wappsto-redux/selectors/items';
+import { useRequest } from 'wappsto-blanket';
+import { makeItemSelector } from 'wappsto-redux';
 import { useSelector } from 'react-redux';
 import { manufacturerAsOwnerErrorCode } from '../../util/params';
 
@@ -12,7 +12,7 @@ const useAddNetwork = (iotNetworkListAdd, maoShow, maoHide, autoAccept = null) =
   const [acceptedManufacturerAsOwner, setAcceptedManufacturerAsOwner] = useState(autoAccept);
   const getItem = useMemo(makeItemSelector, []);
 
-  const addToList = useSelector((state) => getItem(state, iotNetworkListAdd));
+  const addToList = useSelector(state => getItem(state, iotNetworkListAdd));
 
   const sendR = useCallback(
     (id, b = {}) => {

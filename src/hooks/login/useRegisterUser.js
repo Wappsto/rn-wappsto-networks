@@ -1,9 +1,9 @@
 import { useState, useRef, useCallback, useEffect } from 'react';
 import { isEmail } from '../../util/helpers';
-import useRequest from 'wappsto-blanket/hooks/useRequest';
+import { useRequest } from 'wappsto-blanket';
 import useConnected from '../useConnected';
 
-const useRegisterUser = (navigation) => {
+const useRegisterUser = navigation => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [repeatPassword, setRepeatPassword] = useState('');
@@ -58,7 +58,7 @@ const useRegisterUser = (navigation) => {
   );
 
   const moveToNextField = useCallback(
-    (field) => {
+    field => {
       const trimText = map[field].value.trim();
       if (trimText !== map[field].value) {
         setUsername(trimText);
@@ -84,7 +84,7 @@ const useRegisterUser = (navigation) => {
   );
 
   const onCheckRecaptcha = useCallback(
-    (data) => {
+    data => {
       if (data) {
         if (['cancel', 'error', 'expired'].includes(data)) {
           if (recaptchaRef.current) {

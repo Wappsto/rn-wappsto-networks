@@ -1,8 +1,8 @@
 import { useState, useEffect, useRef } from 'react';
 import Blufi from '../../../BlufiLib';
 import { BlufiCallback } from '../../../BlufiLib/util/params';
-import { isUUID } from 'wappsto-redux/util/helpers';
-import usePrevious from 'wappsto-blanket/hooks/usePrevious';
+import { isUUID } from 'wappsto-redux';
+import { usePrevious } from 'wappsto-blanket';
 import { manufacturerAsOwnerErrorCode } from '../../../util/params';
 
 const BLUFI_STATUS = {
@@ -65,7 +65,7 @@ const useSetupDevice = (connectToDevice, addNetworkHandler, wifiFields, autoConf
   const success = useRef(false);
   const error = useRef(false);
 
-  const setStep = (val) => {
+  const setStep = val => {
     refStep.current = val;
     setStateStep(val);
   };
@@ -180,7 +180,7 @@ const useSetupDevice = (connectToDevice, addNetworkHandler, wifiFields, autoConf
       }
     };
 
-    Blufi.onStatusResponse = (status) => {
+    Blufi.onStatusResponse = status => {
       if (error.current) {
         return;
       }
@@ -210,7 +210,7 @@ const useSetupDevice = (connectToDevice, addNetworkHandler, wifiFields, autoConf
     }
   };
 
-  const configure = async (force) => {
+  const configure = async force => {
     if (force || !loading) {
       if (!isConnected() && !deviceConnectedToWifi.current) {
         if (!connectionLoading) {

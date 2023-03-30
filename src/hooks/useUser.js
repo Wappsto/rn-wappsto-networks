@@ -1,15 +1,17 @@
 import { useEffect, useMemo, useCallback } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { setItem } from 'wappsto-redux/actions/items';
-import { closeStream } from 'wappsto-redux/actions/stream';
-import { removeSession } from 'wappsto-redux/actions/session';
-import { getUserData } from 'wappsto-redux/selectors/entities';
-import { getSession } from 'wappsto-redux/selectors/session';
-import { makeItemSelector } from 'wappsto-redux/selectors/items';
-import useRequest from 'wappsto-blanket/hooks/useRequest';
+import {
+  setItem,
+  closeStream,
+  removeSession,
+  getUserData,
+  getSession,
+  makeItemSelector,
+} from 'wappsto-redux';
+import { useRequest } from 'wappsto-blanket';
 import { config } from '../configureWappstoRedux';
 import { userFetched, userGetRequest } from '../util/params';
-import AsyncStorage from '@react-native-community/async-storage';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const useUser = () => {
   const dispatch = useDispatch();
@@ -18,7 +20,7 @@ const useUser = () => {
   const { request, requestId, send } = useRequest();
   const { send: sendDelete } = useRequest();
   const getItem = useMemo(makeItemSelector, []);
-  const fetched = useSelector((state) => getItem(state, userFetched));
+  const fetched = useSelector(state => getItem(state, userFetched));
 
   const getUser = useCallback(() => {
     send({

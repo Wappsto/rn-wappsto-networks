@@ -1,5 +1,5 @@
 import { useState, useEffect, useCallback } from 'react';
-import { isUUID, UUIDRegex } from 'wappsto-redux/util/helpers';
+import { isUUID, UUIDRegex } from 'wappsto-redux';
 import { manufacturerAsOwnerErrorCode } from '../../util/params';
 
 const useAddNetworkForm = (addNetworkHandler, onDone) => {
@@ -12,7 +12,7 @@ const useAddNetworkForm = (addNetworkHandler, onDone) => {
 
   const canAdd = isUUID(inputValue) && !loading;
 
-  const onRead = useCallback((event) => {
+  const onRead = useCallback(event => {
     const uuids = event.data.match(new RegExp(UUIDRegex, 'gi'));
     if (!uuids || uuids.length === 0) {
       setScanError('noUUID');
@@ -30,7 +30,7 @@ const useAddNetworkForm = (addNetworkHandler, onDone) => {
   }, [sendRequest, inputValue]);
 
   const switchView = useCallback(() => {
-    setIsScanning((v) => {
+    setIsScanning(v => {
       if (!v) {
         setScanError();
       }

@@ -1,21 +1,23 @@
 import { useEffect, useCallback, useMemo } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import useList from 'wappsto-blanket/hooks/useList';
-import { setItem } from 'wappsto-redux/actions/items';
-import { removeItem as removeStoreItem } from 'wappsto-redux/actions/items';
-import { removeRequest } from 'wappsto-redux/actions/request';
-import { makeStreamSelector } from 'wappsto-redux/selectors/stream';
-import { makeItemSelector } from 'wappsto-redux/selectors/items';
+import { useList } from 'wappsto-blanket';
+import {
+  setItem,
+  removeItem as removeStoreItem,
+  removeRequest,
+  makeStreamSelector,
+  makeItemSelector,
+  schemas,
+} from 'wappsto-redux';
 import { config } from '../configureWappstoRedux';
 import { currentPage } from '../util/params';
-import schemas from 'wappsto-redux/util/schemas';
 import useAppState from './useAppState';
 import { useRoute } from '@react-navigation/native';
 
 const usePageList = (name, url, query, addItemName, removeItemName) => {
   const dispatch = useDispatch();
   const getStream = useMemo(makeStreamSelector, []);
-  const stream = useSelector((state) => getStream(state, config.stream && config.stream.name));
+  const stream = useSelector(state => getStream(state, config.stream && config.stream.name));
   const { items, request, refresh, loadMore, canLoadMore, addItem, removeItem } = useList({
     name,
     url,
@@ -23,7 +25,7 @@ const usePageList = (name, url, query, addItemName, removeItemName) => {
     resetOnEmpty: true,
   });
   const getItem = useMemo(makeItemSelector, []);
-  const currPage = useSelector((state) => getItem(state, currentPage));
+  const currPage = useSelector(state => getItem(state, currentPage));
   const route = useRoute();
   const page = route.name;
 
@@ -43,7 +45,7 @@ const usePageList = (name, url, query, addItemName, removeItemName) => {
 
   const refreshList = useCallback(() => {
     // clear child list
-    items.forEach((item) => {
+    items.forEach(item => {
       const schema = schemas.getSchemaTree(item.meta.type);
       if (schema && schema.dependencies) {
         schema.dependencies.forEach(({ key, type }) => {
@@ -53,7 +55,7 @@ const usePageList = (name, url, query, addItemName, removeItemName) => {
             const childSchema = schemas.getSchemaTree(key);
             childSchema.dependencies.forEach(({ key: cKey, type: cType }) => {
               if (cType === 'many') {
-                item[key].forEach((childId) => {
+                item[key].forEach(childId => {
                   dispatch(removeStoreItem(`/${key}/${childId}/${cKey}_ids`));
                   dispatch(removeRequest(`/${key}/${childId}/${cKey}_requestId`));
                 });

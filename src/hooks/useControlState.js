@@ -1,5 +1,5 @@
 import { useState, useEffect, useCallback, useRef } from 'react';
-import useRequest from 'wappsto-blanket/hooks/useRequest';
+import { useRequest } from 'wappsto-blanket';
 
 const useControlState = (state, value, throttleTime = 1000) => {
   const { request, send } = useRequest();
@@ -23,7 +23,7 @@ const useControlState = (state, value, throttleTime = 1000) => {
   }, [state]);
 
   const updateState = useCallback(
-    (data) => {
+    data => {
       data = data + '';
       if (!isUpdating) {
         let timestamp = new Date().toISOString();
@@ -49,7 +49,7 @@ const useControlState = (state, value, throttleTime = 1000) => {
   );
 
   const updateSwitchState = useCallback(
-    (boolValue) => {
+    boolValue => {
       let data;
       if (value.hasOwnProperty('number')) {
         data = boolValue ? '1' : '0';
@@ -63,7 +63,7 @@ const useControlState = (state, value, throttleTime = 1000) => {
   );
 
   const throttledUpdateState = useCallback(
-    (data) => {
+    data => {
       setInput(data);
       clearTimeout(throttleTimer.current);
       throttleTimer.current = setTimeout(() => {

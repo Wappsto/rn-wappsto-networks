@@ -1,6 +1,6 @@
 import { useState, useCallback } from 'react';
 import { isEmail } from '../../util/helpers';
-import useRequest from 'wappsto-blanket/hooks/useRequest';
+import { useRequest } from 'wappsto-blanket';
 import useConnected from '../useConnected';
 
 const useRecoverPassword = () => {

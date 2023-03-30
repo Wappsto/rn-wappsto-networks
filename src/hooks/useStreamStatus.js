@@ -1,17 +1,16 @@
-import { useMemo, useCallback } from 'react';
+import { useCallback, useMemo } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { makeStreamSelector, status, steps } from 'wappsto-redux';
 import { config } from '../configureWappstoRedux';
-import { useSelector, useDispatch } from 'react-redux';
-import { makeStreamSelector } from 'wappsto-redux/selectors/stream';
+import { CapitalizeFirst, useTranslation } from '../translations';
 import { startStream } from '../util/helpers';
-import { status, steps } from 'wappsto-redux/actions/stream';
-import { useTranslation, CapitalizeFirst } from '../translations';
 
 const emptyObject = {};
 const useStreamStatus = () => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const getStream = useMemo(makeStreamSelector, []);
-  const stream = useSelector((state) => {
+  const stream = useSelector(state => {
     if (!config.stream) {
       return emptyObject;
     }

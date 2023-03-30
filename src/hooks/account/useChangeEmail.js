@@ -1,5 +1,5 @@
 import { useCallback } from 'react';
-import useRequest from 'wappsto-blanket/hooks/useRequest';
+import { useRequest } from 'wappsto-blanket';
 import useConnected from '../useConnected';
 import useUser from '../useUser';
 import useField from '../useField';
@@ -26,7 +26,7 @@ const useChangeEmail = () => {
     isEmail(newUsernameField.text) &&
     !loading;
 
-  const moveToField = useCallback((field) => {
+  const moveToField = useCallback(field => {
     if (field && field.current && field.current.focus) {
       field.current.focus();
     }

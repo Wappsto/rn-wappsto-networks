@@ -2,13 +2,13 @@ import { useEffect, useMemo, useCallback } from 'react';
 import { startStream, endStream } from '../util/helpers';
 import { useDispatch, useSelector } from 'react-redux';
 import { config } from '../configureWappstoRedux';
-import { makeStreamSelector } from 'wappsto-redux/selectors/stream';
+import { makeStreamSelector } from 'wappsto-redux';
 import useAppState from './useAppState';
 
 const useAppStateStream = () => {
   const dispatch = useDispatch();
   const getStream = useMemo(makeStreamSelector, []);
-  const stream = useSelector((state) => getStream(state, config.stream && config.stream.name));
+  const stream = useSelector(state => getStream(state, config.stream && config.stream.name));
 
   useAppState(
     useCallback(() => {

@@ -1,5 +1,5 @@
 import { useEffect, useState, useRef, useCallback } from 'react';
-import AsyncStorage from '@react-native-community/async-storage';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 let savedSsid = '';
 let savedPasswords = {};
@@ -16,7 +16,7 @@ const wifiPasswordStorageKey = 'wifiPassword';
   }
 })();
 
-const useConfigureWifi = (wifiFields) => {
+const useConfigureWifi = wifiFields => {
   const { ssid, setSsid, password, setPassword } = wifiFields;
   const [showPassword, setShowPassword] = useState(false);
   const passwordInputRef = useRef();
@@ -28,7 +28,7 @@ const useConfigureWifi = (wifiFields) => {
   };
 
   const toggleShowPassword = useCallback(() => {
-    setShowPassword((sp) => !sp);
+    setShowPassword(sp => !sp);
   }, []);
 
   const moveToPasswordField = useCallback(() => {

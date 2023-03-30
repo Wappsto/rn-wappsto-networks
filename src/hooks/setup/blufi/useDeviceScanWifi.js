@@ -1,7 +1,7 @@
 import { useState, useEffect, useRef } from 'react';
 import Blufi from '../../../BlufiLib';
 import { BlufiCallback } from '../../../BlufiLib/util/params';
-import usePrevious from 'wappsto-blanket/hooks/usePrevious';
+import { usePrevious } from 'wappsto-blanket';
 
 const STEPS = {
   GETDEVICEWIFILIST: 'getDeviceWifiList',
@@ -16,7 +16,7 @@ export const ERRORS = {
 };
 
 const timeoutLimit = 20000;
-const useDeviceScanWifi = (connectToDevice) => {
+const useDeviceScanWifi = connectToDevice => {
   const {
     loading: connectionLoading,
     error: connectionError,
@@ -79,7 +79,7 @@ const useDeviceScanWifi = (connectToDevice) => {
     Blufi.requestDeviceWifiScan();
   };
 
-  const scan = async (force) => {
+  const scan = async force => {
     if (force || !loading) {
       if (!isConnected()) {
         connect();

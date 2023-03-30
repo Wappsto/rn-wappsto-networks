@@ -1,11 +1,10 @@
 import { useCallback } from 'react';
 import { useDispatch } from 'react-redux';
-import useRequest from 'wappsto-blanket/hooks/useRequest';
-import useVisible from 'wappsto-blanket/hooks/useVisible';
-import { setItem } from 'wappsto-redux/actions/items';
+import { useRequest, useVisible } from 'wappsto-blanket';
+import { setItem } from 'wappsto-redux';
 import { itemDelete } from '../util/params';
 
-const useDeleteItem = (item) => {
+const useDeleteItem = item => {
   const dispatch = useDispatch();
   const [confirmVisible, showDeleteConfirmation, hideDeleteConfirmation] = useVisible(false);
   const { request, send } = useRequest();
