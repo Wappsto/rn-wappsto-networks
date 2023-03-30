@@ -1,7 +1,7 @@
 import React from 'react';
 import { StyleSheet, View, TextInput } from 'react-native';
 import Text from './Text';
-import Icon from 'react-native-vector-icons/FontAwesome5';
+import Icon from 'react-native-vector-icons/Feather';
 import theme from '../theme/themeExport';
 
 export const styles = StyleSheet.create({
@@ -88,7 +88,7 @@ const Input = React.memo(
                     ? theme.variables.disabled
                     : theme.variables.inputTextColor
                 }
-                name={showPassword ? 'eye-slash' : 'eye'}
+                name={showPassword ? 'eye-off' : 'eye'}
                 onPress={toggleShowPassword}
                 style={styles.passwordVisibilityIcon}
                 size={14}
