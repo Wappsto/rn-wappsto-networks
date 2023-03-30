@@ -1,25 +1,23 @@
 import { useState, useEffect } from 'react';
 import { AppState } from 'react-native';
 
-const useAppState = (callback) => {
+export default function useAppState(callback) {
   const [appState, setAppState] = useState(AppState.currentState);
 
-  // handle app state change
   useEffect(() => {
-    const _handleAppStateChange = (nextAppState) => {
-      if (appState.match(/inactive|background/) && nextAppState === 'active' && callback) {
+    const _handleAppState = nextState => {
+      if (appState.match(/inactive|background/) && nextState === 'active' && callback) {
         callback();
       }
-      setAppState(nextAppState);
+      setAppState(nextState);
     };
 
-    AppState.addEventListener('change', _handleAppStateChange);
+    const listener = AppState.addEventListener('change', _handleAppState);
+
     return () => {
-      AppState.removeEventListener('change', _handleAppStateChange);
+      listener.remove();
     };
   }, [appState, callback]);
 
   return appState;
-};
-
-export default useAppState;
+}
