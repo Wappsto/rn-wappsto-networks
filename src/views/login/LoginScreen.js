@@ -102,7 +102,7 @@ const TermsAndConditions = React.memo(({ navigation }) => {
   const components = text.split(new RegExp('(' + terms + '|' + privacy + ')'));
   return (
     <RNText style={styles.terms}>
-      {components.map((str) => {
+      {components.map(str => {
         if (str === terms) {
           return (
             <Text
@@ -187,7 +187,7 @@ const LoginScreen = React.memo(({ navigation }) => {
           <View style={theme.common.contentContainer}>
             <View style={styles.section}>
               <Input
-                onChangeText={(usernameText) => handleTextChange(usernameText, 'username')}
+                onChangeText={usernameText => handleTextChange(usernameText, 'username')}
                 value={username}
                 label={CapitalizeFirst(t('account:username'))}
                 textContentType="emailAddress"
@@ -199,7 +199,7 @@ const LoginScreen = React.memo(({ navigation }) => {
               />
               <Input
                 inputRef={passwordInputRef}
-                onChangeText={(passwordText) => handleTextChange(passwordText, 'password')}
+                onChangeText={passwordText => handleTextChange(passwordText, 'password')}
                 value={password}
                 label={CapitalizeFirst(t('account:password'))}
                 textContentType="password"
@@ -368,7 +368,7 @@ LoginScreen.Footer = () => {
   );
 };
 
-const handlePress = async (url) => {
+const handlePress = async url => {
   const supported = await Linking.canOpenURL(url);
   if (supported) {
     await Linking.openURL(url);

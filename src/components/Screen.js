@@ -1,9 +1,9 @@
 import React from 'react';
 import { View, TouchableOpacity, StyleSheet, SafeAreaView } from 'react-native';
-import { useHeaderHeight } from '@react-navigation/stack';
+import { useHeaderHeight } from '@react-navigation/elements';
 import KeyboardAvoidingView from './KeyboardAvoidingView';
 import FocusAwareStatusBar from './FocusAwareStatusBar';
-import { status } from 'wappsto-redux/actions/stream';
+import { status } from 'wappsto-redux';
 import { useTranslation, CapitalizeFirst } from '../translations';
 import theme from '../theme/themeExport';
 import Text from './Text';
