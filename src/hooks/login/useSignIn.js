@@ -4,7 +4,7 @@ import auth from '@react-native-firebase/auth';
 import { GoogleSignin, statusCodes } from '@react-native-google-signin/google-signin';
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { Platform } from 'react-native';
-import { AccessToken, LoginManager } from 'react-native-fbsdk';
+import { AccessToken, LoginManager } from 'react-native-fbsdk-next';
 import uuid from 'react-native-uuid';
 import { useDispatch } from 'react-redux';
 import { addSession, config } from 'wappsto-redux';

@@ -8,6 +8,8 @@ PODS:
   - boost (1.76.0)
   - CocoaAsyncSocket (7.6.5)
   - DoubleConversion (1.1.6)
+  - FBAEMKit (15.0.0):
+    - FBSDKCoreKit_Basics (= 15.0.0)
   - FBLazyVector (0.71.4)
   - FBReactNativeSpec (0.71.4):
     - RCT-Folly (= 2021.07.22.00)
@@ -16,6 +18,18 @@ PODS:
     - React-Core (= 0.71.4)
     - React-jsi (= 0.71.4)
     - ReactCommon/turbomodule/core (= 0.71.4)
+  - FBSDKCoreKit (15.0.0):
+    - FBAEMKit (= 15.0.0)
+    - FBSDKCoreKit_Basics (= 15.0.0)
+  - FBSDKCoreKit_Basics (15.0.0)
+  - FBSDKGamingServicesKit (15.0.0):
+    - FBSDKCoreKit (= 15.0.0)
+    - FBSDKCoreKit_Basics (= 15.0.0)
+    - FBSDKShareKit (= 15.0.0)
+  - FBSDKLoginKit (15.0.0):
+    - FBSDKCoreKit (= 15.0.0)
+  - FBSDKShareKit (15.0.0):
+    - FBSDKCoreKit (= 15.0.0)
   - Firebase (9.6.0):
     - Firebase/Core (= 9.6.0)
   - Firebase/Auth (9.6.0):
@@ -458,6 +472,21 @@ PODS:
     - glog
   - react-native-blob-util (0.17.3):
     - React-Core
+  - react-native-fbsdk-next (11.2.0):
+    - React-Core
+    - react-native-fbsdk-next/Core (= 11.2.0)
+    - react-native-fbsdk-next/Login (= 11.2.0)
+    - react-native-fbsdk-next/Share (= 11.2.0)
+  - react-native-fbsdk-next/Core (11.2.0):
+    - FBSDKCoreKit (~> 15.0.0)
+    - React-Core
+  - react-native-fbsdk-next/Login (11.2.0):
+    - FBSDKLoginKit (~> 15.0.0)
+    - React-Core
+  - react-native-fbsdk-next/Share (11.2.0):
+    - FBSDKGamingServicesKit (~> 15.0.0)
+    - FBSDKShareKit (~> 15.0.0)
+    - React-Core
   - react-native-netinfo (9.3.8):
     - React-Core
   - react-native-pdf (6.6.2):
@@ -630,6 +659,7 @@ DEPENDENCIES:
   - React-jsinspector (from `../node_modules/react-native/ReactCommon/jsinspector`)
   - React-logger (from `../node_modules/react-native/ReactCommon/logger`)
   - react-native-blob-util (from `../node_modules/react-native-blob-util`)
+  - react-native-fbsdk-next (from `../node_modules/react-native-fbsdk-next`)
   - "react-native-netinfo (from `../node_modules/@react-native-community/netinfo`)"
   - react-native-pdf (from `../node_modules/react-native-pdf`)
   - react-native-safe-area-context (from `../node_modules/react-native-safe-area-context`)
@@ -661,6 +691,12 @@ SPEC REPOS:
   trunk:
     - AppAuth
     - CocoaAsyncSocket
+    - FBAEMKit
+    - FBSDKCoreKit
+    - FBSDKCoreKit_Basics
+    - FBSDKGamingServicesKit
+    - FBSDKLoginKit
+    - FBSDKShareKit
     - Firebase
     - FirebaseAnalytics
     - FirebaseAuth
@@ -734,6 +770,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native/ReactCommon/logger"
   react-native-blob-util:
     :path: "../node_modules/react-native-blob-util"
+  react-native-fbsdk-next:
+    :path: "../node_modules/react-native-fbsdk-next"
   react-native-netinfo:
     :path: "../node_modules/@react-native-community/netinfo"
   react-native-pdf:
@@ -792,8 +830,14 @@ SPEC CHECKSUMS:
   boost: 57d2868c099736d80fcd648bf211b4431e51a558
   CocoaAsyncSocket: 065fd1e645c7abab64f7a6a2007a48038fdc6a99
   DoubleConversion: 5189b271737e1565bdce30deb4a08d647e3f5f54
+  FBAEMKit: d8312d8451ead46282adc7f3565ffc4965e3a4a7
   FBLazyVector: 446e84642979fff0ba57f3c804c2228a473aeac2
   FBReactNativeSpec: 241709e132e3bf1526c1c4f00bc5384dd39dfba9
+  FBSDKCoreKit: 81879058dd06208c0820fc713d054ca54903e8ba
+  FBSDKCoreKit_Basics: eebc9bb69a0e5d133b92dca53a20716227faa454
+  FBSDKGamingServicesKit: e0766514d64d26a9f846e793c0a44bc4a236723b
+  FBSDKLoginKit: 11995469cd7da16fd4d5245e8d2ec61060479270
+  FBSDKShareKit: 9501792c3024580809f811a8a549868699d9bd32
   Firebase: 5ae8b7cf8efce559a653aef0ad95bab3f427c351
   FirebaseAnalytics: 89ad762c6c3852a685794174757e2c60a36b6a82
   FirebaseAuth: e4a5d3c36e778e41141b91cc861103a441d80bcc
@@ -838,6 +882,7 @@ SPEC CHECKSUMS:
   React-jsinspector: 1f51e775819199d3fe9410e69ee8d4c4161c7b06
   React-logger: 0d58569ec51d30d1792c5e86a8e3b78d24b582c6
   react-native-blob-util: 99f4d79189252f597fe0d810c57a3733b1b1dea6
+  react-native-fbsdk-next: b2dd3a5cebb2507c09e3ec880e1b94a491dbaece
   react-native-netinfo: fbc23bc2fe217155d85f2f7e0644b1654df8029b
   react-native-pdf: 33c622cbdf776a649929e8b9d1ce2d313347c4fa
   react-native-safe-area-context: 39c2d8be3328df5d437ac1700f4f3a4f75716acc

@@ -27,12 +27,19 @@
 			<string>Editor</string>
 			<key>CFBundleURLSchemes</key>
 			<array>
-				<string>com.googleusercontent.apps.733864116078-022rev710uf7bdcu8rneg2010vpnto2v</string>
+				<string>fbAPPID</string>
+				<string>GoogleappSchema</string>
 			</array>
 		</dict>
 	</array>
 	<key>CFBundleVersion</key>
 	<string>$(CURRENT_PROJECT_VERSION)</string>
+	<key>FacebookAppID</key>
+	<string>APPID</string>
+	<key>FacebookClientToken</key>
+	<string>CLIENTID</string>
+	<key>FacebookDisplayName</key>
+	<string>Seluxit A/S</string>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
 	<key>NSAppTransportSecurity</key>
