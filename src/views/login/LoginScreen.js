@@ -16,7 +16,6 @@ import Button from '../../components/Button';
 import Input from '../../components/Input';
 import KeyboardAvoidingView from '../../components/KeyboardAvoidingView';
 import LanguageButton from '../../components/LanguageButton';
-import PageTitle from '../../components/PageTitle';
 import ReCaptcha from '../../components/ReCaptcha';
 import RequestError from '../../components/RequestError';
 import Text from '../../components/Text';
@@ -271,13 +270,6 @@ const LoginScreen = React.memo(() => {
   );
 });
 
-LoginScreen.navigationOptions = () => {
-  return {
-    headerShown: false,
-    title: <PageTitle title="pageTitle.login" />,
-  };
-};
-
 //----------------------------------------------------------------------------------------------
 //----------------------------------------------------------------------------------------------
 //------------------------------------OVERRIDABLE-----------------------------------------------
@@ -307,7 +299,7 @@ LoginScreen.Footer = () => {
         color="secondary"
         align="center"
         size={10}
-        content={'v' + VersionNumber.appVersion + ' © '}
+        content={'v' + VersionNumber.appVersion + ' © Seluxit'}
       />
     </RNText>
   );

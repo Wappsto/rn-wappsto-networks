@@ -11,7 +11,11 @@ const Stack = createNativeStackNavigator();
 export default function LoginStackScreen() {
   return (
     <Stack.Navigator>
-      <Stack.Screen name={NAV.NOSESSION.LOGIN} component={LoginScreen} />
+      <Stack.Screen
+        name={NAV.NOSESSION.LOGIN}
+        component={LoginScreen}
+        options={{ headerShown: false }}
+      />
       <Stack.Screen name={NAV.NOSESSION.LOST_PASSWD} component={RecoverPasswordScreen} />
       <Stack.Screen name={NAV.NOSESSION.REGISTER} component={RegisterScreen} />
       <Stack.Screen name={NAV.NOSESSION.TERMS} component={TermsAndConditionsScreen} />
