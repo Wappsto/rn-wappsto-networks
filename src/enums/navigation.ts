@@ -9,17 +9,18 @@ const NAV = {
     PRIVACY: 'Privacy',
     TERMS: 'Terms',
   },
-  SESSION: {
-    DISPATCH: 'Dispatch',
-    WELCOME: 'Welcome',
-    ELOVERBLIK_SETUP: 'EloverblikSetup',
-    METER_SETUP_STACK: 'MeterSetup Stack Screen',
-    METER_SETUP: 'MeterSetup',
-    BLUFI: 'Blufi',
-    ELOVERBLIK_WEB: 'EloverblikWeb',
-    IMPORT_SUCCESS: 'ImportSuccess',
-    REPORTS: 'Reports',
-    MAIN: 'Main',
+  MAIN: {
+    INDEX: 'DevicesListScreen',
+    NETWORK: 'NetworkScreen',
+    DEVICE: 'DeviceScreen',
+    LOGS: 'LogScreen',
+  },
+  ACCOUNT: {
+    INDEX: 'AccountScreen',
+    CHANGE_DETAILS: 'ChangeUserDetailsScreen',
+    CHANGE_USERNAME: 'ChangeUsernameScreen',
+    CHANGE_PASSWORD: 'ChangePasswordScreen',
+    RECOVER_PASSWORD: 'RecoverPasswordScreen',
   },
 } as const;
 

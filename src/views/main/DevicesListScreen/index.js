@@ -1,24 +1,27 @@
-import React, { useMemo, useCallback } from 'react';
-import { Text as RNText, View, StyleSheet } from 'react-native';
-import Text from '../../../components/Text';
+import React, { useCallback, useMemo } from 'react';
+import { Text as RNText, StyleSheet, View } from 'react-native';
 import Button from '../../../components/Button';
-import Screen from '../../../components/Screen';
-import MenuButton from '../../../components/MenuButton';
 import List from '../../../components/List';
+import MenuButton from '../../../components/MenuButton';
+import Screen from '../../../components/Screen';
+import Text from '../../../components/Text';
 import DeviceItem from './DeviceItem';
-import AddNetwork from './AddNetwork';
-import theme from '../../../theme/themeExport';
-import { useTranslation, CapitalizeFirst } from '../../../translations';
-import { iotNetworkListAdd, iotNetworkListRemove, iotNetworkAddFlow } from '../../../util/params';
-import useAppStateStream from '../../../hooks/useAppStateStream';
-import useAddNetworkStream from '../../../hooks/useAddNetworkStream';
+// import AddNetwork from './AddNetwork';
+import { useDispatch, useSelector } from 'react-redux';
+import { makeItemSelector, setItem } from 'wappsto-redux';
 import ItemDeleteIndicator from '../../../components/ItemDeleteIndicator';
 import PageTitle from '../../../components/PageTitle';
+import useAddNetworkStream from '../../../hooks/useAddNetworkStream';
+import useAppStateStream from '../../../hooks/useAppStateStream';
 import useDeleteItemRequest from '../../../hooks/useDeleteItemRequest';
-import { selectedNetworkName } from '../../../util/params';
-import { useSelector, useDispatch } from 'react-redux';
-import { makeItemSelector } from 'wappsto-redux/selectors/items';
-import { setItem } from 'wappsto-redux/actions/items';
+import theme from '../../../theme/themeExport';
+import { CapitalizeFirst, useTranslation } from '../../../translations';
+import {
+  iotNetworkAddFlow,
+  iotNetworkListAdd,
+  iotNetworkListRemove,
+  selectedNetworkName,
+} from '../../../util/params';
 
 const styles = StyleSheet.create({
   listHeader: {
@@ -91,7 +94,7 @@ const ItemContent = React.memo(({ network, navigation }) => {
       />
     );
   }
-  return network.device.map((id) => <DeviceItem key={id} id={id} navigation={navigation} />);
+  return network.device.map(id => <DeviceItem key={id} id={id} navigation={navigation} />);
 });
 
 const ListItem = React.memo(({ network, navigation }) => {
@@ -118,7 +121,7 @@ const query = {
 };
 const DevicesListScreen = React.memo(({ navigation }) => {
   const getItem = useMemo(makeItemSelector, []);
-  const showAddFlow = useSelector((state) => getItem(state, iotNetworkAddFlow));
+  const showAddFlow = useSelector(state => getItem(state, iotNetworkAddFlow));
 
   useAppStateStream();
   useAddNetworkStream(iotNetworkListAdd, iotNetworkListRemove);
@@ -142,7 +145,7 @@ DevicesListScreen.navigationOptions = ({ navigation }) => {
     ...theme.headerStyle,
     title: <PageTitle title="pageTitle.main" />,
     headerLeft: () => <MenuButton navigation={navigation} />,
-    headerRight: () => <AddNetwork navigation={navigation} />,
+    // headerRight: () => <AddNetwork navigation={navigation} />,
   };
 };
 

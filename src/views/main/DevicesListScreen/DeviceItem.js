@@ -1,10 +1,9 @@
 import React, { useMemo, useCallback } from 'react';
 import { View, TouchableOpacity, StyleSheet } from 'react-native';
 import { useSelector } from 'react-redux';
-import { makeEntitySelector } from 'wappsto-redux/selectors/entities';
+import { makeEntitySelector, setItem } from 'wappsto-redux';
 import { selectedDeviceName } from '../../../util/params';
 import { useDispatch } from 'react-redux';
-import { setItem } from 'wappsto-redux/actions/items';
 import theme from '../../../theme/themeExport';
 import Text from '../../../components/Text';
 import { useTranslation } from '../../../translations';
@@ -37,7 +36,7 @@ const styles = StyleSheet.create({
 const DeviceItem = React.memo(({ navigation, id }) => {
   const { t } = useTranslation();
   const getEntity = useMemo(makeEntitySelector, []);
-  const device = useSelector((state) => getEntity(state, 'device', id));
+  const device = useSelector(state => getEntity(state, 'device', id));
 
   const dispatch = useDispatch();
 
