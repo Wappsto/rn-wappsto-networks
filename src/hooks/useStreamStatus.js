@@ -1,6 +1,6 @@
 import { useCallback, useMemo } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { makeStreamSelector, status, steps } from 'wappsto-redux';
+import { makeStreamSelector, streamStatus, steps } from 'wappsto-redux';
 import { config } from '../configureWappstoRedux';
 import { CapitalizeFirst, useTranslation } from '../translations';
 import { startStream } from '../util/helpers';
@@ -27,10 +27,10 @@ const useStreamStatus = () => {
     let mStatus = '',
       mStep;
     switch (stream.status) {
-      case status.CONNECTING:
-      case status.RECONNECTING:
+      case streamStatus.CONNECTING:
+      case streamStatus.RECONNECTING:
         mStatus =
-          stream.status === status.CONNECTING
+          stream.status === streamStatus.CONNECTING
             ? CapitalizeFirst(t('statusMessage.connecting'))
             : CapitalizeFirst(t('statusMessage.reconnecting'));
         switch (stream.step) {
@@ -49,19 +49,19 @@ const useStreamStatus = () => {
             break;
         }
         break;
-      case status.OPEN:
+      case streamStatus.OPEN:
         mStatus = CapitalizeFirst(t('statusMessage.streamOpen'));
         break;
-      case status.CLOSED:
+      case streamStatus.CLOSED:
         mStatus = CapitalizeFirst(t('statusMessage.streamClosed'));
         if (stream.code) {
           mStep = CapitalizeFirst(t('error:stream.code.' + stream.code));
         }
         break;
-      case status.ERROR:
+      case streamStatus.ERROR:
         mStatus = CapitalizeFirst(t('error:generic'));
         break;
-      case status.LOST:
+      case streamStatus.LOST:
         mStatus = CapitalizeFirst(t('error:stream.connectionLost'));
         break;
     }
