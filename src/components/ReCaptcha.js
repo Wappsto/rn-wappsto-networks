@@ -3,12 +3,12 @@ import Recaptcha from 'react-native-recaptcha-that-works';
 import { useTranslation } from '../translations';
 import { config } from '../configureWappstoRedux';
 
-const ReCaptcha = React.memo(({ onCheck, style, recaptchaRef }) => {
+const ReCaptcha = React.memo(({ onCheck, style, captchaRef }) => {
   const { i18n } = useTranslation();
 
   return (
     <Recaptcha
-      ref={recaptchaRef}
+      ref={captchaRef}
       siteKey={config?.recaptchaKey}
       baseUrl={config?.baseUrl?.replace('/services', '')}
       languageCode={i18n.language}

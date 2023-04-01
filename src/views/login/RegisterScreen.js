@@ -62,7 +62,7 @@ const RegisterScreen = React.memo(({ navigation }) => {
           <Input
             label={CapitalizeFirst(t('account:username'))}
             style={usernameError && theme.common.error}
-            onChangeText={(usernameText) => handleTextChange(usernameText, 'username')}
+            onChangeText={usernameText => handleTextChange(usernameText, 'username')}
             value={username}
             onBlur={() => setUsernameBlurred(true)}
             textContentType="emailAddress"
@@ -77,7 +77,7 @@ const RegisterScreen = React.memo(({ navigation }) => {
             inputRef={passwordInputRef}
             label={CapitalizeFirst(t('account:password'))}
             style={passwordError && theme.common.error}
-            onChangeText={(passwordText) => handleTextChange(passwordText, 'password')}
+            onChangeText={passwordText => handleTextChange(passwordText, 'password')}
             value={password}
             onBlur={() => setPasswordBlurred(true)}
             textContentType="password"
@@ -86,12 +86,15 @@ const RegisterScreen = React.memo(({ navigation }) => {
             returnKeyType="next"
             onSubmitEditing={() => moveToNextField('password')}
             disabled={loading}
-            validationError={passwordError && CapitalizeFirst(t('account:validation.password'))}
+            validationError={
+              passwordError &&
+              CapitalizeFirst(t('account:validation.required', { field: 'password' }))
+            }
           />
           <Input
             inputRef={repeatPasswordInputRef}
             label={CapitalizeFirst(t('account:repeatPassword'))}
-            onChangeText={(repeatPasswordText) =>
+            onChangeText={repeatPasswordText =>
               handleTextChange(repeatPasswordText, 'repeatPassword')
             }
             value={repeatPassword}
@@ -106,7 +109,7 @@ const RegisterScreen = React.memo(({ navigation }) => {
               repeatPasswordError && CapitalizeFirst(t('account:validation.repeatPassword'))
             }
           />
-          <ReCaptcha onCheck={onCheckRecaptcha} recaptchaRef={recaptchaRef} />
+          <ReCaptcha onCheck={onCheckRecaptcha} captchaRef={recaptchaRef} />
           {loading && <ActivityIndicator size="large" color={theme.variables.spinnerColor} />}
           <RequestError request={request} />
           <Button

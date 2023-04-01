@@ -105,19 +105,19 @@ const LoginScreen = React.memo(() => {
     moveToPasswordField,
     handleTextChange,
     passwordInputRef,
-    recaptchaRef,
+    captchaRef,
     showPassword,
     toggleShowPassword,
     checkAndSignIn,
     canSignIn,
     canTPSignIn,
+    postRequest,
+    loading,
+    onCheckCaptcha,
+    connected,
     googleSignIn,
     facebookSignIn,
     appleSignIn,
-    postRequest,
-    onCheckRecaptcha,
-    loading,
-    connected,
   } = useSignIn();
 
   return (
@@ -165,7 +165,7 @@ const LoginScreen = React.memo(() => {
               />
               {loading && <ActivityIndicator size="large" color={theme.variables.spinnerColor} />}
 
-              <ReCaptcha onCheck={onCheckRecaptcha} recaptchaRef={recaptchaRef} />
+              <ReCaptcha onCheck={onCheckCaptcha} captchaRef={captchaRef} />
 
               <RequestError request={postRequest} />
               <Button
