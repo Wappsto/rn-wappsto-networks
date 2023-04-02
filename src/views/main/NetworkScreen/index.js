@@ -1,22 +1,22 @@
+import { useNavigation } from '@react-navigation/native';
 import React from 'react';
-import { Text as RNText, View, StyleSheet } from 'react-native';
-import { useTranslation, CapitalizeFirst } from '../../../translations';
-import theme from '../../../theme/themeExport';
-import Text from '../../../components/Text';
-import ID from '../../../components/ID';
-import Button from '../../../components/Button';
-import Screen from '../../../components/Screen';
-import Timestamp from '../../../components/Timestamp';
-import ConfirmationPopup from '../../../components/ConfirmationPopup';
-import RequestError from '../../../components/RequestError';
-import Share from './Share';
-import useDeleteItem from '../../../hooks/useDeleteItem';
-import { selectedNetworkName } from '../../../util/params';
-import useGetItemEntity from '../../../hooks/useGetItemEntity';
-import useUnmountRemoveItem from '../../../hooks/useUnmountRemoveItem';
-import useUndefinedBack from '../../../hooks/useUndefinedBack';
-import useVisible from 'wappsto-blanket/hooks/useVisible';
+import { Text as RNText, StyleSheet, View } from 'react-native';
 import Toast from 'react-native-toast-message';
+import { useVisible } from 'wappsto-blanket';
+import Button from '../../../components/Button';
+import ConfirmationPopup from '../../../components/ConfirmationPopup';
+import ID from '../../../components/ID';
+import RequestError from '../../../components/RequestError';
+import Screen from '../../../components/Screen';
+import Text from '../../../components/Text';
+import Timestamp from '../../../components/Timestamp';
+import useDeleteItem from '../../../hooks/useDeleteItem';
+import useGetItemEntity from '../../../hooks/useGetItemEntity';
+import useUndefinedBack from '../../../hooks/useUndefinedBack';
+import useUnmountRemoveItem from '../../../hooks/useUnmountRemoveItem';
+import { CapitalizeFirst, useTranslation } from '../../../translations';
+import { selectedNetworkName } from '../../../util/params';
+import Share from './Share';
 
 const styles = StyleSheet.create({
   container: {
@@ -29,8 +29,9 @@ const styles = StyleSheet.create({
   },
 });
 
-const NetworkScreen = React.memo(({ navigation }) => {
+const NetworkScreen = React.memo(() => {
   const { t } = useTranslation();
+  const navigation = useNavigation();
   const network = useGetItemEntity(selectedNetworkName, 'network');
   const { deleteItem, request, confirmVisible, showDeleteConfirmation, hideDeleteConfirmation } =
     useDeleteItem(network);
@@ -42,6 +43,10 @@ const NetworkScreen = React.memo(({ navigation }) => {
   if (!network || !network.meta || !network.meta.id) {
     return null;
   }
+
+  navigation.setOptions({
+    title: network.name_by_user || network.name,
+  });
 
   return (
     <Screen>
@@ -169,10 +174,4 @@ const NetworkScreen = React.memo(({ navigation }) => {
   );
 });
 
-NetworkScreen.navigationOptions = ({ navigation, route }) => {
-  return {
-    ...theme.headerStyle,
-    title: route.params.title || '',
-  };
-};
 export default NetworkScreen;

@@ -1,12 +1,12 @@
-import React, { useMemo, useCallback } from 'react';
-import { View, TouchableOpacity, StyleSheet } from 'react-native';
-import { useSelector } from 'react-redux';
+import React, { useCallback, useMemo } from 'react';
+import { StyleSheet, TouchableOpacity, View } from 'react-native';
+import { useDispatch, useSelector } from 'react-redux';
 import { makeEntitySelector, setItem } from 'wappsto-redux';
-import { selectedDeviceName } from '../../../util/params';
-import { useDispatch } from 'react-redux';
-import theme from '../../../theme/themeExport';
 import Text from '../../../components/Text';
+import theme from '../../../theme/themeExport';
 import { useTranslation } from '../../../translations';
+import { selectedDeviceName } from '../../../util/params';
+import { useNavigation } from '@react-navigation/native';
 
 const styles = StyleSheet.create({
   listItem: {
@@ -33,8 +33,9 @@ const styles = StyleSheet.create({
   },
 });
 
-const DeviceItem = React.memo(({ navigation, id }) => {
+const DeviceItem = React.memo(({ id }) => {
   const { t } = useTranslation();
+  const navigation = useNavigation();
   const getEntity = useMemo(makeEntitySelector, []);
   const device = useSelector(state => getEntity(state, 'device', id));
 
@@ -42,11 +43,8 @@ const DeviceItem = React.memo(({ navigation, id }) => {
 
   const navigate = useCallback(() => {
     dispatch(setItem(selectedDeviceName, device.meta.id));
-    navigation.navigate('DeviceScreen', {
-      title: device.name,
-    });
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [device]);
+    navigation.navigate('DeviceScreen');
+  }, [device.meta.id, dispatch, navigation]);
 
   if (!device || !device.meta || !device.meta.id || device.meta.error) {
     return null;

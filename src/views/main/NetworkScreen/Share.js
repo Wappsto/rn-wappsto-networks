@@ -6,11 +6,11 @@ import CheckBox from '../../../components/CheckBox';
 import Text from '../../../components/Text';
 import Button from '../../../components/Button';
 import RequestError from '../../../components/RequestError';
-import useRequest from 'wappsto-blanket/hooks/useRequest';
+import { useRequest } from 'wappsto-blanket';
 import theme from '../../../theme/themeExport';
 import { useTranslation, CapitalizeFirst } from '../../../translations';
 import { isEmail } from '../../../util/helpers';
-import { isUUID } from 'wappsto-redux/util/helpers';
+import { isUUID } from 'wappsto-redux';
 import { getRequestErrorMessage } from '../../../util/helpers';
 import Toast from 'react-native-toast-message';
 
@@ -63,7 +63,7 @@ const Share = React.memo(({ item, visible, hide }) => {
       },
     });
     promise
-      .then((response) => {
+      .then(response => {
         if (response.ok) {
           Toast.show({
             type: 'success',
@@ -88,7 +88,7 @@ const Share = React.memo(({ item, visible, hide }) => {
           });
         }
       })
-      .catch((response) => {
+      .catch(response => {
         if (!visible) {
           Toast.show({
             type: 'error',
@@ -116,25 +116,25 @@ const Share = React.memo(({ item, visible, hide }) => {
         disabled={loading}
         checked={restriction.create}
         text={CapitalizeFirst(t('acl:method.create'))}
-        onPress={() => setRestriction((r) => ({ ...r, create: !r.create }))}
+        onPress={() => setRestriction(r => ({ ...r, create: !r.create }))}
       />
       <CheckBox
         disabled={loading}
         checked={restriction.retrieve}
         text={CapitalizeFirst(t('acl:method.retrieve'))}
-        onPress={() => setRestriction((r) => ({ ...r, retrieve: !r.retrieve }))}
+        onPress={() => setRestriction(r => ({ ...r, retrieve: !r.retrieve }))}
       />
       <CheckBox
         disabled={loading}
         checked={restriction.update}
         text={CapitalizeFirst(t('acl:method.update'))}
-        onPress={() => setRestriction((r) => ({ ...r, update: !r.update }))}
+        onPress={() => setRestriction(r => ({ ...r, update: !r.update }))}
       />
       <CheckBox
         disabled={loading}
         checked={restriction.delete}
         text={CapitalizeFirst(t('acl:method.delete'))}
-        onPress={() => setRestriction((r) => ({ ...r, delete: !r.delete }))}
+        onPress={() => setRestriction(r => ({ ...r, delete: !r.delete }))}
       />
       {!!error.restriction && (
         <Text

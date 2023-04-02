@@ -20,7 +20,6 @@ const NAV = {
     CHANGE_DETAILS: 'ChangeUserDetailsScreen',
     CHANGE_USERNAME: 'ChangeUsernameScreen',
     CHANGE_PASSWORD: 'ChangePasswordScreen',
-    RECOVER_PASSWORD: 'RecoverPasswordScreen',
   },
 } as const;
 

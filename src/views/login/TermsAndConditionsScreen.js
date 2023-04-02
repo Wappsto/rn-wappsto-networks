@@ -1,7 +1,5 @@
 import React from 'react';
 import Pdf from 'react-native-pdf';
-import PageTitle from '../../components/PageTitle';
-import theme from '../../theme/themeExport';
 
 const TermsAndConditionsScreen = () => {
   const uri =
@@ -13,13 +11,6 @@ const TermsAndConditionsScreen = () => {
       onError={e => console.error('When trying to load the terms of service, we got:', e)}
     />
   );
-};
-
-TermsAndConditionsScreen.navigationOptions = () => {
-  return {
-    ...theme.headerStyle,
-    title: <PageTitle title="pageTitle.terms" />,
-  };
 };
 
 export default React.memo(TermsAndConditionsScreen);

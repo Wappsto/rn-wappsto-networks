@@ -2,15 +2,16 @@ import React, { useCallback, useMemo } from 'react';
 import { Text as RNText, StyleSheet, View } from 'react-native';
 import Button from '../../../components/Button';
 import List from '../../../components/List';
-import MenuButton from '../../../components/MenuButton';
 import Screen from '../../../components/Screen';
 import Text from '../../../components/Text';
 import DeviceItem from './DeviceItem';
 // import AddNetwork from './AddNetwork';
+import { useNavigation } from '@react-navigation/native';
 import { useDispatch, useSelector } from 'react-redux';
 import { makeItemSelector, setItem } from 'wappsto-redux';
 import ItemDeleteIndicator from '../../../components/ItemDeleteIndicator';
-import PageTitle from '../../../components/PageTitle';
+import MenuButton from '../../../components/MenuButton';
+import NAV from '../../../enums/navigation';
 import useAddNetworkStream from '../../../hooks/useAddNetworkStream';
 import useAppStateStream from '../../../hooks/useAppStateStream';
 import useDeleteItemRequest from '../../../hooks/useDeleteItemRequest';
@@ -51,8 +52,8 @@ const styles = StyleSheet.create({
   },
 });
 
-const ItemHeader = React.memo(({ network, navigation }) => {
-  const { t } = useTranslation();
+const ItemHeader = React.memo(({ network }) => {
+  const navigation = useNavigation();
   const online =
     network && network.meta && network.meta.connection && network.meta.connection.online;
 
@@ -60,11 +61,10 @@ const ItemHeader = React.memo(({ network, navigation }) => {
 
   const navigate = useCallback(() => {
     dispatch(setItem(selectedNetworkName, network.meta.id));
-    navigation.navigate('NetworkScreen', {
+    navigation.navigate(NAV.MAIN.NETWORK, {
       title: network.name ? network.name : network.meta.id,
     });
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [network]);
+  }, [dispatch, navigation, network.meta.id, network.name]);
 
   return (
     <View style={[theme.common.row, styles.listHeader]}>
@@ -81,7 +81,7 @@ const ItemHeader = React.memo(({ network, navigation }) => {
   );
 });
 
-const ItemContent = React.memo(({ network, navigation }) => {
+const ItemContent = React.memo(({ network }) => {
   const { t } = useTranslation();
   if (network.device.length === 0) {
     return (
@@ -94,10 +94,10 @@ const ItemContent = React.memo(({ network, navigation }) => {
       />
     );
   }
-  return network.device.map(id => <DeviceItem key={id} id={id} navigation={navigation} />);
+  return network.device.map(id => <DeviceItem key={id} id={id} />);
 });
 
-const ListItem = React.memo(({ network, navigation }) => {
+const ListItem = React.memo(({ network }) => {
   const request = useDeleteItemRequest(network);
   if (!network.meta || network.meta.error) {
     return null;
@@ -105,8 +105,8 @@ const ListItem = React.memo(({ network, navigation }) => {
   return (
     <View style={styles.listItem}>
       <ItemDeleteIndicator request={request} />
-      <ItemHeader network={network} navigation={navigation} />
-      <ItemContent network={network} navigation={navigation} />
+      <ItemHeader network={network} />
+      <ItemContent network={network} />
     </View>
   );
 });
@@ -119,12 +119,20 @@ const query = {
   verbose: true,
   method: 'retrieve',
 };
-const DevicesListScreen = React.memo(({ navigation }) => {
+const DevicesListScreen = React.memo(() => {
+  const { t } = useTranslation();
+  const navigation = useNavigation();
   const getItem = useMemo(makeItemSelector, []);
   const showAddFlow = useSelector(state => getItem(state, iotNetworkAddFlow));
 
   useAppStateStream();
   useAddNetworkStream(iotNetworkListAdd, iotNetworkListRemove);
+
+  navigation.setOptions({
+    title: CapitalizeFirst(t('pageTitle.main')),
+    headerLeft: () => <MenuButton />,
+    // headerRight: () => <AddNetwork navigation={navigation} />,
+  });
 
   return (
     <Screen>
@@ -134,19 +142,10 @@ const DevicesListScreen = React.memo(({ navigation }) => {
         addItemName={iotNetworkListAdd}
         removeItemName={iotNetworkListRemove}
         emptyAddFlow={showAddFlow}
-        renderItem={({ item: network }) => <ListItem network={network} navigation={navigation} />}
+        renderItem={({ item: network }) => <ListItem network={network} />}
       />
     </Screen>
   );
 });
-
-DevicesListScreen.navigationOptions = ({ navigation }) => {
-  return {
-    ...theme.headerStyle,
-    title: <PageTitle title="pageTitle.main" />,
-    headerLeft: () => <MenuButton navigation={navigation} />,
-    // headerRight: () => <AddNetwork navigation={navigation} />,
-  };
-};
 
 export default DevicesListScreen;

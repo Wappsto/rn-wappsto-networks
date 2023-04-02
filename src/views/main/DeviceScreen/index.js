@@ -1,3 +1,4 @@
+import { useNavigation } from '@react-navigation/native';
 import React, { useMemo } from 'react';
 import ItemDeleteIndicator from '../../../components/ItemDeleteIndicator';
 import List from '../../../components/List';
@@ -6,13 +7,13 @@ import useDeleteItemRequest from '../../../hooks/useDeleteItemRequest';
 import useGetItemEntity from '../../../hooks/useGetItemEntity';
 import useUndefinedBack from '../../../hooks/useUndefinedBack';
 import useUnmountRemoveItem from '../../../hooks/useUnmountRemoveItem';
-import theme from '../../../theme/themeExport';
 import { selectedDeviceName } from '../../../util/params';
 import DeviceDetails from './DeviceDetails';
 import DeviceLocation from './DeviceLocation';
 import Value from './Value';
 
-const DeviceScreen = React.memo(({ navigation }) => {
+const DeviceScreen = React.memo(() => {
+  const navigation = useNavigation();
   const device = useGetItemEntity(selectedDeviceName, 'device');
   const deleteRequest = useDeleteItemRequest(device);
   const query = useMemo(
@@ -25,6 +26,11 @@ const DeviceScreen = React.memo(({ navigation }) => {
     }),
     [],
   );
+
+  navigation.setOptions({
+    title: device.name_by_user || device.name,
+    headerRight: () => <DeviceDetails />,
+  });
 
   useUnmountRemoveItem(selectedDeviceName);
   useUndefinedBack(device, navigation);
@@ -46,13 +52,5 @@ const DeviceScreen = React.memo(({ navigation }) => {
     </Screen>
   );
 });
-
-DeviceScreen.navigationOptions = ({ navigation, route }) => {
-  return {
-    ...theme.headerStyle,
-    title: route.params.title || '',
-    headerRight: () => <DeviceDetails navigation={navigation} />,
-  };
-};
 
 export default DeviceScreen;

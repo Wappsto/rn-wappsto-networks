@@ -1,15 +1,14 @@
 import React from 'react';
 import { ScrollView, ActivityIndicator } from 'react-native';
-import Screen from '../../../components/Screen';
-import Text from '../../../components/Text';
-import Button from '../../../components/Button';
-import Input from '../../../components/Input';
-import RequestError from '../../../components/RequestError';
-import Popup from '../../../components/Popup';
-import PageTitle from '../../../components/PageTitle';
-import theme from '../../../theme/themeExport';
-import { useTranslation, CapitalizeFirst } from '../../../translations';
-import useChangeEmail from '../../../hooks/account/useChangeEmail';
+import Screen from '../../components/Screen';
+import Text from '../../components/Text';
+import Button from '../../components/Button';
+import Input from '../../components/Input';
+import RequestError from '../../components/RequestError';
+import Popup from '../../components/Popup';
+import theme from '../../theme/themeExport';
+import { useTranslation, CapitalizeFirst } from '../../translations';
+import useChangeEmail from '../../hooks/account/useChangeEmail';
 
 const ChangeUsernameScreen = React.memo(() => {
   const { t } = useTranslation();
@@ -97,12 +96,4 @@ const ChangeUsernameScreen = React.memo(() => {
     </Screen>
   );
 });
-
-ChangeUsernameScreen.navigationOptions = ({ route }) => {
-  return {
-    ...theme.headerStyle,
-    title: route.params.title || <PageTitle title="account:changeUsername" />,
-  };
-};
-
 export default ChangeUsernameScreen;

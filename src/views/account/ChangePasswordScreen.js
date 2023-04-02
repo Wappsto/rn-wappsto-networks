@@ -1,15 +1,14 @@
 import React from 'react';
 import { ScrollView, ActivityIndicator } from 'react-native';
-import Screen from '../../../components/Screen';
-import Text from '../../../components/Text';
-import Button from '../../../components/Button';
-import Input from '../../../components/Input';
-import RequestError from '../../../components/RequestError';
-import Popup from '../../../components/Popup';
-import PageTitle from '../../../components/PageTitle';
-import theme from '../../../theme/themeExport';
-import { useTranslation, CapitalizeFirst } from '../../../translations';
-import useChangePassword from '../../../hooks/account/useChangePassword';
+import Screen from '../../components/Screen';
+import Text from '../../components/Text';
+import Button from '../../components/Button';
+import Input from '../../components/Input';
+import RequestError from '../../components/RequestError';
+import Popup from '../../components/Popup';
+import theme from '../../theme/themeExport';
+import { useTranslation, CapitalizeFirst } from '../../translations';
+import useChangePassword from '../../hooks/account/useChangePassword';
 
 const ChangePassword = React.memo(() => {
   const { t } = useTranslation();
@@ -98,12 +97,5 @@ const ChangePassword = React.memo(() => {
     </Screen>
   );
 });
-
-ChangePassword.navigationOptions = ({ route }) => {
-  return {
-    ...theme.headerStyle,
-    title: route.params.title || <PageTitle title="account:changePassword" />,
-  };
-};
 
 export default ChangePassword;

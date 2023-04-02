@@ -1,19 +1,18 @@
 import React, { useState } from 'react';
 import { View, Image, StyleSheet, ScrollView, ActivityIndicator } from 'react-native';
-import Screen from '../../../components/Screen';
-import Text from '../../../components/Text';
-import Button from '../../../components/Button';
-import RequestError from '../../../components/RequestError';
-import theme from '../../../theme/themeExport';
-import MenuButton from '../../../components/MenuButton';
-import ConfirmationPopup from '../../../components/ConfirmationPopup';
-import { useTranslation, CapitalizeFirst } from '../../../translations';
+import Screen from '../../components/Screen';
+import Text from '../../components/Text';
+import Button from '../../components/Button';
+import RequestError from '../../components/RequestError';
+import theme from '../../theme/themeExport';
+import MenuButton from '../../components/MenuButton';
+import ConfirmationPopup from '../../components/ConfirmationPopup';
+import { useTranslation, CapitalizeFirst } from '../../translations';
 import Icon from 'react-native-vector-icons/Feather';
-import useUser from '../../../hooks/useUser';
-import useDeleteAccount from '../../../hooks/account/useDeleteAccount';
-import Popup from '../../../components/Popup';
-import Input from '../../../components/Input';
-import PageTitle from '../../../components/PageTitle';
+import useUser from '../../hooks/useUser';
+import useDeleteAccount from '../../hooks/account/useDeleteAccount';
+import Popup from '../../components/Popup';
+import Input from '../../components/Input';
 import Clipboard from '@react-native-community/clipboard';
 
 const styles = StyleSheet.create({
@@ -232,13 +231,5 @@ const AccountScreen = React.memo(({ navigation }) => {
     </Screen>
   );
 });
-
-AccountScreen.navigationOptions = ({ navigation }) => {
-  return {
-    ...theme.headerStyle,
-    title: <PageTitle title="pageTitle.account" />,
-    headerLeft: () => <MenuButton navigation={navigation} />,
-  };
-};
 
 export default AccountScreen;

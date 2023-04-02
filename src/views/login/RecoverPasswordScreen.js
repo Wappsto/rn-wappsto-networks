@@ -6,7 +6,6 @@ import Text from '../../components/Text';
 import Button from '../../components/Button';
 import RequestError from '../../components/RequestError';
 import Popup from '../../components/Popup';
-import PageTitle from '../../components/PageTitle';
 import useRecoverPassword from '../../hooks/login/useRecoverPassword';
 import { useTranslation, CapitalizeFirst } from '../../translations';
 import theme from '../../theme/themeExport';
@@ -74,12 +73,5 @@ const RecoverScreen = React.memo(({ navigation }) => {
     </Screen>
   );
 });
-
-RecoverScreen.navigationOptions = () => {
-  return {
-    ...theme.headerStyle,
-    title: <PageTitle title="account:forgotPassword" />,
-  };
-};
 
 export default RecoverScreen;
