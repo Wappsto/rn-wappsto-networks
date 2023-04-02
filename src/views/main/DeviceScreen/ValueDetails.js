@@ -1,12 +1,12 @@
 import React, { useCallback } from 'react';
-import { Text as RNText, View, StyleSheet } from 'react-native';
-import PopupButton from '../../../components/PopupButton';
-import Popup from '../../../components/Popup';
+import { Text as RNText, StyleSheet, View } from 'react-native';
+import { useEntitiesSelector } from 'wappsto-blanket';
 import ID from '../../../components/ID';
+import Popup from '../../../components/Popup';
+import PopupButton from '../../../components/PopupButton';
 import Text from '../../../components/Text';
-import { useTranslation, CapitalizeFirst } from '../../../translations';
-import useEntitiesSelector from 'wappsto-blanket/hooks/useEntitiesSelector';
 import theme from '../../../theme/themeExport';
+import { CapitalizeFirst, useTranslation } from '../../../translations';
 
 const styles = StyleSheet.create({
   container: {
@@ -18,7 +18,7 @@ const styles = StyleSheet.create({
   },
 });
 
-const exist = (num) => num !== undefined && num !== null && !isNaN(num);
+const exist = num => num !== undefined && num !== null && !isNaN(num);
 
 const getValueType = (value, t) => {
   if (value) {
@@ -232,7 +232,7 @@ const ValueSettings = React.memo(({ item }) => {
           )}
           {valueDataType.view}
           {states.length &&
-            states.map((state) => (
+            states.map(state => (
               <View style={styles.container} key={state.meta.id}>
                 <Text
                   size={16}

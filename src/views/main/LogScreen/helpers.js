@@ -65,7 +65,7 @@ export const getDateOptions = (time, number = 1, arrowClick = 0, autoCompute) =>
 };
 
 export const getXValueOptions = (number, arrowClick = 0, autoCompute) => {
-  const start = new Date('01/01/2010').toISOString();
+  const start = new Date('01-01-2010').toISOString();
   const end = new Date().toISOString();
   const options = {
     start,

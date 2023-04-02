@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { TouchableOpacity, View } from 'react-native';
 import ModalDropdown from 'react-native-modal-dropdown';
 import Popover, { PopoverPlacement } from 'react-native-popover-view';
-import useVisible from 'wappsto-blanket/hooks/useVisible';
+import { useVisible } from 'wappsto-blanket';
 import Button from '../../../../components/Button';
 import Text from '../../../../components/Text';
 import theme from '../../../../theme/themeExport';
@@ -35,7 +35,7 @@ const AggregationSelector = React.memo(
     };
 
     const onChangeOperation = (_, selectedOperation) => {
-      setLocalOptions((options) => ({
+      setLocalOptions(options => ({
         ...options,
         operation: selectedOperation,
         group_by: selectedOperation === 'none' ? 'minute' : options.group_by,
@@ -43,11 +43,11 @@ const AggregationSelector = React.memo(
     };
 
     const onChangeGroupBy = (_, selectedGB) => {
-      setLocalOptions((options) => ({ ...options, group_by: selectedGB }));
+      setLocalOptions(options => ({ ...options, group_by: selectedGB }));
     };
 
     const apply = () => {
-      setOptions((options) => {
+      setOptions(options => {
         const newOptions = { ...options, ...localOptions, custom: true };
         if (newOptions.operation === 'none') {
           delete newOptions.operation;
@@ -88,7 +88,7 @@ const AggregationSelector = React.memo(
               'log:operations.' + localOptions.operation + '_short',
             )})`}
             options={OPERATIONS}
-            renderButtonText={(option) => CapitalizeFirst(t('log:operations.' + option))}
+            renderButtonText={option => CapitalizeFirst(t('log:operations.' + option))}
             renderRow={(option, _, isSelected) => (
               <Text
                 style={styles.dropdownText}
@@ -108,7 +108,7 @@ const AggregationSelector = React.memo(
                 textStyle={styles.dropdownButtonText}
                 defaultValue={CapitalizeFirst(t('log:timeFrame.' + localOptions.group_by))}
                 options={GROUP_BY}
-                renderButtonText={(option) => CapitalizeFirst(t('log:timeFrame.' + option))}
+                renderButtonText={option => CapitalizeFirst(t('log:timeFrame.' + option))}
                 renderRow={(option, _, isSelected) => (
                   <Text
                     style={styles.dropdownText}

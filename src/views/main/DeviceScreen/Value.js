@@ -1,13 +1,13 @@
 import React, { useCallback } from 'react';
-import { View, StyleSheet, ActivityIndicator, TouchableOpacity, Image } from 'react-native';
-import States from './States';
-import ValueDetails from './ValueDetails';
-import theme from '../../../theme/themeExport';
-import useRequest from 'wappsto-blanket/hooks/useRequest';
+import { ActivityIndicator, Image, StyleSheet, TouchableOpacity, View } from 'react-native';
+import { useRequest } from 'wappsto-blanket';
+import Button from '../../../components/Button';
 import RequestError from '../../../components/RequestError';
 import Text from '../../../components/Text';
-import Button from '../../../components/Button';
+import theme from '../../../theme/themeExport';
 import { useTranslation } from '../../../translations';
+import States from './States';
+import ValueDetails from './ValueDetails';
 
 const styles = StyleSheet.create({
   itemPanel: {

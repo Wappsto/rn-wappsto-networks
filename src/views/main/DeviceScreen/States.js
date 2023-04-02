@@ -1,14 +1,14 @@
-import React, { useMemo, useCallback } from 'react';
-import { View, ActivityIndicator } from 'react-native';
-import Text from '../../../components/Text';
+import React, { useCallback, useMemo } from 'react';
+import { ActivityIndicator, View } from 'react-native';
 import { useSelector } from 'react-redux';
+import { makeEntitiesSelector } from 'wappsto-redux';
+import { useRequest } from 'wappsto-blanket';
+import RequestError from '../../../components/RequestError';
+import Text from '../../../components/Text';
+import theme from '../../../theme/themeExport';
+import { CapitalizeFirst, useTranslation } from '../../../translations';
 import ControlState from './ControlState';
 import ReportState from './ReportState';
-import RequestError from '../../../components/RequestError';
-import { makeEntitiesSelector } from 'wappsto-redux/selectors/entities';
-import theme from '../../../theme/themeExport';
-import { useTranslation, CapitalizeFirst } from '../../../translations';
-import useRequest from 'wappsto-blanket/hooks/useRequest';
 
 const StatesComponent = React.memo(({ value }) => {
   const { t } = useTranslation();
@@ -16,7 +16,7 @@ const StatesComponent = React.memo(({ value }) => {
   const url = '/value/' + id + '/state';
   const { request, send } = useRequest();
   const getEntities = useMemo(makeEntitiesSelector, []);
-  const states = useSelector((state) =>
+  const states = useSelector(state =>
     getEntities(state, 'state', { parent: { type: 'value', id: id } }),
   );
 
@@ -33,8 +33,8 @@ const StatesComponent = React.memo(({ value }) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [request, url]);
 
-  const reportState = states.find((s) => s.type === 'Report');
-  const controlState = states.find((s) => s.type === 'Control');
+  const reportState = states.find(s => s.type === 'Report');
+  const controlState = states.find(s => s.type === 'Control');
   const haveReportState = reportState && reportState.meta && !reportState.meta.error;
   const haveControlState = controlState && controlState.meta && !controlState.meta.error;
 

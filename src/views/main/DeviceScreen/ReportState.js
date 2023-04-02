@@ -1,11 +1,10 @@
 import React from 'react';
-import { View, Text as RNtext, StyleSheet, Image } from 'react-native';
+import { Image, Text as RNtext, StyleSheet, View } from 'react-native';
+import { cannotAccessState, roundBasedOnStep } from 'wappsto-blanket';
 import Text from '../../../components/Text';
-import theme from '../../../theme/themeExport';
-import { useTranslation, CapitalizeFirst } from '../../../translations';
 import Timestamp from '../../../components/Timestamp';
-import { cannotAccessState } from 'wappsto-blanket/util';
-import { roundBasedOnStep } from 'wappsto-blanket/util';
+import theme from '../../../theme/themeExport';
+import { CapitalizeFirst, useTranslation } from '../../../translations';
 
 const styles = StyleSheet.create({
   image: {

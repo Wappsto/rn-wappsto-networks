@@ -1,12 +1,12 @@
-import React, { useRef, useMemo } from 'react';
-import { ScrollView, View, Image, StyleSheet, StatusBar } from 'react-native';
+import React, { useMemo, useRef } from 'react';
+import { Image, ScrollView, StatusBar, StyleSheet, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import KeyboardAvoidingView from './KeyboardAvoidingView';
-import Button from './Button';
-import Text from './Text';
 import Icon from 'react-native-vector-icons/Feather';
 import theme from '../theme/themeExport';
-import { useTranslation, CapitalizeFirst } from '../translations';
+import { CapitalizeFirst, useTranslation } from '../translations';
+import Button from './Button';
+import KeyboardAvoidingView from './KeyboardAvoidingView';
+import Text from './Text';
 
 const styles = StyleSheet.create({
   header: {

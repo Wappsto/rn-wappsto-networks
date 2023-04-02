@@ -6,7 +6,7 @@ import RequestError from '../../../components/RequestError';
 import theme from '../../../theme/themeExport';
 import { useTranslation, CapitalizeFirst } from '../../../translations';
 import Timestamp from '../../../components/Timestamp';
-import { cannotAccessState } from 'wappsto-blanket/util';
+import { cannotAccessState } from 'wappsto-blanket';
 import { getStateData } from '../../../util/helpers';
 import useControlState from '../../../hooks/useControlState';
 import NumericInput from '../../../components/NumericInput';
@@ -51,7 +51,7 @@ export const StateDataField = ({
         value={input}
         maxLength={value.string.max}
         onSubmitEditing={updateStateFromInput}
-        onChangeText={(text) => setInput(text)}
+        onChangeText={text => setInput(text)}
         editable={!isUpdating}
       />
     );
@@ -117,7 +117,7 @@ export const StateDataField = ({
         value={input}
         maxLength={value.blob.max}
         onSubmitEditing={updateStateFromInput}
-        onChangeText={(text) => setInput(text)}
+        onChangeText={text => setInput(text)}
         editable={!isUpdating}
       />
     );
@@ -132,7 +132,7 @@ export const StateDataField = ({
         maxLength={value.xml.max}
         onSubmitEditing={updateStateFromInput}
         editable={!isUpdating}
-        onChangeText={(text) => setInput(text)}
+        onChangeText={text => setInput(text)}
       />
     );
   }

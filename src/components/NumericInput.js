@@ -1,16 +1,16 @@
 import React, { useCallback, useState } from 'react';
 import {
+  ActivityIndicator,
+  Platform,
   StyleSheet,
-  View,
   TextInput,
   TouchableOpacity,
-  Platform,
-  ActivityIndicator,
+  View,
 } from 'react-native';
-import Text from './Text';
 import Icon from 'react-native-vector-icons/Feather';
 import theme from '../theme/themeExport';
-import { useTranslation, CapitalizeFirst } from '../translations';
+import { CapitalizeFirst, useTranslation } from '../translations';
+import Text from './Text';
 
 const styles = StyleSheet.create({
   numericInput: {
@@ -85,7 +85,7 @@ const NumericInput = React.memo(
     const [warning, setWarning] = useState(false);
 
     const updateWarning = useCallback(
-      (value) => {
+      value => {
         if (min !== null && min !== undefined && !isNaN(min)) {
           if (parseFloat(value) < parseFloat(min)) {
             setWarning(['dataModel:validation.wrongMinNumber', { number: min }]);
@@ -106,7 +106,7 @@ const NumericInput = React.memo(
     );
 
     const onChangeText = useCallback(
-      (text) => {
+      text => {
         onChange(text);
         updateWarning(text);
       },

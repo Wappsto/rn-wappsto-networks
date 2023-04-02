@@ -1,9 +1,9 @@
 import React from 'react';
-import { View, StyleSheet, KeyboardAvoidingView } from 'react-native';
-import Text from '../components/Text';
+import { KeyboardAvoidingView, StyleSheet, View } from 'react-native';
 import Button from '../components/Button';
+import Text from '../components/Text';
+import { CapitalizeFirst, useTranslation } from '../translations';
 import Popup from './Popup';
-import { useTranslation, CapitalizeFirst } from '../translations';
 
 const styles = StyleSheet.create({
   btnGroup: {

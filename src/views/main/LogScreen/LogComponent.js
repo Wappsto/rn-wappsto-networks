@@ -1,6 +1,5 @@
 import React, { useEffect, useRef, useMemo } from 'react';
-import useLogs, { STATUS } from 'wappsto-blanket/hooks/useLogs';
-import useEntitySelector from 'wappsto-blanket/hooks/useEntitySelector';
+import { useLogs, STATUS, useEntitySelector } from 'wappsto-blanket';
 import { useTranslation, CapitalizeFirst } from '../../../translations';
 
 const LogComponent = React.memo(

@@ -1,13 +1,13 @@
-import React, { useEffect, useMemo, useState, useRef, useCallback } from 'react';
-import { TouchableOpacity, StyleSheet, View } from 'react-native';
+import dayjs from 'dayjs';
+import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import { StyleSheet, TouchableOpacity, View } from 'react-native';
 import {
   VictoryChart,
-  VictoryVoronoiContainer,
+  VictoryLine,
   VictoryScatter,
   VictoryTheme,
-  VictoryLine,
+  VictoryVoronoiContainer,
 } from 'victory-native';
-import moment from 'moment/moment';
 import Text from '../../../components/Text';
 import theme from '../../../theme/themeExport';
 
@@ -48,7 +48,7 @@ const GraphChart = React.memo(({ data, operation = 'data', reverseOrder }) => {
     for (let key in data) {
       const props = {
         key,
-        data: data[key].data.map((d) => {
+        data: data[key].data.map(d => {
           const time = new Date(d.time);
           const data = d[operation] && !isNaN(d[operation]) ? parseFloat(d[operation]) : null;
           if (!x[0] || time.getTime() < x[0].getTime()) {
@@ -103,7 +103,7 @@ const GraphChart = React.memo(({ data, operation = 'data', reverseOrder }) => {
       legend.push(
         <TouchableOpacity
           key={key}
-          onPress={() => setHidden((h) => (isHidden ? h.filter((k) => k !== key) : [...h, key]))}>
+          onPress={() => setHidden(h => (isHidden ? h.filter(k => k !== key) : [...h, key]))}>
           <View style={[theme.common.row, isHidden && styles.selected]}>
             <View style={[styles.colorBox, { backgroundColor: COLORS[key] }]} />
             <Text content={name} />
@@ -117,8 +117,8 @@ const GraphChart = React.memo(({ data, operation = 'data', reverseOrder }) => {
   useEffect(() => {
     if (formattedData.length > 0 && formattedData[0].data.length > 2) {
       const data = formattedData[0].data;
-      const date1 = moment(data[0].x).format('lll');
-      const date2 = moment(data[data.length - 1].x).format('lll');
+      const date1 = dayjs(data[0].x).format('lll');
+      const date2 = dayjs(data[data.length - 1].x).format('lll');
       if (reverseOrder) {
         setDates(date2 + ' - ' + date1);
       } else {
@@ -138,8 +138,8 @@ const GraphChart = React.memo(({ data, operation = 'data', reverseOrder }) => {
         containerComponent={
           <VictoryVoronoiContainer
             voronoiBlacklist={['Report_line', 'Control_line']}
-            labels={(d) => [
-              `${d.datum.childName}: ${d.datum.rawValue}\n\n ${moment(d.datum.x).format('lll')}`,
+            labels={d => [
+              `${d.datum.childName}: ${d.datum.rawValue}\n\n ${dayjs(d.datum.x).format('lll')}`,
             ]}
           />
         }>

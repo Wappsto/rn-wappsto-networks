@@ -1,16 +1,16 @@
 import React, { useMemo } from 'react';
-import Screen from '../../../components/Screen';
+import ItemDeleteIndicator from '../../../components/ItemDeleteIndicator';
 import List from '../../../components/List';
-import Value from './Value';
+import Screen from '../../../components/Screen';
+import useDeleteItemRequest from '../../../hooks/useDeleteItemRequest';
+import useGetItemEntity from '../../../hooks/useGetItemEntity';
+import useUndefinedBack from '../../../hooks/useUndefinedBack';
+import useUnmountRemoveItem from '../../../hooks/useUnmountRemoveItem';
 import theme from '../../../theme/themeExport';
 import { selectedDeviceName } from '../../../util/params';
 import DeviceDetails from './DeviceDetails';
 import DeviceLocation from './DeviceLocation';
-import useUnmountRemoveItem from '../../../hooks/useUnmountRemoveItem';
-import useUndefinedBack from '../../../hooks/useUndefinedBack';
-import useGetItemEntity from '../../../hooks/useGetItemEntity';
-import useDeleteItemRequest from '../../../hooks/useDeleteItemRequest';
-import ItemDeleteIndicator from '../../../components/ItemDeleteIndicator';
+import Value from './Value';
 
 const DeviceScreen = React.memo(({ navigation }) => {
   const device = useGetItemEntity(selectedDeviceName, 'device');

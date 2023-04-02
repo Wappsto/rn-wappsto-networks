@@ -1,17 +1,17 @@
 import React from 'react';
 import { Text as RNText } from 'react-native';
-import Text from '../../../components/Text';
 import Button from '../../../components/Button';
-import PopupButton from '../../../components/PopupButton';
-import Popup from '../../../components/Popup';
-import ID from '../../../components/ID';
-import theme from '../../../theme/themeExport';
-import { useTranslation, CapitalizeFirst } from '../../../translations';
-import { selectedDeviceName } from '../../../util/params';
-import useGetItemEntity from '../../../hooks/useGetItemEntity';
 import ConfirmationPopup from '../../../components/ConfirmationPopup';
+import ID from '../../../components/ID';
+import Popup from '../../../components/Popup';
+import PopupButton from '../../../components/PopupButton';
 import RequestError from '../../../components/RequestError';
+import Text from '../../../components/Text';
 import useDeleteItem from '../../../hooks/useDeleteItem';
+import useGetItemEntity from '../../../hooks/useGetItemEntity';
+import theme from '../../../theme/themeExport';
+import { CapitalizeFirst, useTranslation } from '../../../translations';
+import { selectedDeviceName } from '../../../util/params';
 
 const ValueSettings = React.memo(() => {
   const { t } = useTranslation();
