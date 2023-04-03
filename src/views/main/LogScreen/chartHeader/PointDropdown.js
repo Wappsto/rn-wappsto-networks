@@ -55,4 +55,5 @@ const PointDropdown = React.memo(({ value, setOptions, autoCompute }) => {
   );
 });
 
+PointDropdown.displayName = 'PointDropdown';
 export default PointDropdown;

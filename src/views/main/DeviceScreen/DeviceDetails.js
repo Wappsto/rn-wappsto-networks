@@ -13,7 +13,7 @@ import theme from '../../../theme/themeExport';
 import { CapitalizeFirst, useTranslation } from '../../../translations';
 import { selectedDeviceName } from '../../../util/params';
 
-const ValueSettings = React.memo(() => {
+const DeviceDetails = React.memo(() => {
   const { t } = useTranslation();
   const device = useGetItemEntity(selectedDeviceName, 'device');
   const { deleteItem, request, confirmVisible, showDeleteConfirmation, hideDeleteConfirmation } =
@@ -135,4 +135,5 @@ const ValueSettings = React.memo(() => {
   );
 });
 
-export default ValueSettings;
+DeviceDetails.displayName = 'DeviceDetails';
+export default DeviceDetails;

@@ -180,4 +180,5 @@ const NetworkScreen = React.memo(() => {
   );
 });
 
+NetworkScreen.displayName = 'NetworkScreen';
 export default NetworkScreen;

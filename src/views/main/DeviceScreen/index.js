@@ -53,4 +53,5 @@ const DeviceScreen = React.memo(() => {
   );
 });
 
+DeviceScreen.displayName = 'DeviceScreen';
 export default DeviceScreen;

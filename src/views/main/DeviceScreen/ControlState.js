@@ -1,13 +1,13 @@
 import React from 'react';
 import { View, Switch, StyleSheet } from 'react-native';
 import Text from '../../../components/Text';
-import Slider from '@react-native-community/slider';
+// import Slider from '@react-native-community/slider';
 import RequestError from '../../../components/RequestError';
 import theme from '../../../theme/themeExport';
 import { useTranslation, CapitalizeFirst } from '../../../translations';
 import Timestamp from '../../../components/Timestamp';
 import { cannotAccessState } from 'wappsto-blanket';
-import { getStateData } from '../../../util/helpers';
+// import { getStateData } from '../../../util/helpers';
 import useControlState from '../../../hooks/useControlState';
 import NumericInput from '../../../components/NumericInput';
 import Input from '../../../components/Input';
@@ -33,13 +33,11 @@ export const StateDataField = ({
   value,
   input,
   setInput,
-  isFocused,
   setIsFocused,
   updateStateFromInput,
   updateSwitchState,
   throttledUpdateState,
-  updateState,
-  request,
+  // updateState,
   isUpdating,
 }) => {
   let stateDataField = null;
@@ -172,4 +170,5 @@ const ControlState = React.memo(({ state, value }) => {
   );
 });
 
+ControlState.displayName = 'ControlState';
 export default ControlState;

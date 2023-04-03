@@ -70,4 +70,6 @@ const TimeDropdown = React.memo(({ value, setOptions, autoCompute }) => {
     </Popover>
   );
 });
+
+TimeDropdown.displayName = 'TimeDropdown';
 export default TimeDropdown;

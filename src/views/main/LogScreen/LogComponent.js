@@ -131,4 +131,5 @@ const LogComponent = React.memo(
 );
 
 export { STATUS };
+LogComponent.displayName = 'LogComponent';
 export default LogComponent;

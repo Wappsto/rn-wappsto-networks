@@ -293,4 +293,5 @@ const ValueSettings = React.memo(({ item }) => {
   return <PopupButton icon="info">{content}</PopupButton>;
 });
 
+ValueSettings.displayName = 'ValueSettings';
 export default ValueSettings;

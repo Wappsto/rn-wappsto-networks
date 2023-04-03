@@ -66,4 +66,5 @@ const DeviceItem = React.memo(({ id }) => {
   );
 });
 
+DeviceItem.displayName = 'DeviceItem';
 export default DeviceItem;

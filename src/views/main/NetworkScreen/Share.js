@@ -169,4 +169,5 @@ const Share = React.memo(({ item, visible, hide }) => {
   );
 });
 
+Share.displayName = 'Share';
 export default Share;

@@ -83,4 +83,5 @@ const ReportState = React.memo(({ state, value }) => {
   );
 });
 
+ReportState.displayName = 'ReportState';
 export default ReportState;

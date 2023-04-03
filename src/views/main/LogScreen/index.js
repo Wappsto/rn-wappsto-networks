@@ -171,11 +171,5 @@ const LogScreen = React.memo(() => {
   );
 });
 
-LogScreen.navigationOptions = ({ route }) => {
-  return {
-    ...theme.headerStyle,
-    title: route.params.title || '',
-  };
-};
-
+LogScreen.displayName = 'LogScreen';
 export default LogScreen;

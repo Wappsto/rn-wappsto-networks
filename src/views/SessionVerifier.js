@@ -99,4 +99,5 @@ const SessionVerifier = React.memo(({ status, session, onResult }) => {
   return null;
 });
 
+SessionVerifier.displayName = 'SessionVerifier';
 export default SessionVerifier;

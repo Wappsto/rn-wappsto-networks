@@ -61,4 +61,6 @@ const TypeSelector = React.memo(({ type, setOptions }) => {
     </Popover>
   );
 });
+
+TypeSelector.displayName = 'TypeSelector';
 export default TypeSelector;

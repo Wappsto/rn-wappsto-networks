@@ -150,4 +150,5 @@ const GraphChart = React.memo(({ data, operation = 'data', reverseOrder }) => {
   );
 });
 
+GraphChart.displayName = 'GraphChart';
 export default GraphChart;

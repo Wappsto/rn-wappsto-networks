@@ -91,10 +91,5 @@ const ValueComponent = React.memo(({ item, navigation }) => {
   );
 });
 
-ValueComponent.navigationOptions = ({ route }) => {
-  return {
-    title: route.params.title || '',
-  };
-};
-
+ValueComponent.displayName = 'ValueComponent';
 export default ValueComponent;

@@ -55,4 +55,5 @@ const DeviceLocation = React.memo(geo => {
   );
 });
 
+DeviceLocation.displayName = 'DeviceLocation';
 export default DeviceLocation;
