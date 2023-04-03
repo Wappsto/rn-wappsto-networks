@@ -1,5 +1,5 @@
 import { useNavigation } from '@react-navigation/native';
-import React, { useMemo } from 'react';
+import React, { useMemo, useEffect } from 'react';
 import ItemDeleteIndicator from '../../../components/ItemDeleteIndicator';
 import List from '../../../components/List';
 import Screen from '../../../components/Screen';
@@ -27,10 +27,12 @@ const DeviceScreen = React.memo(() => {
     [],
   );
 
-  navigation.setOptions({
-    title: device.meta.name_by_user || device.name,
-    headerRight: () => <DeviceDetails />,
-  });
+  useEffect(() => {
+    navigation.setOptions({
+      title: device.meta.name_by_user,
+      headerRight: () => <DeviceDetails />,
+    });
+  }, [device?.meta.name_by_user, navigation]);
 
   useUnmountRemoveItem(selectedDeviceName);
   useUndefinedBack(device, navigation);
