@@ -51,4 +51,5 @@ const RequestError = React.memo(({ request, skipCodes = [], warning, autoHide = 
   return null;
 });
 
+RequestError.displayName = 'RequestError';
 export default RequestError;

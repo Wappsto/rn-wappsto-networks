@@ -92,4 +92,5 @@ const BackHandlerView = React.memo(
   },
 );
 
+BackHandlerView.displayName = 'BackHandlerView';
 export default BackHandlerView;

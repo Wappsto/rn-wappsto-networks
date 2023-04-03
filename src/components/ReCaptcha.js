@@ -18,4 +18,5 @@ const ReCaptcha = React.memo(({ onCheck, style, captchaRef }) => {
   );
 });
 
+ReCaptcha.displayName = 'ReCaptcha';
 export default ReCaptcha;

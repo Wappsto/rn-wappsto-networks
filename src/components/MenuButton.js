@@ -21,4 +21,5 @@ const MenuButton = React.memo(() => {
   );
 });
 
+MenuButton.displayName = 'MenuButton';
 export default MenuButton;

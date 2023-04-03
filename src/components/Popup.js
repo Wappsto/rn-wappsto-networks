@@ -83,4 +83,5 @@ const Popup = React.memo(
   },
 );
 
+Popup.displayName = 'Popup';
 export default Popup;

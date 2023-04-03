@@ -1,8 +1,8 @@
 import React from 'react';
-import { StyleSheet, View, TextInput } from 'react-native';
-import Text from './Text';
+import { StyleSheet, TextInput, View } from 'react-native';
 import Icon from 'react-native-vector-icons/Feather';
 import theme from '../theme/themeExport';
+import Text from './Text';
 
 export const styles = StyleSheet.create({
   inputWrapper: {
@@ -104,4 +104,5 @@ const Input = React.memo(
   },
 );
 
+Input.displayName = 'Input';
 export default Input;

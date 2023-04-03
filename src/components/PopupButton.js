@@ -33,4 +33,5 @@ const PopupButton = React.memo(({ icon, style, color, showItem, hideItem, childr
   );
 });
 
+PopupButton.displayName = 'PopupButton';
 export default PopupButton;

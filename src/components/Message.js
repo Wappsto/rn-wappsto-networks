@@ -26,7 +26,7 @@ const Message = React.memo(({ style, message, type, closable, ...props }) => {
     setMessageVisible(false);
   }, []);
   let textColor = theme.variables.textInverse;
-  const setType = (type) => {
+  const setType = type => {
     switch (type) {
       case 'info':
         return { backgroundColor: theme.variables.secondary };
@@ -58,4 +58,5 @@ const Message = React.memo(({ style, message, type, closable, ...props }) => {
   }
 });
 
+Message.displayName = 'Message';
 export default Message;

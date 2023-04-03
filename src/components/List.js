@@ -22,8 +22,6 @@ const List = React.memo(
     query,
     style,
     listHeaderComponent,
-    renderSectionHeader,
-    renderSectionFooter,
     renderItem,
     addItemName,
     removeItemName,
@@ -109,4 +107,5 @@ const List = React.memo(
   },
 );
 
+List.displayName = 'List';
 export default List;

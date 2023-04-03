@@ -12,4 +12,5 @@ const Timestamp = React.memo(({ timestamp }) => {
   return <Text color="secondary" size={12} content={dateString} />;
 });
 
+Timestamp.displayName = 'Timestamp';
 export default Timestamp;

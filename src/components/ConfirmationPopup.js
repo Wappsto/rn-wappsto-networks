@@ -64,4 +64,5 @@ const ConfirmationPopup = React.memo(
   },
 );
 
+ConfirmationPopup.displayName = 'ConfirmationPopup';
 export default ConfirmationPopup;

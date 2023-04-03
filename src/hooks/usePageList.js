@@ -33,15 +33,13 @@ const usePageList = (name, url, query, addItemName, removeItemName) => {
     if (addItemName) {
       dispatch(setItem(addItemName, () => addItem));
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [addItemName, addItem]);
+  }, [addItemName, addItem, dispatch]);
 
   useEffect(() => {
     if (removeItemName) {
       dispatch(setItem(removeItemName, () => removeItem));
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [removeItemName, removeItem]);
+  }, [removeItemName, removeItem, dispatch]);
 
   const refreshList = useCallback(() => {
     // clear child list
@@ -66,8 +64,7 @@ const usePageList = (name, url, query, addItemName, removeItemName) => {
       }
     });
     refresh();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [items]);
+  }, [dispatch, items, refresh]);
 
   useAppState(
     useCallback(() => {

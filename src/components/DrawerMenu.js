@@ -1,15 +1,15 @@
-import React from 'react';
-import { SafeAreaView } from 'react-native-safe-area-context';
 import { DrawerItemList } from '@react-navigation/drawer';
-import { View, StyleSheet, ScrollView, Image, ActivityIndicator } from 'react-native';
-import RequestError from './RequestError';
-import theme from '../theme/themeExport';
-import Text from './Text';
-import Button from './Button';
+import React from 'react';
+import { ActivityIndicator, Image, ScrollView, StyleSheet, View } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
 import Icon from 'react-native-vector-icons/Feather';
-import { useTranslation, CapitalizeFirst } from '../translations';
-import useUser from '../hooks/useUser';
 import VersionNumber from 'react-native-version-number';
+import useUser from '../hooks/useUser';
+import theme from '../theme/themeExport';
+import { CapitalizeFirst, useTranslation } from '../translations';
+import Button from './Button';
+import RequestError from './RequestError';
+import Text from './Text';
 
 const styles = StyleSheet.create({
   container: {
@@ -54,7 +54,7 @@ const styles = StyleSheet.create({
     margin: 10,
   },
 });
-const DrawerMenu = React.memo((props) => {
+const DrawerMenu = React.memo(props => {
   const { t } = useTranslation();
   const { user, name, logout, request } = useUser(props.navigation);
   for (const view in props.descriptors) {
@@ -62,7 +62,7 @@ const DrawerMenu = React.memo((props) => {
       props.descriptors[view].options = {};
     }
     if (!props.descriptors[view].options.drawerLabel) {
-      const route = props.state.routes.find((route) => route.key === view);
+      const route = props.state.routes.find(route => route.key === view);
       if (route) {
         props.descriptors[view].options.drawerLabel = CapitalizeFirst(t('pageTitle.' + route.name));
       }
@@ -99,4 +99,5 @@ const DrawerMenu = React.memo((props) => {
   );
 });
 
+DrawerMenu.displayName = 'DrawerMenu';
 export default DrawerMenu;

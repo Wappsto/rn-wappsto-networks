@@ -62,4 +62,5 @@ const Screen = React.memo(({ style, children }) => {
   );
 });
 
+Screen.displayName = 'Screen';
 export default Screen;

@@ -1,9 +1,9 @@
-import React, { useState, useEffect } from 'react';
-import { Text as RNText, View, StyleSheet } from 'react-native';
 import Clipboard from '@react-native-community/clipboard';
-import Text from './Text';
-import Button from './Button';
+import React, { useEffect, useState } from 'react';
+import { Text as RNText, StyleSheet, View } from 'react-native';
 import theme from '../theme/themeExport';
+import Button from './Button';
+import Text from './Text';
 
 const styles = StyleSheet.create({
   label: {
@@ -17,7 +17,7 @@ const ID = React.memo(({ id, label }) => {
   const [copiedText, setCopiedText] = useState('Nothing copied yet');
   const [copiedTextVisible, setCopiedTextVisible] = useState(false);
 
-  const copyToClipboard = (id) => {
+  const copyToClipboard = id => {
     Clipboard.setString(id);
     setCopiedText(id);
     setCopiedTextVisible(true);
@@ -35,7 +35,9 @@ const ID = React.memo(({ id, label }) => {
     };
   }, [copiedTextVisible]);
 
-  if (!id) return '';
+  if (!id) {
+    return '';
+  }
 
   return (
     <>
@@ -59,4 +61,5 @@ const ID = React.memo(({ id, label }) => {
   );
 });
 
+ID.displayName = 'ID';
 export default ID;

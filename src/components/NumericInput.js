@@ -170,4 +170,5 @@ const NumericInput = React.memo(
   },
 );
 
+NumericInput.displayName = 'NumericInput';
 export default NumericInput;

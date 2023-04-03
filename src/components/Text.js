@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, Text as RNtext } from 'react-native';
+import { Text as RNtext, StyleSheet } from 'react-native';
 import theme from '../theme/themeExport';
 
 const styles = StyleSheet.create({
@@ -21,7 +21,7 @@ const styles = StyleSheet.create({
   },
 });
 
-const Title = React.memo(({ style, bold, size, align, title, color, content, ...props }) => {
+const Text = React.memo(({ style, bold, size, align, title, color, content, ...props }) => {
   const fontSize = () => {
     switch (size) {
       case 'p':
@@ -38,7 +38,7 @@ const Title = React.memo(({ style, bold, size, align, title, color, content, ...
         return !isNaN(size) ? size : theme.variables.defaultFontSize;
     }
   };
-  const fontStyle = (size) => {
+  const fontStyle = size => {
     const s = fontSize();
 
     return {
@@ -48,7 +48,7 @@ const Title = React.memo(({ style, bold, size, align, title, color, content, ...
     };
   };
 
-  const textColor = (color) => {
+  const textColor = color => {
     switch (color) {
       case 'primary':
         return { color: theme.variables.primary };
@@ -85,4 +85,5 @@ const Title = React.memo(({ style, bold, size, align, title, color, content, ...
   );
 });
 
-export default Title;
+Text.displayName = 'Text';
+export default Text;

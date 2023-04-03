@@ -8,4 +8,5 @@ function FocusAwareStatusBar(props) {
   return isFocused ? <StatusBar {...props} /> : null;
 }
 
+FocusAwareStatusBar.displayName = 'FocusAwareStatusBar';
 export default FocusAwareStatusBar;
