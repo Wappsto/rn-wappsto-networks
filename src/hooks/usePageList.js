@@ -7,7 +7,7 @@ import {
   removeRequest,
   makeStreamSelector,
   makeItemSelector,
-  schemas,
+  schema as schemas,
 } from 'wappsto-redux';
 import { config } from '../configureWappstoRedux';
 import { currentPage } from '../util/params';

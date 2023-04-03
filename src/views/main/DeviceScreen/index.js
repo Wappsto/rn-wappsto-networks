@@ -28,7 +28,7 @@ const DeviceScreen = React.memo(() => {
   );
 
   navigation.setOptions({
-    title: device.name_by_user || device.name,
+    title: device.meta.name_by_user || device.name,
     headerRight: () => <DeviceDetails />,
   });
 

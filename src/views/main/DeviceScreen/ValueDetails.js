@@ -177,7 +177,14 @@ const ValueSettings = React.memo(({ item }) => {
       const valueDataType = getValueType(item, t);
       return (
         <Popup visible={visible} onRequestClose={hide} hide={hide}>
-          <Text size={'h4'} content={item.name} />
+          <Text
+            size={'h4'}
+            content={
+              item.meta.name_by_user !== item.name
+                ? `${item.meta.name_by_user} (${item.name})`
+                : item.name
+            }
+          />
           <ID id={item.meta.id} label={CapitalizeFirst(t('dataModel:valueProperties.meta.id'))} />
           {!!item.type && (
             <RNText>

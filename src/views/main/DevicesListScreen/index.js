@@ -61,10 +61,8 @@ const ItemHeader = React.memo(({ network }) => {
 
   const navigate = useCallback(() => {
     dispatch(setItem(selectedNetworkName, network.meta.id));
-    navigation.navigate(NAV.MAIN.NETWORK, {
-      title: network.name ? network.name : network.meta.id,
-    });
-  }, [dispatch, navigation, network.meta.id, network.name]);
+    navigation.navigate(NAV.MAIN.NETWORK);
+  }, [dispatch, navigation, network.meta.id]);
 
   return (
     <View style={[theme.common.row, styles.listHeader]}>
@@ -72,8 +70,8 @@ const ItemHeader = React.memo(({ network }) => {
         <View style={[styles.circle, online ? styles.online : styles.offline]} />
       )}
       <RNText numberOfLines={1} ellipsizeMode="tail" style={styles.textRow}>
-        {network.name && <Text bold content={network.name + ' '} />}
-        <Text color="secondary" content={'[' + network.meta.id.slice(0, 9) + '... ]'} />
+        {network.meta.name_by_user && <Text bold content={network.meta.name_by_user} />}
+        <Text color="secondary" content={' [' + network.meta.id.slice(0, 9) + '... ]'} />
       </RNText>
 
       <Button icon="more-vertical" type="link" onPress={navigate} />

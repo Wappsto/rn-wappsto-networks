@@ -43,7 +43,7 @@ const ValueComponent = React.memo(({ item, navigation }) => {
 
   const navigateToLog = useCallback(() => {
     navigation.navigate('LogScreen', {
-      title: `${item.name || item.meta.id} ${t('pageTitle.logs')}`,
+      title: `${item.meta.name_by_user || item.name} ${t('pageTitle.logs')}`,
       id: item.meta.id,
     });
   }, [navigation, t, item]);

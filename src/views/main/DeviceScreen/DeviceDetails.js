@@ -30,7 +30,14 @@ const ValueSettings = React.memo(() => {
           accept={deleteItem}
           reject={hideDeleteConfirmation}
         />
-        <Text size="h4" content={device.name} />
+        <Text
+          size="h4"
+          content={
+            device.meta.name_by_user !== device.name
+              ? `${device.meta.name_by_user} (${device.name})`
+              : device.name
+          }
+        />
         <ID id={device.meta.id} label={CapitalizeFirst(t('dataModel:deviceProperties.meta.id'))} />
         {!!device.manufacturer && (
           <RNText>

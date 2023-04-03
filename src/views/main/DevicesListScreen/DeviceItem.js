@@ -53,7 +53,7 @@ const DeviceItem = React.memo(({ id }) => {
     <TouchableOpacity onPress={navigate}>
       <View style={styles.listItem}>
         <View style={styles.listItemTitleArea}>
-          <Text style={styles.listItemHeader} content={device.name} />
+          <Text style={styles.listItemHeader} content={device.meta.name_by_user} />
           <Text
             style={styles.listItemSubheader}
             content={

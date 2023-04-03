@@ -45,7 +45,7 @@ const NetworkScreen = React.memo(() => {
   }
 
   navigation.setOptions({
-    title: network.name_by_user || network.name,
+    title: network.meta.name_by_user,
   });
 
   return (
@@ -61,7 +61,13 @@ const NetworkScreen = React.memo(() => {
                 bold
                 content={CapitalizeFirst(t('dataModel:networkProperties.name')) + ': '}
               />
-              <Text content={network.name} />
+              <Text
+                content={
+                  network.meta.name_by_user !== network.name
+                    ? `${network.meta.name_by_user} (${network.name})`
+                    : network.name
+                }
+              />
             </RNText>
           )}
           <ID
