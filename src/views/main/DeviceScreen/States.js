@@ -1,9 +1,7 @@
-import React, { useCallback, useMemo } from 'react';
-import { ActivityIndicator, View } from 'react-native';
+import React, { useMemo } from 'react';
+import { View } from 'react-native';
 import { useSelector } from 'react-redux';
 import { makeEntitiesSelector } from 'wappsto-redux';
-import { useRequest } from 'wappsto-blanket';
-import RequestError from '../../../components/RequestError';
 import Text from '../../../components/Text';
 import theme from '../../../theme/themeExport';
 import { CapitalizeFirst, useTranslation } from '../../../translations';
@@ -13,25 +11,10 @@ import ReportState from './ReportState';
 const StatesComponent = React.memo(({ value }) => {
   const { t } = useTranslation();
   const id = value.meta.id;
-  const url = '/value/' + id + '/state';
-  const { request, send } = useRequest();
   const getEntities = useMemo(makeEntitiesSelector, []);
   const states = useSelector(state =>
     getEntities(state, 'state', { parent: { type: 'value', id: id } }),
   );
-
-  const refresh = useCallback(() => {
-    if (!request || request.status !== 'pending') {
-      send({
-        method: 'GET',
-        url: url,
-        query: {
-          expand: 0,
-        },
-      });
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [request, url]);
 
   const reportState = states.find(s => s.type === 'Report');
   const controlState = states.find(s => s.type === 'Control');
@@ -41,13 +24,11 @@ const StatesComponent = React.memo(({ value }) => {
   return (
     <View>
       {states.length !== 0 ? (
-        <>
-          <View style={{ padding: 15 }}>
-            {haveReportState && <ReportState value={value} state={reportState} />}
-            {haveReportState && haveControlState && <View style={theme.common.seperator} />}
-            {haveControlState && <ControlState value={value} state={controlState} />}
-          </View>
-        </>
+        <View style={{ padding: 15 }}>
+          {haveReportState && <ReportState value={value} state={reportState} />}
+          {haveReportState && haveControlState && <View style={theme.common.seperator} />}
+          {haveControlState && <ControlState value={value} state={controlState} />}
+        </View>
       ) : (
         <Text
           size="p"
@@ -57,12 +38,9 @@ const StatesComponent = React.memo(({ value }) => {
           style={theme.common.spaceAround}
         />
       )}
-      {request && request.status === 'pending' && (
-        <ActivityIndicator size="large" color={theme.variables.spinnerColor} />
-      )}
-      <RequestError request={request} />
     </View>
   );
 });
 
+StatesComponent.displayName = 'StatesComponent';
 export default StatesComponent;
