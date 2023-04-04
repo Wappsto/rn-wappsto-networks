@@ -5,7 +5,7 @@ import List from '../../../components/List';
 import Screen from '../../../components/Screen';
 import Text from '../../../components/Text';
 import DeviceItem from './DeviceItem';
-// import AddNetwork from './AddNetwork';
+import AddNetwork from './AddNetwork';
 import { useNavigation } from '@react-navigation/native';
 import { useDispatch } from 'react-redux';
 import { setItem } from 'wappsto-redux';
@@ -126,7 +126,7 @@ const DevicesListScreen = React.memo(() => {
     navigation.setOptions({
       title: CapitalizeFirst(t('pageTitle.main')),
       headerLeft: () => <MenuButton />,
-      // headerRight: () => <AddNetwork navigation={navigation} />,
+      headerRight: () => <AddNetwork />,
     });
   }, [navigation, t]);
 
