@@ -136,7 +136,7 @@ const AccountScreen = React.memo(({ navigation }) => {
 
   return (
     <Screen>
-      <ScrollView style={theme.common.contentContainer}>
+      <ScrollView style={theme.common.contentContainer} bounces={false}>
         {user ? (
           <>
             {signedWithEmail ? (
