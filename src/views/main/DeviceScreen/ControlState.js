@@ -140,6 +140,17 @@ export const StateDataField = ({
 const ControlState = React.memo(({ state, value }) => {
   const { t } = useTranslation();
   const controlStateController = useControlState(state, value);
+  const noAccess = cannotAccessState(state);
+
+  if (noAccess) {
+    return (
+      <Text
+        content={CapitalizeFirst(
+          t('dataModel:stateProperties.status_payment.' + state.status_payment),
+        )}
+      />
+    );
+  }
 
   return (
     <View>
@@ -150,22 +161,15 @@ const ControlState = React.memo(({ state, value }) => {
           style={styles.textMargin}
           content={CapitalizeFirst(t('dataModel:stateProperties.controlState'))}
         />
-        {!cannotAccessState(state) && <Timestamp timestamp={state.timestamp} />}
+        {!noAccess && <Timestamp timestamp={state.timestamp} />}
       </View>
-      {cannotAccessState(state) ? (
-        <Text
-          content={CapitalizeFirst(
-            t('dataModel:stateProperties.status_payment.' + state.status_payment),
-          )}
-        />
-      ) : (
-        <>
-          <View style={styles.dataWrapper}>
-            <StateDataField {...controlStateController} value={value} />
-          </View>
-          <RequestError request={controlStateController.request} />
-        </>
-      )}
+
+      <>
+        <View style={styles.dataWrapper}>
+          <StateDataField {...controlStateController} value={value} />
+        </View>
+        <RequestError request={controlStateController.request} />
+      </>
     </View>
   );
 });

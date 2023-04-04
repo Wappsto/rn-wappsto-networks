@@ -16,28 +16,27 @@ const StatesComponent = React.memo(({ value }) => {
     getEntities(state, 'state', { parent: { type: 'value', id: id } }),
   );
 
+  if (states.length === 0) {
+    return (
+      <Text
+        size="p"
+        color="secondary"
+        align="center"
+        content={CapitalizeFirst(t('noData'))}
+        style={theme.common.spaceAround}
+      />
+    );
+  }
   const reportState = states.find(s => s.type === 'Report');
   const controlState = states.find(s => s.type === 'Control');
   const haveReportState = reportState && reportState.meta && !reportState.meta.error;
   const haveControlState = controlState && controlState.meta && !controlState.meta.error;
 
   return (
-    <View>
-      {states.length !== 0 ? (
-        <View style={{ padding: 15 }}>
-          {haveReportState && <ReportState value={value} state={reportState} />}
-          {haveReportState && haveControlState && <View style={theme.common.seperator} />}
-          {haveControlState && <ControlState value={value} state={controlState} />}
-        </View>
-      ) : (
-        <Text
-          size="p"
-          color="secondary"
-          align="center"
-          content={CapitalizeFirst(t('noData'))}
-          style={theme.common.spaceAround}
-        />
-      )}
+    <View style={{ padding: 15 }}>
+      {haveReportState && <ReportState value={value} state={reportState} />}
+      {haveReportState && haveControlState && <View style={theme.common.seperator} />}
+      {haveControlState && <ControlState value={value} state={controlState} />}
     </View>
   );
 });

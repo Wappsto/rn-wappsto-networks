@@ -1,5 +1,5 @@
 import { useNavigation } from '@react-navigation/native';
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Text as RNText, StyleSheet, View } from 'react-native';
 import Toast from 'react-native-toast-message';
 import { useVisible } from 'wappsto-blanket';
@@ -40,13 +40,17 @@ const NetworkScreen = React.memo(() => {
   useUnmountRemoveItem(selectedNetworkName);
   useUndefinedBack(network, navigation);
 
+  useEffect(() => {
+    if (network?.meta?.name_by_user) {
+      navigation.setOptions({
+        title: network.meta.name_by_user,
+      });
+    }
+  }, [network?.meta.name_by_user, navigation]);
+
   if (!network || !network.meta || !network.meta.id) {
     return null;
   }
-
-  navigation.setOptions({
-    title: network.meta.name_by_user,
-  });
 
   return (
     <Screen>

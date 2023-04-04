@@ -133,4 +133,5 @@ const AggregationSelector = React.memo(
   },
 );
 
+AggregationSelector.displayName = 'AggregationSelector';
 export default AggregationSelector;

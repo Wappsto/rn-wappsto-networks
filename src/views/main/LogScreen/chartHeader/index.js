@@ -176,4 +176,5 @@ const ChartHeader = ({ options, setOptions, isLoading }) => {
   );
 };
 
+ChartHeader.displayName = 'ChartHeader';
 export default ChartHeader;

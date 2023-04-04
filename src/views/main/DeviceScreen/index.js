@@ -1,5 +1,5 @@
 import { useNavigation } from '@react-navigation/native';
-import React, { useMemo, useEffect } from 'react';
+import React, { useEffect, useMemo } from 'react';
 import ItemDeleteIndicator from '../../../components/ItemDeleteIndicator';
 import List from '../../../components/List';
 import Screen from '../../../components/Screen';
@@ -28,19 +28,23 @@ const DeviceScreen = React.memo(() => {
   );
 
   useEffect(() => {
-    navigation.setOptions({
-      title: device.meta.name_by_user,
-      headerRight: () => <DeviceDetails />,
-    });
+    if (device?.meta?.name_by_user) {
+      navigation.setOptions({
+        title: device.meta.name_by_user,
+        headerRight: () => <DeviceDetails />,
+      });
+    }
   }, [device?.meta.name_by_user, navigation]);
 
   useUnmountRemoveItem(selectedDeviceName);
+
   useUndefinedBack(device, navigation);
 
   if (!device || !device.meta || !device.meta.id || device.meta.error) {
     return null;
   }
   const url = '/device/' + device.meta.id + '/value';
+
   return (
     <Screen>
       <ItemDeleteIndicator request={deleteRequest} />
@@ -48,7 +52,7 @@ const DeviceScreen = React.memo(() => {
         name={url}
         url={url}
         query={query}
-        renderItem={({ item }) => <Value item={item} navigation={navigation} />}
+        renderItem={({ item }) => <Value item={item} />}
         listHeaderComponent={device.meta.geo ? <DeviceLocation geo={device.meta.geo} /> : null}
       />
     </Screen>

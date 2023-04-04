@@ -5,9 +5,9 @@ import Button from '../../../components/Button';
 import RequestError from '../../../components/RequestError';
 import Text from '../../../components/Text';
 import theme from '../../../theme/themeExport';
-import { useTranslation } from '../../../translations';
 import States from './States';
 import ValueDetails from './ValueDetails';
+import { useNavigation } from '@react-navigation/native';
 
 const styles = StyleSheet.create({
   itemPanel: {
@@ -37,16 +37,28 @@ const styles = StyleSheet.create({
   },
 });
 
-const ValueComponent = React.memo(({ item, navigation }) => {
-  const { t } = useTranslation();
+const ValueContent = React.memo(({ item, request }) => {
+  if (request?.status === 'pending') {
+    return <ActivityIndicator size="small" color={theme.variables.spinnerColor} />;
+  }
+
+  return (
+    <>
+      <RequestError request={request} />
+      <States value={item} />
+    </>
+  );
+});
+
+const ValueComponent = React.memo(({ item }) => {
   const { request, send } = useRequest();
+  const navigation = useNavigation();
 
   const navigateToLog = useCallback(() => {
     navigation.navigate('LogScreen', {
-      title: `${item.meta.name_by_user || item.name} ${t('pageTitle.logs')}`,
       id: item.meta.id,
     });
-  }, [navigation, t, item]);
+  }, [item.meta.id, navigation]);
 
   const updateValueStatus = useCallback(() => {
     send({
@@ -56,8 +68,7 @@ const ValueComponent = React.memo(({ item, navigation }) => {
         status: 'update',
       },
     });
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [item]);
+  }, [item.meta.id, send]);
 
   if (!item.meta || item.meta.error) {
     return null;
@@ -77,16 +88,16 @@ const ValueComponent = React.memo(({ item, navigation }) => {
               />
             </TouchableOpacity>
           )}
-          {request && request.status === 'pending' ? (
-            <ActivityIndicator size="small" color={theme.variables.spinnerColor} />
-          ) : (
-            <Button type="link" onPress={updateValueStatus} icon="rotate-cw" />
-          )}
+          <Button
+            type="link"
+            onPress={updateValueStatus}
+            icon="rotate-cw"
+            disabled={request?.status === 'pending'}
+          />
           <ValueDetails item={item} />
         </>
       </View>
-      <RequestError request={request} />
-      <States value={item} />
+      <ValueContent item={item} request={request} />
     </View>
   );
 });
