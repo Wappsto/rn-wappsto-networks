@@ -20,7 +20,8 @@ const ERRORS = {
 
 let deviceId;
 const timeoutLimit = 10000;
-const useConnectToDevice = (selectedDevice) => {
+
+const useConnectToDevice = selectedDevice => {
   const [step, setStep] = useState(STEPS.CONNECT);
   const timeout = useRef(null);
   const success = useRef(false);
@@ -43,7 +44,7 @@ const useConnectToDevice = (selectedDevice) => {
       }
     };
 
-    Blufi.onNegotiateSecurityResult = (status) => {
+    Blufi.onNegotiateSecurityResult = status => {
       if (error.current) {
         return;
       }
@@ -104,7 +105,7 @@ const useConnectToDevice = (selectedDevice) => {
     Blufi.reset();
   };
 
-  const connect = (force) => {
+  const connect = force => {
     if (selectedDevice && selectedDevice.id && (force || !loading)) {
       addBlufiListeners();
       if (
@@ -120,12 +121,12 @@ const useConnectToDevice = (selectedDevice) => {
   };
 
   useEffect(
-    (selectedDevice) => {
+    () => {
       if (!success.current) {
         connect(true);
       }
-      // eslint-disable-next-line react-hooks/exhaustive-deps
     },
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     [selectedDevice],
   );
 

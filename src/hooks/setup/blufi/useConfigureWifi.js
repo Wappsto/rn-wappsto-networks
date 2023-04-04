@@ -8,9 +8,9 @@ const wifiPasswordStorageKey = 'wifiPassword';
 
 (async function init() {
   try {
-    savedSsid = (await AsyncStorage.getItem(wifiSsidStorageKey)) || '';
-    savedPasswords = await AsyncStorage.getItem(wifiPasswordStorageKey || '');
-    savedPasswords = JSON.parse(savedPasswords) || {};
+    savedSsid = (await AsyncStorage.getItem(wifiSsidStorageKey)) ?? '';
+    const passwordStr = await AsyncStorage.getItem(wifiPasswordStorageKey ?? '');
+    savedPasswords = JSON.parse(passwordStr ?? '') || {};
   } catch (e) {
     savedPasswords = {};
   }
@@ -36,7 +36,7 @@ const useConfigureWifi = wifiFields => {
     if (trimText !== ssid) {
       setSsid(trimText);
     }
-    passwordInputRef.current.focus();
+    passwordInputRef.current?.focus();
   }, [ssid, setSsid]);
 
   const handleTextChange = useCallback(

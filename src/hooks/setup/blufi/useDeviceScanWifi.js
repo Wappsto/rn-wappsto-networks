@@ -16,6 +16,7 @@ export const ERRORS = {
 };
 
 const timeoutLimit = 20000;
+
 const useDeviceScanWifi = connectToDevice => {
   const {
     loading: connectionLoading,
@@ -77,6 +78,7 @@ const useDeviceScanWifi = connectToDevice => {
       setStep(ERRORS.FAILEDGETDEVICEWIFILISTTIMEOUT);
     }, timeoutLimit);
     Blufi.requestDeviceWifiScan();
+    return () => clearTimeout(timeout.current);
   };
 
   const scan = async force => {
