@@ -28,6 +28,7 @@
     "events": "^1.1.1",
     "i18next": "^22.4.13",
     "lodash": "^4.17.21",
+    "moment": "^2.29.4",
     "process": "^0.11.10",
     "react": "18.2.0",
     "react-i18next": "^12.2.0",
@@ -59,7 +60,7 @@
     "uuid": "^9.0.0",
     "victory-native": "^36.6.8",
     "vm-browserify": "^0.0.4",
-    "wappsto-blanket": "^2.5.1",
+    "wappsto-blanket": "^2.5.2",
     "wappsto-locales": "^0.2.0",
     "wappsto-redux": "^4.3.2"
   },

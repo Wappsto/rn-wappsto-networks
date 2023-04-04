@@ -6229,6 +6229,11 @@ mkdirp@^0.5.1:
   dependencies:
     minimist "^1.2.6"
 
+moment@^2.29.4:
+  version "2.29.4"
+  resolved "https://registry.yarnpkg.com/moment/-/moment-2.29.4.tgz#3dbe052889fe7c1b2ed966fcb3a77328964ef108"
+  integrity sha512-5LC9SOxjSc2HF6vO2CyuTDNivEdoz2IvyJJGj6X8DJ0eFyfszE0QiEd+iXmBvUP3WHxSjFH/vIsA0EN00cgr8w==
+
 ms@2.0.0:
   version "2.0.0"
   resolved "https://registry.npmjs.org/ms/-/ms-2.0.0.tgz"
@@ -8663,10 +8668,10 @@ walker@^1.0.7, walker@^1.0.8:
   dependencies:
     makeerror "1.0.12"
 
-wappsto-blanket@^2.5.1:
-  version "2.5.1"
-  resolved "https://registry.npmjs.org/wappsto-blanket/-/wappsto-blanket-2.5.1.tgz"
-  integrity sha512-3K7/DV4ccVV2AhARZT+zQ4FwhTamW+ZdTo0rBkRKM97Zbd+FkBxH1JtzoSDE2VKNnOGmrV3si20m6T+MqdXd9A==
+wappsto-blanket@^2.5.2:
+  version "2.5.2"
+  resolved "https://registry.yarnpkg.com/wappsto-blanket/-/wappsto-blanket-2.5.2.tgz#2c3bf23812abf3727216caa9fcb0c0a01df3ceae"
+  integrity sha512-x1SyYu19Bs9hcBtc1miTdX/m4Wchk9awDkvWS/lwbhnwYIxFIDs3DcUhMFhi9YfaoJglvHhF3HZxyQPy8p/tNw==
   dependencies:
     deep-equal "^2.2.0"
     qs "^6.11.1"
