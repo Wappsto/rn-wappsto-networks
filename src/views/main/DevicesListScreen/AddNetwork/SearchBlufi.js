@@ -1,18 +1,18 @@
 import React, { useCallback, useEffect } from 'react';
 import {
-  View,
-  Image,
-  TouchableOpacity,
-  StyleSheet,
-  Platform,
   ActivityIndicator,
+  Image,
+  Platform,
+  StyleSheet,
+  TouchableOpacity,
+  View,
 } from 'react-native';
-import { useTranslation, CapitalizeFirst } from '../../../../translations';
-import theme from '../../../../theme/themeExport';
-import image from '../../../../theme/images';
-import Text from '../../../../components/Text';
 import Button from '../../../../components/Button';
+import Text from '../../../../components/Text';
 import useSearchBlufi from '../../../../hooks/setup/blufi/useSearchBlufi';
+import image from '../../../../theme/images';
+import theme from '../../../../theme/themeExport';
+import { CapitalizeFirst, useTranslation } from '../../../../translations';
 
 const styles = StyleSheet.create({
   deviceItem: {
@@ -62,7 +62,7 @@ const SearchBlufi = ({ next, selectedDevice, setSelectedDevice, connectToDevice 
     openSettings,
   } = useSearchBlufi();
   const handleDevicePress = useCallback(
-    (item) => {
+    item => {
       setSelectedDevice(item);
       next();
     },
@@ -77,7 +77,7 @@ const SearchBlufi = ({ next, selectedDevice, setSelectedDevice, connectToDevice 
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  const signalQuality = (rssi) => {
+  const signalQuality = rssi => {
     if (rssi >= -50) {
       return image.onboarding.rssiSignalIcon.excellent;
     } else if (rssi < -50 && rssi >= -60) {
@@ -100,7 +100,7 @@ const SearchBlufi = ({ next, selectedDevice, setSelectedDevice, connectToDevice 
           <Text size="p" content={CapitalizeFirst(t('onboarding.deviceDiscovery.selectDevice'))} />
         </>
       )}
-      {devices.map((device) => (
+      {devices.map(device => (
         <TouchableOpacity
           key={device.id}
           onPress={() => handleDevicePress(device)}

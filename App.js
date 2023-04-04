@@ -1,11 +1,12 @@
+import { DefaultTheme, NavigationContainer } from '@react-navigation/native';
 import React from 'react';
-import './src/getImages';
-import { Provider } from 'react-redux';
-import { NavigationContainer, DefaultTheme } from '@react-navigation/native';
+import 'react-native-gesture-handler';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
-import theme from './src/theme/themeExport';
+import { Provider } from 'react-redux';
 import store from './src/configureWappstoRedux';
+import './src/getImages';
 import Router from './src/navigation';
+import theme from './src/theme/themeExport';
 
 const App = () => {
   return (

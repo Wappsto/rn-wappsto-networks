@@ -1,15 +1,15 @@
 import React from 'react';
-import { RNCamera } from 'react-native-camera';
+import { ActivityIndicator, StyleSheet, TouchableOpacity, View } from 'react-native';
 import BarcodeMask from 'react-native-barcode-mask';
-import { View, ActivityIndicator, TouchableOpacity, StyleSheet } from 'react-native';
+import { RNCamera } from 'react-native-camera';
 import Icon from 'react-native-vector-icons/Feather';
-import Text from '../../../../components/Text';
 import Button from '../../../../components/Button';
 import Input from '../../../../components/Input';
 import RequestError from '../../../../components/RequestError';
-import theme from '../../../../theme/themeExport';
-import { useTranslation, CapitalizeFirst } from '../../../../translations';
+import Text from '../../../../components/Text';
 import useAddNetworkForm from '../../../../hooks/setup/useAddNetworkForm';
+import theme from '../../../../theme/themeExport';
+import { CapitalizeFirst, useTranslation } from '../../../../translations';
 
 const styles = StyleSheet.create({
   qrCodeScannerWrapper: {
@@ -137,7 +137,7 @@ const AddNetwork = React.memo(({ addNetworkHandler, hide }) => {
       )}
       <Input
         label={CapitalizeFirst(t('onboarding.claimNetwork.uuidLabel'))}
-        onChangeText={(text) => setInputValue(text)}
+        onChangeText={text => setInputValue(text)}
         value={inputValue}
         autoCapitalize="none"
         onSubmitEditing={onSubmitEditing}

@@ -1,12 +1,12 @@
 import React from 'react';
-import { View, ActivityIndicator, StyleSheet, TouchableOpacity, Image } from 'react-native';
+import { ActivityIndicator, Image, StyleSheet, TouchableOpacity, View } from 'react-native';
 import Icon from 'react-native-vector-icons/Feather';
-import Text from '../../../../components/Text';
 import Button from '../../../../components/Button';
+import Text from '../../../../components/Text';
 import useDeviceScanWifi, { ERRORS } from '../../../../hooks/setup/blufi/useDeviceScanWifi';
-import { useTranslation, CapitalizeFirst } from '../../../../translations';
-import theme from '../../../../theme/themeExport';
 import image from '../../../../theme/images';
+import theme from '../../../../theme/themeExport';
+import { CapitalizeFirst, useTranslation } from '../../../../translations';
 
 const styles = StyleSheet.create({
   deviceItem: {
@@ -58,12 +58,12 @@ const DeviceWifiList = React.memo(({ next, connectToDevice, wifiFields }) => {
   const { t } = useTranslation();
   const { loading, error, step, scan, result } = useDeviceScanWifi(connectToDevice);
 
-  const selectSsid = (ssid) => {
+  const selectSsid = ssid => {
     wifiFields.setSsid(ssid);
     next();
   };
 
-  const signalQuality = (rssi) => {
+  const signalQuality = rssi => {
     if (rssi >= -50) {
       return image.onboarding.wifiSignalIcon.excellent;
     } else if (rssi < -50 && rssi >= -60) {

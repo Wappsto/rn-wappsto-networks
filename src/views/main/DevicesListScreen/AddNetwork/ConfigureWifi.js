@@ -1,9 +1,9 @@
 import React from 'react';
+import Button from '../../../../components/Button';
 import Input from '../../../../components/Input';
 import Text from '../../../../components/Text';
-import Button from '../../../../components/Button';
-import { useTranslation, CapitalizeFirst } from '../../../../translations';
 import useConfigureWifi from '../../../../hooks/setup/blufi/useConfigureWifi';
+import { CapitalizeFirst, useTranslation } from '../../../../translations';
 
 const ConfigureWifi = React.memo(({ next, wifiFields }) => {
   const { t } = useTranslation();
@@ -29,7 +29,7 @@ const ConfigureWifi = React.memo(({ next, wifiFields }) => {
       />
       <Input
         label={CapitalizeFirst(t('onboarding.wifiConfig.ssidLabel'))}
-        onChangeText={(ssidText) => handleTextChange(ssidText, 'ssid')}
+        onChangeText={ssidText => handleTextChange(ssidText, 'ssid')}
         value={wifiFields.ssid}
         autoCapitalize="none"
         onSubmitEditing={moveToPasswordField}
@@ -38,7 +38,7 @@ const ConfigureWifi = React.memo(({ next, wifiFields }) => {
       <Input
         inputRef={passwordInputRef}
         label={CapitalizeFirst(t('onboarding.wifiConfig.passwordLabel'))}
-        onChangeText={(passwordText) => handleTextChange(passwordText, 'password')}
+        onChangeText={passwordText => handleTextChange(passwordText, 'password')}
         value={wifiFields.password}
         textContentType="password"
         secureTextEntry={!showPassword}
