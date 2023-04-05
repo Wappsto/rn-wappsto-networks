@@ -63,7 +63,7 @@
       "addManufacturerNetworkTitle": "Warning",
       "manufacturerAsOwnerWarning": "the manufacturer of this device has full access to this device data. Do you want to add this device to your account?",
       "cameraPermission": {
-        "denied": "camera not authorized",
+        "denied": "Please give access to Camera to scan the QR code",
         "pending": "waiting for camera",
         "title": "camera permission is required",
         "message": "the app needs access to phone camera to scan the QR code"
