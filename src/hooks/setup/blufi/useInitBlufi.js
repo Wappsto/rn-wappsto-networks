@@ -1,5 +1,5 @@
 import { useEffect } from 'react';
-import Blufi from '../../lib/BlufiLib';
+import Blufi from '../../../BlufiLib';
 import BleManager from 'react-native-ble-manager';
 import bleManagerEmitter from './bleManagerEmitter';
 

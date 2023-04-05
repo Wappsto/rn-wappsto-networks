@@ -1,18 +1,17 @@
 import React, { useState } from 'react';
 import { View } from 'react-native';
-import Popup from '../../../components/Popup';
-import Input, { styles } from '../../../components/Input';
-import CheckBox from '../../../components/CheckBox';
-import Text from '../../../components/Text';
-import Button from '../../../components/Button';
-import RequestError from '../../../components/RequestError';
-import { useRequest } from 'wappsto-blanket';
-import theme from '../../../theme/themeExport';
-import { useTranslation, CapitalizeFirst } from '../../../translations';
-import { isEmail } from '../../../util/helpers';
-import { isUUID } from 'wappsto-redux';
-import { getRequestErrorMessage } from '../../../util/helpers';
 import Toast from 'react-native-toast-message';
+import { useRequest } from 'wappsto-blanket';
+import Button from '../../../components/Button';
+import CheckBox from '../../../components/CheckBox';
+import Input, { styles } from '../../../components/Input';
+import Popup from '../../../components/Popup';
+import RequestError from '../../../components/RequestError';
+import Text from '../../../components/Text';
+import Str from '../../../helpers/stringHelpers';
+import theme from '../../../theme/themeExport';
+import { CapitalizeFirst, useTranslation } from '../../../translations';
+import { getRequestErrorMessage, isEmail } from '../../../util/helpers';
 
 const DEFAULT_RESTRICTION = { retrieve: true, update: true };
 const Share = React.memo(({ item, visible, hide }) => {
@@ -30,7 +29,7 @@ const Share = React.memo(({ item, visible, hide }) => {
     }
     let validationError = false;
     let newError = {};
-    if (!isUUID(user) && !isEmail(user)) {
+    if (!Str.isUuid(user) && !isEmail(user)) {
       validationError = true;
       newError = { ...newError, user: true };
     }

@@ -29,7 +29,7 @@ const useDeviceScanWifi = connectToDevice => {
   const prevConnected = usePrevious(isConnected());
   const [result, setResult] = useState([]);
   const [step, setStep] = useState(STEPS.GETDEVICEWIFILIST);
-  const timeout = useRef(null);
+  const timeout = useRef();
   const success = useRef(false);
   const error = useRef(false);
 
