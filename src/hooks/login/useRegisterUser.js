@@ -3,6 +3,7 @@ import HTTP from '../../enums/http';
 import { isEmail } from '../../util/helpers';
 import useConnected from '../useConnected';
 import useRequest from '../useRequest';
+import NAV from '../../enums/navigation';
 
 const useRegisterUser = navigation => {
   const [username, setUsername] = useState('');
@@ -129,7 +130,7 @@ const useRegisterUser = navigation => {
 
   const hideSuccessPopup = useCallback(() => {
     setSuccessVisible(false);
-    navigation.navigate('LoginScreen');
+    navigation.navigate(NAV.NOSESSION.LOGIN);
   }, [navigation]);
 
   return {

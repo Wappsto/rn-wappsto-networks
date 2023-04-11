@@ -37,7 +37,7 @@ export default function LoginStackScreen() {
         name={NAV.NOSESSION.TERMS}
         component={TermsAndConditionsScreen}
         options={{
-          title: CapitalizeFirst(t('pageTitle.Terms')),
+          title: CapitalizeFirst(t('pageTitle.terms')),
         }}
       />
     </Stack.Navigator>

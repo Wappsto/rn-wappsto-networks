@@ -318,6 +318,6 @@ export function setFooter(comp) {
   LoginScreen.Footer = comp;
 }
 
-LoginScreen.registerNavigateTo = 'RegisterScreen';
+LoginScreen.registerNavigateTo = NAV.NOSESSION.REGISTER;
 
 export default LoginScreen;
