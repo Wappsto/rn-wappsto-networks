@@ -1,13 +1,11 @@
 import { useEffect, useState, useCallback } from 'react';
-import { Platform, Linking } from 'react-native';
+import { Platform, Linking, PermissionsAndroid } from 'react-native';
 import BleManager from 'react-native-ble-manager';
 import { config } from '../../../configureWappstoRedux';
-import LocationServicesDialogBox from 'react-native-android-location-services-dialog-box';
-import { useTranslation, CapitalizeFirst } from '../../../translations';
 import { request, PERMISSIONS, RESULTS } from 'react-native-permissions';
 import bleManagerEmitter from './bleManagerEmitter';
 
-export const PermissionError = {
+export const PERMISSION_ERRORS = {
   BLUETOOTH_UNAUTHORIZED: 'bluetoothUnauthorized',
   BLUETOOTH_NOT_SUPPORTED: 'bluetoothNotSupported',
   BLUETOOTH_OFF: 'bluetoothOff',
@@ -22,7 +20,6 @@ const Listener = {
 };
 
 const useSearchBlufi = () => {
-  const { t } = useTranslation();
   const [error, setError] = useState(false);
   const [permissionError, setPermissionError] = useState('');
   const [scanning, setScanning] = useState(true);
@@ -61,46 +58,40 @@ const useSearchBlufi = () => {
     });
   }, [removeDiscoveryListener]);
 
-  const getAndroidLocationPermission = useCallback(async () => {
-    if (Platform.Version >= 23) {
+  const getAndroidPermissions = useCallback(async () => {
+    if (Platform.Version > 30) {
+      const result = await PermissionsAndroid.requestMultiple([
+        PermissionsAndroid.PERMISSIONS.BLUETOOTH_SCAN,
+        PermissionsAndroid.PERMISSIONS.BLUETOOTH_CONNECT,
+      ]);
+
+      if (
+        result[PERMISSIONS.ANDROID.BLUETOOTH_SCAN] !== RESULTS.GRANTED ||
+        result[PERMISSIONS.ANDROID.BLUETOOTH_CONNECT] !== RESULTS.GRANTED
+      ) {
+        throw PERMISSION_ERRORS.BLUETOOTH_GENERIC;
+      }
+    } else if (Platform.Version >= 23) {
       const result = await request(PERMISSIONS.ANDROID.ACCESS_FINE_LOCATION);
       if (result !== RESULTS.GRANTED) {
-        throw PermissionError.LOCATION;
+        throw PERMISSION_ERRORS.LOCATION;
       }
     }
   }, []);
-
-  const enableLocation = useCallback(async () => {
-    try {
-      await LocationServicesDialogBox.checkLocationServicesIsEnabled({
-        message: CapitalizeFirst(t('onboarding.deviceDiscovery.permissionError.location')),
-        ok: CapitalizeFirst(t('onboarding.deviceDiscovery.goToSettings')),
-        cancel: CapitalizeFirst(t('genericButton.cancel')),
-        enableHighAccuracy: true, // true => GPS AND NETWORK PROVIDER, false => GPS OR NETWORK PROVIDER
-        showDialog: true, // false => Opens the Location access page directly
-        openLocationServices: true, // false => Directly catch method is called if location services are turned off
-        preventOutSideTouch: true, // true => To prevent the location services window from closing when it is clicked outside
-        preventBackClick: false, // true => To prevent the location services popup from closing when it is clicked back button
-        providerListener: true, // true ==> Trigger locationProviderStatusChange listener when the location state changes
-      });
-    } catch (e) {
-      throw PermissionError.LOCATION;
-    }
-  }, [t]);
 
   const enableBluetoothIOS = useCallback(async () => {
     let bluetoothState;
     try {
       bluetoothState = await request(PERMISSIONS.IOS.BLUETOOTH_PERIPHERAL);
     } catch (e) {
-      throw PermissionError.BLUETOOTH_GENERIC;
+      throw PERMISSION_ERRORS.BLUETOOTH_GENERIC;
     }
     switch (bluetoothState) {
       case RESULTS.UNAVAILABLE:
-        throw PermissionError.BLUETOOTH_OFF;
+        throw PERMISSION_ERRORS.BLUETOOTH_OFF;
       case RESULTS.DENIED:
       case RESULTS.BLOCKED:
-        throw PermissionError.BLUETOOTH_UNAUTHORIZED;
+        throw PERMISSION_ERRORS.BLUETOOTH_UNAUTHORIZED;
       default:
         break;
     }
@@ -110,7 +101,7 @@ const useSearchBlufi = () => {
     try {
       await BleManager.enableBluetooth();
     } catch (e) {
-      throw PermissionError.BLUETOOTH_OFF;
+      throw PERMISSION_ERRORS.BLUETOOTH_OFF;
     }
   }, []);
 
@@ -124,8 +115,7 @@ const useSearchBlufi = () => {
     try {
       addDiscoveryListener();
       if (Platform.OS === 'android') {
-        await getAndroidLocationPermission();
-        await enableLocation();
+        await getAndroidPermissions();
         await enableBluetoothAndroid();
       } else if (Platform.OS === 'ios') {
         const version = Platform.Version.split('.')[0];
@@ -147,11 +137,12 @@ const useSearchBlufi = () => {
     }
   }, [
     canScan,
-    enableLocation,
-    getAndroidLocationPermission,
+    // enableLocation,
+    // getAndroidLocationPermission,
     enableBluetoothIOS,
     enableBluetoothAndroid,
     addDiscoveryListener,
+    getAndroidPermissions,
   ]);
 
   const init = async () => {
@@ -170,7 +161,7 @@ const useSearchBlufi = () => {
         setPermissionError('');
         setError(false);
       } else {
-        setPermissionError(PermissionError.BLUETOOTH_OFF);
+        setPermissionError(PERMISSION_ERRORS.BLUETOOTH_OFF);
         if (scanning) {
           setScanning(false);
         }
@@ -199,6 +190,7 @@ const useSearchBlufi = () => {
     scan,
     error,
     permissionError,
+    PERMISSION_ERRORS,
     scanning,
     devices,
     openSettings: Linking.openSettings,

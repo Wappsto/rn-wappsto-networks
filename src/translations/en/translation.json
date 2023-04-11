@@ -85,7 +85,7 @@
       "unknownName": "unknown",
       "goToSettings": "go to settings",
       "permissionError": {
-        "bluetoothGeneric": "Enable bluetooth to continue. Bluetooth is required to find nearby devices.",
+        "bluetoothGeneric": "Enable discovery of nearby devices via Bluetooth.",
         "bluetoothUnauthorized": "$t(onboarding.deviceDiscovery.permissionError.bluetoothGeneric)",
         "bluetoothNotSupported": "This feature requires Bluetooth yet your phone does not support it.",
         "bluetoothOff": "$t(onboarding.deviceDiscovery.permissionError.bluetoothGeneric)",

@@ -58,7 +58,7 @@ const SearchBlufi = ({ next, selectedDevice, setSelectedDevice, connectToDevice 
     scanning,
     error,
     permissionError,
-    PermissionError,
+    PERMISSION_ERRORS,
     openSettings,
   } = useSearchBlufi();
   const handleDevicePress = useCallback(
@@ -213,7 +213,7 @@ const SearchBlufi = ({ next, selectedDevice, setSelectedDevice, connectToDevice 
               t('onboarding.deviceDiscovery.permissionError.' + permissionError),
             )}
           />
-          {permissionError === PermissionError.BLUETOOTH_UNAUTHORIZED && (
+          {permissionError === PERMISSION_ERRORS.BLUETOOTH_UNAUTHORIZED && (
             <Button
               onPress={openSettings}
               type="link"

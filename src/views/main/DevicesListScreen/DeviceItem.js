@@ -42,9 +42,11 @@ const DeviceItem = React.memo(({ id }) => {
   const dispatch = useDispatch();
 
   const navigate = useCallback(() => {
-    dispatch(setItem(selectedDeviceName, device.meta.id));
-    navigation.navigate('DeviceScreen');
-  }, [device.meta.id, dispatch, navigation]);
+    if (device?.meta.id) {
+      dispatch(setItem(selectedDeviceName, device.meta.id));
+      navigation.navigate('DeviceScreen');
+    }
+  }, [device?.meta.id, dispatch, navigation]);
 
   if (!device || !device.meta || !device.meta.id || device.meta.error) {
     return null;

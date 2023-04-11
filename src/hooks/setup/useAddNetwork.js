@@ -30,8 +30,8 @@ const useAddNetwork = (iotNetworkListAdd, maoShow, maoHide, autoAccept = null) =
           body: b,
         });
       }
-      // eslint-disable-next-line react-hooks/exhaustive-deps
     },
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     [networkId, body],
   );
 
