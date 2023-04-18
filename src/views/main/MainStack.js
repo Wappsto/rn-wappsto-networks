@@ -3,10 +3,7 @@ import React from 'react';
 import MenuButton from '../../components/MenuButton';
 import NAV from '../../enums/navigation';
 import { CapitalizeFirst, useTranslation } from '../../translations';
-import DeviceScreen from './DeviceScreen';
-import DevicesListScreen from './DevicesListScreen';
-import LogScreen from './LogScreen';
-import NetworkScreen from './NetworkScreen';
+import { screenComponents } from '../screenComponents';
 
 const Stack = createNativeStackNavigator();
 
@@ -17,16 +14,16 @@ export default function MainStackScreen() {
     <Stack.Navigator initialRouteName={NAV.MAIN.INDEX}>
       <Stack.Screen
         name={NAV.MAIN.INDEX}
-        component={DevicesListScreen}
+        component={screenComponents.DevicesListScreen}
         options={{
           headerLeft: () => <MenuButton />,
         }}
       />
-      <Stack.Screen name={NAV.MAIN.NETWORK} component={NetworkScreen} />
-      <Stack.Screen name={NAV.MAIN.DEVICE} component={DeviceScreen} />
+      <Stack.Screen name={NAV.MAIN.NETWORK} component={screenComponents.NetworkScreen} />
+      <Stack.Screen name={NAV.MAIN.DEVICE} component={screenComponents.DeviceScreen} />
       <Stack.Screen
         name={NAV.MAIN.LOGS}
-        component={LogScreen}
+        component={screenComponents.LogScreen}
         options={{
           title: CapitalizeFirst(t('pageTitle.logs')),
         }}

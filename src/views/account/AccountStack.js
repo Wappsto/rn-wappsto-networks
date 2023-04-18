@@ -3,10 +3,7 @@ import React from 'react';
 import MenuButton from '../../components/MenuButton';
 import NAV from '../../enums/navigation';
 import { CapitalizeFirst, useTranslation } from '../../translations';
-import AccountScreen from './AccountScreen';
-import ChangePasswordScreen from './ChangePasswordScreen';
-import ChangeUserDetailsScreen from './ChangeUserDetailsScreen';
-import ChangeUsernameScreen from './ChangeUsernameScreen';
+import { screenComponents } from '../screenComponents';
 
 const Stack = createNativeStackNavigator();
 
@@ -17,7 +14,7 @@ export default function LoginStackScreen() {
     <Stack.Navigator>
       <Stack.Screen
         name={NAV.ACCOUNT.INDEX}
-        component={AccountScreen}
+        component={screenComponents.AccountScreen}
         options={{
           headerLeft: () => <MenuButton />,
           title: CapitalizeFirst(t('pageTitle.account')),
@@ -25,21 +22,21 @@ export default function LoginStackScreen() {
       />
       <Stack.Screen
         name={NAV.ACCOUNT.CHANGE_DETAILS}
-        component={ChangeUserDetailsScreen}
+        component={screenComponents.ChangeUserDetailsScreen}
         options={{
           title: CapitalizeFirst(t('account:changeUserDetails')),
         }}
       />
       <Stack.Screen
         name={NAV.ACCOUNT.CHANGE_USERNAME}
-        component={ChangeUsernameScreen}
+        component={screenComponents.ChangeUsernameScreen}
         options={{
           title: CapitalizeFirst(t('account:changeUsername')),
         }}
       />
       <Stack.Screen
         name={NAV.ACCOUNT.CHANGE_PASSWORD}
-        component={ChangePasswordScreen}
+        component={screenComponents.ChangePasswordScreen}
         options={{
           title: CapitalizeFirst(t('account:changePassword')),
         }}
