@@ -1,5 +1,5 @@
 import { useNavigation } from '@react-navigation/native';
-import React from 'react';
+import React, { useCallback } from 'react';
 import {
   ActivityIndicator,
   Image,
@@ -99,6 +99,11 @@ const LoginScreen = React.memo(() => {
   const { t } = useTranslation();
   const navigation = useNavigation();
   const navigateTo = to => () => navigation.navigate(to);
+
+  const moveToRegisterScreen = useCallback(() => {
+    navigation.navigate(LoginScreen.registerNavigateTo);
+  }, [navigation]);
+
   const {
     username,
     password,
@@ -187,7 +192,7 @@ const LoginScreen = React.memo(() => {
                 <Text content="|" />
                 <Button
                   disabled={loading}
-                  onPress={navigateTo(NAV.NOSESSION.REGISTER)}
+                  onPress={moveToRegisterScreen}
                   type="link"
                   color="primary"
                   text={CapitalizeFirst(t('account:createAccount'))}
