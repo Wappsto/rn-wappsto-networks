@@ -30,64 +30,94 @@ export function generateVariables(v = {}) {
 
     fontSizeBase: 12,
 
-    get h1() {
-      return this.fontSizeBase + 20;
+    h1: {
+      get() {
+        return this.fontSizeBase + 20;
+      },
     },
-    get h2() {
-      return this.fontSizeBase + 16;
+    h2: {
+      get() {
+        return this.fontSizeBase + 16;
+      },
     },
-    get h3() {
-      return this.fontSizeBase + 12;
+    h3: {
+      get() {
+        return this.fontSizeBase + 12;
+      },
     },
-    get h4() {
-      return this.fontSizeBase + 8;
+    h4: {
+      get() {
+        return this.fontSizeBase + 8;
+      },
     },
 
     // Title
-    get titleFontFamily() {
-      return this.fontFamilyBold;
+    titleFontFamily: {
+      get() {
+        return this.fontFamilyBold;
+      },
     },
-    get titleColor() {
-      return this.primary;
+    titleColor: {
+      get() {
+        return this.primary;
+      },
     },
     get titleFontSize() {
       return this.h1;
     },
 
     // Text
-    get textColor() {
-      return this.black;
+    textColor: {
+      get() {
+        return this.black;
+      },
     },
-    get textSecondary() {
-      return this.darkGray;
+    textSecondary: {
+      get() {
+        return this.darkGray;
+      },
     },
-    get textSuccess() {
-      return this.success;
+    textSuccess: {
+      get() {
+        return this.success;
+      },
     },
-    get textWarning() {
-      return this.warning;
+    textWarning: {
+      get() {
+        return this.warning;
+      },
     },
-    get textError() {
-      return this.alert;
+    textError: {
+      get() {
+        return this.alert;
+      },
     },
-    get textInverse() {
-      return this.white;
+    textInverse: {
+      get() {
+        return this.white;
+      },
     },
 
     // Border
     borderRadiusBase: 5,
-    get borderColor() {
-      return color(this.appBgColor).darken(0.1).string();
+    borderColor: {
+      get() {
+        return color(this.appBgColor).darken(0.1).string();
+      },
     },
     borderWidth: 1 / PixelRatio.getPixelSizeForLayoutSize(0.3),
 
     // Button
-    get buttonBg() {
-      return this.darkGray;
+    buttonBg: {
+      get() {
+        return this.darkGray;
+      },
     },
     buttonColor: 'white',
-    get buttonTextSize() {
-      return Math.round(this.fontSizeBase * 1.25);
+    buttonTextSize: {
+      get() {
+        return Math.round(this.fontSizeBase * 1.25);
+      },
     },
 
     // Icon
@@ -97,135 +127,202 @@ export function generateVariables(v = {}) {
 
     // Input
     inputBg: 'rgba(255, 255, 255, 1)',
-    get inputTextSize() {
-      return Math.round(this.fontSizeBase * 1.4);
+    inputTextSize: {
+      get() {
+        return Math.round(this.fontSizeBase * 1.4);
+      },
     },
-    get inputTextColor() {
-      return this.textColor;
+    inputTextColor: {
+      get() {
+        return this.textColor;
+      },
     },
-    get inputSelectionColor() {
-      if (color(this.inputTextColor).isDark()) {
-        return color(this.inputTextColor).lighten(0.9).string();
-      } else {
-        return color(this.inputTextColor).darken(0.7).string();
-      }
+    inputSelectionColor: {
+      get() {
+        if (color(this.inputTextColor).isDark()) {
+          return color(this.inputTextColor).lighten(0.9).string();
+        } else {
+          return color(this.inputTextColor).darken(0.7).string();
+        }
+      },
     },
-    get inputBorderColor() {
-      return this.textColor;
+    inputBorderColor: {
+      get() {
+        return this.textColor;
+      },
     },
 
     // Progress Bar
-    get defaultProgressColor() {
-      return this.primary;
+    defaultProgressColor: {
+      get() {
+        return this.primary;
+      },
     },
-    get inverseProgressColor() {
-      return this.secondary;
+    inverseProgressColor: {
+      get() {
+        return this.secondary;
+      },
     },
 
     // Spinner
-    get spinnerColor() {
-      return this.primaryDark;
+    spinnerColor: {
+      get() {
+        return this.primaryDark;
+      },
     },
-    get spinnerInverseColor() {
-      return this.white;
+    spinnerInverseColor: {
+      get() {
+        return this.white;
+      },
     },
 
     //Containers
-    get appBgColor() {
-      return '#f4f4f3';
+    appBgColor: '#f4f4f3',
+
+    modalBgColor: {
+      get() {
+        return this.white;
+      },
     },
-    get modalBgColor() {
-      return this.white;
+    panelBgColor: {
+      get() {
+        return this.white;
+      },
     },
-    get panelBgColor() {
-      return this.white;
+    cardBgColor: {
+      get() {
+        return this.white;
+      },
     },
-    get cardBgColor() {
-      return this.white;
-    },
-    get cardBorderColor() {
-      return this.white;
+    cardBorderColor: {
+      get() {
+        return this.white;
+      },
     },
 
     // Drawer
-    get drawerMenuBgColor() {
-      return this.appBgColor;
+    drawerMenuBgColor: {
+      get() {
+        return this.appBgColor;
+      },
     },
-    get drawerMenuText() {
-      return this.textColor;
+    drawerMenuText: {
+      get() {
+        return this.textColor;
+      },
     },
-    get drawerActiveTextColour() {
-      return this.primary;
+    drawerActiveTextColour: {
+      get() {
+        return this.primary;
+      },
     },
 
     // Header
-    get headerBgColor() {
-      return this.primary;
+    headerBgColor: {
+      get() {
+        return this.primary;
+      },
     },
-    get headerColor() {
-      return this.textInverse;
+    headerColor: {
+      get() {
+        return this.textInverse;
+      },
     },
 
     // StatusBar
     statusBarColorLight: 'light-content',
     statusBarColorDark: 'dark-content',
-    get statusBarBgLight() {
-      return this.appBgColor;
+    statusBarBgLight: {
+      get() {
+        return this.appBgColor;
+      },
     },
-    get statusBarBgDark() {
-      return this.primary;
+    statusBarBgDark: {
+      statusBarBgDark: {
+        get() {
+          return this.primary;
+        },
+      },
     },
 
     // Popup
     popupOverlayColor: 'rgba(0, 0, 0, 0.4)',
-    get popupBorderColor() {
-      return this.appBgColor;
+    popupBorderColor: {
+      get() {
+        return this.appBgColor;
+      },
     },
-    get popupBorderWidth() {
-      return this.borderWidth;
+    popupBorderWidth: {
+      get() {
+        return this.borderWidth;
+      },
     },
-    get popupBackground() {
-      return this.appBgColor;
+    popupBackground: {
+      get() {
+        return this.appBgColor;
+      },
     },
 
     // NumericInput
-    get NumericInputTextColor() {
-      return this.textColor;
+    NumericInputTextColor: {
+      get() {
+        return this.textColor;
+      },
     },
-    get NumericInputButtonTextColor() {
-      return this.textColor;
+    NumericInputButtonTextColor: {
+      get() {
+        return this.textColor;
+      },
     },
-    get NumericInputBorder() {
-      return this.borderColor;
+    NumericInputBorder: {
+      get() {
+        return this.borderColor;
+      },
     },
-    get NumericInputBackground() {
-      return this.white;
+    NumericInputBackground: {
+      get() {
+        return this.white;
+      },
     },
-    get NumericInputButtonBackground() {
-      return this.lightGray;
+    NumericInputButtonBackground: {
+      get() {
+        return this.lightGray;
+      },
     },
     NumericInputRounded: true,
 
     // Slider:
-    get sliderThumbTintColor() {
-      return this.primary;
+    sliderThumbTintColor: {
+      get() {
+        return this.primary;
+      },
     },
-    get sliderMinimumTrackTintColor() {
-      return this.darkGray;
+    sliderMinimumTrackTintColor: {
+      get() {
+        return this.darkGray;
+      },
     },
-    get sliderMaximumTrackTintColor() {
-      return this.mediumGray;
+    sliderMaximumTrackTintColor: {
+      get() {
+        return this.mediumGray;
+      },
     },
 
     // Switch
-    get switchThumbColor() {
-      return this.white;
+    switchThumbColor: {
+      get() {
+        return this.white;
+      },
     },
-    get switchTrackColor() {
-      return this.mediumGray;
+    switchTrackColor: {
+      get() {
+        return this.mediumGray;
+      },
     },
-    get switchTrackColorEnabled() {
-      return this.primaryDark;
+    switchTrackColorEnabled: {
+      get() {
+        return this.primaryDark;
+      },
     },
 
     // other
