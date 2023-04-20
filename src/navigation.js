@@ -4,7 +4,7 @@ import { getSession } from 'wappsto-redux';
 import './getImages';
 import useStorageSession from './hooks/useStorageSession';
 import SessionVerifier from './views/SessionVerifier';
-import SplashScreen from './views/SplashScreen';
+import { screenComponents } from './views/screenComponents';
 import LoginStack from './views/login/LoginStack';
 import DrawerNavigator from './views/DrawerNavigator';
 
@@ -30,8 +30,8 @@ const Router = React.memo(() => {
 
   const wait = async () => {
     try {
-      if (SplashScreen.load) {
-        await SplashScreen.load();
+      if (screenComponents.SplashScreen.load) {
+        await screenComponents.SplashScreen.load();
       }
     } catch (e) {}
     setReady(true);
@@ -53,7 +53,7 @@ const Router = React.memo(() => {
     case 'pending':
       return (
         <>
-          <SplashScreen />
+          <screenComponents.SplashScreen />
           {ready && (
             <SessionVerifier
               status={status}
