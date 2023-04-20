@@ -192,35 +192,31 @@ const AccountScreen = React.memo(({ navigation }) => {
               </View>
             </View>
             {signedWithEmail && (
-              <View style={styles.item}>
-                <Button
-                  type="link"
-                  color="primary"
-                  onPress={() => navigation.navigate('ChangeUsernameScreen', {})}
-                  icon="edit-3"
-                  align="left"
-                  text={CapitalizeFirst(t('account:changeUsername'))}
-                  disabled={buttonsDisabled}
-                />
-              </View>
+              <>
+                <View style={styles.item}>
+                  <Button
+                    type="link"
+                    color="primary"
+                    onPress={() => navigation.navigate('ChangeUsernameScreen', {})}
+                    icon="edit-3"
+                    align="left"
+                    text={CapitalizeFirst(t('account:changeUsername'))}
+                    disabled={buttonsDisabled}
+                  />
+                </View>
+                <View style={styles.item}>
+                  <Button
+                    type="link"
+                    color="primary"
+                    text={CapitalizeFirst(t('account:changePassword'))}
+                    onPress={() => navigation.navigate('ChangePasswordScreen')}
+                    icon="edit-3"
+                    align="left"
+                    disabled={buttonsDisabled}
+                  />
+                </View>
+              </>
             )}
-
-            <View style={styles.item}>
-              <Button
-                type="link"
-                color="primary"
-                text={CapitalizeFirst(t('account:changePassword'))}
-                onPress={() =>
-                  navigation.navigate(
-                    signedWithEmail ? 'ChangePasswordScreen' : 'RecoverPasswordScreen',
-                    {},
-                  )
-                }
-                icon="edit-3"
-                align="left"
-                disabled={buttonsDisabled}
-              />
-            </View>
             <DeleteAccount setButtonsDisabled={setButtonsDisabled} />
           </>
         ) : request && request.status === 'pending' ? (

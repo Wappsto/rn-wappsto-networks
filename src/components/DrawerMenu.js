@@ -22,7 +22,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 10,
     paddingVertical: 20,
     marginVertical: 4,
-    borderBottomColor: Color(theme.variables.primary).lighten(0.1).hex(),
+    borderBottomColor: Color(theme.variables.secondary).darken(0.1).hex(),
     borderBottomWidth: theme.variables.borderWidth,
   },
   row: {
