@@ -6,7 +6,8 @@
     "settings": "settings",
     "login": "sign in",
     "logs": "logs",
-    "terms": "terms & conditions"
+    "terms": "terms & conditions",
+    "privacy": "privacy"
   },
   "genericButton": {
     "apply": "apply",

@@ -21,7 +21,7 @@ const TermsAndConditions = () => {
           terms === str ? (
             <Text
               key={str}
-              onPress={navigateTo(NAV.TERMS)}
+              onPress={navigateTo(NAV.NOSESSION.TERMS)}
               size="p"
               color="primary"
               align="center"
@@ -30,7 +30,7 @@ const TermsAndConditions = () => {
           ) : privacy === str ? (
             <Text
               key={str}
-              onPress={navigateTo(NAV.PRIVACY)}
+              onPress={navigateTo(NAV.NOSESSION.PRIVACY)}
               size="p"
               color="primary"
               align="center"
