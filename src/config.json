@@ -14,5 +14,9 @@
   "blufiFilter": [],
   "blufiFilterEmptyName": true,
   "recaptchaKey": "6Ld1xrIUAAAAAMooWJqcqmVqh4ph5D2DFChZdAzG",
-  "showLanguageButton": false
+  "showLanguageButton": false,
+  "links": {
+    "terms": "https://www.seluxit.com/legal/seluxit-cloud-solutions-terms-and-conditions",
+    "privacy": "https://www.seluxit.com/privacy"
+  }
 }

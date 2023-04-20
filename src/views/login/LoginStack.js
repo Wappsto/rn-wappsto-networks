@@ -37,6 +37,13 @@ export default function LoginStackScreen() {
           title: CapitalizeFirst(t('pageTitle.terms')),
         }}
       />
+      <Stack.Screen
+        name={NAV.NOSESSION.PRIVACY}
+        component={screenComponents.PrivacyScreen}
+        options={{
+          title: CapitalizeFirst(t('pageTitle.privacy')),
+        }}
+      />
     </Stack.Navigator>
   );
 }

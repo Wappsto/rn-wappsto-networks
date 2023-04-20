@@ -3,6 +3,7 @@ export let screenComponents = {
   RecoverPasswordScreen: require('./login/RecoverPasswordScreen').default,
   RegisterScreen: require('./login/RegisterScreen').default,
   TermsAndConditionsScreen: require('./login/TermsAndConditionsScreen').default,
+  PrivacyScreen: require('./login/PrivacyScreen').default,
 
   AccountScreen: require('./account/AccountScreen').default,
   ChangePasswordScreen: require('./account/ChangePasswordScreen').default,

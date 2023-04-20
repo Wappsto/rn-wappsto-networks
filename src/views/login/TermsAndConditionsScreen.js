@@ -1,15 +1,24 @@
 import React from 'react';
 import Pdf from 'react-native-pdf';
+import Screen from '../../components/Screen';
+import { config } from '../../configureWappstoRedux';
 
 const TermsAndConditionsScreen = () => {
-  const uri =
-    'https://www.seluxit.com/wp-content/uploads/sites/5/2022/04/Seluxit-Wappsto-Applications-Terms-and-Conditions-DPA-2022.pdf';
+  const uri = config.links?.terms;
+
+  if (!uri) {
+    return null;
+  }
+
   return (
-    <Pdf
-      style={{ flex: 1 }}
-      source={{ uri, cache: true }}
-      onError={e => console.error('When trying to load the terms of service, we got:', e)}
-    />
+    <Screen>
+      <Pdf
+        trustAllCerts={false}
+        style={{ flex: 1 }}
+        source={{ uri, cache: true }}
+        onError={e => console.error('When trying to load the terms of service, we got:', e)}
+      />
+    </Screen>
   );
 };
 

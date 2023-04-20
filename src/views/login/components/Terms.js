@@ -1,20 +1,17 @@
+import { useNavigation } from '@react-navigation/native';
 import React from 'react';
-import { Text as RNText, Linking } from 'react-native';
+import { Text as RNText } from 'react-native';
 import Text from '../../../components/Text';
 import { CapitalizeFirst, useTranslation } from '../../../translations';
+import NAV from '../../../enums/navigation';
 
-const TermsAndConditions = ({ termsLink, privacyLink }) => {
+const TermsAndConditions = () => {
   const { t } = useTranslation('account');
   const message = CapitalizeFirst(t('acceptTermsWhenSignIn.message'));
   const terms = t('acceptTermsWhenSignIn.terms');
   const privacy = t('acceptTermsWhenSignIn.privacy');
-
-  const handlePress = async url => {
-    const supported = await Linking.canOpenURL(url);
-    if (supported) {
-      await Linking.openURL(url);
-    }
-  };
+  const navigation = useNavigation();
+  const navigateTo = to => () => navigation.navigate(to);
 
   return (
     <RNText style={{ marginBottom: 30 }}>
@@ -24,7 +21,7 @@ const TermsAndConditions = ({ termsLink, privacyLink }) => {
           terms === str ? (
             <Text
               key={str}
-              onPress={() => handlePress(termsLink)}
+              onPress={navigateTo(NAV.TERMS)}
               size="p"
               color="primary"
               align="center"
@@ -33,7 +30,7 @@ const TermsAndConditions = ({ termsLink, privacyLink }) => {
           ) : privacy === str ? (
             <Text
               key={str}
-              onPress={() => handlePress(privacyLink)}
+              onPress={navigateTo(NAV.PRIVACY)}
               size="p"
               color="primary"
               align="center"
