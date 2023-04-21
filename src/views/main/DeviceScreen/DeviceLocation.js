@@ -13,7 +13,7 @@ const styles = StyleSheet.create({
   },
   directionButton: {
     position: 'absolute',
-    bottom: 10,
+    top: 10,
     right: 10,
     zIndex: 1,
     paddingLeft: 12,
