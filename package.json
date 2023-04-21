@@ -1,7 +1,20 @@
 {
   "name": "rn-wappsto-networks",
+  "description": "React Native app for interacting with IoT devices in Wappsto Platform.",
   "version": "2.0.0",
-  "private": true,
+  "license": "Apache-2.0",
+  "author": {
+    "name": "Seluxit A/S",
+    "email": "developer@wappsto.com",
+    "url": "https://seluxit.com"
+  },
+  "homepage": "https://github.com/Wappsto/rn-wappsto-networks#readme",
+  "keywords": [
+    "wappsto",
+    "iot devices",
+    "iot",
+    "seluxit"
+  ],
   "scripts": {
     "android": "react-native run-android",
     "ios": "react-native run-ios",
