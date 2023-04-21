@@ -1,12 +1,13 @@
 {
-  "appTitle": "Wappsto",
+  "appTitle": "RN Wappsto Networks",
   "pageTitle": {
     "account": "account",
     "main": "devices",
     "settings": "settings",
     "login": "sign in",
     "logs": "logs",
-    "terms": "terms & conditions"
+    "terms": "terms & conditions",
+    "privacy": "privacy"
   },
   "genericButton": {
     "apply": "apply",
@@ -63,7 +64,7 @@
       "addManufacturerNetworkTitle": "Warning",
       "manufacturerAsOwnerWarning": "the manufacturer of this device has full access to this device data. Do you want to add this device to your account?",
       "cameraPermission": {
-        "denied": "camera not authorized",
+        "denied": "Please give access to Camera to scan the QR code",
         "pending": "waiting for camera",
         "title": "camera permission is required",
         "message": "the app needs access to phone camera to scan the QR code"
@@ -85,7 +86,7 @@
       "unknownName": "unknown",
       "goToSettings": "go to settings",
       "permissionError": {
-        "bluetoothGeneric": "Enable bluetooth to continue. Bluetooth is required to find nearby devices.",
+        "bluetoothGeneric": "Enable discovery of nearby devices via Bluetooth.",
         "bluetoothUnauthorized": "$t(onboarding.deviceDiscovery.permissionError.bluetoothGeneric)",
         "bluetoothNotSupported": "This feature requires Bluetooth yet your phone does not support it.",
         "bluetoothOff": "$t(onboarding.deviceDiscovery.permissionError.bluetoothGeneric)",

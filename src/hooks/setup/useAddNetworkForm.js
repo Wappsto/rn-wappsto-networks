@@ -1,5 +1,5 @@
-import { useState, useEffect, useCallback } from 'react';
-import { isUUID, UUIDRegex } from 'wappsto-redux/util/helpers';
+import { useCallback, useEffect, useState } from 'react';
+import Str from '../../helpers/stringHelpers';
 import { manufacturerAsOwnerErrorCode } from '../../util/params';
 
 const useAddNetworkForm = (addNetworkHandler, onDone) => {
@@ -10,10 +10,10 @@ const useAddNetworkForm = (addNetworkHandler, onDone) => {
   const [scanError, setScanError] = useState(false);
   const [loading, setLoading] = useState(false);
 
-  const canAdd = isUUID(inputValue) && !loading;
+  const canAdd = Str.isUuid(inputValue) && !loading;
 
-  const onRead = useCallback((event) => {
-    const uuids = event.data.match(new RegExp(UUIDRegex, 'gi'));
+  const onRead = useCallback(str => {
+    const uuids = str.match(Str.uuidCaptureRegex);
     if (!uuids || uuids.length === 0) {
       setScanError('noUUID');
       setInputValue('');
@@ -30,7 +30,7 @@ const useAddNetworkForm = (addNetworkHandler, onDone) => {
   }, [sendRequest, inputValue]);
 
   const switchView = useCallback(() => {
-    setIsScanning((v) => {
+    setIsScanning(v => {
       if (!v) {
         setScanError();
       }
@@ -39,7 +39,7 @@ const useAddNetworkForm = (addNetworkHandler, onDone) => {
   }, []);
 
   const onSubmitEditing = useCallback(() => {
-    if (isUUID(inputValue)) {
+    if (Str.isUuid(inputValue)) {
       addNetwork();
     }
   }, [inputValue, addNetwork]);

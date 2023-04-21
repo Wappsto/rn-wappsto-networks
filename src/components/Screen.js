@@ -1,9 +1,9 @@
 import React from 'react';
 import { View, TouchableOpacity, StyleSheet, SafeAreaView } from 'react-native';
-import { useHeaderHeight } from '@react-navigation/stack';
+import { useHeaderHeight } from '@react-navigation/elements';
 import KeyboardAvoidingView from './KeyboardAvoidingView';
 import FocusAwareStatusBar from './FocusAwareStatusBar';
-import { status } from 'wappsto-redux/actions/stream';
+import { streamStatus } from 'wappsto-redux';
 import { useTranslation, CapitalizeFirst } from '../translations';
 import theme from '../theme/themeExport';
 import Text from './Text';
@@ -46,7 +46,7 @@ const Screen = React.memo(({ style, children }) => {
       {showStream && (
         <View style={[theme.common.toastFullWidth, theme.common.warningPanel]}>
           <Text content={message} />
-          {(stream.status === status.LOST || stream.status === status.CLOSED) && (
+          {(stream.status === streamStatus.LOST || stream.status === streamStatus.CLOSED) && (
             <TouchableOpacity onPress={reconnectStream}>
               <Text
                 color="primary"
@@ -62,4 +62,5 @@ const Screen = React.memo(({ style, children }) => {
   );
 });
 
+Screen.displayName = 'Screen';
 export default Screen;

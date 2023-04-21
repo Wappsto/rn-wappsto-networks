@@ -1,50 +1,53 @@
-import { useState, useEffect, useRef, useCallback } from 'react';
-import { Platform } from 'react-native';
-import AsyncStorage from '@react-native-community/async-storage';
-import { AccessToken, LoginManager } from 'react-native-fbsdk';
-import { GoogleSignin, statusCodes } from '@react-native-community/google-signin';
 import { appleAuth, appleAuthAndroid } from '@invertase/react-native-apple-authentication';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import auth from '@react-native-firebase/auth';
+import { GoogleSignin, statusCodes } from '@react-native-google-signin/google-signin';
+import { useCallback, useEffect, useRef, useState } from 'react';
+import { Platform } from 'react-native';
+import { AccessToken, LoginManager } from 'react-native-fbsdk-next';
+import uuid from 'react-native-uuid';
 import { useDispatch } from 'react-redux';
-import config from 'wappsto-redux/config';
-import { removeRequest } from 'wappsto-redux/actions/request';
-import useRequest from 'wappsto-blanket/hooks/useRequest';
-import useConnected from '../useConnected';
+import { addSession, config } from 'wappsto-redux';
+import FB from '../../enums/firebase';
+import RESPONSE_CODE from '../../enums/response-codes';
+import STATUS from '../../enums/status';
+import STORAGE from '../../enums/storageKeys';
 import { isEmail } from '../../util/helpers';
-import { addSession } from 'wappsto-redux/actions/session';
-import uuid from 'uuid/v4';
+import useApi from '../useApi';
+import useConnected from '../useConnected';
 
-const useSignIn = (navigation) => {
+const useSignIn = () => {
   const connected = useConnected();
   const dispatch = useDispatch();
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [showError, setShowError] = useState(false);
-  const [showRecaptcha, setShowRecaptcha] = useState('');
+  const [showCaptcha, setShowCaptcha] = useState('');
   const [isSigninInProgress, setIsSigninInProgress] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
   const passwordInputRef = useRef();
   const [fbSignInError, setFbSignInError] = useState(null);
-  const { request, send, removeRequest: remove } = useRequest();
   const errorNumber = useRef(0);
-  const recaptchaRef = useRef();
+  const captchaRef = useRef();
+  const { request, removeRequest: remove, ...session } = useApi('/session');
 
   const r = fbSignInError || request;
   const postRequest = showError && r;
   const loading =
-    r &&
-    (r.status === 'pending' ||
-      r.status === 'success' ||
-      (r.status === 'error' && r.json?.code === 9900007 && !showRecaptcha));
+    r?.status === STATUS.PENDING ||
+    r?.status === STATUS.SUCCESS ||
+    (r?.status === STATUS.ERROR &&
+      r?.json?.code === RESPONSE_CODE.CAPTCHA_GOOGLE_ERROR &&
+      !showCaptcha);
   const canTPSignIn = connected && !isSigninInProgress && !loading;
   const canSignIn = canTPSignIn && isEmail(username) && password;
 
-  const toggleShowPassword = useCallback(() => {
-    setShowPassword((sp) => !sp);
-  }, []);
-
-  const saveSession = (cRequest) => {
-    AsyncStorage.setItem('session', JSON.stringify(cRequest.json));
+  const saveSession = req => {
+    try {
+      AsyncStorage.setItem(STORAGE.SESSION, JSON.stringify(req.json));
+    } catch (e) {
+      console.error('When trying to sign in we got:', e);
+    }
   };
 
   const moveToPasswordField = useCallback(() => {
@@ -54,6 +57,10 @@ const useSignIn = (navigation) => {
     }
     passwordInputRef.current.focus();
   }, [username]);
+
+  const toggleShowPassword = useCallback(() => {
+    setShowPassword(p => !p);
+  }, []);
 
   const handleTextChange = useCallback(
     (text, type) => {
@@ -76,253 +83,221 @@ const useSignIn = (navigation) => {
   );
 
   const signIn = useCallback(
-    (recaptcha) => {
+    captcha => {
       setShowError(false);
       setFbSignInError(null);
-      send({
-        method: 'POST',
-        url: '/session',
-        body: {
-          username: username,
-          password: password,
-          captcha: recaptcha,
-          remember_me: true,
-        },
+      session.post({
+        username,
+        password,
+        captcha,
+        remember_me: true,
       });
     },
-    [username, password, send],
+    [username, password, session],
   );
 
   const checkAndSignIn = useCallback(() => {
     if (isEmail(username) && password) {
-      if (showRecaptcha && recaptchaRef.current) {
-        recaptchaRef.current.show();
+      if (showCaptcha && captchaRef.current) {
+        captchaRef.current.open();
       } else {
-        signIn();
+        signIn(undefined);
       }
     }
-  }, [username, password, signIn, showRecaptcha]);
+  }, [username, password, signIn, showCaptcha]);
 
   // ----------------- 3rd Auth Signin ----------------------------
   const sendAuthRequest = useCallback(
-    (token) => {
+    firebase_token => {
       setShowError(false);
       setFbSignInError(null);
-      send({
-        method: 'POST',
-        url: '/session',
-        body: {
-          firebase_token: token,
-          remember_me: true,
-        },
-      });
+      session.post({ firebase_token, remember_me: true });
     },
-    [send],
+    [session],
+  );
+
+  const fbSignInErrorId = () => `fbSignInError::${uuid.v4()}`;
+
+  const authenticateWithCredential = useCallback(
+    async credential => {
+      const fbUsrCred = await auth().signInWithCredential(credential);
+      const token = await fbUsrCred.user.getIdToken();
+      sendAuthRequest(token);
+    },
+    [sendAuthRequest],
   );
 
   const googleSignIn = useCallback(async () => {
-    const id = 'fbSignInError' + Math.random();
+    const id = fbSignInErrorId();
     try {
       setIsSigninInProgress(true);
-      await GoogleSignin.configure({
+      GoogleSignin.configure({
         webClientId: config.firebaseWebClientId,
       });
-      const data = await GoogleSignin.signIn();
+
+      const { idToken } = await GoogleSignin.signIn();
       GoogleSignin.signOut();
-      setFbSignInError({
-        id,
-        status: 'pending',
-      });
-      const credential = auth.GoogleAuthProvider.credential(data.idToken, data.accessToken);
-      const firebaseUserCredential = await auth().signInWithCredential(credential);
-      const token = await firebaseUserCredential.user.getIdToken();
-      sendAuthRequest(token);
-    } catch (error) {
-      let code;
-      if (error.code !== statusCodes.SIGN_IN_CANCELLED) {
-        if (error.code === statusCodes.IN_PROGRESS) {
-          // operation (f.e. sign in) is in progress already
-          code = 'fbsi_in_progress';
-        } else if (error.code === statusCodes.PLAY_SERVICES_NOT_AVAILABLE) {
-          // play services not available or outdated
-          code = 'fbsi_psna';
-        } else {
-          // some other error happened
-          code = 'generic';
-        }
+      setFbSignInError({ id, status: STATUS.PENDING });
+      const credential = auth.GoogleAuthProvider.credential(idToken);
+      await authenticateWithCredential(credential);
+    } catch (err) {
+      if (err.code !== statusCodes.SIGN_IN_CANCELLED) {
+        const code =
+          err.code === statusCodes.IN_PROGRESS
+            ? FB.IN_PROGRESS
+            : err.code === statusCodes.PLAY_SERVICES_NOT_AVAILABLE
+            ? FB.PLAY_SERVICES_NOT_AVAILABLE
+            : FB.GENERIC;
         setShowError(true);
-        setFbSignInError({
-          id,
-          status: 'error',
-          json: {
-            code,
-          },
-        });
+        setFbSignInError({ id, status: STATUS.ERROR, json: { code } });
       }
     }
+
     setIsSigninInProgress(false);
-  }, [sendAuthRequest]);
+  }, [authenticateWithCredential]);
 
   const facebookSignIn = useCallback(async () => {
-    const id = 'fbSignInError' + Math.random();
+    const id = fbSignInErrorId();
     try {
       setIsSigninInProgress(true);
-      const behavior = Platform.OS === 'ios' ? 'browser' : 'WEB_ONLY';
-      LoginManager.setLoginBehavior(behavior);
+      const behaviour = Platform.OS === 'ios' ? 'browser' : 'web_only';
+      LoginManager.setLoginBehavior(behaviour);
       LoginManager.logOut();
       const result = await LoginManager.logInWithPermissions(['public_profile', 'email']);
       if (result.isCancelled) {
-        setFbSignInError({
-          id,
-        });
+        setFbSignInError({ id });
         setIsSigninInProgress(false);
         return;
       }
-      setFbSignInError({
-        id,
-        status: 'pending',
-      });
+      setFbSignInError({ id, status: STATUS.PENDING });
       const data = await AccessToken.getCurrentAccessToken();
       if (!data) {
-        throw new Error('Something went wrong obtaining the users access token');
+        throw new Error("Something went wrong trying to obtain the user's access token");
       }
+
       const credential = auth.FacebookAuthProvider.credential(data.accessToken);
-      const firebaseUserCredential = await auth().signInWithCredential(credential);
-      const token = await firebaseUserCredential.user.getIdToken();
-      sendAuthRequest(token);
-    } catch (e) {
+      await authenticateWithCredential(credential);
+    } catch (err) {
       setShowError(true);
       setFbSignInError({
         id,
-        status: 'error',
+        status: STATUS.ERROR,
         json: {},
       });
+      setIsSigninInProgress(false);
     }
-    setIsSigninInProgress(false);
-  }, [sendAuthRequest]);
+  }, [authenticateWithCredential]);
 
   const appleSignIn = useCallback(async () => {
-    const id = 'fbSignInError' + Math.random();
+    const id = fbSignInErrorId();
     try {
       setIsSigninInProgress(true);
 
-      // Start the sign-in request
-      let appleAuthResponse, idToken, nonce;
+      let idToken, nonce;
       if (Platform.OS === 'ios') {
-        appleAuthResponse = await appleAuth.performRequest({
+        const appleAuthResponse = await appleAuth.performRequest({
           requestedOperation: appleAuth.Operation.LOGIN,
           requestedScopes: [appleAuth.Scope.EMAIL, appleAuth.Scope.FULL_NAME],
         });
         idToken = appleAuthResponse.identityToken;
         nonce = appleAuthResponse.nonce;
       } else {
-        const rawNonce = uuid();
-        const state = uuid();
-
-        // Configure the request
+        // configure req
         appleAuthAndroid.configure({
-          // The Service ID you registered with Apple
+          // the service id registered with Apple
           clientId: 'com.wappsto.web',
-
-          // Return URL added to your Apple dev console. We intercept this redirect, but it must still match
-          // the URL you provided to Apple. It can be an empty route on your backend as it's never called.
-          redirectUri: 'https://wappsto-941e8.firebaseapp.com/__/auth/handler',
-
-          // The type of response requested - code, id_token, or both.
+          // return URL added to Apple dev console
+          redirectUri: 'https://wappsto-941e8.firebaseapp.com/__/auth/handler', // check this also
+          // the type of requested response: code, id_token, or all
           responseType: appleAuthAndroid.ResponseType.ALL,
-
-          // The amount of user information requested from Apple.
+          // the amount of user info requested from Apple
           scope: appleAuthAndroid.Scope.ALL,
-
-          // Random nonce value that will be SHA256 hashed before sending to Apple.
-          nonce: rawNonce,
-
-          // Unique state value used to prevent CSRF attacks. A UUID will be generated if nothing is provided.
-          state,
+          // random nonce
+          nonce: uuid.v4(),
+          // unique state value to prevent CSRF attacks
+          state: uuid.v4(),
         });
 
-        appleAuthResponse = await appleAuthAndroid.signIn();
+        const appleAuthResponse = await appleAuthAndroid.signIn();
         idToken = appleAuthResponse.id_token;
         nonce = appleAuthResponse.nonce;
       }
 
-      // Ensure Apple returned a user identityToken
       if (!idToken) {
-        setFbSignInError({
-          id,
-        });
+        setFbSignInError({ id });
         setIsSigninInProgress(false);
         return;
       }
 
-      setFbSignInError({
-        id,
-        status: 'pending',
-      });
+      setFbSignInError({ id, status: STATUS.PENDING });
 
-      // Create a Firebase credential from the response
       const credential = auth.AppleAuthProvider.credential(idToken, nonce);
-      const firebaseUserCredential = await auth().signInWithCredential(credential);
-      const token = await firebaseUserCredential.user.getIdToken();
-      sendAuthRequest(token);
-    } catch (e) {
+      await authenticateWithCredential(credential);
+    } catch (err) {
       setShowError(true);
-      setFbSignInError({
-        id,
-        status: 'error',
-        json: {},
-      });
+      setFbSignInError({ id, status: STATUS.ERROR, json: {} });
     }
+
     setIsSigninInProgress(false);
-  }, [sendAuthRequest]);
+  }, [authenticateWithCredential]);
+
   // --------------------------------------------------------------------
 
-  const userLogged = (cRequest) => {
-    dispatch(removeRequest(cRequest.id));
-    dispatch(addSession(cRequest.json));
-    saveSession(cRequest);
+  const userLoggedIn = req => {
+    remove();
+    dispatch(addSession(request.json));
+    saveSession(req);
   };
 
   useEffect(() => {
-    if (request) {
-      if (request.status === 'success') {
+    if (!request) {
+      return;
+    }
+
+    switch (request.status) {
+      case STATUS.SUCCESS: {
         errorNumber.current = 0;
+        setShowCaptcha(false);
         setShowError(false);
-        setShowRecaptcha(false);
-        userLogged(request);
-      } else if (request.status === 'error') {
+        setShowCaptcha(false);
+        userLoggedIn(request);
+        break;
+      }
+      case STATUS.ERROR: {
         errorNumber.current++;
         if (
-          !showRecaptcha &&
-          (errorNumber.current > 2 || (request.json && request.json.code === 9900007))
+          !showCaptcha &&
+          (errorNumber.current > 2 ||
+            (request.json && request.json.code === RESPONSE_CODE.CAPTCHA_GOOGLE_ERROR))
         ) {
-          setShowRecaptcha(true);
-          recaptchaRef.current.show();
-        } else {
-          setShowError(true);
+          setShowCaptcha(true);
+          captchaRef.current?.open();
         }
+        setShowError(true);
       }
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [request]);
 
-  const onCheckRecaptcha = useCallback(
-    (data) => {
-      if (data) {
-        if (['cancel', 'error', 'expired'].includes(data)) {
-          if (recaptchaRef.current) {
-            remove();
-            recaptchaRef.current.hide();
-          }
-          return;
-        } else {
-          setTimeout(() => {
-            if (recaptchaRef.current) {
-              recaptchaRef.current.hide();
-            }
-            signIn(data);
-          }, 1500);
+  const onCheckCaptcha = useCallback(
+    data => {
+      if (!data) {
+        return;
+      }
+
+      if (['cancel', 'error', 'expired'].includes(data)) {
+        if (captchaRef.current) {
+          remove();
+          captchaRef.current.close();
         }
+        return;
+      } else {
+        setTimeout(() => {
+          if (captchaRef.current) {
+            captchaRef.current.close();
+          }
+          signIn(data);
+        }, 500);
       }
     },
     [signIn, remove],
@@ -334,21 +309,21 @@ const useSignIn = (navigation) => {
     moveToPasswordField,
     handleTextChange,
     passwordInputRef,
-    recaptchaRef,
+    captchaRef,
     showPassword,
     toggleShowPassword,
     checkAndSignIn,
     canSignIn,
     signIn,
     canTPSignIn,
+    postRequest,
+    loading,
+    showCaptcha,
+    onCheckCaptcha,
+    connected,
     googleSignIn,
     facebookSignIn,
     appleSignIn,
-    postRequest,
-    loading,
-    showRecaptcha,
-    onCheckRecaptcha,
-    connected,
   };
 };
 

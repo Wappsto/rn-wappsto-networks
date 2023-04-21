@@ -1,11 +1,10 @@
 import { useCallback, useEffect, useState } from 'react';
-import useRequest from 'wappsto-blanket/hooks/useRequest';
-import useVisible from 'wappsto-blanket/hooks/useVisible';
+import { useRequest, useVisible } from 'wappsto-blanket';
 import useConnected from '../useConnected';
 import useRequestSuccessPopup from './useRequestSuccessPopup';
 import { isEmail } from '../../util/helpers';
 
-const useDeleteAccount = (setLoading) => {
+const useDeleteAccount = setLoading => {
   const connected = useConnected();
   const { send, request } = useRequest();
   const requestSuccessHandler = useRequestSuccessPopup(request);

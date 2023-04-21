@@ -1,11 +1,10 @@
 import React from 'react';
-import { View, Text as RNtext, StyleSheet, Image } from 'react-native';
+import { Image, Text as RNtext, StyleSheet, View } from 'react-native';
+import { cannotAccessState, roundBasedOnStep } from 'wappsto-blanket';
 import Text from '../../../components/Text';
-import theme from '../../../theme/themeExport';
-import { useTranslation, CapitalizeFirst } from '../../../translations';
 import Timestamp from '../../../components/Timestamp';
-import { cannotAccessState } from 'wappsto-blanket/util';
-import { roundBasedOnStep } from 'wappsto-blanket/util';
+import theme from '../../../theme/themeExport';
+import { CapitalizeFirst, useTranslation } from '../../../translations';
 
 const styles = StyleSheet.create({
   image: {
@@ -60,6 +59,18 @@ const content = (state, value) => {
 
 const ReportState = React.memo(({ state, value }) => {
   const { t } = useTranslation();
+  const noAccess = cannotAccessState(state);
+
+  if (noAccess) {
+    return (
+      <Text
+        content={CapitalizeFirst(
+          t('dataModel:stateProperties.status_payment.' + state.status_payment),
+        )}
+      />
+    );
+  }
+
   return (
     <View>
       <View style={styles.row}>
@@ -69,19 +80,12 @@ const ReportState = React.memo(({ state, value }) => {
           style={styles.textMargin}
           content={CapitalizeFirst(t('dataModel:stateProperties.reportState'))}
         />
-        {!cannotAccessState(state) && <Timestamp timestamp={state.timestamp} />}
+        {!noAccess && <Timestamp timestamp={state.timestamp} />}
       </View>
-      {cannotAccessState(state) ? (
-        <Text
-          content={CapitalizeFirst(
-            t('dataModel:stateProperties.status_payment.' + state.status_payment),
-          )}
-        />
-      ) : (
-        content(state, value)
-      )}
+      {content(state, value)}
     </View>
   );
 });
 
+ReportState.displayName = 'ReportState';
 export default ReportState;

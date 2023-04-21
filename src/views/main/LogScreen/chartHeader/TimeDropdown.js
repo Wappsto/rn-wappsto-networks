@@ -1,8 +1,8 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import { ScrollView, TouchableOpacity } from 'react-native';
 import Popover, { PopoverPlacement } from 'react-native-popover-view';
 import Icon from 'react-native-vector-icons/Feather';
-import useVisible from 'wappsto-blanket/hooks/useVisible';
+import { useVisible } from 'wappsto-blanket';
 import Text from '../../../../components/Text';
 import theme from '../../../../theme/themeExport';
 import { CapitalizeFirst, useTranslation } from '../../../../translations';
@@ -14,9 +14,9 @@ const TimeDropdown = React.memo(({ value, setOptions, autoCompute }) => {
   const { t } = useTranslation();
   const [visible, show, hide] = useVisible(false);
 
-  const onChangeValue = (selectedValue) => {
+  const onChangeValue = selectedValue => {
     const newOptions = getDateOptions(selectedValue.time, selectedValue.number, 0, autoCompute);
-    setOptions((options) => {
+    setOptions(options => {
       const n = {
         ...options,
         ...newOptions,
@@ -49,7 +49,7 @@ const TimeDropdown = React.memo(({ value, setOptions, autoCompute }) => {
         </TouchableOpacity>
       }>
       <ScrollView bounces={false}>
-        {TIME_OPTIONS.map((v) => (
+        {TIME_OPTIONS.map(v => (
           <TouchableOpacity
             key={v.number + v.time}
             style={styles.dropdownButton}
@@ -70,4 +70,6 @@ const TimeDropdown = React.memo(({ value, setOptions, autoCompute }) => {
     </Popover>
   );
 });
+
+TimeDropdown.displayName = 'TimeDropdown';
 export default TimeDropdown;

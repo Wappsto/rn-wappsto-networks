@@ -2,15 +2,15 @@ let variables = require('./variables/generic').default;
 
 let styles = {};
 
+// '@react-navigation/native' theme config
 export function generateHeaderStyles(c = {}) {
   Object.assign(styles, {
-    headerTintColor: variables.headerColor,
-    headerStyle: {
-      backgroundColor: variables.headerBgColor,
-    },
-    headerTitleStyle: {
-      marginLeft: 0,
-      fontFamily: variables.fontFamily,
+    dark: true,
+    colors: {
+      primary: variables.headerColor,
+      background: variables.headerBgColor,
+      card: variables.headerBgColor,
+      text: variables.headerColor,
     },
     ...c,
   });

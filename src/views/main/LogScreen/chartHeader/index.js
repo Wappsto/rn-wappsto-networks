@@ -8,9 +8,9 @@ import { getDateOptions, getXValueOptions } from './../helpers';
 import { POINT_OPTIONS, TYPES } from './../params';
 import AggregationSelector from './AggregationSelector';
 import PointDropdown from './PointDropdown';
-import styles from './styles';
 import TimeDropdown from './TimeDropdown';
 import TypeSelector from './TypeSelector';
+import styles from './styles';
 
 const defaultOptions = {
   type: TYPES[0],
@@ -176,4 +176,5 @@ const ChartHeader = ({ options, setOptions, isLoading }) => {
   );
 };
 
+ChartHeader.displayName = 'ChartHeader';
 export default ChartHeader;

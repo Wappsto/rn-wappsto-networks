@@ -31,4 +31,5 @@ const SplashScreen = () => {
   );
 };
 
+SplashScreen.displayName = 'SplashScreen';
 export default SplashScreen;

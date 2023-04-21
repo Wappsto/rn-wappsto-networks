@@ -26,4 +26,5 @@ const KeyboardAvoidingView = React.memo(({ offset, children }) => {
   );
 });
 
+KeyboardAvoidingView.displayName = 'KeyboardAvoidingView';
 export default KeyboardAvoidingView;

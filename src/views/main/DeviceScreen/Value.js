@@ -1,13 +1,13 @@
 import React, { useCallback } from 'react';
-import { View, StyleSheet, ActivityIndicator, TouchableOpacity, Image } from 'react-native';
-import States from './States';
-import ValueDetails from './ValueDetails';
-import theme from '../../../theme/themeExport';
-import useRequest from 'wappsto-blanket/hooks/useRequest';
+import { ActivityIndicator, Image, StyleSheet, TouchableOpacity, View } from 'react-native';
+import { useRequest } from 'wappsto-blanket';
+import Button from '../../../components/Button';
 import RequestError from '../../../components/RequestError';
 import Text from '../../../components/Text';
-import Button from '../../../components/Button';
-import { useTranslation } from '../../../translations';
+import theme from '../../../theme/themeExport';
+import States from './States';
+import ValueDetails from './ValueDetails';
+import { useNavigation } from '@react-navigation/native';
 
 const styles = StyleSheet.create({
   itemPanel: {
@@ -37,16 +37,28 @@ const styles = StyleSheet.create({
   },
 });
 
-const ValueComponent = React.memo(({ item, navigation }) => {
-  const { t } = useTranslation();
+const ValueContent = React.memo(({ item, request }) => {
+  if (request?.status === 'pending') {
+    return <ActivityIndicator size="small" color={theme.variables.spinnerColor} />;
+  }
+
+  return (
+    <>
+      <RequestError request={request} />
+      <States value={item} />
+    </>
+  );
+});
+
+const ValueComponent = React.memo(({ item }) => {
   const { request, send } = useRequest();
+  const navigation = useNavigation();
 
   const navigateToLog = useCallback(() => {
     navigation.navigate('LogScreen', {
-      title: `${item.name || item.meta.id} ${t('pageTitle.logs')}`,
       id: item.meta.id,
     });
-  }, [navigation, t, item]);
+  }, [item.meta.id, navigation]);
 
   const updateValueStatus = useCallback(() => {
     send({
@@ -56,8 +68,7 @@ const ValueComponent = React.memo(({ item, navigation }) => {
         status: 'update',
       },
     });
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [item]);
+  }, [item.meta.id, send]);
 
   if (!item.meta || item.meta.error) {
     return null;
@@ -77,24 +88,19 @@ const ValueComponent = React.memo(({ item, navigation }) => {
               />
             </TouchableOpacity>
           )}
-          {request && request.status === 'pending' ? (
-            <ActivityIndicator size="small" color={theme.variables.spinnerColor} />
-          ) : (
-            <Button type="link" onPress={updateValueStatus} icon="rotate-cw" />
-          )}
+          <Button
+            type="link"
+            onPress={updateValueStatus}
+            icon="rotate-cw"
+            disabled={request?.status === 'pending'}
+          />
           <ValueDetails item={item} />
         </>
       </View>
-      <RequestError request={request} />
-      <States value={item} />
+      <ValueContent item={item} request={request} />
     </View>
   );
 });
 
-ValueComponent.navigationOptions = ({ route }) => {
-  return {
-    title: route.params.title || '',
-  };
-};
-
+ValueComponent.displayName = 'ValueComponent';
 export default ValueComponent;

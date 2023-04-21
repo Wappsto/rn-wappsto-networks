@@ -1,13 +1,13 @@
 import React from 'react';
 import { View, Switch, StyleSheet } from 'react-native';
 import Text from '../../../components/Text';
-import Slider from '@react-native-community/slider';
+// import Slider from '@react-native-community/slider';
 import RequestError from '../../../components/RequestError';
 import theme from '../../../theme/themeExport';
 import { useTranslation, CapitalizeFirst } from '../../../translations';
 import Timestamp from '../../../components/Timestamp';
-import { cannotAccessState } from 'wappsto-blanket/util';
-import { getStateData } from '../../../util/helpers';
+import { cannotAccessState } from 'wappsto-blanket';
+// import { getStateData } from '../../../util/helpers';
 import useControlState from '../../../hooks/useControlState';
 import NumericInput from '../../../components/NumericInput';
 import Input from '../../../components/Input';
@@ -33,13 +33,11 @@ export const StateDataField = ({
   value,
   input,
   setInput,
-  isFocused,
   setIsFocused,
   updateStateFromInput,
   updateSwitchState,
   throttledUpdateState,
-  updateState,
-  request,
+  // updateState,
   isUpdating,
 }) => {
   let stateDataField = null;
@@ -51,7 +49,7 @@ export const StateDataField = ({
         value={input}
         maxLength={value.string.max}
         onSubmitEditing={updateStateFromInput}
-        onChangeText={(text) => setInput(text)}
+        onChangeText={text => setInput(text)}
         editable={!isUpdating}
       />
     );
@@ -117,7 +115,7 @@ export const StateDataField = ({
         value={input}
         maxLength={value.blob.max}
         onSubmitEditing={updateStateFromInput}
-        onChangeText={(text) => setInput(text)}
+        onChangeText={text => setInput(text)}
         editable={!isUpdating}
       />
     );
@@ -132,7 +130,7 @@ export const StateDataField = ({
         maxLength={value.xml.max}
         onSubmitEditing={updateStateFromInput}
         editable={!isUpdating}
-        onChangeText={(text) => setInput(text)}
+        onChangeText={text => setInput(text)}
       />
     );
   }
@@ -142,6 +140,17 @@ export const StateDataField = ({
 const ControlState = React.memo(({ state, value }) => {
   const { t } = useTranslation();
   const controlStateController = useControlState(state, value);
+  const noAccess = cannotAccessState(state);
+
+  if (noAccess) {
+    return (
+      <Text
+        content={CapitalizeFirst(
+          t('dataModel:stateProperties.status_payment.' + state.status_payment),
+        )}
+      />
+    );
+  }
 
   return (
     <View>
@@ -152,24 +161,18 @@ const ControlState = React.memo(({ state, value }) => {
           style={styles.textMargin}
           content={CapitalizeFirst(t('dataModel:stateProperties.controlState'))}
         />
-        {!cannotAccessState(state) && <Timestamp timestamp={state.timestamp} />}
+        {!noAccess && <Timestamp timestamp={state.timestamp} />}
       </View>
-      {cannotAccessState(state) ? (
-        <Text
-          content={CapitalizeFirst(
-            t('dataModel:stateProperties.status_payment.' + state.status_payment),
-          )}
-        />
-      ) : (
-        <>
-          <View style={styles.dataWrapper}>
-            <StateDataField {...controlStateController} value={value} />
-          </View>
-          <RequestError request={controlStateController.request} />
-        </>
-      )}
+
+      <>
+        <View style={styles.dataWrapper}>
+          <StateDataField {...controlStateController} value={value} />
+        </View>
+        <RequestError request={controlStateController.request} />
+      </>
     </View>
   );
 });
 
+ControlState.displayName = 'ControlState';
 export default ControlState;

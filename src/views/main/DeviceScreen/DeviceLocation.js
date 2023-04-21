@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, StyleSheet, Linking } from 'react-native';
+import { Linking, StyleSheet, View } from 'react-native';
 import MapView, { Marker } from 'react-native-maps';
 import Button from '../../../components/Button';
 
@@ -22,7 +22,7 @@ const styles = StyleSheet.create({
   },
 });
 
-const DeviceLocation = React.memo((geo) => {
+const DeviceLocation = React.memo(geo => {
   const latitude = parseFloat(geo?.geo?.latitude);
   const longitude = parseFloat(geo?.geo?.longitude);
 
@@ -55,4 +55,5 @@ const DeviceLocation = React.memo((geo) => {
   );
 });
 
+DeviceLocation.displayName = 'DeviceLocation';
 export default DeviceLocation;

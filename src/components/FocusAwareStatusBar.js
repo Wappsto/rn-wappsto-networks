@@ -1,6 +1,6 @@
+import { useIsFocused } from '@react-navigation/native';
 import React from 'react';
 import { StatusBar } from 'react-native';
-import { useIsFocused } from '@react-navigation/native';
 
 function FocusAwareStatusBar(props) {
   const isFocused = useIsFocused();
@@ -8,4 +8,5 @@ function FocusAwareStatusBar(props) {
   return isFocused ? <StatusBar {...props} /> : null;
 }
 
+FocusAwareStatusBar.displayName = 'FocusAwareStatusBar';
 export default FocusAwareStatusBar;

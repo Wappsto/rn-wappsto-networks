@@ -2,7 +2,7 @@ import React from 'react';
 import { TouchableOpacity } from 'react-native';
 import Popover, { PopoverPlacement } from 'react-native-popover-view';
 import Icon from 'react-native-vector-icons/Feather';
-import useVisible from 'wappsto-blanket/hooks/useVisible';
+import { useVisible } from 'wappsto-blanket';
 import Text from '../../../../components/Text';
 import theme from '../../../../theme/themeExport';
 import { CapitalizeFirst, useTranslation } from '../../../../translations';
@@ -17,8 +17,8 @@ const ICON_MAPPING = {
 const TypeSelector = React.memo(({ type, setOptions }) => {
   const { t } = useTranslation();
   const [visible, show, hide] = useVisible(false);
-  const onChangeType = (selectedType) => {
-    setOptions((options) =>
+  const onChangeType = selectedType => {
+    setOptions(options =>
       options.type === selectedType ? options : { ...options, type: selectedType, value: '' },
     );
     hide();
@@ -39,7 +39,7 @@ const TypeSelector = React.memo(({ type, setOptions }) => {
           />
         </TouchableOpacity>
       }>
-      {TYPES.map((option) => (
+      {TYPES.map(option => (
         <TouchableOpacity
           key={option}
           style={[styles.dropdownButton, theme.common.row]}
@@ -61,4 +61,6 @@ const TypeSelector = React.memo(({ type, setOptions }) => {
     </Popover>
   );
 });
+
+TypeSelector.displayName = 'TypeSelector';
 export default TypeSelector;

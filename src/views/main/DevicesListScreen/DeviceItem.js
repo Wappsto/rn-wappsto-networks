@@ -1,13 +1,12 @@
-import React, { useMemo, useCallback } from 'react';
-import { View, TouchableOpacity, StyleSheet } from 'react-native';
-import { useSelector } from 'react-redux';
-import { makeEntitySelector } from 'wappsto-redux/selectors/entities';
-import { selectedDeviceName } from '../../../util/params';
-import { useDispatch } from 'react-redux';
-import { setItem } from 'wappsto-redux/actions/items';
-import theme from '../../../theme/themeExport';
+import React, { useCallback, useMemo } from 'react';
+import { StyleSheet, TouchableOpacity, View } from 'react-native';
+import { useDispatch, useSelector } from 'react-redux';
+import { makeEntitySelector, setItem } from 'wappsto-redux';
 import Text from '../../../components/Text';
+import theme from '../../../theme/themeExport';
 import { useTranslation } from '../../../translations';
+import { selectedDeviceName } from '../../../util/params';
+import { useNavigation } from '@react-navigation/native';
 
 const styles = StyleSheet.create({
   listItem: {
@@ -34,20 +33,20 @@ const styles = StyleSheet.create({
   },
 });
 
-const DeviceItem = React.memo(({ navigation, id }) => {
+const DeviceItem = React.memo(({ id }) => {
   const { t } = useTranslation();
+  const navigation = useNavigation();
   const getEntity = useMemo(makeEntitySelector, []);
-  const device = useSelector((state) => getEntity(state, 'device', id));
+  const device = useSelector(state => getEntity(state, 'device', id));
 
   const dispatch = useDispatch();
 
   const navigate = useCallback(() => {
-    dispatch(setItem(selectedDeviceName, device.meta.id));
-    navigation.navigate('DeviceScreen', {
-      title: device.name,
-    });
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [device]);
+    if (device?.meta.id) {
+      dispatch(setItem(selectedDeviceName, device.meta.id));
+      navigation.navigate('DeviceScreen');
+    }
+  }, [device?.meta.id, dispatch, navigation]);
 
   if (!device || !device.meta || !device.meta.id || device.meta.error) {
     return null;
@@ -56,7 +55,7 @@ const DeviceItem = React.memo(({ navigation, id }) => {
     <TouchableOpacity onPress={navigate}>
       <View style={styles.listItem}>
         <View style={styles.listItemTitleArea}>
-          <Text style={styles.listItemHeader} content={device.name} />
+          <Text style={styles.listItemHeader} content={device.meta.name_by_user} />
           <Text
             style={styles.listItemSubheader}
             content={
@@ -69,4 +68,5 @@ const DeviceItem = React.memo(({ navigation, id }) => {
   );
 });
 
+DeviceItem.displayName = 'DeviceItem';
 export default DeviceItem;

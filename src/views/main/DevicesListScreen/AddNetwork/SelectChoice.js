@@ -1,9 +1,9 @@
 import React from 'react';
-import { View, TouchableOpacity, StyleSheet } from 'react-native';
-import { useTranslation, CapitalizeFirst } from '../../../../translations';
-import theme from '../../../../theme/themeExport';
-import Text from '../../../../components/Text';
+import { StyleSheet, TouchableOpacity, View } from 'react-native';
 import Icon from 'react-native-vector-icons/Feather';
+import Text from '../../../../components/Text';
+import theme from '../../../../theme/themeExport';
+import { CapitalizeFirst, useTranslation } from '../../../../translations';
 
 const styles = StyleSheet.create({
   list: {

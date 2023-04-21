@@ -1,13 +1,13 @@
 import React from 'react';
-import { Image, View, ActivityIndicator, StyleSheet } from 'react-native';
-import Text from '../../../../components/Text';
-import Button from '../../../../components/Button';
-import { useTranslation, CapitalizeFirst } from '../../../../translations';
-import theme from '../../../../theme/themeExport';
-import RequestError from '../../../../components/RequestError';
-import useSetupDevice from '../../../../hooks/setup/blufi/useSetupDevice';
+import { ActivityIndicator, Image, StyleSheet, View } from 'react-native';
 import Icon from 'react-native-vector-icons/Feather';
+import Button from '../../../../components/Button';
+import RequestError from '../../../../components/RequestError';
+import Text from '../../../../components/Text';
+import useSetupDevice from '../../../../hooks/setup/blufi/useSetupDevice';
 import image from '../../../../theme/images';
+import theme from '../../../../theme/themeExport';
+import { CapitalizeFirst, useTranslation } from '../../../../translations';
 
 const styles = StyleSheet.create({
   progressIcon: {

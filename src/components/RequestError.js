@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import Text from '../components/Text';
-import usePrevious from 'wappsto-blanket/hooks/usePrevious';
+import { usePrevious } from 'wappsto-blanket';
 import { getRequestErrorMessage } from '../util/helpers';
 import { useTranslation, CapitalizeFirst } from '../translations';
 
@@ -51,4 +51,5 @@ const RequestError = React.memo(({ request, skipCodes = [], warning, autoHide = 
   return null;
 });
 
+RequestError.displayName = 'RequestError';
 export default RequestError;

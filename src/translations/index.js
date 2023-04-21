@@ -1,7 +1,7 @@
 import * as RNLocalize from 'react-native-localize';
 import i18next from 'i18next';
 import { initReactI18next, useTranslation } from 'react-i18next';
-import AsyncStorage from '@react-native-community/async-storage';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const langueStorageKey = 'langueStorageKey';
 
@@ -26,15 +26,17 @@ const resources = {
 const languageDetector = {
   type: 'languageDetector',
   async: true,
-  detect: async (callback) => {
+  detect: async callback => {
     let lng;
     try {
       lng = await AsyncStorage.getItem(langueStorageKey);
-    } catch (e) {}
+    } catch (e) {
+      console.error('When trying to get language from AsyncStorage, we got:', e);
+    }
     callback(lng || RNLocalize.getLocales()[0].languageCode);
   },
   init: () => {},
-  cacheUserLanguage: (lng) => AsyncStorage.setItem(langueStorageKey, lng),
+  cacheUserLanguage: lng => AsyncStorage.setItem(langueStorageKey, lng),
 };
 
 i18next
@@ -42,14 +44,12 @@ i18next
   .use(initReactI18next)
   .init({
     fallbackLng: 'en',
+    compatibilityJSON: 'v3',
     debug: true,
     nsMode: 'translation',
     resources,
-    react: {
-      useSuspense: false,
-    },
     interpolation: {
-      format: function (value, format, lng) {
+      format: (value, format) => {
         if (format === 'CapitalizeFirst') {
           return CapitalizeFirst(value);
         }
@@ -61,11 +61,9 @@ i18next
     },
   });
 
-const handleLocalizationChange = (a) => {
+RNLocalize.addEventListener('change', _ => {
   i18next.changeLanguage(RNLocalize.getLocales()[0].languageCode);
-};
-
-RNLocalize.addEventListener('change', handleLocalizationChange);
+});
 
 export default i18next;
 

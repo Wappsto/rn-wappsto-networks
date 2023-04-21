@@ -3,19 +3,28 @@ import Blufi from '../../../BlufiLib';
 import BleManager from 'react-native-ble-manager';
 import bleManagerEmitter from './bleManagerEmitter';
 
+const Listener = {
+  UPDATE_CHARACTERISTIC: 'BleManagerDidUpdateValueForCharacteristic',
+  DISCONNECT_PERIPHERAL: 'BleManagerDisconnectPeripheral',
+};
+
 const useInitBlufi = () => {
   useEffect(() => {
     bleManagerEmitter.addListener(
-      'BleManagerDidUpdateValueForCharacteristic',
+      Listener.UPDATE_CHARACTERISTIC,
       Blufi.onCustomCharacteristicChanged,
     );
-    bleManagerEmitter.addListener('BleManagerDisconnectPeripheral', Blufi.reset);
+    bleManagerEmitter.addListener(Listener.DISCONNECT_PERIPHERAL, Blufi.reset);
     return () => {
-      bleManagerEmitter.removeListener(
-        'BleManagerDidUpdateValueForCharacteristic',
-        Blufi.onCustomCharacteristicChanged,
+      bleManagerEmitter.removeAllListeners(
+        Listener.UPDATE_CHARACTERISTIC,
+        //Blufi.onCustomCharacteristicChanged, // removeAllListeners doesn't take callback
       );
-      bleManagerEmitter.removeListener('BleManagerDisconnectPeripheral', Blufi.reset);
+      bleManagerEmitter.removeAllListeners(
+        Listener.DISCONNECT_PERIPHERAL,
+        // Blufi.reset, // removeAllListeners doesn't take a callback
+      );
+
       if (Blufi.connectedDevice) {
         BleManager.disconnect(Blufi.connectedDevice.id);
       }

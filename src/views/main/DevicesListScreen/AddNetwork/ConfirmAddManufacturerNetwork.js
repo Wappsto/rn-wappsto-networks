@@ -1,6 +1,6 @@
 import React from 'react';
-import { useTranslation, CapitalizeFirst, CapitalizeEach } from '../../../../translations';
 import ConfirmationPopup from '../../../../components/ConfirmationPopup';
+import { CapitalizeEach, CapitalizeFirst, useTranslation } from '../../../../translations';
 
 const ConfirmAddManufacturerNetwork = React.memo(({ visible, accept, reject }) => {
   const { t } = useTranslation();

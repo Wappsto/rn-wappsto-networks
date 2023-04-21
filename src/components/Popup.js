@@ -1,17 +1,17 @@
+import color from 'color';
 import React from 'react';
 import {
   Modal,
-  View,
+  ScrollView,
+  StatusBar,
   StyleSheet,
   TouchableOpacity,
   TouchableWithoutFeedback,
-  StatusBar,
-  ScrollView,
+  View,
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import Icon from 'react-native-vector-icons/Feather';
 import theme from '../theme/themeExport';
-import color from 'color';
 
 const styles = StyleSheet.create({
   popupOverlay: {
@@ -83,4 +83,5 @@ const Popup = React.memo(
   },
 );
 
+Popup.displayName = 'Popup';
 export default Popup;

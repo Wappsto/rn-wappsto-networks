@@ -20,4 +20,5 @@ const ItemDeleteIndicator = React.memo(({ request }) => {
   return null;
 });
 
+ItemDeleteIndicator.displayName = 'ItemDeleteIndicator';
 export default ItemDeleteIndicator;

@@ -1,18 +1,17 @@
 import React, { useState } from 'react';
 import { View } from 'react-native';
-import Popup from '../../../components/Popup';
-import Input, { styles } from '../../../components/Input';
-import CheckBox from '../../../components/CheckBox';
-import Text from '../../../components/Text';
-import Button from '../../../components/Button';
-import RequestError from '../../../components/RequestError';
-import useRequest from 'wappsto-blanket/hooks/useRequest';
-import theme from '../../../theme/themeExport';
-import { useTranslation, CapitalizeFirst } from '../../../translations';
-import { isEmail } from '../../../util/helpers';
-import { isUUID } from 'wappsto-redux/util/helpers';
-import { getRequestErrorMessage } from '../../../util/helpers';
 import Toast from 'react-native-toast-message';
+import { useRequest } from 'wappsto-blanket';
+import Button from '../../../components/Button';
+import CheckBox from '../../../components/CheckBox';
+import Input, { styles } from '../../../components/Input';
+import Popup from '../../../components/Popup';
+import RequestError from '../../../components/RequestError';
+import Text from '../../../components/Text';
+import Str from '../../../helpers/stringHelpers';
+import theme from '../../../theme/themeExport';
+import { CapitalizeFirst, useTranslation } from '../../../translations';
+import { getRequestErrorMessage, isEmail } from '../../../util/helpers';
 
 const DEFAULT_RESTRICTION = { retrieve: true, update: true };
 const Share = React.memo(({ item, visible, hide }) => {
@@ -30,7 +29,7 @@ const Share = React.memo(({ item, visible, hide }) => {
     }
     let validationError = false;
     let newError = {};
-    if (!isUUID(user) && !isEmail(user)) {
+    if (!Str.isUuid(user) && !isEmail(user)) {
       validationError = true;
       newError = { ...newError, user: true };
     }
@@ -63,7 +62,7 @@ const Share = React.memo(({ item, visible, hide }) => {
       },
     });
     promise
-      .then((response) => {
+      .then(response => {
         if (response.ok) {
           Toast.show({
             type: 'success',
@@ -88,7 +87,7 @@ const Share = React.memo(({ item, visible, hide }) => {
           });
         }
       })
-      .catch((response) => {
+      .catch(response => {
         if (!visible) {
           Toast.show({
             type: 'error',
@@ -116,25 +115,25 @@ const Share = React.memo(({ item, visible, hide }) => {
         disabled={loading}
         checked={restriction.create}
         text={CapitalizeFirst(t('acl:method.create'))}
-        onPress={() => setRestriction((r) => ({ ...r, create: !r.create }))}
+        onPress={() => setRestriction(r => ({ ...r, create: !r.create }))}
       />
       <CheckBox
         disabled={loading}
         checked={restriction.retrieve}
         text={CapitalizeFirst(t('acl:method.retrieve'))}
-        onPress={() => setRestriction((r) => ({ ...r, retrieve: !r.retrieve }))}
+        onPress={() => setRestriction(r => ({ ...r, retrieve: !r.retrieve }))}
       />
       <CheckBox
         disabled={loading}
         checked={restriction.update}
         text={CapitalizeFirst(t('acl:method.update'))}
-        onPress={() => setRestriction((r) => ({ ...r, update: !r.update }))}
+        onPress={() => setRestriction(r => ({ ...r, update: !r.update }))}
       />
       <CheckBox
         disabled={loading}
         checked={restriction.delete}
         text={CapitalizeFirst(t('acl:method.delete'))}
-        onPress={() => setRestriction((r) => ({ ...r, delete: !r.delete }))}
+        onPress={() => setRestriction(r => ({ ...r, delete: !r.delete }))}
       />
       {!!error.restriction && (
         <Text
@@ -169,4 +168,5 @@ const Share = React.memo(({ item, visible, hide }) => {
   );
 });
 
+Share.displayName = 'Share';
 export default Share;

@@ -1,5 +1,4 @@
 import { generateStyles } from './common/main';
-import { generateVariables } from './variables/generic';
 import { generateHeaderStyles } from './headerStyle';
 
 let theme = {
@@ -11,7 +10,7 @@ let theme = {
 export default theme;
 
 export function use(config) {
-  generateVariables(config.variables);
+  theme.variables = config.variables;
   generateStyles(config.common);
   generateHeaderStyles(config.headerStyle);
 }

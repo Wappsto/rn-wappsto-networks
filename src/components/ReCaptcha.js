@@ -1,21 +1,22 @@
 import React from 'react';
-import ConfirmGoogleCaptcha from 'react-native-google-recaptcha-v2';
-import { useTranslation, CapitalizeFirst } from '../translations';
+import Recaptcha from 'react-native-recaptcha-that-works';
+import { useTranslation } from '../translations';
 import { config } from '../configureWappstoRedux';
 
-const ReCaptcha = React.memo(({ onCheck, style, recaptchaRef }) => {
-  const { t, i18n } = useTranslation();
+const ReCaptcha = React.memo(({ onCheck, style, captchaRef }) => {
+  const { i18n } = useTranslation();
 
   return (
-    <ConfirmGoogleCaptcha
-      ref={recaptchaRef}
-      siteKey={config.recaptchaKey}
-      baseUrl={config.baseUrl && config.baseUrl.replace('/services', '')}
+    <Recaptcha
+      ref={captchaRef}
+      siteKey={config?.recaptchaKey}
+      baseUrl={config?.baseUrl?.replace('/services', '')}
       languageCode={i18n.language}
-      onMessage={(event) => onCheck(event.nativeEvent.data)}
-      cancelButtonText={CapitalizeFirst(t('genericButton.cancel'))}
+      onVerify={onCheck}
+      lang={i18n.language}
     />
   );
 });
 
+ReCaptcha.displayName = 'ReCaptcha';
 export default ReCaptcha;

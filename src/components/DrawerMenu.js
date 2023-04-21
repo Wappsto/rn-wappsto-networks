@@ -1,37 +1,35 @@
+import { DrawerContentScrollView, DrawerItemList } from '@react-navigation/drawer';
+import Color from 'color';
 import React from 'react';
-import { SafeAreaView } from 'react-native-safe-area-context';
-import { DrawerItemList } from '@react-navigation/drawer';
-import { View, StyleSheet, ScrollView, Image, ActivityIndicator } from 'react-native';
-import RequestError from './RequestError';
-import theme from '../theme/themeExport';
-import Text from './Text';
-import Button from './Button';
+import { ActivityIndicator, Image, StyleSheet, View } from 'react-native';
 import Icon from 'react-native-vector-icons/Feather';
-import { useTranslation, CapitalizeFirst } from '../translations';
-import useUser from '../hooks/useUser';
 import VersionNumber from 'react-native-version-number';
+import useUser from '../hooks/useUser';
+import theme from '../theme/themeExport';
+import { CapitalizeFirst, useTranslation } from '../translations';
+import Button from './Button';
+import RequestError from './RequestError';
+import Text from './Text';
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: theme.variables.drawerMenuBgColor,
+    justifyContent: 'space-between',
   },
   userInfo: {
-    flex: 1,
     flexDirection: 'row',
     alignItems: 'center',
     paddingHorizontal: 10,
-    paddingTop: 30,
-    paddingBottom: 20,
+    paddingVertical: 20,
     marginVertical: 4,
-    borderBottomColor: theme.variables.lightGray,
+    borderBottomColor: Color(theme.variables.secondary).darken(0.1).hex(),
     borderBottomWidth: theme.variables.borderWidth,
   },
   row: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'flex-end',
-    marginBottom: 20,
+    marginBottom: 40,
     marginHorizontal: 5,
   },
   userImage: {
@@ -44,6 +42,7 @@ const styles = StyleSheet.create({
   userName: {
     flex: 1,
     marginLeft: 8,
+    color: theme.variables.textInverse,
   },
   logoutBtn: {
     marginBottom: 20,
@@ -54,23 +53,25 @@ const styles = StyleSheet.create({
     margin: 10,
   },
 });
-const DrawerMenu = React.memo((props) => {
+const DrawerMenu = React.memo(props => {
   const { t } = useTranslation();
-  const { user, name, logout, request } = useUser(props.navigation);
+  const { user, name, logout, request } = useUser();
+
   for (const view in props.descriptors) {
     if (!props.descriptors[view].options) {
       props.descriptors[view].options = {};
     }
     if (!props.descriptors[view].options.drawerLabel) {
-      const route = props.state.routes.find((route) => route.key === view);
+      const route = props.state.routes.find(route => route.key === view);
       if (route) {
         props.descriptors[view].options.drawerLabel = CapitalizeFirst(t('pageTitle.' + route.name));
       }
     }
   }
+
   return (
-    <SafeAreaView style={styles.container}>
-      <ScrollView>
+    <DrawerContentScrollView {...props} contentContainerStyle={styles.container} bounces={false}>
+      <View>
         <View style={styles.userInfo}>
           {user && user.provider[0] ? (
             <Image style={styles.userImage} source={{ uri: user.provider[0].picture }} />
@@ -79,24 +80,29 @@ const DrawerMenu = React.memo((props) => {
           ) : (
             <Icon name="user" color={theme.variables.drawerMenuText} size={20} />
           )}
-          <Text ellipsizeMode="middle" numberOfLines={1} style={styles.userName} content={name} />
+          <Text ellipsizeMode="middle" numberOfLines={1} style={styles.userName} content={name}>
+            {name}
+          </Text>
           <RequestError request={request} />
         </View>
         <DrawerItemList {...props} />
-      </ScrollView>
+      </View>
       <View style={styles.row}>
         <Button
           type="link"
-          color="primary"
+          color={theme.headerStyle.colors.text}
           align="left"
           bold
           onPress={logout}
           text={CapitalizeFirst(t('logout'))}
         />
-        <Text style={styles.versionNr} color="secondary" content={'v' + VersionNumber.appVersion} />
+        <Text style={styles.versionNr} color={theme.variables.textInverse}>
+          v{VersionNumber.appVersion}
+        </Text>
       </View>
-    </SafeAreaView>
+    </DrawerContentScrollView>
   );
 });
 
+DrawerMenu.displayName = 'DrawerMenu';
 export default DrawerMenu;

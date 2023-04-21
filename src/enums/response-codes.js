@@ -1,0 +1,6 @@
+const RESPONSE_CODE = Object.freeze({
+  PASSWORD_MISMATCH: 300084,
+  CAPTCHA_GOOGLE_ERROR: 9900007,
+});
+
+export default RESPONSE_CODE;

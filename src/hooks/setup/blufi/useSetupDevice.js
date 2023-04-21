@@ -1,8 +1,8 @@
-import { useState, useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
+import { usePrevious } from 'wappsto-blanket';
 import Blufi from '../../../BlufiLib';
 import { BlufiCallback } from '../../../BlufiLib/util/params';
-import { isUUID } from 'wappsto-redux/util/helpers';
-import usePrevious from 'wappsto-blanket/hooks/usePrevious';
+import Str from '../../../helpers/stringHelpers';
 import { manufacturerAsOwnerErrorCode } from '../../../util/params';
 
 const BLUFI_STATUS = {
@@ -56,8 +56,8 @@ const useSetupDevice = (connectToDevice, addNetworkHandler, wifiFields, autoConf
   const prevConnected = usePrevious(isConnected());
   const [step, setStateStep] = useState(STEPS.RETRIEVE);
   const networkId = useRef(null);
-  const timeout = useRef(null);
-  const statusInterval = useRef(null);
+  const timeout = useRef();
+  const statusInterval = useRef();
   const waitForStatus = useRef(true);
   const deviceConnectedToWifi = useRef(false);
   const withTimeout = useRef(true);
@@ -65,7 +65,7 @@ const useSetupDevice = (connectToDevice, addNetworkHandler, wifiFields, autoConf
   const success = useRef(false);
   const error = useRef(false);
 
-  const setStep = (val) => {
+  const setStep = val => {
     refStep.current = val;
     setStateStep(val);
   };
@@ -156,7 +156,7 @@ const useSetupDevice = (connectToDevice, addNetworkHandler, wifiFields, autoConf
         if (refStep.current === STEPS.RETRIEVE) {
           clearTimeout(timeout.current);
           networkId.current = message;
-          if (!isUUID(networkId.current)) {
+          if (!Str.isUuid(networkId.current)) {
             // message is not a uuid
             setStep(ERRORS.FAILEDNOTUUID);
             return;
@@ -180,7 +180,7 @@ const useSetupDevice = (connectToDevice, addNetworkHandler, wifiFields, autoConf
       }
     };
 
-    Blufi.onStatusResponse = (status) => {
+    Blufi.onStatusResponse = status => {
       if (error.current) {
         return;
       }
@@ -210,7 +210,7 @@ const useSetupDevice = (connectToDevice, addNetworkHandler, wifiFields, autoConf
     }
   };
 
-  const configure = async (force) => {
+  const configure = async force => {
     if (force || !loading) {
       if (!isConnected() && !deviceConnectedToWifi.current) {
         if (!connectionLoading) {

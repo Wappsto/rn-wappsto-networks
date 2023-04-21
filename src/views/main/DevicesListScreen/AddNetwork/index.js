@@ -1,22 +1,21 @@
-import React, { useState, useCallback, useEffect } from 'react';
-import { StatusBar } from 'react-native';
-import PopupButton from '../../../../components/PopupButton';
+import React, { useCallback, useEffect, useState } from 'react';
+import { Modal, StatusBar } from 'react-native';
+import { useVisible } from 'wappsto-blanket';
 import BackHandlerView from '../../../../components/BackHandlerView';
-import { Modal } from 'react-native';
-import theme from '../../../../theme/themeExport';
-import SelectChoice from './SelectChoice';
-import SearchBlufi from './SearchBlufi';
-import DeviceWifiList from './DeviceWifiList';
-import ConfigureWifi from './ConfigureWifi';
-import SetupDevice from './SetupDevice';
-import ClaimNetwork from './ClaimNetwork';
-import useVisible from 'wappsto-blanket/hooks/useVisible';
-import { iotNetworkListAdd, iotNetworkAddFlow } from '../../../../util/params';
-import ConfirmAddManufacturerNetwork from './ConfirmAddManufacturerNetwork';
-import useAddNetwork from '../../../../hooks/setup/useAddNetwork';
-import useWifiFields from '../../../../hooks/setup/blufi/useWifiFields';
-import useInitBlufi from '../../../../hooks/setup/blufi/useInitBlufi';
+import PopupButton from '../../../../components/PopupButton';
 import useConnectToDevice from '../../../../hooks/setup/blufi/useConnectToDevice';
+import useInitBlufi from '../../../../hooks/setup/blufi/useInitBlufi';
+import useWifiFields from '../../../../hooks/setup/blufi/useWifiFields';
+import useAddNetwork from '../../../../hooks/setup/useAddNetwork';
+import theme from '../../../../theme/themeExport';
+import { iotNetworkAddFlow, iotNetworkListAdd } from '../../../../util/params';
+import ClaimNetwork from './ClaimNetwork';
+import ConfigureWifi from './ConfigureWifi';
+import ConfirmAddManufacturerNetwork from './ConfirmAddManufacturerNetwork';
+import DeviceWifiList from './DeviceWifiList';
+import SearchBlufi from './SearchBlufi';
+import SelectChoice from './SelectChoice';
+import SetupDevice from './SetupDevice';
 
 const Content = React.memo(({ visible, hide, show }) => {
   const wifiFields = useWifiFields();
@@ -31,7 +30,7 @@ const Content = React.memo(({ visible, hide, show }) => {
   const { setAcceptedManufacturerAsOwner } = addNetworkHandler;
 
   const next = useCallback(() => {
-    setStep((s) => {
+    setStep(s => {
       if (s === 3) {
         setAcceptedManufacturerAsOwner(null);
       }
@@ -41,7 +40,7 @@ const Content = React.memo(({ visible, hide, show }) => {
 
   const handleBack = useCallback(() => {
     if (step) {
-      setStep((n) => (n === 2 ? 0 : n - 1));
+      setStep(n => (n === 2 ? 0 : n - 1));
     } else {
       hide();
     }

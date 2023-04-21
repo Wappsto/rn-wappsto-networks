@@ -1,8 +1,8 @@
 import { useEffect } from 'react';
 import { useDispatch } from 'react-redux';
-import { removeItem } from 'wappsto-redux/actions/items';
+import { removeItem } from 'wappsto-redux';
 
-const useUnmountRemoveItem = (itemName) => {
+const useUnmountRemoveItem = itemName => {
   const dispatch = useDispatch();
   useEffect(() => {
     return () => {

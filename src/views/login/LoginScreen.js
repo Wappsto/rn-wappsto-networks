@@ -1,29 +1,30 @@
+import { useNavigation } from '@react-navigation/native';
 import React, { useCallback } from 'react';
 import {
-  Image,
-  View,
-  Text as RNText,
-  Linking,
-  TouchableOpacity,
   ActivityIndicator,
-  StyleSheet,
-  StatusBar,
+  Image,
   ScrollView,
+  StatusBar,
+  StyleSheet,
+  Text as RNText,
+  TouchableOpacity,
+  View,
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { useTranslation, CapitalizeFirst, CapitalizeEach } from '../../translations';
-import useSignIn from '../../hooks/login/useSignIn';
-import RequestError from '../../components/RequestError';
-import ReCaptcha from '../../components/ReCaptcha';
-import KeyboardAvoidingView from '../../components/KeyboardAvoidingView';
-import Input from '../../components/Input';
-import Text from '../../components/Text';
-import Button from '../../components/Button';
-import LanguageButton from '../../components/LanguageButton';
-import PageTitle from '../../components/PageTitle';
-import theme from '../../theme/themeExport';
-import defaultImages from '../../theme/images';
 import VersionNumber from 'react-native-version-number';
+import Button from '../../components/Button';
+import Input from '../../components/Input';
+import KeyboardAvoidingView from '../../components/KeyboardAvoidingView';
+import LanguageButton from '../../components/LanguageButton';
+import ReCaptcha from '../../components/ReCaptcha';
+import RequestError from '../../components/RequestError';
+import Text from '../../components/Text';
+import NAV from '../../enums/navigation';
+import useSignIn from '../../hooks/login/useSignIn';
+import defaultImages from '../../theme/images';
+import theme from '../../theme/themeExport';
+import { CapitalizeEach, CapitalizeFirst, useTranslation } from '../../translations';
+import Terms from './components/Terms';
 
 const styles = StyleSheet.create({
   formLinkButtons: {
@@ -94,79 +95,35 @@ const styles = StyleSheet.create({
   },
 });
 
-const TermsAndConditions = React.memo(({ navigation }) => {
+const LoginScreen = React.memo(() => {
   const { t } = useTranslation();
-  const text = CapitalizeFirst(t('account:acceptTermsWhenSignIn.message'));
-  const terms = t('account:acceptTermsWhenSignIn.terms');
-  const privacy = t('account:acceptTermsWhenSignIn.privacy');
-  const components = text.split(new RegExp('(' + terms + '|' + privacy + ')'));
-  return (
-    <RNText style={styles.terms}>
-      {components.map((str) => {
-        if (str === terms) {
-          return (
-            <Text
-              key={str}
-              onPress={() => LoginScreen.onTermsPress(navigation)}
-              size="p"
-              color="primary"
-              align="center"
-              content={str}
-            />
-          );
-        }
-        if (str === privacy) {
-          return (
-            <Text
-              key={str}
-              onPress={() => LoginScreen.onPrivacyPress(navigation)}
-              size="p"
-              color="primary"
-              align="center"
-              content={str}
-            />
-          );
-        }
-        return <Text key={str} size="p" color="secondary" align="center" content={str} />;
-      })}
-    </RNText>
-  );
-});
+  const navigation = useNavigation();
+  const navigateTo = to => () => navigation.navigate(to);
 
-const LoginScreen = React.memo(({ navigation }) => {
-  const { t } = useTranslation();
+  const moveToRegisterScreen = useCallback(() => {
+    navigation.navigate(LoginScreen.registerNavigateTo);
+  }, [navigation]);
+
   const {
     username,
     password,
     moveToPasswordField,
     handleTextChange,
     passwordInputRef,
-    recaptchaRef,
+    captchaRef,
     showPassword,
     toggleShowPassword,
     checkAndSignIn,
     canSignIn,
     canTPSignIn,
+    postRequest,
+    loading,
+    onCheckCaptcha,
+    connected,
     googleSignIn,
     facebookSignIn,
     appleSignIn,
-    postRequest,
-    onCheckRecaptcha,
-    loading,
-    connected,
-  } = useSignIn(navigation);
-
-  const moveToTACScreen = useCallback(() => {
-    navigation.navigate('TermsAndConditionsScreen');
-  }, [navigation]);
-
-  const moveToRegisterScreen = useCallback(() => {
-    navigation.navigate(LoginScreen.registerNavigateTo);
-  }, [navigation]);
-
-  const moveToRecoverPasswordScreen = useCallback(() => {
-    navigation.navigate('RecoverPasswordScreen');
-  }, [navigation]);
+  } = useSignIn();
 
   return (
     <SafeAreaView style={theme.common.container}>
@@ -187,7 +144,7 @@ const LoginScreen = React.memo(({ navigation }) => {
           <View style={theme.common.contentContainer}>
             <View style={styles.section}>
               <Input
-                onChangeText={(usernameText) => handleTextChange(usernameText, 'username')}
+                onChangeText={usernameText => handleTextChange(usernameText, 'username')}
                 value={username}
                 label={CapitalizeFirst(t('account:username'))}
                 textContentType="emailAddress"
@@ -199,7 +156,7 @@ const LoginScreen = React.memo(({ navigation }) => {
               />
               <Input
                 inputRef={passwordInputRef}
-                onChangeText={(passwordText) => handleTextChange(passwordText, 'password')}
+                onChangeText={passwordText => handleTextChange(passwordText, 'password')}
                 value={password}
                 label={CapitalizeFirst(t('account:password'))}
                 textContentType="password"
@@ -213,7 +170,7 @@ const LoginScreen = React.memo(({ navigation }) => {
               />
               {loading && <ActivityIndicator size="large" color={theme.variables.spinnerColor} />}
 
-              <ReCaptcha onCheck={onCheckRecaptcha} recaptchaRef={recaptchaRef} />
+              <ReCaptcha onCheck={onCheckCaptcha} captchaRef={captchaRef} />
 
               <RequestError request={postRequest} />
               <Button
@@ -227,7 +184,7 @@ const LoginScreen = React.memo(({ navigation }) => {
               <View style={styles.formLinkButtons}>
                 <Button
                   disabled={loading}
-                  onPress={moveToRecoverPasswordScreen}
+                  onPress={navigateTo(NAV.NOSESSION.LOST_PASSWD)}
                   type="link"
                   color="primary"
                   text={CapitalizeFirst(t('account:forgotPassword'))}
@@ -245,7 +202,7 @@ const LoginScreen = React.memo(({ navigation }) => {
 
             <View style={styles.seperator} />
 
-            <TermsAndConditions navigation={navigation} />
+            <Terms privacyLink={LoginScreen.PrivacyLink} termsLink={LoginScreen.TermsLink} />
 
             <View style={styles.section}>
               <TouchableOpacity
@@ -318,13 +275,6 @@ const LoginScreen = React.memo(({ navigation }) => {
   );
 });
 
-LoginScreen.navigationOptions = () => {
-  return {
-    headerShown: false,
-    title: <PageTitle title="pageTitle.login" />,
-  };
-};
-
 //----------------------------------------------------------------------------------------------
 //----------------------------------------------------------------------------------------------
 //------------------------------------OVERRIDABLE-----------------------------------------------
@@ -354,33 +304,16 @@ LoginScreen.Footer = () => {
         color="secondary"
         align="center"
         size={10}
-        content={'v' + VersionNumber.appVersion + ' © '}
-      />
-      <Text
-        bold
-        onPress={() => handlePress('https://www.seluxit.com')}
-        color="secondary"
-        align="center"
-        size={10}
-        content={'Seluxit A/S'}
+        content={'v' + VersionNumber.appVersion + ' © Seluxit'}
       />
     </RNText>
   );
 };
 
-const handlePress = async (url) => {
-  const supported = await Linking.canOpenURL(url);
-  if (supported) {
-    await Linking.openURL(url);
-  }
-};
-LoginScreen.onTermsPress = () => {
-  handlePress('https://www.seluxit.com/legal/seluxit-cloud-solutions-terms-and-conditions/');
-};
+LoginScreen.TermsLink =
+  'https://www.seluxit.com/legal/seluxit-cloud-solutions-terms-and-conditions/';
 
-LoginScreen.onPrivacyPress = () => {
-  handlePress('https://www.seluxit.com/privacy');
-};
+LoginScreen.PrivacyLink = 'https://www.seluxit.com/privacy';
 
 export function setHeader(comp) {
   LoginScreen.Header = comp;
@@ -390,6 +323,6 @@ export function setFooter(comp) {
   LoginScreen.Footer = comp;
 }
 
-LoginScreen.registerNavigateTo = 'RegisterScreen';
+LoginScreen.registerNavigateTo = NAV.NOSESSION.REGISTER;
 
 export default LoginScreen;

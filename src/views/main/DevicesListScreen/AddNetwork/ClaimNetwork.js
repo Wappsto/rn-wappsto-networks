@@ -1,15 +1,15 @@
-import React from 'react';
-import { RNCamera } from 'react-native-camera';
-import BarcodeMask from 'react-native-barcode-mask';
-import { View, ActivityIndicator, TouchableOpacity, StyleSheet } from 'react-native';
+import React, { useEffect, useState } from 'react';
+import { ActivityIndicator, StyleSheet, TouchableOpacity, View } from 'react-native';
 import Icon from 'react-native-vector-icons/Feather';
-import Text from '../../../../components/Text';
+import { Camera, useCameraDevices } from 'react-native-vision-camera';
+import { BarcodeFormat, BarcodeValueType, useScanBarcodes } from 'vision-camera-code-scanner';
 import Button from '../../../../components/Button';
 import Input from '../../../../components/Input';
 import RequestError from '../../../../components/RequestError';
-import theme from '../../../../theme/themeExport';
-import { useTranslation, CapitalizeFirst } from '../../../../translations';
+import Text from '../../../../components/Text';
 import useAddNetworkForm from '../../../../hooks/setup/useAddNetworkForm';
+import theme from '../../../../theme/themeExport';
+import { CapitalizeFirst, useTranslation } from '../../../../translations';
 
 const styles = StyleSheet.create({
   qrCodeScannerWrapper: {
@@ -41,6 +41,36 @@ const styles = StyleSheet.create({
   },
 });
 
+const ScanButton = ({ didScan, onPress }) => {
+  const { t } = useTranslation();
+  return (
+    <TouchableOpacity style={styles.cameraCapture} onPress={onPress}>
+      {didScan ? (
+        <>
+          <View style={styles.statusMessage}>
+            <Icon
+              name="check-circle"
+              size={18}
+              color={theme.variables.success}
+              style={styles.inlineIcon}
+            />
+            <Text
+              color={theme.variables.success}
+              content={CapitalizeFirst(t('onboarding.claimNetwork.scanSuccessMessage'))}
+            />
+          </View>
+          <Text
+            color="secondary"
+            content={CapitalizeFirst(t('onboarding.claimNetwork.rescanQRCode'))}
+          />
+        </>
+      ) : (
+        <Text content={CapitalizeFirst(t('onboarding.claimNetwork.scanQRCode'))} />
+      )}
+    </TouchableOpacity>
+  );
+};
+
 const AddNetwork = React.memo(({ addNetworkHandler, hide }) => {
   const { t } = useTranslation();
   const {
@@ -57,6 +87,34 @@ const AddNetwork = React.memo(({ addNetworkHandler, hide }) => {
     canAdd,
   } = useAddNetworkForm(addNetworkHandler, hide);
 
+  const devices = useCameraDevices();
+  const device = devices.back;
+  const [frameProcessor, barcodes] = useScanBarcodes([BarcodeFormat.QR_CODE], {
+    checkInverted: true,
+  });
+  const [hasPermission, setHasPermission] = useState(false);
+
+  useEffect(() => {
+    (async () => {
+      const status = await Camera.requestCameraPermission();
+      setHasPermission(status === 'authorized');
+    })();
+  }, []);
+
+  useEffect(() => {
+    if (barcodes.length > 0) {
+      const bookmark = barcodes.find(
+        c => c.content.type === BarcodeValueType.URL || c.content.type === BarcodeValueType.TEXT,
+      )?.content.data;
+
+      if (bookmark?.hasOwnProperty('url')) {
+        onRead(bookmark.url ?? '');
+      } else {
+        onRead(bookmark);
+      }
+    }
+  }, [barcodes, onRead]);
+
   return (
     <>
       <Text
@@ -70,62 +128,25 @@ const AddNetwork = React.memo(({ addNetworkHandler, hide }) => {
         content={CapitalizeFirst(t('onboarding.claimNetwork.claimNetworkInfo'))}
       />
       <View style={styles.qrCodeScannerWrapper}>
-        {isScanning ? (
-          <RNCamera
-            captureAudio={false}
-            barCodeTypes={[RNCamera.Constants.BarCodeType.qr]}
-            style={styles.cameraPreview}
-            onBarCodeRead={onRead}
-            notAuthorizedView={
-              <View style={styles.cameraCapture}>
-                <Text
-                  content={CapitalizeFirst(t('onboarding.claimNetwork.cameraPermission.denied'))}
-                />
-              </View>
-            }
-            pendingAuthorizationView={
-              <View style={styles.cameraCapture}>
-                <Text
-                  content={CapitalizeFirst(t('onboarding.claimNetwork.cameraPermission.pending'))}
-                />
-              </View>
-            }
-            androidCameraPermissionOptions={{
-              title: CapitalizeFirst(t('onboarding.claimNetwork.cameraPermission.title')),
-              message: CapitalizeFirst(t('onboarding.claimNetwork.cameraPermission.message')),
-            }}>
-            <BarcodeMask
-              width="100%"
-              height={240}
-              edgeColor={theme.variables.primary}
-              showAnimatedLine={false}
+        {hasPermission ? (
+          isScanning && device ? (
+            <Camera
+              isActive
+              device={device}
+              style={styles.cameraPreview}
+              frameProcessor={frameProcessor}
+              frameProcessorFps={5}
             />
-          </RNCamera>
+          ) : (
+            <ScanButton didScan={didScan} onPress={switchView} />
+          )
         ) : (
-          <TouchableOpacity style={styles.cameraCapture} onPress={switchView}>
-            {didScan ? (
-              <>
-                <View style={styles.statusMessage}>
-                  <Icon
-                    name="check-circle"
-                    size={18}
-                    color={theme.variables.success}
-                    style={styles.inlineIcon}
-                  />
-                  <Text
-                    color={theme.variables.success}
-                    content={CapitalizeFirst(t('onboarding.claimNetwork.scanSuccessMessage'))}
-                  />
-                </View>
-                <Text
-                  color="secondary"
-                  content={CapitalizeFirst(t('onboarding.claimNetwork.rescanQRCode'))}
-                />
-              </>
-            ) : (
-              <Text content={CapitalizeFirst(t('onboarding.claimNetwork.scanQRCode'))} />
-            )}
-          </TouchableOpacity>
+          <View style={styles.cameraCapture}>
+            <Text
+              color={theme.variables.alert}
+              content={CapitalizeFirst(t('onboarding.claimNetwork.cameraPermission.denied'))}
+            />
+          </View>
         )}
       </View>
       {scanError && (
@@ -137,7 +158,7 @@ const AddNetwork = React.memo(({ addNetworkHandler, hide }) => {
       )}
       <Input
         label={CapitalizeFirst(t('onboarding.claimNetwork.uuidLabel'))}
-        onChangeText={(text) => setInputValue(text)}
+        onChangeText={text => setInputValue(text)}
         value={inputValue}
         autoCapitalize="none"
         onSubmitEditing={onSubmitEditing}

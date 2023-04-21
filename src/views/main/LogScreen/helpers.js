@@ -1,3 +1,5 @@
+import dayjs from 'dayjs';
+
 const compute = ({ start, end }) => {
   if (!start || !end) {
     return;
@@ -65,8 +67,9 @@ export const getDateOptions = (time, number = 1, arrowClick = 0, autoCompute) =>
 };
 
 export const getXValueOptions = (number, arrowClick = 0, autoCompute) => {
-  const start = new Date('01/01/2010').toISOString();
-  const end = new Date().toISOString();
+  const now = dayjs();
+  const start = now.subtract(10, 'year').format();
+  const end = now.toISOString();
   const options = {
     start,
     end,

@@ -1,14 +1,11 @@
 import { useEffect, useState, useCallback } from 'react';
-import { Platform, Linking } from 'react-native';
+import { Platform, Linking, PermissionsAndroid } from 'react-native';
 import BleManager from 'react-native-ble-manager';
-import { BlufiParameter } from '../../../BlufiLib/util/params';
 import { config } from '../../../configureWappstoRedux';
-import LocationServicesDialogBox from 'react-native-android-location-services-dialog-box';
-import { useTranslation, CapitalizeFirst } from '../../../translations';
 import { request, PERMISSIONS, RESULTS } from 'react-native-permissions';
 import bleManagerEmitter from './bleManagerEmitter';
 
-const PermissionError = {
+export const PERMISSION_ERRORS = {
   BLUETOOTH_UNAUTHORIZED: 'bluetoothUnauthorized',
   BLUETOOTH_NOT_SUPPORTED: 'bluetoothNotSupported',
   BLUETOOTH_OFF: 'bluetoothOff',
@@ -16,87 +13,85 @@ const PermissionError = {
   LOCATION: 'location',
 };
 
+const Listener = {
+  DISCOVER_PERIPHERAL: 'BleManagerDiscoverPeripheral',
+  STOP_SCAN: 'BleManagerStopScan',
+  UPDATE_STATE: 'BleManagerDidUpdateState',
+};
+
 const useSearchBlufi = () => {
-  const { t } = useTranslation();
   const [error, setError] = useState(false);
-  const [permissionError, setPermissionError] = useState(false);
+  const [permissionError, setPermissionError] = useState('');
   const [scanning, setScanning] = useState(true);
   const [devices, setDevices] = useState([]);
   const [canScan, setCanScan] = useState(true);
 
   const removeDiscoveryListener = useCallback(() => {
-    bleManagerEmitter.removeAllListeners('BleManagerDiscoverPeripheral');
-    bleManagerEmitter.removeAllListeners('BleManagerStopScan');
+    bleManagerEmitter.removeAllListeners(Listener.DISCOVER_PERIPHERAL);
+    bleManagerEmitter.removeAllListeners(Listener.STOP_SCAN);
   }, []);
 
   const addDiscoveryListener = useCallback(() => {
     // Get discovered peripherals
-    bleManagerEmitter.addListener('BleManagerDiscoverPeripheral', (device) => {
+    bleManagerEmitter.addListener(Listener.DISCOVER_PERIPHERAL, device => {
       if (config.blufiFilterEmptyName && !device.name) {
         return;
       }
       const lowerName = device.name ? device.name.toLowerCase() : '';
-      setDevices((devices) => {
+      setDevices(oldDevices => {
         if (
           (!config.blufiFilter ||
             config.blufiFilter.length === 0 ||
-            config.blufiFilter.find((f) => lowerName.includes(f.toLowerCase()))) &&
-          !devices.find((d) => d.id === device.id)
+            config.blufiFilter.find(f => lowerName.includes(f.toLowerCase()))) &&
+          !oldDevices.find(d => d.id === device.id)
         ) {
-          devices = [...devices, device];
-          return devices.sort((a, b) => b.rssi - a.rssi);
+          return [...oldDevices, device].sort((a, b) => b.rssi - a.rssi);
         }
-        return devices;
+        return oldDevices;
       });
     });
 
     // Scan stopped
-    bleManagerEmitter.addListener('BleManagerStopScan', () => {
+    bleManagerEmitter.addListener(Listener.STOP_SCAN, () => {
       removeDiscoveryListener();
       setScanning(false);
     });
   }, [removeDiscoveryListener]);
 
-  const getAndroidLocationPermission = useCallback(async () => {
-    if (Platform.Version >= 23) {
+  const getAndroidPermissions = useCallback(async () => {
+    if (Platform.Version > 30) {
+      const result = await PermissionsAndroid.requestMultiple([
+        PermissionsAndroid.PERMISSIONS.BLUETOOTH_SCAN,
+        PermissionsAndroid.PERMISSIONS.BLUETOOTH_CONNECT,
+      ]);
+
+      if (
+        result[PERMISSIONS.ANDROID.BLUETOOTH_SCAN] !== RESULTS.GRANTED ||
+        result[PERMISSIONS.ANDROID.BLUETOOTH_CONNECT] !== RESULTS.GRANTED
+      ) {
+        throw PERMISSION_ERRORS.BLUETOOTH_GENERIC;
+      }
+    } else if (Platform.Version >= 23) {
       const result = await request(PERMISSIONS.ANDROID.ACCESS_FINE_LOCATION);
       if (result !== RESULTS.GRANTED) {
-        throw PermissionError.LOCATION;
+        throw PERMISSION_ERRORS.LOCATION;
       }
     }
   }, []);
-
-  const enableLocation = useCallback(async () => {
-    try {
-      await LocationServicesDialogBox.checkLocationServicesIsEnabled({
-        message: CapitalizeFirst(t('onboarding.deviceDiscovery.permissionError.location')),
-        ok: CapitalizeFirst(t('onboarding.deviceDiscovery.goToSettings')),
-        cancel: CapitalizeFirst(t('genericButton.cancel')),
-        enableHighAccuracy: true, // true => GPS AND NETWORK PROVIDER, false => GPS OR NETWORK PROVIDER
-        showDialog: true, // false => Opens the Location access page directly
-        openLocationServices: true, // false => Directly catch method is called if location services are turned off
-        preventOutSideTouch: true, // true => To prevent the location services window from closing when it is clicked outside
-        preventBackClick: false, // true => To prevent the location services popup from closing when it is clicked back button
-        providerListener: true, // true ==> Trigger locationProviderStatusChange listener when the location state changes
-      });
-    } catch (e) {
-      throw PermissionError.LOCATION;
-    }
-  }, [t]);
 
   const enableBluetoothIOS = useCallback(async () => {
     let bluetoothState;
     try {
       bluetoothState = await request(PERMISSIONS.IOS.BLUETOOTH_PERIPHERAL);
     } catch (e) {
-      throw PermissionError.BLUETOOTH_GENERIC;
+      throw PERMISSION_ERRORS.BLUETOOTH_GENERIC;
     }
     switch (bluetoothState) {
       case RESULTS.UNAVAILABLE:
-        throw PermissionError.BLUETOOTH_OFF;
+        throw PERMISSION_ERRORS.BLUETOOTH_OFF;
       case RESULTS.DENIED:
       case RESULTS.BLOCKED:
-        throw PermissionError.BLUETOOTH_UNAUTHORIZED;
+        throw PERMISSION_ERRORS.BLUETOOTH_UNAUTHORIZED;
       default:
         break;
     }
@@ -106,7 +101,7 @@ const useSearchBlufi = () => {
     try {
       await BleManager.enableBluetooth();
     } catch (e) {
-      throw PermissionError.BLUETOOTH_OFF;
+      throw PERMISSION_ERRORS.BLUETOOTH_OFF;
     }
   }, []);
 
@@ -115,17 +110,16 @@ const useSearchBlufi = () => {
       return;
     }
     setDevices([]);
-    setPermissionError();
+    setPermissionError('');
     setError(false);
     try {
       addDiscoveryListener();
       if (Platform.OS === 'android') {
-        await getAndroidLocationPermission();
-        await enableLocation();
+        await getAndroidPermissions();
         await enableBluetoothAndroid();
       } else if (Platform.OS === 'ios') {
         const version = Platform.Version.split('.')[0];
-        if (version >= 13) {
+        if (+version >= 13) {
           await enableBluetoothIOS();
         }
       }
@@ -143,11 +137,12 @@ const useSearchBlufi = () => {
     }
   }, [
     canScan,
-    enableLocation,
-    getAndroidLocationPermission,
+    // enableLocation,
+    // getAndroidLocationPermission,
     enableBluetoothIOS,
     enableBluetoothAndroid,
     addDiscoveryListener,
+    getAndroidPermissions,
   ]);
 
   const init = async () => {
@@ -158,24 +153,25 @@ const useSearchBlufi = () => {
   // listen to bluetooth status
   useEffect(() => {
     const listener = ({ state }) => {
-      const isOn = ['on', 'turning_on'].includes(state) ? true : false;
+      const isOn = ['on', 'turning_on'].includes(state);
       if (Platform.OS === 'ios') {
         setCanScan(isOn);
       }
       if (isOn) {
-        setPermissionError();
+        setPermissionError('');
         setError(false);
       } else {
-        setPermissionError(PermissionError.BLUETOOTH_OFF);
+        setPermissionError(PERMISSION_ERRORS.BLUETOOTH_OFF);
         if (scanning) {
           setScanning(false);
         }
         setError(true);
       }
     };
-    bleManagerEmitter.addListener('BleManagerDidUpdateState', listener);
+    bleManagerEmitter.addListener(Listener.UPDATE_STATE, listener);
     return () => {
-      bleManagerEmitter.removeListener('BleManagerDidUpdateState', listener);
+      //bleManagerEmitter.removeListener('BleManagerDidUpdateState', listener);
+      bleManagerEmitter.removeAllListeners(Listener.UPDATE_STATE);
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
@@ -194,7 +190,7 @@ const useSearchBlufi = () => {
     scan,
     error,
     permissionError,
-    PermissionError,
+    PERMISSION_ERRORS,
     scanning,
     devices,
     openSettings: Linking.openSettings,

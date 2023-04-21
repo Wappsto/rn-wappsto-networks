@@ -1,19 +1,19 @@
 import React from 'react';
 import { Text as RNText } from 'react-native';
-import Text from '../../../components/Text';
 import Button from '../../../components/Button';
-import PopupButton from '../../../components/PopupButton';
-import Popup from '../../../components/Popup';
-import ID from '../../../components/ID';
-import theme from '../../../theme/themeExport';
-import { useTranslation, CapitalizeFirst } from '../../../translations';
-import { selectedDeviceName } from '../../../util/params';
-import useGetItemEntity from '../../../hooks/useGetItemEntity';
 import ConfirmationPopup from '../../../components/ConfirmationPopup';
+import ID from '../../../components/ID';
+import Popup from '../../../components/Popup';
+import PopupButton from '../../../components/PopupButton';
 import RequestError from '../../../components/RequestError';
+import Text from '../../../components/Text';
 import useDeleteItem from '../../../hooks/useDeleteItem';
+import useGetItemEntity from '../../../hooks/useGetItemEntity';
+import theme from '../../../theme/themeExport';
+import { CapitalizeFirst, useTranslation } from '../../../translations';
+import { selectedDeviceName } from '../../../util/params';
 
-const ValueSettings = React.memo(() => {
+const DeviceDetails = React.memo(() => {
   const { t } = useTranslation();
   const device = useGetItemEntity(selectedDeviceName, 'device');
   const { deleteItem, request, confirmVisible, showDeleteConfirmation, hideDeleteConfirmation } =
@@ -30,7 +30,14 @@ const ValueSettings = React.memo(() => {
           accept={deleteItem}
           reject={hideDeleteConfirmation}
         />
-        <Text size="h4" content={device.name} />
+        <Text
+          size="h4"
+          content={
+            device.meta.name_by_user !== device.name
+              ? `${device.meta.name_by_user} (${device.name})`
+              : device.name
+          }
+        />
         <ID id={device.meta.id} label={CapitalizeFirst(t('dataModel:deviceProperties.meta.id'))} />
         {!!device.manufacturer && (
           <RNText>
@@ -128,4 +135,5 @@ const ValueSettings = React.memo(() => {
   );
 });
 
-export default ValueSettings;
+DeviceDetails.displayName = 'DeviceDetails';
+export default DeviceDetails;

@@ -1,7 +1,7 @@
 import { useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import { useRoute, useNavigation } from '@react-navigation/native';
-import { setItem } from 'wappsto-redux/actions/items';
+import { setItem } from 'wappsto-redux';
 import { currentPage } from '../util/params';
 
 const useCurrentPage = () => {

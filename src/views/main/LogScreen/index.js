@@ -1,16 +1,15 @@
-import React, { useState, useEffect, useRef, useCallback } from 'react';
-import { ScrollView } from 'react-native';
+import { useRoute } from '@react-navigation/native';
+import equal from 'deep-equal';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
+import { ActivityIndicator, ScrollView } from 'react-native';
+import { useEntitySelector } from 'wappsto-blanket';
 import Message from '../../../components/Message';
 import Screen from '../../../components/Screen';
-import GraphChart from './GraphChart';
-import ChartHeader from './chartHeader';
-import LogComponent, { STATUS } from './LogComponent';
-import { ActivityIndicator } from 'react-native';
-import { useRoute } from '@react-navigation/native';
-import useEntitySelector from 'wappsto-blanket/hooks/useEntitySelector';
-import equal from 'deep-equal';
-import { useTranslation, CapitalizeFirst } from '../../../translations';
 import theme from '../../../theme/themeExport';
+import { CapitalizeFirst, useTranslation } from '../../../translations';
+import GraphChart from './GraphChart';
+import LogComponent, { STATUS } from './LogComponent';
+import ChartHeader from './chartHeader';
 import { MAX_POINTS } from './params';
 
 const LogScreen = React.memo(() => {
@@ -29,7 +28,7 @@ const LogScreen = React.memo(() => {
   const hasReport = value?.permission?.includes('r');
   const hasControl = value?.permission?.includes('w');
 
-  const onDone = useCallback((data) => {
+  const onDone = useCallback(data => {
     if (data.status === 'unmount') {
       delete cachedData.current[data.type];
       return;
@@ -172,11 +171,5 @@ const LogScreen = React.memo(() => {
   );
 });
 
-LogScreen.navigationOptions = ({ route }) => {
-  return {
-    ...theme.headerStyle,
-    title: route.params.title || '',
-  };
-};
-
+LogScreen.displayName = 'LogScreen';
 export default LogScreen;

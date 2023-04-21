@@ -17,7 +17,7 @@
 	<key>CFBundlePackageType</key>
 	<string>APPL</string>
 	<key>CFBundleShortVersionString</key>
-	<string>1.0</string>
+	<string>$(MARKETING_VERSION)</string>
 	<key>CFBundleSignature</key>
 	<string>????</string>
 	<key>CFBundleURLTypes</key>
@@ -26,47 +26,24 @@
 			<key>CFBundleTypeRole</key>
 			<string>Editor</string>
 			<key>CFBundleURLSchemes</key>
-			<array/>
-		</dict>
-		<dict>
-			<key>CFBundleTypeRole</key>
-			<string>Editor</string>
-			<key>CFBundleURLSchemes</key>
 			<array>
-				<string>com.googleusercontent.apps.733864116078-022rev710uf7bdcu8rneg2010vpnto2v</string>
+				<string>fbAPPID</string>
+				<string>GoogleappSchema</string>
 			</array>
 		</dict>
 	</array>
 	<key>CFBundleVersion</key>
-	<string>1</string>
+	<string>$(CURRENT_PROJECT_VERSION)</string>
 	<key>FacebookAppID</key>
-	<string>1083657882033988</string>
+	<string>APPID</string>
+	<key>FacebookClientToken</key>
+	<string>CLIENTID</string>
 	<key>FacebookDisplayName</key>
-	<string>rn-firebase-auth</string>
-	<key>LSApplicationQueriesSchemes</key>
-	<array>
-		<string>fbapi</string>
-		<string>fbapi20130214</string>
-		<string>fbapi20130410</string>
-		<string>fbapi20130702</string>
-		<string>fbapi20131010</string>
-		<string>fbapi20131219</string>
-		<string>fbapi20140410</string>
-		<string>fbapi20140116</string>
-		<string>fbapi20150313</string>
-		<string>fbapi20150629</string>
-		<string>fbapi20160328</string>
-		<string>fbauth</string>
-		<string>fb-messenger-share-api</string>
-		<string>fbauth2</string>
-		<string>fbshareextension</string>
-	</array>
+	<string>Seluxit A/S</string>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
 	<key>NSAppTransportSecurity</key>
 	<dict>
-		<key>NSAllowsArbitraryLoads</key>
-		<true/>
 		<key>NSExceptionDomains</key>
 		<dict>
 			<key>localhost</key>
@@ -76,28 +53,15 @@
 			</dict>
 		</dict>
 	</dict>
+	<key>NSBluetoothAlwaysUsageDescription</key>
+	<string>Enable bluetooth to connect your IoT device to the internet.</string>
 	<key>NSCameraUsageDescription</key>
-	<string>We want to use your camera to scan the QR code</string>
+	<string>$(PRODUCT_NAME) needs access to your Camera to scan the QR code.</string>
 	<key>NSLocationWhenInUseUsageDescription</key>
-	<string>Location is required for Bluetooth scan</string>
+	<string></string>
 	<key>UIAppFonts</key>
 	<array>
-		<string>AntDesign.ttf</string>
-		<string>Entypo.ttf</string>
-		<string>EvilIcons.ttf</string>
 		<string>Feather.ttf</string>
-		<string>FontAwesome.ttf</string>
-		<string>FontAwesome5_Brands.ttf</string>
-		<string>FontAwesome5_Regular.ttf</string>
-		<string>FontAwesome5_Solid.ttf</string>
-		<string>Fontisto.ttf</string>
-		<string>Foundation.ttf</string>
-		<string>Ionicons.ttf</string>
-		<string>MaterialCommunityIcons.ttf</string>
-		<string>MaterialIcons.ttf</string>
-		<string>Octicons.ttf</string>
-		<string>SimpleLineIcons.ttf</string>
-		<string>Zocial.ttf</string>
 	</array>
 	<key>UILaunchStoryboardName</key>
 	<string>LaunchScreen</string>
@@ -113,9 +77,5 @@
 	</array>
 	<key>UIViewControllerBasedStatusBarAppearance</key>
 	<false/>
-	<key>NSBluetoothAlwaysUsageDescription</key>
-	<string>to discover nearby devices</string>
-	<key>NSBluetoothPeripheralUsageDescription</key>
-	<string>to discover nearby devices</string>
 </dict>
 </plist>

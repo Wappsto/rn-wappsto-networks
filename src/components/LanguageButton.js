@@ -17,4 +17,5 @@ const LanguageButton = React.memo(() => {
   );
 });
 
+LanguageButton.displayName = 'LanguageButton';
 export default LanguageButton;

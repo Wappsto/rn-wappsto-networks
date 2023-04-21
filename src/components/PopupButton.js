@@ -1,7 +1,7 @@
-import React, { useState, useCallback, useEffect } from 'react';
-import Button from '../components/Button';
+import React, { useCallback, useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
-import { setItem } from 'wappsto-redux/actions/items';
+import { setItem } from 'wappsto-redux';
+import Button from '../components/Button';
 
 const PopupButton = React.memo(({ icon, style, color, showItem, hideItem, children }) => {
   const dispatch = useDispatch();
@@ -33,4 +33,5 @@ const PopupButton = React.memo(({ icon, style, color, showItem, hideItem, childr
   );
 });
 
+PopupButton.displayName = 'PopupButton';
 export default PopupButton;

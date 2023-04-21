@@ -36,4 +36,5 @@ const CheckBox = ({
   </TouchableOpacity>
 );
 
+CheckBox.displayName = 'CheckBox';
 export default CheckBox;

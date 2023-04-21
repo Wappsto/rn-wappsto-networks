@@ -1,61 +1,25 @@
-import React, { useState, useCallback } from 'react';
-import { View } from 'react-native';
-import { useRoute } from '@react-navigation/native';
-import { useTranslation, CapitalizeEach, CapitalizeFirst } from '../../translations';
-import theme from '../../theme/themeExport';
+import React from 'react';
+import Pdf from 'react-native-pdf';
 import Screen from '../../components/Screen';
-import Button from '../../components/Button';
-import CheckBox from '../../components/CheckBox';
-import PageTitle from '../../components/PageTitle';
-import { WebView } from 'react-native-webview';
+import { config } from '../../configureWappstoRedux';
 
-const TermsAndConditionsScreen = React.memo(({ navigation }) => {
-  const { t } = useTranslation();
-  const route = useRoute();
-  const [checked, setChecked] = useState(false);
-  const hideAccept = route.params?.hideAccept;
-  const toggleChecked = useCallback(() => {
-    setChecked((c) => !c);
-  }, []);
+const TermsAndConditionsScreen = () => {
+  const uri = config.links?.terms;
 
-  const navigateToRegisterScreen = useCallback(() => {
-    navigation.navigate('RegisterScreen');
-  }, [navigation]);
+  if (!uri) {
+    return null;
+  }
 
   return (
     <Screen>
-      <View style={theme.common.container}>
-        <WebView
-          source={{
-            uri: 'http://docs.google.com/gview?embedded=true&url=https://www.seluxit.com/wp-content/uploads/2020/06/Cloud-Solutions-Terms-and-Conditions-Business.pdf',
-          }}
-        />
-        {!hideAccept ? (
-          <View style={theme.common.spaceAround}>
-            <CheckBox
-              checked={checked}
-              onPress={toggleChecked}
-              text={CapitalizeFirst(t('account:readAndAcceptTerms'))}
-            />
-            <Button
-              disabled={!checked}
-              display="block"
-              color={checked ? 'primary' : 'disabled'}
-              onPress={navigateToRegisterScreen}
-              text={CapitalizeFirst(t('account:continue'))}
-            />
-          </View>
-        ) : null}
-      </View>
+      <Pdf
+        trustAllCerts={false}
+        style={{ flex: 1 }}
+        source={{ uri, cache: true }}
+        onError={e => console.error('When trying to load the terms of service, we got:', e)}
+      />
     </Screen>
   );
-});
-
-TermsAndConditionsScreen.navigationOptions = () => {
-  return {
-    ...theme.headerStyle,
-    title: <PageTitle title="pageTitle.terms" />,
-  };
 };
 
-export default TermsAndConditionsScreen;
+export default React.memo(TermsAndConditionsScreen);

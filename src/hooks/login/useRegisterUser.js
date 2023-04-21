@@ -1,9 +1,11 @@
-import { useState, useRef, useCallback, useEffect } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
+import HTTP from '../../enums/http';
 import { isEmail } from '../../util/helpers';
-import useRequest from 'wappsto-blanket/hooks/useRequest';
 import useConnected from '../useConnected';
+import useRequest from '../useRequest';
+import NAV from '../../enums/navigation';
 
-const useRegisterUser = (navigation) => {
+const useRegisterUser = navigation => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [repeatPassword, setRepeatPassword] = useState('');
@@ -32,7 +34,7 @@ const useRegisterUser = (navigation) => {
   };
 
   const connected = useConnected();
-  const { request, send } = useRequest();
+  const { request, send, removeRequest } = useRequest();
 
   const loading = request && (request.status === 'pending' || request.status === 'success');
   const canRegister =
@@ -58,7 +60,7 @@ const useRegisterUser = (navigation) => {
   );
 
   const moveToNextField = useCallback(
-    (field) => {
+    field => {
       const trimText = map[field].value.trim();
       if (trimText !== map[field].value) {
         setUsername(trimText);
@@ -71,7 +73,7 @@ const useRegisterUser = (navigation) => {
   const sendRequest = useCallback(
     (recaptcha = '') => {
       send({
-        method: 'POST',
+        method: HTTP.POST,
         url: '/register',
         body: {
           username: username,
@@ -84,30 +86,34 @@ const useRegisterUser = (navigation) => {
   );
 
   const onCheckRecaptcha = useCallback(
-    (data) => {
-      if (data) {
-        if (['cancel', 'error', 'expired'].includes(data)) {
-          if (recaptchaRef.current) {
-            recaptchaRef.current.hide();
-          }
-          return;
-        } else {
-          setTimeout(() => {
-            if (recaptchaRef.current) {
-              recaptchaRef.current.hide();
-            }
-            sendRequest(data);
-          }, 1500);
+    data => {
+      if (!data) {
+        return;
+      }
+
+      if (['cancel', 'error', 'expired'].includes(data)) {
+        if (recaptchaRef.current) {
+          removeRequest();
+          recaptchaRef.current.close();
         }
+        return;
+      } else {
+        setTimeout(() => {
+          if (recaptchaRef.current) {
+            recaptchaRef.current.close();
+          }
+
+          sendRequest(data);
+        }, 500);
       }
     },
-    [sendRequest],
+    [sendRequest, removeRequest],
   );
 
   const register = useCallback(() => {
     if (canRegister) {
       if (recaptchaRef.current) {
-        recaptchaRef.current.show();
+        recaptchaRef.current.open();
       } else {
         sendRequest();
       }
@@ -124,7 +130,7 @@ const useRegisterUser = (navigation) => {
 
   const hideSuccessPopup = useCallback(() => {
     setSuccessVisible(false);
-    navigation.navigate('LoginScreen');
+    navigation.navigate(NAV.NOSESSION.LOGIN);
   }, [navigation]);
 
   return {

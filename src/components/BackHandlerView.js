@@ -1,12 +1,12 @@
-import React, { useRef, useMemo } from 'react';
-import { ScrollView, View, Image, StyleSheet, StatusBar } from 'react-native';
-import { SafeAreaView } from 'react-native-safe-area-context';
-import KeyboardAvoidingView from './KeyboardAvoidingView';
-import Button from './Button';
-import Text from './Text';
+import React, { useMemo, useRef } from 'react';
+import { Image, ScrollView, StatusBar, StyleSheet, View } from 'react-native';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import Icon from 'react-native-vector-icons/Feather';
 import theme from '../theme/themeExport';
-import { useTranslation, CapitalizeFirst } from '../translations';
+import { CapitalizeFirst, useTranslation } from '../translations';
+import Button from './Button';
+import KeyboardAvoidingView from './KeyboardAvoidingView';
+import Text from './Text';
 
 const styles = StyleSheet.create({
   header: {
@@ -34,6 +34,7 @@ const BackHandlerView = React.memo(
   }) => {
     const { t } = useTranslation();
     const scrollViewRef = useRef();
+    const insets = useSafeAreaInsets();
 
     useMemo(() => {
       scrollViewRef?.current?.scrollTo({ x: 0, y: 0, animated: false });
@@ -41,7 +42,16 @@ const BackHandlerView = React.memo(
     }, [resetScrollview]);
 
     return (
-      <SafeAreaView style={[theme.common.container, { flex: 1 }]}>
+      <View
+        style={[
+          theme.common.container,
+          {
+            paddingTop: insets.top,
+            paddingRight: insets.right,
+            paddingBottom: insets.bottom,
+            paddingLeft: insets.left,
+          },
+        ]}>
         <StatusBar
           backgroundColor={theme.variables.statusBarBgDark}
           barStyle={theme.variables.statusBarColorLight}
@@ -87,9 +97,10 @@ const BackHandlerView = React.memo(
             </>
           </ScrollView>
         </KeyboardAvoidingView>
-      </SafeAreaView>
+      </View>
     );
   },
 );
 
+BackHandlerView.displayName = 'BackHandlerView';
 export default BackHandlerView;

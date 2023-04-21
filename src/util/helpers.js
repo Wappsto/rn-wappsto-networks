@@ -1,5 +1,5 @@
 import { config } from '../configureWappstoRedux';
-import { openStream, closeStream } from 'wappsto-redux/actions/stream';
+import { openStream, closeStream } from 'wappsto-redux';
 
 export function isEmail(str) {
   return str.match(/\w+([-+.']\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*/);
@@ -25,7 +25,7 @@ export function endStream(dispatch, silent) {
   }
 }
 
-const toNumber = (x) => {
+const toNumber = x => {
   if (Math.abs(x) < 1.0) {
     let e = parseInt(x.toString().split('e-')[1], 10);
     if (e) {
@@ -43,7 +43,7 @@ const toNumber = (x) => {
   return x;
 };
 
-const countDecimals = (value) => {
+const countDecimals = value => {
   value = toNumber(value);
   if (Math.floor(value) === value) {
     return 0;

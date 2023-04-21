@@ -2,7 +2,7 @@ import React from 'react';
 import { TouchableOpacity } from 'react-native';
 import Popover, { PopoverPlacement } from 'react-native-popover-view';
 import Icon from 'react-native-vector-icons/Feather';
-import useVisible from 'wappsto-blanket/hooks/useVisible';
+import { useVisible } from 'wappsto-blanket';
 import Text from '../../../../components/Text';
 import theme from '../../../../theme/themeExport';
 import { CapitalizeFirst, useTranslation } from '../../../../translations';
@@ -14,9 +14,9 @@ const PointDropdown = React.memo(({ value, setOptions, autoCompute }) => {
   const { t } = useTranslation();
   const [visible, show, hide] = useVisible(false);
 
-  const onChangeValue = (selectedValue) => {
+  const onChangeValue = selectedValue => {
     const newOptions = getXValueOptions(selectedValue, 0, autoCompute);
-    setOptions((options) => ({ ...options, ...newOptions }));
+    setOptions(options => ({ ...options, ...newOptions }));
     hide();
   };
 
@@ -38,7 +38,7 @@ const PointDropdown = React.memo(({ value, setOptions, autoCompute }) => {
           <Icon size={12} name="chevron-down" color={theme.variables.textSecondary} />
         </TouchableOpacity>
       }>
-      {POINT_OPTIONS.map((number) => (
+      {POINT_OPTIONS.map(number => (
         <TouchableOpacity
           key={number}
           style={styles.dropdownButton}
@@ -55,4 +55,5 @@ const PointDropdown = React.memo(({ value, setOptions, autoCompute }) => {
   );
 });
 
+PointDropdown.displayName = 'PointDropdown';
 export default PointDropdown;
