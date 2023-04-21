@@ -1,4 +1,5 @@
 import dayjs from 'dayjs';
+import LocalizedFormat from 'dayjs/plugin/localizedFormat';
 import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { StyleSheet, TouchableOpacity, View } from 'react-native';
 import {
@@ -10,6 +11,8 @@ import {
 } from 'victory-native';
 import Text from '../../../components/Text';
 import theme from '../../../theme/themeExport';
+
+dayjs.extend(LocalizedFormat);
 
 // const VictoryZoomVoronoiContainer = createContainer('zoom', 'voronoi');
 const styles = StyleSheet.create({
@@ -33,6 +36,8 @@ const COLORS = {
   Report: theme.variables.primary,
   Control: theme.variables.secondary,
 };
+
+const DATE_FORMAT = 'lll';
 
 const GraphChart = React.memo(({ data, operation = 'data', reverseOrder }) => {
   const [hidden, setHidden] = useState([]);
@@ -117,8 +122,8 @@ const GraphChart = React.memo(({ data, operation = 'data', reverseOrder }) => {
   useEffect(() => {
     if (formattedData.length > 0 && formattedData[0].data.length > 2) {
       const data = formattedData[0].data;
-      const date1 = dayjs(data[0].x).format('lll');
-      const date2 = dayjs(data[data.length - 1].x).format('lll');
+      const date1 = dayjs(data[0].x).format(DATE_FORMAT);
+      const date2 = dayjs(data[data.length - 1].x).format(DATE_FORMAT);
       if (reverseOrder) {
         setDates(date2 + ' - ' + date1);
       } else {
@@ -139,7 +144,9 @@ const GraphChart = React.memo(({ data, operation = 'data', reverseOrder }) => {
           <VictoryVoronoiContainer
             voronoiBlacklist={['Report_line', 'Control_line']}
             labels={d => [
-              `${d.datum.childName}: ${d.datum.rawValue}\n\n ${dayjs(d.datum.x).format('lll')}`,
+              `${d.datum.childName}: ${d.datum.rawValue}\n\n ${dayjs(d.datum.x).format(
+                DATE_FORMAT,
+              )}`,
             ]}
           />
         }>
