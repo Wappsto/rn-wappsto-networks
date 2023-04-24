@@ -19,7 +19,7 @@ const ERRORS = {
 };
 
 let deviceId;
-const timeoutLimit = 10000;
+const timeoutLimit = 25000;
 
 const useConnectToDevice = selectedDevice => {
   const [step, setStep] = useState(STEPS.CONNECT);
