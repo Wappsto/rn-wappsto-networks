@@ -52,7 +52,7 @@ const useAddNetworkForm = (addNetworkHandler, onDone) => {
         }
       } else if (
         request.status !== 'pending' &&
-        (request.status !== 'error' || request.json.code !== manufacturerAsOwnerErrorCode)
+        (request.status !== 'error' || request.json?.code !== manufacturerAsOwnerErrorCode)
       ) {
         setLoading(false);
       }
