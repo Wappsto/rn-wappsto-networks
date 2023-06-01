@@ -1,6 +1,6 @@
 import dayjs from 'dayjs';
 import LocalizedFormat from 'dayjs/plugin/localizedFormat';
-import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import { StyleSheet, TouchableOpacity, View } from 'react-native';
 import {
   VictoryChart,
@@ -41,47 +41,27 @@ const DATE_FORMAT = 'lll';
 
 const GraphChart = React.memo(({ data, operation = 'data', reverseOrder }) => {
   const [hidden, setHidden] = useState([]);
-  const [zoom, setZoom] = useState();
   const [dates, setDates] = useState();
-  const xyCache = useRef({});
-  const resetZoom = useCallback(() => setZoom(xyCache.current), []);
 
   const formattedData = useMemo(() => {
     const fd = [];
-    const x = [];
-    const y = [];
     for (let key in data) {
       const props = {
         key,
         data: data[key].data.map(d => {
           const time = new Date(d.time);
-          const data = d[operation] && !isNaN(d[operation]) ? parseFloat(d[operation]) : null;
-          if (!x[0] || time.getTime() < x[0].getTime()) {
-            x[0] = time;
-          }
-          if (!x[1] || time.getTime() > x[1].getTime()) {
-            x[1] = time;
-          }
-          if (data !== null) {
-            if (!y[0] || data < y[0]) {
-              y[0] = data;
-            }
-            if (!y[1] || data > y[1]) {
-              y[1] = data;
-            }
-          }
-          return { x: time, y: data, rawValue: d[operation] };
+          const data =
+            d[operation] && !d[operation].includes('nfinity') && !isNaN(d[operation])
+              ? parseFloat(d[operation])
+              : null;
+          return { x: time, y: data };
         }),
         name: data[key].name,
       };
       fd.push(props);
     }
-    if (x.length && y.length) {
-      xyCache.current = { x, y };
-      resetZoom();
-    }
     return fd;
-  }, [data, operation, resetZoom]);
+  }, [data, operation]);
 
   // const scale = { x: 'time', y: 'linear' };
   const [lines, legend] = useMemo(() => {
@@ -143,11 +123,13 @@ const GraphChart = React.memo(({ data, operation = 'data', reverseOrder }) => {
         containerComponent={
           <VictoryVoronoiContainer
             voronoiBlacklist={['Report_line', 'Control_line']}
-            labels={d => [
-              `${d.datum.childName}: ${d.datum.rawValue}\n\n ${dayjs(d.datum.x).format(
-                DATE_FORMAT,
-              )}`,
-            ]}
+            labels={d => {
+              if (d.datum.y) {
+                return [
+                  `${d.datum.childName}: ${d.datum.y}\n\n ${dayjs(d.datum.x).format(DATE_FORMAT)}`,
+                ];
+              }
+            }}
           />
         }>
         {lines}

@@ -1,7 +1,7 @@
 {
   "name": "rn-wappsto-networks",
   "description": "React Native app for interacting with IoT devices in Wappsto Platform.",
-  "version": "2.0.2",
+  "version": "2.0.3",
   "license": "Apache-2.0",
   "author": {
     "name": "Seluxit A/S",
@@ -21,7 +21,7 @@
     "lint": "eslint .",
     "start": "react-native start",
     "test": "jest",
-    "postinstall": "node postinstall.js"
+    "postinstall": "node postinstall.js && react-native setup-ios-permissions && pod-install"
   },
   "dependencies": {
     "@invertase/react-native-apple-authentication": "^2.2.2",
@@ -42,6 +42,7 @@
     "i18next": "^22.4.13",
     "lodash": "^4.17.21",
     "moment": "^2.29.4",
+    "pod-install": "^0.1.38",
     "process": "^0.11.10",
     "react": "18.2.0",
     "react-i18next": "^12.2.0",
