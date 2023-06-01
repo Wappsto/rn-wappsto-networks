@@ -124,7 +124,7 @@ const GraphChart = React.memo(({ data, operation = 'data', reverseOrder }) => {
           <VictoryVoronoiContainer
             voronoiBlacklist={['Report_line', 'Control_line']}
             labels={d => {
-              if (d.datum.y) {
+              if (d.datum.y !== null) {
                 return [
                   `${d.datum.childName}: ${d.datum.y}\n\n ${dayjs(d.datum.x).format(DATE_FORMAT)}`,
                 ];
