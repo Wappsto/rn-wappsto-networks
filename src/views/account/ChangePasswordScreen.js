@@ -48,7 +48,7 @@ const ChangePassword = React.memo(() => {
           onSubmitEditing={() => changePassword.moveToField(changePassword.newPassword.ref)}
           validationError={
             changePassword.currentPassword.error &&
-            CapitalizeFirst(t('account:validation.password'))
+            CapitalizeFirst(t('account:validation.required', { field: 'password' }))
           }
         />
         <Input
@@ -64,7 +64,8 @@ const ChangePassword = React.memo(() => {
           toggleShowPassword={changePassword.newPassword.toggleVisible}
           onSubmitEditing={() => changePassword.moveToField(changePassword.repeatPassword.ref)}
           validationError={
-            changePassword.newPassword.error && CapitalizeFirst(t('account:validation.password'))
+            changePassword.newPassword.error &&
+            CapitalizeFirst(t('account:validation.required', { field: 'password' }))
           }
         />
         <Input
@@ -80,7 +81,8 @@ const ChangePassword = React.memo(() => {
           toggleShowPassword={changePassword.repeatPassword.toggleVisible}
           onSubmitEditing={changePassword.update}
           validationError={
-            changePassword.repeatPassword.error && CapitalizeFirst(t('account:validation.password'))
+            changePassword.repeatPassword.error &&
+            CapitalizeFirst(t('account:validation.repeatPassword'))
           }
         />
         {changePassword.loading && (

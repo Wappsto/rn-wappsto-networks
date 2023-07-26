@@ -21,7 +21,7 @@
     "lint": "eslint .",
     "start": "react-native start",
     "test": "jest",
-    "postinstall": "node postinstall.js && react-native setup-ios-permissions && pod-install"
+    "postinstall": "node postinstall.js"
   },
   "dependencies": {
     "@invertase/react-native-apple-authentication": "^2.2.2",

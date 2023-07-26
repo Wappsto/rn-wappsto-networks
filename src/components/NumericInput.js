@@ -88,13 +88,13 @@ const NumericInput = React.memo(
       value => {
         if (min !== null && min !== undefined && !isNaN(min)) {
           if (parseFloat(value) < parseFloat(min)) {
-            setWarning(['dataModel:validation.wrongMinNumber', { number: min }]);
+            setWarning(['dataModel:validation.numberTooSmall', { number: min }]);
             return;
           }
         }
         if (max !== null && max !== undefined && !isNaN(max)) {
           if (value > parseFloat(max)) {
-            setWarning(['dataModel:validation.wrongMaxNumber', { number: max }]);
+            setWarning(['dataModel:validation.numberTooLarge', { number: max }]);
             return;
           }
         }
